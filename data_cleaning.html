@@ -2,248 +2,205 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixest Stata to R</title>
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Stata to R</title>
 
-    <!-- prism.js -->
-    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/themes/prism.css" rel="stylesheet" />
+<!-- prism.js -->
+<link href="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/themes/prism.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-core.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/normalize-whitespace/prism-normalize-whitespace.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-r.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
 
-    <!-- tailwindCSS -->
-    <script
-        src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2">
-    </script>
-    <style type="text/tailwindcss">
-        pre[class*="language-"] {
-            @apply bg-white px-4 py-4 lg:py-2 m-0;
-        }
-    </style>
+<!-- tailwindCSS -->
+<script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"></script>
+<style type="text/tailwindcss">
+pre[class*="language-"] {
+@apply bg-white px-4 py-4 lg:py-2 m-0;
+}
+</style>
 </head>
-
 <body>
-
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-core.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/normalize-whitespace/prism-normalize-whitespace.js">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-r.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
-    <script type="text/javascript">
-        // Optional
-        Prism.plugins.NormalizeWhitespace.setDefaults({
-            'remove-trailing': true,
-            'remove-indent': true,
-            'left-trim': true,
-            'right-trim': true
-        });
-    </script>
-
-    <div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center pb-96">
-        <!-- Splash -->
-        <div class="print:hidden w-full max-w-5xl mx-auto px-8 pt-36 pb-12 divide-y">
-            <div class="w-full pb-4">
-                <h1 class="text-black text-4xl font-bold">
-                    Cleaning data with
-                    <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html"
-                        class="text-emerald-800 italic font-semibold">data.table</a>.
-                </h1>
-            </div>
-            <div class="w-full pt-4 flex flex-col gap-y-4">
-                <p class="text-gray-700 text-xl max-w-prose">
-                    <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 font-semibold underline">data.table</a> is a package designed from the ground up in C++ to make
-                    cleaning
-                    data fast, easy and incredibly powerful. All the exampleps below will use a dataset of nyc flights
-                    loaded in the <span class="font-semibold">Load Data</span> section. A lot of these examples were
-                    reworked from <a class="text-emerald-600"
-                        href="https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/">this
-                        blog post</a>.
-                </p>
-            </div>
-        </div>
-
-        <!-- Load Data -->
-        <div class="max-w-[84rem] w-[95%] mt-12">
-            <div class="px-4 divide-y">
-                <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
-                    <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Load Data</h2>
-                    <div class="lg:col-span-3"></div>
-                    <div class="lg:col-span-3"></div>
-                </div>
-            </div>
-            <div class="px-4 divide-y">
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .csv</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">insheet using 'https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv'</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df &lt;- fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .dta</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">use 'filename.dta', clear</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r"># Note: this command requires the package `haven` 
-          df &lt;- haven::read_dta('filename.dta')</code>
-                </pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filtering Observations -->
-        <div class="max-w-[84rem] w-[95%] mt-12">
-            <div class="px-4 divide-y">
-                <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
-                    <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Filtering Rows/Columns</h2>
-                    <div class="lg:col-span-3"></div>
-                    <div class="lg:col-span-3"></div>
-                </div>
-            </div>
-            <div class="px-4 divide-y">
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Filter rows by
-                        logical statement</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">keep if origin == 'LGA'
-          drop if month == 12
-          keep if day &gt; 5 &amp; day &lt; 10 </code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[origin == 'LGA', ]
-          df[month == 12, ]
-          df[day &gt; 5 &amp; day &lt; 10, ]</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Filter rows by row
-                        number</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">keep in 1/200</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[1:200, ]</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Ordering Rows</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">sort air_time 
-          sort air_time dest 
-          sort -air_time</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[order(air_time), ] 
-          df[order(air_time, dest), ] 
-          df[order(-air_time), ] 
-          # Note you can use setorder for memory efficiency 
-          setorder(df, air_time) 
-          setorder(df, air_time, dest) 
-          setorder(df, air_time, order=-1)</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Selecting
-                        variables</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">keep month day carrier 
-          drop origin dest
-          keep year-arr_delay
-          keep *_delay</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[ , .(month, day, carrier)] 
-          df[, -c('origin', 'dest')] 
-          df[ , year:arr_delay] 
-          df[, .SD, .SDcols = patterns('*_delay')]</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Renaming variables
-                    </h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">rename arr_delay arrival_delay 
-          rename arr_* arrival_*</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">?? 
-          # Note you can use setnames for memory efficiency 
-          setnames(df, 'arr_delay', 'arrival_delay') 
-          ??</code>
-                </pre>
-                </div>
-            </div>
-        </div>
-
-        <!-- Creating and Summarizing Variables -->
-        <div class="max-w-[84rem] w-[95%] mt-12">
-            <div class="px-4 divide-y">
-                <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
-                    <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Creating and Summarizing
-                        Variables</h2>
-                    <div class="lg:col-span-3"></div>
-                    <div class="lg:col-span-3"></div>
-                </div>
-            </div>
-            <div class="px-4 divide-y">
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Creating Variables
-                    </h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">gen total_delay = dep_delay + arr_delay 
-          gen first_letter = substr(origin, 1, 1) 
-          gen flight_path = origin + '_' + dest</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[ , total_delay := dep_delay + arr_delay] 
-          df[ , first_letter := substr(origin,1,1)] 
-          df[, flight_path := paste(origin, dest, sep='_')]</code>
-                </pre>
-                </div>
-                <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-                    <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Summarizing
-                        Variables</h2>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-text">collapse (mean) mean_delay = arr_delay, by(carrier) 
-          collapse (min) min_d = distance (max) max_d = distance, by(origin) 
-          egen unique_dest = group(dest), by(origin) 
-          collapse (max) unique_dest, by(origin)</code>
-                </pre>
-                    <pre
-                        class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-                  <code class="language-r">df[ , .(mean_delay = mean(arr_delay)), by=carrier] 
-          df[ , .(min_d = min(distance), max_d = max(distance)), by=origin] 
-          df[, .(unique_dest = length(unique(dest))), by=origin]</code>
-                </pre>
-                </div>
-            </div>
-        </div>
-
+  <div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center pb-96">
+    <script type="text/javascript">Prism.plugins.NormalizeWhitespace.setDefaults({'remove-trailing': true, 'remove-indent': true, 'left-trim': true, 'right-trim': true});</script>
+    <div class="w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
+      <div class="pb-4 border-b-2 border-gray-600">
+        <h1 class="text-black text-4xl font-bold">
+          Cleaning Data with 
+          <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 italic font-semibold">data.table</a>
+          .
+        </h1>
+      </div>
+      <div class="max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl">
+        <p>
+          <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 font-semibold underline">data.table</a>
+           is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All the exampleps below will use a dataset of nyc flights loaded in the
+          <span class="font-semibold">Load Data</span>
+           section. A lot of these examples were reworked from
+          <a class="text-emerald-600" href="https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/">this blog post</a>
+          .
+        </p>
+      </div>
     </div>
-
-
-
+    <div class="w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
+      <div class="pb-4 border-b-2 border-gray-600">
+        <h1 class="text-black text-4xl font-bold">Introduction to data.table</h1>
+      </div>
+      <div class="max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl"></div>
+    </div>
+    <div class="w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
+      <div class="pb-4 border-b-2 border-gray-600">
+        <h1 class="text-black text-4xl font-bold">Cheatsheet</h1>
+      </div>
+    </div>
+    <div class="max-w-[84rem] w-[95%]">
+      <div class="px-4 divide-y">
+        <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
+          <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Load Data</h2>
+          <div class="lg:col-span-3"></div>
+          <div class="lg:col-span-3"></div>
+        </div>
+      </div>
+      <div class="px-4 divide-y">
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .csv</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">insheet using 'https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv'</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df &lt;- fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .dta</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">use 'filename.dta', clear</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r"># Note: this command requires the package `haven` 
+df &lt;- haven::read_dta('filename.dta')</code>
+          </pre>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-[84rem] w-[95%] mt-12">
+      <div class="px-4 divide-y">
+        <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
+          <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Filtering Rows/Columns</h2>
+          <div class="lg:col-span-3"></div>
+          <div class="lg:col-span-3"></div>
+        </div>
+      </div>
+      <div class="px-4 divide-y">
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Filter rows by logical statement</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">keep if origin == 'LGA'
+drop if month == 12
+keep if day &gt; 5 &amp; day &lt; 10 </code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[origin == 'LGA', ]
+df[month == 12, ]
+df[day &gt; 5 &amp; day &lt; 10, ]</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Filter rows by row number</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">keep in 1/200</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[1:200, ]</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Ordering Rows</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">sort air_time 
+sort air_time dest 
+sort -air_time</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[order(air_time), ] 
+df[order(air_time, dest), ] 
+df[order(-air_time), ] 
+# Note you can use setorder for memory efficiency 
+setorder(df, air_time) 
+setorder(df, air_time, dest) 
+setorder(df, air_time, order=-1)</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Selecting variables</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">keep month day carrier 
+drop origin dest
+keep year-arr_delay
+keep *_delay</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[ , .(month, day, carrier)] 
+df[, -c('origin', 'dest')] 
+df[ , year:arr_delay] 
+df[, .SD, .SDcols = patterns('*_delay')]</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Renaming variables</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">rename arr_delay arrival_delay 
+rename arr_* arrival_*</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">?? 
+# Note you can use setnames for memory efficiency 
+setnames(df, 'arr_delay', 'arrival_delay') 
+??</code>
+          </pre>
+        </div>
+      </div>
+    </div>
+    <div class="max-w-[84rem] w-[95%] mt-12">
+      <div class="px-4 divide-y">
+        <div class="grid grid-cols-8 gap-x-8 py-4 items-stretch my-4">
+          <h2 class="col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700">Creating and Summarizing Variables</h2>
+          <div class="lg:col-span-3"></div>
+          <div class="lg:col-span-3"></div>
+        </div>
+      </div>
+      <div class="px-4 divide-y">
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Creating Variables</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">gen total_delay = dep_delay + arr_delay 
+gen first_letter = substr(origin, 1, 1) 
+gen flight_path = origin + '_' + dest</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[ , total_delay := dep_delay + arr_delay] 
+df[ , first_letter := substr(origin,1,1)] 
+df[, flight_path := paste(origin, dest, sep='_')]</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Summarizing Variables</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">collapse (mean) mean_delay = arr_delay, by(carrier) 
+collapse (min) min_d = distance (max) max_d = distance, by(origin) 
+egen unique_dest = group(dest), by(origin) 
+collapse (max) unique_dest, by(origin)</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">df[ , .(mean_delay = mean(arr_delay)), by=carrier] 
+df[ , .(min_d = min(distance), max_d = max(distance)), by=origin] 
+df[, .(unique_dest = length(unique(dest))), by=origin]</code>
+          </pre>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
-</html>
