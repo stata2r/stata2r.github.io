@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixest Stata to R</title>
+
+    <!-- prism.js -->
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/themes/prism.css" rel="stylesheet" />
+
+    <!-- tailwindCSS -->
+    <script
+        src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2">
+    </script>
+    <style type="text/tailwindcss">
+        pre[class*="language-"] {
+            @apply bg-white px-4 py-4 lg:py-2 m-0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/plugins/normalize-whitespace/prism-normalize-whitespace.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-r.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
+    <script type="text/javascript">
+        // Optional
+        Prism.plugins.NormalizeWhitespace.setDefaults({
+            'remove-trailing': true,
+            'remove-indent': true,
+            'left-trim': true,
+            'right-trim': true,
+            'break-lines': 40
+        });
+    </script>
+
+    <div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center pb-96">
+        <!-- Splash -->
+        <div class="print:hidden w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
+            <div class="w-full pb-4">
+                <h1 class="text-black text-4xl font-bold">
+                    Stata 🔀 R,
+                    <span class="text-emerald-800 italic font-semibold">quick and easy.</span>
+                </h1>
+            </div>
+            <div class="w-full pt-4 flex flex-col gap-y-4 text-gray-700 text-xl ">
+                <p class="max-w-prose">
+                   The goal of this site is to provide a simple "on-ramp" to R for Stata users.
+                   There are two pages (✌️📄) on this site:
+                   <ol type="1" class="list-decimal list-inside pl-2">
+                        <li>
+                           Data cleaning (🗄🧹) with <a href="data_cleaning.html" class="text-emerald-800 italic font-semibold">data.table</a>
+                        </li>
+                        <li class="mt-4 ">
+                           Regression analysis (💻📈) with <a href="regression.html" class="text-emerald-800 italic font-semibold">fixest</a> 
+                        </li>
+                   </ol>
+                </p>
+                <p class="max-w-prose">
+                    There are other packages that work well and are easy to use as well, 
+                    but these two are blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎).
+                </p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>
