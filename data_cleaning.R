@@ -10,7 +10,7 @@ source(here::here("helpers.R"))
 
 
 # ---- Load Data ---------------------------------------------------------------
-section_load <- div(
+section_load = div(
     class = "max-w-[84rem] w-[95%]",
     create_section(
         create_section_header("Load Data")
@@ -19,18 +19,18 @@ section_load <- div(
         create_row(
             "Load .csv",
             "insheet using 'https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv'",
-            "df <- fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')"
+            "df = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')"
         ),
         create_row(
             "Load .dta",
             "use 'filename.dta', clear",
-            "# Note: this command requires the package `haven` \ndf <- haven::read_dta('filename.dta')"
+            "# Note: this command requires the package `haven` \ndf = haven::read_dta('filename.dta')"
         )
     )
 )
 
 # ---- Filtering Rows/Columns --------------------------------------------------
-section_filter <- div(
+section_filter = div(
     class = "max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Filtering Rows/Columns")
@@ -65,7 +65,7 @@ section_filter <- div(
 )
 
 # ---- Generating Variables ----------------------------------------------------
-section_gen <- div(
+section_gen = div(
     class = "max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Creating and Summarizing Variables")

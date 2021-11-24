@@ -9,7 +9,7 @@ source(here::here("helpers.R"))
 # ------------------------------------------------------------------------------
 
 # ---- Formula Creation --------------------------------------------------------
-section_formula <- div(class="max-w-[84rem] w-[95%]",
+section_formula = div(class="max-w-[84rem] w-[95%]",
     create_section(
         create_section_header("Formula Creation")
     ),
@@ -63,7 +63,7 @@ section_formula <- div(class="max-w-[84rem] w-[95%]",
 )
 
 # ---- Standard Errors ---------------------------------------------------------
-section_se <- div(class="max-w-[84rem] w-[95%] mt-12",
+section_se = div(class="max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Standard Errors")
     ),
@@ -91,7 +91,7 @@ section_se <- div(class="max-w-[84rem] w-[95%] mt-12",
 )
 
 # ---- Postestimation ----------------------------------------------------------
-section_post <- div(class="max-w-[84rem] w-[95%] mt-12",
+section_post = div(class="max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Post-Estimation")
     ),
@@ -99,18 +99,18 @@ section_post <- div(class="max-w-[84rem] w-[95%] mt-12",
         create_row(
             "Regression Table",
             "reghdfe ... \n eststore est1 \n estout ...",
-            "est1 <- feols(...) \n etable(est1)"
+            "est1 = feols(...) \n etable(est1)"
         ),
         create_row(
             "Coefficient Plot",
             "reghdfe ... \n eststore est1 \n estout ...",
-            "est1 <- feols(...) \n coefplot(est1)"
+            "est1 = feols(...) \n coefplot(est1)"
         )
     )
 )
 
 # ---- Panel Data --------------------------------------------------------------
-section_panel <- div(class="max-w-[84rem] w-[95%] mt-12",
+section_panel = div(class="max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Panel Data")
     ),
@@ -135,7 +135,7 @@ section_panel <- div(class="max-w-[84rem] w-[95%] mt-12",
 
 
 # ---- IV ----------------------------------------------------------------------
-section_iv <- div(class="max-w-[84rem] w-[95%] mt-12",
+section_iv = div(class="max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_section_header("Instrumental Variables")
     ),

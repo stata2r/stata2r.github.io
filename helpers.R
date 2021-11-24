@@ -1,25 +1,25 @@
 library(htmltools)
 
-create_body <- function(...) {
+create_body = function(...) {
   tags$body(div(
     class="min-h-screen bg-gray-50 flex flex-col justify-center items-center pb-96", 
     ...
   ))
 }
 
-create_splash <- \(...) 
+create_splash = \(...) 
   div(class = "w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y", ... )
-create_splash_header <- \(...) 
+create_splash_header = \(...) 
   div(class="pb-4 border-b-2 border-gray-600", ...)
-create_splash_body <- \(...) 
+create_splash_body = \(...) 
   div(class = "max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl", ...)
 
-create_row <- function(name, stata_code, r_code, subitem = FALSE, top = FALSE, bottom = FALSE) {
-  code_class <- glue::glue("lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center")
+create_row = function(name, stata_code, r_code, subitem = FALSE, top = FALSE, bottom = FALSE) {
+  code_class = glue::glue("lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center")
 
-  h2_class <- ifelse(subitem, "lg:ml-4 italic", "font-semibold")
+  h2_class = ifelse(subitem, "lg:ml-4 italic", "font-semibold")
 
-  h2_class <- glue::glue("lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg {h2_class}")
+  h2_class = glue::glue("lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg {h2_class}")
 
   div(
     class = "grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch",
@@ -35,11 +35,11 @@ create_row <- function(name, stata_code, r_code, subitem = FALSE, top = FALSE, b
   )
 }
 
-create_section <- function(...) {
+create_section = function(...) {
   div(class = "px-4 divide-y", ...)
 }
 
-create_section_header <- function(name) {
+create_section_header = function(name) {
   div(
     class = "grid grid-cols-8 gap-x-8 py-4 items-stretch my-4",
     h2(class = "col-span-8 lg:col-span-2 font-bold text-2xl text-emerald-700", name),
@@ -48,7 +48,7 @@ create_section_header <- function(name) {
   )
 }
 
-head <- function(title){ 
+head = function(title){ 
   htmltools::tagList(
       HTML('<!DOCTYPE html>\n<html lang="en">\n\n<head>'),
       tags$meta(charset="UTF-8"),
@@ -72,4 +72,4 @@ head <- function(title){
   )
 }
 
-prism_init <- tags$script(type="text/javascript", "Prism.plugins.NormalizeWhitespace.setDefaults({'remove-trailing': true, 'remove-indent': true, 'left-trim': true, 'right-trim': true});")
+prism_init = tags$script(type="text/javascript", "Prism.plugins.NormalizeWhitespace.setDefaults({'remove-trailing': true, 'remove-indent': true, 'left-trim': true, 'right-trim': true});")
