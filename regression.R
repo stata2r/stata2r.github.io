@@ -70,8 +70,8 @@ section_se <- div(class="max-w-[84rem] w-[95%] mt-12",
     create_section(
         create_row(
             "Robust",
-            "reghdfe y x, r",
-            "feols(y ~ x, data, 'hetero')"
+            "reghdfe y x, vce(hc1)",
+            "feols(y ~ x, data, vcov = 'hc1')"
         ),
         create_row(
             "Cluster",
