@@ -156,12 +156,23 @@ pre[class*="language-"] {
       </div>
       <div class="px-4 divide-y">
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
-          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Robust</h2>
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">HC</h2>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
             <code class="language-text">reghdfe y x, vce(hc1)</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
             <code class="language-r">feols(y ~ x, data, vcov = 'hc1')</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">HAC</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">xtset id period
+ivreghdfe y x, bw(auto) robust</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">feols(y ~ x, data, vcov = NW() ~ id + period)
+feols(y ~ x, data, vcov = 'NW' # if panel id has been set (see below))</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">

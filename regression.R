@@ -69,9 +69,14 @@ section_se = div(class="max-w-[84rem] w-[95%] mt-12",
     ),
     create_section(
         create_row(
-            "Robust",
+            "HC",
             "reghdfe y x, vce(hc1)",
             "feols(y ~ x, data, vcov = 'hc1')"
+        ),
+        create_row(
+            "HAC",
+            "ivreghdfe y x, bw(2)\ntest1",
+            "feols(y ~ x, data, vcov = NW(2) ~ id + period)\test2"
         ),
         create_row(
             "Cluster",
@@ -86,7 +91,7 @@ section_se = div(class="max-w-[84rem] w-[95%] mt-12",
         create_row("Conley Standard Errors",
                    "",
                    "feols(y ~ x, data, vcov = conley('lat', 'lon', 50))"
-        ),
+        )
     )
 )
 
