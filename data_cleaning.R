@@ -13,18 +13,18 @@ source(here::here("helpers.R"))
 section_load = div(
   class = "max-w-[84rem] w-[95%]",
   create_section(
-    create_section_header("Load Data")
+    create_section_header("Load and Save Data")
   ),
   create_section(
     create_row(
       "Load .csv",
-      'insheet using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"',
-      "d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')"
+      'import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear\nexport delimited using "flightdata.csv", replace',
+      "d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')\nfwrite(d, 'flightdata.csv')"
     ),
     create_row(
       "Load .dta",
-      'use "filename.dta", clear',
-      "# Note: this command requires the package `haven` \nd = haven::read_dta('filename.dta')"
+      'use "filename.dta", clear\nsave "filename.dta", replace',
+      "# Note: this command requires the package `haven` \nd = haven::read_dta('filename.dta')\nhaven::write_dta(d, 'filename.dta')"
     )
   )
 )
@@ -38,8 +38,8 @@ section_filter = div(
   create_section(
       create_row(
           "Filter rows by logical statement",
-          'drop if month == 12\nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeep if origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(origin,"EWR","JFK")',
-          "d[!(month == 12), ]\nd[day > 5 & day < 10, ]\nd[between(day,5,10)]\nd[origin == 'LGA', ]\nd[origin %like% 'LGA']\nd[origin %in% c('EWR','JFK')]"
+          'drop if month == 1\nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeep if origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,11,12)',
+          "d[!(month == 1), ]\nd[day > 5 & day < 10, ]\nd[between(day,5,10)]\nd[origin == 'LGA', ]\nd[origin %like% 'LGA']\nd[month %in% c(11,12)]"
       ),
     create_row(
       "Filter rows by row number",
@@ -47,14 +47,24 @@ section_filter = div(
       "d[1:200, ]"
     ),
     create_row(
+        "Filter out duplicates",
+        "duplicates drop\nduplicates drop year month day carrier, force",
+        "unique(d)\nd[, first(.SD), by = .(year, month, day, carrier)]"
+    ),
+    create_row(
       "Ordering Rows",
       "sort air_time \nsort air_time dest \ngsort -air_time\n\n",
       "setorder(d, air_time) \nsetorder(d, air_time, dest) \nsetorder(d, -air_time)"
     ),
     create_row(
-      "Selecting variables",
-      "keep month day carrier \ndrop origin dest\nkeep year-arr_delay\nkeep *_delay",
-      "d[ , .(month, day, carrier)] \nd[, -c('origin', 'dest')] \nd[ , year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')]"
+        "Selecting variables",
+        "keep month day carrier \ndrop origin dest\nkeep year-arr_delay\nkeep *_delay",
+        "d[ , .(month, day, carrier)] \nd[, -c('origin', 'dest')] \nd[ , year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')]"
+    ),
+    create_row(
+        "Ordering Variables",
+        "order month day",
+        "setcolorder(d, c('month','day'))"
     ),
     create_row(
       "Renaming variables",
@@ -82,6 +92,21 @@ section_gen = div(
       "d[ , total_delay := dep_delay + arr_delay] \nd[month == 9, distance := distance + 1]\nd[1, distance := 0]"
     ),
     create_row(
+        "Creating Variables with Groups",
+        "bysort origin: egen mean_dep_delay = mean(dep_delay)",
+        "d[ , mean_dep_delay := mean(dep_delay), by = origin]"
+    ),
+    create_row(
+        "Using Cases",
+        'generate origin_state = "New York" if inlist(origin,"JFK","LGA")\nreplace origin_state = "New Jersey" if origin == "EWR"\ngenerate flight_length = "Long" if air_time > 500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time)',
+        "d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings\n\t\torigin == 'EWR','New Jersey')]\n# fifelse is the base-R ifelse, but (f)aster!\nd[, flight_length := fifelse(air_time > 500, 'Long','Short')]"
+    ),
+    create_row(
+        "Row-wise calculations",
+        "* Pre-packaged row calculations\negen total_delay = rowtotal(*_delay)\n* Custom row calculations\n* ?",
+        "# Pre-packaged row calculations\nd[, total_delay := rowSums(.SD), .SDcols = patterns('*_delay')]\n# Custom row calculations\nd[, total_delay := sum(.SD), .SDcols = patterns('*_delay'), by = 1:nrow(d)]"
+    ),
+    create_row(
       "Summarizing Variables",
       "collapse (mean) mean_delay = arr_delay, by(carrier) \ncollapse (min) min_d = distance (max) max_d = distance, by(origin) \negen unique_dest = group(dest), by(origin) \ncollapse (max) unique_dest, by(origin)",
       "d[ , .(mean_delay = mean(arr_delay)), by=carrier] \nd[ , .(min_d = min(distance), max_d = max(distance)), by=origin] \n# This line matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest))), by=origin]"
@@ -89,6 +114,45 @@ section_gen = div(
   )
 )
 
+# ---- Reshaping and Merging  ----------------------------------------------------
+section_reshape = div(
+    class = "max-w-[84rem] w-[95%] mt-12",
+    create_section(
+        create_section_header("Reshaping and Merging")
+    ),
+    create_section(
+        create_row(
+            "Reshaping Long",
+            "* Prepare to reshape long:\ngenerate id = _n\nrename (dep_delay arr_delay) (delay_dep delay_arr)\nreshape long delay_, i(id) j(delay_type) s",
+            "# Prepare to reshape long:\nd[, id := .I]\nmelt(d, measure.vars = c('arr_delay','dep_delay'))\n# note id.vars would normally be specified too, but here we're treating each row as its own ID"
+        ),
+        create_row(
+            "Reshaping Wide",
+            "* This starts with the reshaped-long data from above\nreshape wide delay_, i(id) j(delay_type) s",
+            "# This starts with the reshaped-long data from above\ndcast(d, id ~ variable)\n# (this drops all variables except id and *_delay, but we could preserve them\n# with id+origin+dest+etc. instead of just id)"
+        )
+    )
+)
+
+# ---- Accessing Useful Numbers  ----------------------------------------------------
+section_access = div(
+    class = "max-w-[84rem] w-[95%] mt-12",
+    create_section(
+        create_section_header("Accessing Useful Numbers")
+    ),
+    create_section(
+        create_row(
+            "Counting Rows",
+            "count\ncount if month == 10\nbysort carrier: g rows_per_carrier = _N\nbysort carrier: g index_within_carrier = _n",
+            "nrow(d)\nd[, sum(month == 10)]\nd[, rows_per_carrier := .N, by = carrier]\nd[, index_within_carrier := .I, by = carrier]"
+        ),
+        create_row(
+            "Counting Groups",
+            "egen origin_index = group(origin)",
+            "d[, origin_index := .GRP, by = origin]"
+        )
+    )
+)
 
 
 # ------------------------------------------------------------------------------
@@ -112,11 +176,12 @@ htmltools::tagList(
       create_splash_body(
         p(
           a(href = "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html", class = "text-emerald-800 font-semibold underline", "data.table"), 
-          " is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All the exampleps below will use a dataset of nyc flights loaded in the",
+          " is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All the examples below will use a dataset of nyc flights loaded in the",
           span(class = "font-semibold", "Load Data"), 
           " section. A lot of these examples were reworked from",
-          a(class = "text-emerald-600", href = "https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/", "this blog post"), 
-          "."
+          a(class = "text-emerald-600", href = "https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/", "this blog post."), " Don't forget to load the package with ",
+            span(class = "font-semibold", "library(data.table)"), " first. Unlike in Stata, you have to re-load a package if you want to use it every time you start a new session."
+        )
         )
       )
     ),
@@ -168,12 +233,20 @@ htmltools::tagList(
     ),
     section_load,
     section_filter,
-    section_gen
-  )
+    section_gen,
+    section_reshape,
+    section_access
 ) |> 
   as.character() |> 
   cat(file = "data_cleaning.html")
 
 
-
+#### TO ADD:
+# "stuff that's easy in data.table but not in stata
+# - calculations from within data.table
+# - Inexact/rolling merges?
+# Working with macros/.SD
+# merge
+# shift
+# fill and froll
 
