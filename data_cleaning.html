@@ -49,7 +49,84 @@ pre[class*="language-"] {
       <div class="pb-4 border-b-2 border-gray-600">
         <h1 class="text-black text-4xl font-bold">Introduction to data.table</h1>
       </div>
-      <div class="max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl"></div>
+      <div class="max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl">
+        <p>
+          The 
+          <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 font-semibold underline">data.table</a>
+           package centers around 
+          <span class="font-semibold">data.tables,</span>
+           which are highly efficient data sets that can be manipulated using the package's syntax.
+        </p>
+        <p>
+          If we have a 
+          <span class="font-semibold">data.table</span>
+           called 
+          <span class="font-semibold">d</span>
+           then we can use and manipulate it by putting arguments into its square brackets, i.e. 
+          <span class="font-semibold">d[].</span>
+        </p>
+        <p>
+          The three main components of a 
+          <span class="font-semibold">data.table</span>
+           operation are 
+          <span class="font-semibold">i, j,</span>
+           and 
+          <span class="font-semibold">by,</span>
+           which go in the order 
+          <span class="font-semibold">d[i, j, by]</span>
+           (note you don't have to specify the latter two if you're not currently using them.)
+        </p>
+        <p>
+          <span class="font-semibold">i,</span>
+           the first component, selects the 
+          <span class="italic">rows</span>
+           of the 
+          <span class="font-semibold">data.table</span>
+           that you'll be working with, like how in Stata the 
+          <span class="font-semibold">if</span>
+           or 
+          <span class="font-semibold">in</span>
+           command options let you refer to certain rows.
+        </p>
+        <p>
+          <span class="font-semibold">j,</span>
+           the second component, both selects and operates on the 
+          <span class="italic">columns</span>
+           of the 
+          <span class="font-semibold">data.table,</span>
+           like how in Stata the 
+          <span class="font-semibold">keep</span>
+           or 
+          <span class="font-semibold">drop</span>
+           commands select specific columns of your data, or how 
+          <span class="font-semibold">generate</span>
+           or 
+          <span class="font-semibold">replace</span>
+           create or modify columns in your data.
+        </p>
+        <p>
+          <span class="font-semibold">by,</span>
+           the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with 
+          <span class="font-semibold">bysort.</span>
+        </p>
+        <p>
+          <span class="font-semibold">data.table</span>
+           uses these three simple components more flexibly than Stata does, and you can get quite a lot out of 
+          <span class="font-semibold">data.table</span>
+           using only these three components that would require multiple other commands in Stata to accomplish. But even if you aren't doing anything fancy.
+        </p>
+        <p>
+          These operations are very fast, not only compared to Stata but also many other data-manipulation packages in R or Python. As a bonus, many of them can be done 
+          <span class="italic">in-place,</span>
+           which means that it will affect 
+          <span class="italic">only the parts you're actually changing,</span>
+           without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word
+          <span class="font-semibold">set</span>
+           in it, or the 
+          <span class="font-semibold">:=</span>
+           operator, that's an in-place operation. Speedy!
+        </p>
+      </div>
     </div>
     <div class="w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
       <div class="pb-4 border-b-2 border-gray-600">
@@ -68,20 +145,20 @@ pre[class*="language-"] {
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
           <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .csv</h2>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-text">insheet using 'https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv'</code>
+            <code class="language-text">insheet using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv"</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')</code>
+            <code class="language-r">d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
           <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Load .dta</h2>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-text">use 'filename.dta', clear</code>
+            <code class="language-text">use "filename.dta", clear</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
             <code class="language-r"># Note: this command requires the package `haven` 
-df = haven::read_dta('filename.dta')</code>
+d = haven::read_dta('filename.dta')</code>
           </pre>
         </div>
       </div>
@@ -98,14 +175,20 @@ df = haven::read_dta('filename.dta')</code>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
           <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Filter rows by logical statement</h2>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-text">keep if origin == 'LGA'
-drop if month == 12
-keep if day &gt; 5 &amp; day &lt; 10 </code>
+            <code class="language-text">drop if month == 12
+keep if day &gt; 5 &amp; day &lt; 10
+keep if inrange(day,5,10)
+keep if origin == "LGA"
+keep if regex(origin,"LGA")
+keep if inlist(origin,"EWR","JFK")</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[origin == 'LGA', ]
-df[month == 12, ]
-df[day &gt; 5 &amp; day &lt; 10, ]</code>
+            <code class="language-r">d[!(month == 12), ]
+d[day &gt; 5 &amp; day &lt; 10, ]
+d[between(day,5,10)]
+d[origin == 'LGA', ]
+d[origin %like% 'LGA']
+d[origin %in% c('EWR','JFK')]</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
@@ -114,7 +197,7 @@ df[day &gt; 5 &amp; day &lt; 10, ]</code>
             <code class="language-text">keep in 1/200</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[1:200, ]</code>
+            <code class="language-r">d[1:200, ]</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
@@ -122,16 +205,14 @@ df[day &gt; 5 &amp; day &lt; 10, ]</code>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
             <code class="language-text">sort air_time 
 sort air_time dest 
-sort -air_time</code>
+gsort -air_time
+
+</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[order(air_time), ] 
-df[order(air_time, dest), ] 
-df[order(-air_time), ] 
-# Note you can use setorder for memory efficiency 
-setorder(df, air_time) 
-setorder(df, air_time, dest) 
-setorder(df, air_time, order=-1)</code>
+            <code class="language-r">setorder(d, air_time) 
+setorder(d, air_time, dest) 
+setorder(d, -air_time)</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
@@ -143,23 +224,23 @@ keep year-arr_delay
 keep *_delay</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[ , .(month, day, carrier)] 
-df[, -c('origin', 'dest')] 
-df[ , year:arr_delay] 
-df[, .SD, .SDcols = patterns('*_delay')]</code>
+            <code class="language-r">d[ , .(month, day, carrier)] 
+d[, -c('origin', 'dest')] 
+d[ , year:arr_delay] 
+d[, .SD, .SDcols = patterns('*_delay')]</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
           <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Renaming variables</h2>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
             <code class="language-text">rename arr_delay arrival_delay 
+rename (carrier origin) (carrier_code origin_code)
 rename arr_* arrival_*</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">?? 
-# Note you can use setnames for memory efficiency 
-setnames(df, 'arr_delay', 'arrival_delay') 
-??</code>
+            <code class="language-r">setnames(d, 'arr_delay', 'arrival_delay')
+setnames(d,c('carrier','origin'),c('carrier_code','origin_code'))
+setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_',x))</code>
           </pre>
         </div>
       </div>
@@ -181,9 +262,22 @@ gen first_letter = substr(origin, 1, 1)
 gen flight_path = origin + '_' + dest</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[ , total_delay := dep_delay + arr_delay] 
-df[ , first_letter := substr(origin,1,1)] 
-df[, flight_path := paste(origin, dest, sep='_')]</code>
+            <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
+d[ , first_letter := substr(origin,1,1)] 
+d[, flight_path := paste(origin, dest, sep='_')]</code>
+          </pre>
+        </div>
+        <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
+          <h2 class="lg:col-span-2 lg:py-4 self-center text-gray-600 text-lg font-semibold">Manipulating Variables</h2>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-text">replace total_delay = dep_delay + arr_delay 
+replace distance = distance + 1 if month == 9
+replace distance = 0 in 1</code>
+          </pre>
+          <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
+            <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
+d[month == 9, distance := distance + 1]
+d[1, distance := 0]</code>
           </pre>
         </div>
         <div class="grid grid-row lg:grid-col lg:grid-cols-8 gap-y-4 lg:gap-y-0 lg:gap-x-8 py-4 items-stretch">
@@ -195,9 +289,10 @@ egen unique_dest = group(dest), by(origin)
 collapse (max) unique_dest, by(origin)</code>
           </pre>
           <pre class="lg:col-span-3 bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center">
-            <code class="language-r">df[ , .(mean_delay = mean(arr_delay)), by=carrier] 
-df[ , .(min_d = min(distance), max_d = max(distance)), by=origin] 
-df[, .(unique_dest = length(unique(dest))), by=origin]</code>
+            <code class="language-r">d[ , .(mean_delay = mean(arr_delay)), by=carrier] 
+d[ , .(min_d = min(distance), max_d = max(distance)), by=origin] 
+# This line matches the final two lines on the left:
+d[, .(unique_dest = length(unique(dest))), by=origin]</code>
           </pre>
         </div>
       </div>
