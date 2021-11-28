@@ -18,33 +18,126 @@
 <!-- tailwindCSS -->
 <script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"></script>
 <style type="text/tailwindcss">
-pre[class*="language-"] {
-@apply bg-white px-4 py-4 lg:py-2 m-0;
-}
-</style>
+        pre[class*="language-"] {
+            @apply bg-white px-4 py-4 lg:py-2 m-0;
+        }
+
+        li.toc-dot:before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: 0px;
+            left: -10px;
+            background: white;
+            border: 2px solid #4c807b;
+            box-shadow: 2px 2px 0px #c1dddb;
+            border-radius: 50%;
+        }
+      </style>
 </head>
 <body>
-  <div class="min-h-screen bg-gray-50 flex flex-col justify-center items-center pb-96">
-    <div class="w-full max-w-5xl mx-auto px-8 pt-36 pb-24 divide-y">
-      <div class="pb-4 border-b-2 border-gray-600">
-        <h1 class="text-black text-4xl font-bold">
-           Stata 🔀 R,
-          <span class="text-emerald-800 italic font-semibold">quick and easy.</span>
-        </h1>
-      </div>
-      <div class="max-w-prose pt-12 flex flex-col gap-y-4 text-gray-700 text-xl">
-        <p>The goal of this site is to provide a simple 'on-ramp' to R for Stata users. There are two pages (✌️📄) on this site:</p>
-        <ol type="1" class="list-decimal list-inside pl-2">
-          <li>
-             Data cleaning (🗄🧹) with
-            <a href="data_cleaning.html" class="text-emerald-800 italic font-semibold">data.table</a>
-          </li>
-          <li class="mt-4 ">
-             Regression analysis (💻📈) with
-            <a href="regression.html" class="text-emerald-800 italic font-semibold">fixest</a>
-          </li>
-        </ol>
-        <p> There are other packages that work well and are easy to use as well, but these two are blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎).</p>
+  <div class="bg-[#fdf9f3] px-4 md:px-8">
+    <div class="w-full max-w-[96rem] mx-auto min-h-screen">
+      <div class="flex flex-col xl:gap-x-8 xl:flex-row">
+        <script>Prism.plugins.NormalizeWhitespace.setDefaults({
+    'remove-trailing': true, 
+    'remove-indent': true, 
+    'left-trim': true, 
+    'right-trim': true
+});
+
+// Display table of contents with menu button
+document.getElementById("menu-button").onclick = function () {
+    document.getElementById("toc").classList.toggle("hidden");
+    document.getElementById("menu-hamburger").classList.toggle("hidden");
+    document.getElementById("menu-x").classList.toggle("hidden");
+};</script>
+        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
+          <div class="flex flex-row space-between items-center pb-4">
+            <a class="flex-grow" href="index.html">
+              <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
+                 Stata
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#315450]" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                 R
+              </h1>
+            </a>
+            <div id="menu-button" class="xl:hidden cursor-pointer">
+              <svg id="menu-hamburger" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#315450]" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+              <svg id="menu-x" xmlns="http://www.w3.org/2000/svg" class="hidden h-8 w-8 text-[#993b27]" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </div>
+          </div>
+          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll max-h-screen xl:block xl:relative">
+            <div>
+              <h1 class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]">
+                <a href="data_cleaning.html">data.table</a>
+              </h1>
+              <ul class="mt-4 relative">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="data_cleaning.html#load" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Load and Save Data</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="data_cleaning.html#filter" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Filtering Rows/Columns</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="data_cleaning.html#gen" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Generating and Summarizing Variables</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshaping and Merging</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                  <a href="data_cleaning.html#useful_nums" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Accessing Useful Numbers</a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h1 class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]">
+                <a href="regression.html">fixest</a>
+              </h1>
+              <ul class="mt-4 relative">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow min-h-screen py-16 pb-96">
+          <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="max-w-prose prose pt-8 text-gray-700 text-xl">
+              <p>The goal of this site is to provide a simple 'on-ramp' to R for Stata users. There are two pages (✌️📄) on this site:</p>
+              <ol type="1" class="list-decimal list-inside pl-2">
+                <li>
+                   Data cleaning (🗄🧹) with
+                  <a href="data_cleaning.html" class="text-[#315450] italic font-semibold">data.table</a>
+                </li>
+                <li class="mt-4 ">
+                   Regression analysis (💻📈) with
+                  <a href="regression.html" class="text-[#315450] italic font-semibold">fixest</a>
+                </li>
+              </ol>
+              <p> There are other packages that work well and are easy to use as well, but these two are blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎).</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
