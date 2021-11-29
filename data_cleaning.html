@@ -247,11 +247,11 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <h2 class="text-gray-600 text-lg font-semibold">Load .csv</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear
+                  <code class="language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear
 export delimited using "flightdata.csv", replace</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
+                  <code class="language-r">d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
 fwrite(d, 'flightdata.csv')</code>
                 </pre>
               </div>
@@ -260,11 +260,11 @@ fwrite(d, 'flightdata.csv')</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Load .dta</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">use "filename.dta" clear
+                  <code class="language-stata">use "filename.dta" clear
 save "filename.dta", replace</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r"># Note: this command requires the package `haven` 
+                  <code class="language-r"># Note: this command requires the package `haven` 
 d = haven::read_dta('filename.dta')
 haven::write_dta(d, 'filename.dta')"</code>
                 </pre>
@@ -281,7 +281,7 @@ haven::write_dta(d, 'filename.dta')"</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Filter rows by logical statement</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">drop if month == 1
+                  <code class="language-stata">drop if month == 1
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
 keepif origin == "LGA"
@@ -289,7 +289,7 @@ keep if regex(origin,"LGA")
 keep if inlist(month,11,12)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[!(month == 1 ]
+                  <code class="language-r">d[!(month == 1 ]
 d[day &gt; 5 &amp; day &lt; 10, ]
 d[between(day,5,10)]
 d[origin == 'LGA', ]
@@ -302,10 +302,10 @@ d[month %in% c(11,12)]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Filter rows by row number</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">keep in 1/200</code>
+                  <code class="language-stata">keep in 1/200</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[1:200, ]</code>
+                  <code class="language-r">d[1:200, ]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -313,12 +313,12 @@ d[month %in% c(11,12)]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Filter out duplicates</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">duplicates drop
+                  <code class="language-stata">duplicates drop
 duplicates drop year month day carrier, force
 </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">unique(d)
+                  <code class="language-r">unique(d)
 unique(d, by = c('year', 'month', 'day', 'carrier'))
 d[, unique(.SD), by = .(year, month, day, carrier)] # Another option</code>
                 </pre>
@@ -328,14 +328,14 @@ d[, unique(.SD), by = .(year, month, day, carrier)] # Another option</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Ordering Rows</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">sort air_time 
+                  <code class="language-stata">sort air_time 
 sort air_time dest 
 gsort -air_time
 
 </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">setorder(d, air_time) 
+                  <code class="language-r">setorder(d, air_time) 
 setorder(d, air_time, dest) 
 setorder(d, -air_time)</code>
                 </pre>
@@ -345,13 +345,13 @@ setorder(d, -air_time)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Selecting variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">keep month day carrier 
+                  <code class="language-stata">keep month day carrier 
 drop origin dest
 keep year-arr_delay
 keep *_delay</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , .(month, day, carrier)] 
+                  <code class="language-r">d[ , .(month, day, carrier)] 
 d[, -c('origin', 'dest')] 
 d[ , year:arr_delay] 
 d[, .SD, .SDcols = patterns('*_delay')]</code>
@@ -362,10 +362,10 @@ d[, .SD, .SDcols = patterns('*_delay')]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Ordering Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">order month day</code>
+                  <code class="language-stata">order month day</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">setcolorder(d, c('month','day'))</code>
+                  <code class="language-r">setcolorder(d, c('month','day'))</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -373,12 +373,12 @@ d[, .SD, .SDcols = patterns('*_delay')]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Renaming variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">rename arr_delay arrival_delay 
+                  <code class="language-stata">rename arr_delay arrival_delay 
 rename (carrier origin) (carrier_codeorigin_code)
 rename arr_* arrival_*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">setnames(d, 'arr_delay', 'arrival_delay')
+                  <code class="language-r">setnames(d, 'arr_delay', 'arrival_delay')
 setnames(d,c('carrier','origin'c('carrier_code','origin_code'))
 setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_',x))</code>
                 </pre>
@@ -395,12 +395,12 @@ setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_'
                   <h2 class="text-gray-600 text-lg font-semibold">Creating Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">gen total_delay = dep_delay + arr_delay 
+                  <code class="language-stata">gen total_delay = dep_delay + arr_delay 
 gen first_letter = substr(origin, 1,1) 
 gen flight_path = origin + '_' + dest</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , total_delay := dep_delay + arr_delay] 
+                  <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
 d[ , first_letter := substr(origin,1,1)] 
 d[, flight_path := paste(origin, dest, sep='_')]</code>
                 </pre>
@@ -410,12 +410,12 @@ d[, flight_path := paste(origin, dest, sep='_')]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Manipulating Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">replace total_delay = dep_delay + arr_delay 
+                  <code class="language-stata">replace total_delay = dep_delay + arr_delay 
 replace distance = distance + 1if month == 9
 replace distance = 0 in 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , total_delay := dep_delay + arr_delay] 
+                  <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
 d[month == 9, distance := distance + 1]
 d[1, distance := 0]</code>
                 </pre>
@@ -425,10 +425,10 @@ d[1, distance := 0]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Creating Variables  with Groups</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay)</code>
+                  <code class="language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , mean_dep_delay := mean(dep_delay by = origin]</code>
+                  <code class="language-r">d[ , mean_dep_delay := mean(dep_delay by = origin]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -436,13 +436,13 @@ d[1, distance := 0]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Using Cases</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">generate origin_state = "New York" if inlist(origin,"JFK","LGA")
+                  <code class="language-stata">generate origin_state = "New York" if inlist(origin,"JFK","LGA")
 replace origin_state = "New Jersey" if origin == "EWR"
 generate flight_length = "Long" if air_time &gt; 500 &amp; !missing(air_time)
 replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_time)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings
+                  <code class="language-r">d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings
 \t\torigin == 'EWR','New Jersey')]
 # fifelse is the base-R ifelse, but (f)aster!
 d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
@@ -453,13 +453,13 @@ d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Row-wise calculations</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">* Pre-packaged row calculations
+                  <code class="language-stata">* Pre-packaged row calculations
 egen total_delay = rowtotal(*_delay)
 * Customrow calculations
 * ?</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r"># Pre-packaged row calculations
+                  <code class="language-r"># Pre-packaged row calculations
 d[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')]
 # Custom row calculations
 d[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]</code>
@@ -470,13 +470,13 @@ d[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Summarizing Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">collapse (mean) mean_delay = arr_delay, by(carrier) 
+                  <code class="language-stata">collapse (mean) mean_delay = arr_delay, by(carrier) 
 collapse (min) min_d =distance (max) max_d = distance, by(origin) 
 egen unique_dest = group(dest by(origin) 
 collapse (max) unique_dest, by(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[ , .(mean_delay = mean(arr_delay) by=carrier] 
+                  <code class="language-r">d[ , .(mean_delay = mean(arr_delay) by=carrier] 
 d[ , .(min_d = min(distance max_d = max(distance) by=origin] 
 # This line matches the final two lines on the left:
 d[, .(unique_dest = length(unique(dest)) by=origin]</code>
@@ -494,13 +494,13 @@ d[, .(unique_dest = length(unique(dest)) by=origin]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Reshaping Long</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">* Prepare to reshape long:
+                  <code class="language-stata">* Prepare to reshape long:
 generate id = _n
 rename (dep_delay arr_delay)(delay_dep delay_arr)
 reshape long delay_, i(id) j(delay_type) s</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r"># Prepare to reshape long:
+                  <code class="language-r"># Prepare to reshape long:
 d[, id := .I]
 melt(d, measure.vars = c('arr_delay','dep_delay'))
 # note id.vars would normally be specified too, but here we're treating each row as its own ID</code>
@@ -511,11 +511,11 @@ melt(d, measure.vars = c('arr_delay','dep_delay'))
                   <h2 class="text-gray-600 text-lg font-semibold">Reshaping Wide</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">* This starts with the reshaped-long data from above
+                  <code class="language-stata">* This starts with the reshaped-long data from above
 reshape wide delay_, (id) j(delay_type) s</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r"># This starts with the reshaped-long data from above
+                  <code class="language-r"># This starts with the reshaped-long data from above
 dcast(d, id ~ variable)
 # (this drops all variables except id and *_delay, but we could preserve them
 # with id+origin+dest+etc. instead of just id)</code>
@@ -533,13 +533,13 @@ dcast(d, id ~ variable)
                   <h2 class="text-gray-600 text-lg font-semibold">Counting Rows</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">count
+                  <code class="language-stata">count
 count if month == 10
 bysort carrier: g rows_per_carrier = _N
 bysortcarrier: g index_within_carrier = _n</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">nrow(d)
+                  <code class="language-r">nrow(d)
 d[, sum(month == 10)]
 d[, rows_per_carrier := .N, by = carrier]
 d[, index_within_carrier := .I, by = carrier]</code>
@@ -550,10 +550,10 @@ d[, index_within_carrier := .I, by = carrier]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Counting Group</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-stata">egen origin_index = group(origin)</code>
+                  <code class="language-stata">egen origin_index = group(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-text language-r">d[, origin_index := .GRP, by = origin]</code>
+                  <code class="language-r">d[, origin_index := .GRP, by = origin]</code>
                 </pre>
               </div>
             </div>

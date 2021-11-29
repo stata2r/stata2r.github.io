@@ -164,11 +164,11 @@ create_row = function(name, stata_code, r_code, subitem = FALSE) {
     div(class="xl:col-span-2", h2(class = h2_class, name)),
     pre(
       class = code_class,
-      code(class = "language-text language-stata", stata_code)
+      code(class = "language-stata", stata_code)
     ),
     pre(
       class = code_class,
-      code(class = "language-text language-r", r_code)
+      code(class = "language-r", r_code)
     )
   )
 }
