@@ -276,10 +276,12 @@ document.getElementById("menu-button").onclick = function () {
                   <h2 class="text-gray-600 text-lg font-semibold">HAC</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
-                  <code class="language-text language-stata">ivreghdfe y x, bw(2)</code>
+                  <code class="language-text language-stata">xtset id period
+ivreghdfe y x, bw(auto) robust</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
-                  <code class="language-text language-r">feols(y ~ x, data, vcov = NW(2) ~ id + period)</code>
+                  <code class="language-text language-r">feols(y ~ x, data, vcov = NW() ~ id + period)
+feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
               </div>
               <div class="flex flex-col justify-start gap-y-4 mt-8">

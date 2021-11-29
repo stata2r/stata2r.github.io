@@ -28,7 +28,7 @@ regression --- formula --- Formula Creation --- Wildcard --- reghdfe y x age_* -
 regression --- formula --- Formula Creation --- Variables v1 ... v4 --- reghdfe y x v1-v4 --- feols(y ~ x + v.[1:4], data)
 regression --- formula --- Formula Creation --- Regex ---   --- feols(y ~ x + ..('regex_exp'), data)
 regression --- std_errors --- Standard Errors --- HC --- reghdfe y x, vce(hc1) --- feols(y ~ x, data, vcov = 'hc1')
-regression --- std_errors --- Standard Errors --- HAC --- ivreghdfe y x, bw(2) --- feols(y ~ x, data, vcov = NW(2) ~ id + period)
+regression --- std_errors --- Standard Errors --- HAC --- xtset id period\nivreghdfe y x, bw(auto) robust --- feols(y ~ x, data, vcov = NW() ~ id + period)\nfeols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)
 regression --- std_errors --- Standard Errors --- Cluster --- reghdfe y x, cluster(clust) --- feols(y ~ x, data, vcov = ~clust)
 regression --- std_errors --- Standard Errors --- Two-way --- reghdfe y x, cluster(clust1 clust2) --- feols(y ~ x, data, vcov = ~clust1 + clust2)
 regression --- std_errors --- Standard Errors --- Conley Standard Errors ---   --- feols(y ~ x, data, vcov = conley('lat', 'lon', 50))
