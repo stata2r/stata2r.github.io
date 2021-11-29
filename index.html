@@ -47,12 +47,19 @@
     'right-trim': true
 });
 
+window.onload = function(e){ 
 // Display table of contents with menu button
-document.getElementById("menu-button").onclick = function () {
+document.getElementById("menu-x").onclick = function () {
     document.getElementById("toc").classList.toggle("hidden");
     document.getElementById("menu-hamburger").classList.toggle("hidden");
     document.getElementById("menu-x").classList.toggle("hidden");
-};</script>
+};
+document.getElementById("menu-hamburger").onclick = function () {
+    document.getElementById("toc").classList.toggle("hidden");
+    document.getElementById("menu-hamburger").classList.toggle("hidden");
+    document.getElementById("menu-x").classList.toggle("hidden");
+};
+}</script>
         <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
@@ -73,25 +80,25 @@ document.getElementById("menu-button").onclick = function () {
               </svg>
             </div>
           </div>
-          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll max-h-screen xl:block xl:relative">
+          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll xl:overflow-y-auto max-h-screen xl:block xl:relative">
             <div>
               <h1 class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]">
                 <a href="data_cleaning.html">data.table</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#load" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Load and Save Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#filter" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Filtering Rows/Columns</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#gen" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Generating and Summarizing Variables</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshaping and Merging</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="data_cleaning.html#useful_nums" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Accessing Useful Numbers</a>
                 </li>
               </ul>
@@ -101,19 +108,19 @@ document.getElementById("menu-button").onclick = function () {
                 <a href="regression.html">fixest</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
                 </li>
               </ul>

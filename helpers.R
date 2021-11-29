@@ -103,7 +103,7 @@ create_toc_container <- function(...) {
                 )
             )      
         ),
-        div(id="toc", class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll max-h-screen xl:block xl:relative", ...)
+        div(id="toc", class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll xl:overflow-y-auto max-h-screen xl:block xl:relative", ...)
     )
 }
 
@@ -115,11 +115,11 @@ htmltools::tagList(
         link = paste0(page, ".html#", id)
 
         if(i == length(cats)) {
-            tags$li(class = "toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer",
+            tags$li(class = "toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer",
                 a(href=link, class = "font-medium font-light leading-4 mb-2 group-hover:font-normal", cat)
             )
         } else {
-            tags$li(class = "toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer",
+            tags$li(class = "toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer",
                 a(href=link, class = "font-medium font-light leading-4 mb-2 group-hover:font-normal", cat)
             )
         }
@@ -154,14 +154,14 @@ toc <- create_toc_container(
 
 # Row of Code
 create_row = function(name, stata_code, r_code, subitem = FALSE) {
-  code_class = glue::glue("bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4")
+  code_class = glue::glue("bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4")
 
   h2_class = ifelse(subitem, "lg:ml-4 italic", "font-semibold")
 
   h2_class = glue::glue("text-gray-600 text-lg {h2_class}")
 
-  div(class = "flex flex-col justify-start gap-y-4 mt-8",
-    div(h2(class = h2_class, name)),
+  div(class = "grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8",
+    div(class="xl:col-span-2", h2(class = h2_class, name)),
     pre(
       class = code_class,
       code(class = "language-text language-stata", stata_code)

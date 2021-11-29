@@ -47,12 +47,19 @@
     'right-trim': true
 });
 
+window.onload = function(e){ 
 // Display table of contents with menu button
-document.getElementById("menu-button").onclick = function () {
+document.getElementById("menu-x").onclick = function () {
     document.getElementById("toc").classList.toggle("hidden");
     document.getElementById("menu-hamburger").classList.toggle("hidden");
     document.getElementById("menu-x").classList.toggle("hidden");
-};</script>
+};
+document.getElementById("menu-hamburger").onclick = function () {
+    document.getElementById("toc").classList.toggle("hidden");
+    document.getElementById("menu-hamburger").classList.toggle("hidden");
+    document.getElementById("menu-x").classList.toggle("hidden");
+};
+}</script>
         <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
@@ -73,25 +80,25 @@ document.getElementById("menu-button").onclick = function () {
               </svg>
             </div>
           </div>
-          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll max-h-screen xl:block xl:relative">
+          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll xl:overflow-y-auto max-h-screen xl:block xl:relative">
             <div>
               <h1 class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]">
                 <a href="data_cleaning.html">data.table</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#load" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Load and Save Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#filter" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Filtering Rows/Columns</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#gen" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Generating and Summarizing Variables</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshaping and Merging</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="data_cleaning.html#useful_nums" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Accessing Useful Numbers</a>
                 </li>
               </ul>
@@ -101,19 +108,19 @@ document.getElementById("menu-button").onclick = function () {
                 <a href="regression.html">fixest</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
                 </li>
               </ul>
@@ -235,28 +242,28 @@ document.getElementById("menu-button").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Load and Save Data</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Load .csv</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear
 export delimited using "flightdata.csv", replace</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
 fwrite(d, 'flightdata.csv')</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Load .dta</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">use "filename.dta" clear
 save "filename.dta", replace</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r"># Note: this command requires the package `haven` 
 d = haven::read_dta('filename.dta')
 haven::write_dta(d, 'filename.dta')"</code>
@@ -269,11 +276,11 @@ haven::write_dta(d, 'filename.dta')"</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Filtering Rows/Columns</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Filter rows by logical statement</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">drop if month == 1
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
@@ -281,7 +288,7 @@ keepif origin == "LGA"
 keep if regex(origin,"LGA")
 keep if inlist(month,11,12)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[!(month == 1 ]
 d[day &gt; 5 &amp; day &lt; 10, ]
 d[between(day,5,10)]
@@ -290,87 +297,87 @@ d[origin %like% 'LGA']
 d[month %in% c(11,12)]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Filter rows by row number</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">keep in 1/200</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[1:200, ]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Filter out duplicates</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">duplicates drop
 duplicates drop year month day carrier, force
 </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">unique(d)
 unique(d, by = c('year', 'month', 'day', 'carrier'))
 d[, unique(.SD), by = .(year, month, day, carrier)] # Another option</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Ordering Rows</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">sort air_time 
 sort air_time dest 
 gsort -air_time
 
 </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">setorder(d, air_time) 
 setorder(d, air_time, dest) 
 setorder(d, -air_time)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Selecting variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">keep month day carrier 
 drop origin dest
 keep year-arr_delay
 keep *_delay</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , .(month, day, carrier)] 
 d[, -c('origin', 'dest')] 
 d[ , year:arr_delay] 
 d[, .SD, .SDcols = patterns('*_delay')]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Ordering Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">order month day</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">setcolorder(d, c('month','day'))</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Renaming variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">rename arr_delay arrival_delay 
 rename (carrier origin) (carrier_codeorigin_code)
 rename arr_* arrival_*</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">setnames(d, 'arr_delay', 'arrival_delay')
 setnames(d,c('carrier','origin'c('carrier_code','origin_code'))
 setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_',x))</code>
@@ -383,92 +390,92 @@ setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_'
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Generating and Summarizing Variables</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Creating Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">gen total_delay = dep_delay + arr_delay 
 gen first_letter = substr(origin, 1,1) 
 gen flight_path = origin + '_' + dest</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , total_delay := dep_delay + arr_delay] 
 d[ , first_letter := substr(origin,1,1)] 
 d[, flight_path := paste(origin, dest, sep='_')]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Manipulating Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">replace total_delay = dep_delay + arr_delay 
 replace distance = distance + 1if month == 9
 replace distance = 0 in 1</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , total_delay := dep_delay + arr_delay] 
 d[month == 9, distance := distance + 1]
 d[1, distance := 0]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Creating Variables  with Groups</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , mean_dep_delay := mean(dep_delay by = origin]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Using Cases</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">generate origin_state = "New York" if inlist(origin,"JFK","LGA")
 replace origin_state = "New Jersey" if origin == "EWR"
 generate flight_length = "Long" if air_time &gt; 500 &amp; !missing(air_time)
 replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_time)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings
 \t\torigin == 'EWR','New Jersey')]
 # fifelse is the base-R ifelse, but (f)aster!
 d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Row-wise calculations</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">* Pre-packaged row calculations
 egen total_delay = rowtotal(*_delay)
 * Customrow calculations
 * ?</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r"># Pre-packaged row calculations
 d[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')]
 # Custom row calculations
 d[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Summarizing Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">collapse (mean) mean_delay = arr_delay, by(carrier) 
 collapse (min) min_d =distance (max) max_d = distance, by(origin) 
 egen unique_dest = group(dest by(origin) 
 collapse (max) unique_dest, by(origin)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[ , .(mean_delay = mean(arr_delay) by=carrier] 
 d[ , .(min_d = min(distance max_d = max(distance) by=origin] 
 # This line matches the final two lines on the left:
@@ -482,32 +489,32 @@ d[, .(unique_dest = length(unique(dest)) by=origin]</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Reshaping and Merging</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Reshaping Long</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">* Prepare to reshape long:
 generate id = _n
 rename (dep_delay arr_delay)(delay_dep delay_arr)
 reshape long delay_, i(id) j(delay_type) s</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r"># Prepare to reshape long:
 d[, id := .I]
 melt(d, measure.vars = c('arr_delay','dep_delay'))
 # note id.vars would normally be specified too, but here we're treating each row as its own ID</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Reshaping Wide</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">* This starts with the reshaped-long data from above
 reshape wide delay_, (id) j(delay_type) s</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r"># This starts with the reshaped-long data from above
 dcast(d, id ~ variable)
 # (this drops all variables except id and *_delay, but we could preserve them
@@ -521,31 +528,31 @@ dcast(d, id ~ variable)
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Accessing Useful Numbers</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Counting Rows</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">count
 count if month == 10
 bysort carrier: g rows_per_carrier = _N
 bysortcarrier: g index_within_carrier = _n</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">nrow(d)
 d[, sum(month == 10)]
 d[, rows_per_carrier := .N, by = carrier]
 d[, index_within_carrier := .I, by = carrier]</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Counting Group</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">egen origin_index = group(origin)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">d[, origin_index := .GRP, by = origin]</code>
                 </pre>
               </div>

@@ -47,12 +47,19 @@
     'right-trim': true
 });
 
+window.onload = function(e){ 
 // Display table of contents with menu button
-document.getElementById("menu-button").onclick = function () {
+document.getElementById("menu-x").onclick = function () {
     document.getElementById("toc").classList.toggle("hidden");
     document.getElementById("menu-hamburger").classList.toggle("hidden");
     document.getElementById("menu-x").classList.toggle("hidden");
-};</script>
+};
+document.getElementById("menu-hamburger").onclick = function () {
+    document.getElementById("toc").classList.toggle("hidden");
+    document.getElementById("menu-hamburger").classList.toggle("hidden");
+    document.getElementById("menu-x").classList.toggle("hidden");
+};
+}</script>
         <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
@@ -73,25 +80,25 @@ document.getElementById("menu-button").onclick = function () {
               </svg>
             </div>
           </div>
-          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll max-h-screen xl:block xl:relative">
+          <div id="toc" class="hidden flex-grow w-full bg-[#fdf9f3] sticky overflow-y-scroll xl:overflow-y-auto max-h-screen xl:block xl:relative">
             <div>
               <h1 class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]">
                 <a href="data_cleaning.html">data.table</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#load" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Load and Save Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#filter" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Filtering Rows/Columns</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#gen" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Generating and Summarizing Variables</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshaping and Merging</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="data_cleaning.html#useful_nums" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Accessing Useful Numbers</a>
                 </li>
               </ul>
@@ -101,19 +108,19 @@ document.getElementById("menu-button").onclick = function () {
                 <a href="regression.html">fixest</a>
               </h1>
               <ul class="mt-4 relative">
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-6 hover:border-[#5b9a94] group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-0 border-transparent ml-2 pl-4 pb-6 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
                   <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
                 </li>
               </ul>
@@ -152,104 +159,104 @@ document.getElementById("menu-button").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula Creation</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed Effects</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x, absorb(fe)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x | fe, data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x i.cat</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + i(cat), data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">With Baseline</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x ib1.cat</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + i(cat, ref = 1), data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Interact Categoricals</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x i.cat#i.cat2</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + i(cat, i.cat2), data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical and Continuous</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x c.cont#i.cat</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + i(cat, cont), data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Macros</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">local vars varlist 
  reghdfe y x `vars'</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">vars = c(...) 
  feols(y ~ x + .[vars], data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Wildcard</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x age_*</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + ..('age_'), data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Variables v1 ... v4</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x v1-v4</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + v.[1:4], data)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Regex</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata"> </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x + ..('regex_exp'), data)</code>
                 </pre>
               </div>
@@ -260,60 +267,60 @@ document.getElementById("menu-button").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Standard Errors</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">HC</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x, vce(hc1)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x, data, vcov = 'hc1')</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">HAC</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">xtset id period
 ivreghdfe y x, bw(auto) robust</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x, data, vcov = NW() ~ id + period)
 feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Cluster</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x, cluster(clust)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x, data, vcov = ~clust)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Two-way</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe y x, cluster(clust1 clust2)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x, data, vcov = ~clust1 + clust2)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Conley Standard Errors</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata"> </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x, data, vcov = conley('lat', 'lon', 50))</code>
                 </pre>
               </div>
@@ -324,30 +331,30 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Postestimation</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">regression Table</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe ... 
  eststore est1 
  estout ...</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">est1 = feols(...) 
  etable(est1)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Coefficient Plot</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">reghdfe ... 
  eststore est1 
  estout ...</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">est1 = feols(...) 
  coefplot(est1)</code>
                 </pre>
@@ -359,41 +366,41 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel Data</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">xtset unit time 
  reg y x l1.x l2.x</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">panel(df, ~unit + time) 
  feols(y ~ x + l(x, 1:2), df)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lead Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">xtset unit time 
  reg y x f1.x f2.x</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">panel(df, ~unit + time) 
  feols(y ~ x + l(x, -2:-1), df)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">First Difference</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">xtset unit time 
  reg y x D.x</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">panel(df, ~unit + time) 
  feols(y ~ x + d(x), df)</code>
                 </pre>
@@ -405,25 +412,25 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Instrumental Variables</h2>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Instrumental Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">ivreghdfe 2sls y x (x1 = z1)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x | x1 ~ z1, df)</code>
                 </pre>
               </div>
-              <div class="flex flex-col justify-start gap-y-4 mt-8">
-                <div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">with Fixed Effects</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-stata">ivreghdfe 2sls y x (x1 = z1), absorb(fe1)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-text language-r">feols(y ~ x | fe1 | x1 ~ z1, df)</code>
                 </pre>
               </div>
