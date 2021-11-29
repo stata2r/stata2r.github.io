@@ -311,7 +311,7 @@ duplicates drop year month day carrier, force</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-center px-4 py-4">
                   <code class="language-text language-r">unique(d)
-d[, first(.SD by = .(year, month, day, carrier)]</code>
+d[, unique(.SD), by = .(year, month, day, carrier)]</code>
                 </pre>
               </div>
               <div class="flex flex-col justify-start gap-y-4 mt-8">
