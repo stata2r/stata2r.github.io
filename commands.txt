@@ -10,13 +10,13 @@ data
 Data I/O
 Read and write .dta
 use "filename.dta" clear \nsave "filename.dta", replace
-# These commands require the `haven` package \nd = haven::read_dta('filename.dta') \nhaven::write_dta(d, 'filename.dta')"
+# These commands require the `haven` package \nd = haven::read_dta('filename.dta') \nhaven::write_dta(d, 'filename.dta')
 
 data_cleaning
 sort
 Sort & rename
 Sort rows
-sort air_time \nsort air_time dest \ngsort -air_time\n\n
+sort air_time \nsort air_time dest \nsort -air_time\n\n
 setorder(d, air_time) \nsetorder(d, air_time, dest) \nsetorder(d, -air_time)
 
 data_cleaning
