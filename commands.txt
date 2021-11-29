@@ -13,58 +13,58 @@ use "filename.dta" clear\nsave "filename.dta", replace
 # Note: this command requires the package `haven` \nd = haven::read_dta('filename.dta')\nhaven::write_dta(d, 'filename.dta')"
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Filter rows by logical statement
-drop if month == 1\nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,11,12)
-d[!(month == 1 ]\nd[day > 5 & day < 10, ]\nd[between(day,5,10)]\nd[origin == 'LGA', ]\nd[origin %like% 'LGA']\nd[month %in% c(11,12)]
+subset
+Subset
+Subset rows
+keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,3,4,11,12) \ndrop if month == 1
+d[1:200] \nd[day > 5 & day < 10]\nd[between(day,5,10)] # Or: d[day %in% 5:10] \nd[origin=='LGA']\nd[origin %like% 'LGA']\nd[month %in% c(3,4,11,12)] \nd[month!=1]
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Filter rows by row number
-keep in 1/200
-d[1:200, ]
+subset
+Subset
+Subset columns
+keep month day carrier \n\n\ndrop origin dest \nkeep year-arr_delay\nkeep *_delay \n\nds, has(type string) pair with next line \ndrop `r(varlist)'
+d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, -c('origin', 'dest')] \nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\n# Matches the final two lines on the left:\nd[, .SD, .SDcols = !is.character]
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Filter out duplicates
-duplicates drop\nduplicates drop year month day carrier, force\n
-unique(d)\nunique(d, by = c('year', 'month', 'day', 'carrier'))\nd[, unique(.SD), by = .(year, month, day, carrier)] # Another option
+subset
+Subset
+Subset rows and columns
+keepif origin == "LGA"\nkeep month day carrier
+# Matches the two lines on the left:\nd[origin=="LGA", .(month, day, carrier)]
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Ordering Rows
+subset
+Subset
+Drop duplicates
+duplicates drop\nduplicates drop month day carrier, force\n
+unique(d)\nunique(d, by = c('month', 'day', 'carrier'))
+
+data_cleaning
+sort
+Sort & rename
+Sort rows
 sort air_time \nsort air_time dest \ngsort -air_time\n\n
 setorder(d, air_time) \nsetorder(d, air_time, dest) \nsetorder(d, -air_time)
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Selecting variables
-keep month day carrier \ndrop origin dest\nkeep year-arr_delay\nkeep *_delay
-d[ , .(month, day, carrier)] \nd[, -c('origin', 'dest')] \nd[ , year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')]
-
-data_cleaning
-filter
-Filtering Rows/Columns
-Ordering Variables
+sort
+Sort & rename
+Sort columns
 order month day
 setcolorder(d, c('month','day'))
 
 data_cleaning
-filter
-Filtering Rows/Columns
-Renaming variables
-rename arr_delay arrival_delay \nrename (carrier origin) (carrier_codeorigin_code)\nrename arr_* arrival_*
-setnames(d, 'arr_delay', 'arrival_delay')\nsetnames(d,c('carrier','origin'c('carrier_code','origin_code'))\nsetnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_',x))
+sort
+Sort & rename
+Rename columns
+* rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code, origin_code) \n\n\nrename arr_* arrival_*
+# setnames(d, old = ..., new = ...) \n\nsetnames(d, 'arr_delay', 'arrival_delay') \nsetnames(d, c('carrier','origin'), c('carrier_code','origin_code')) \n\n# Easiest just to reassign names using gsub \nnames(d) = gsub('arr_', 'arrival_', names(d))
 
 data_cleaning
 gen
 Generating and Summarizing Variables
-Creating Variables
+Create Variables
 gen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
 d[ , total_delay := dep_delay + arr_delay] \nd[ , first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
 
@@ -101,7 +101,7 @@ gen
 Generating and Summarizing Variables
 Summarizing Variables
 collapse (mean) mean_delay = arr_delay, by(carrier) \ncollapse (min) min_d =distance (max) max_d = distance, by(origin) \negen unique_dest = group(dest by(origin) \ncollapse (max) unique_dest, by(origin)
-d[ , .(mean_delay = mean(arr_delay) by=carrier] \nd[ , .(min_d = min(distance max_d = max(distance) by=origin] \n# This line matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest)) by=origin]
+d[ , .(mean_delay = mean(arr_delay) by=carrier] \nd[ , .(min_d = min(distance max_d = max(distance) by=origin] \n# Matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest)) by=origin]
 
 data_cleaning
 reshape

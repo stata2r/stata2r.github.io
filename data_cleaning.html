@@ -90,7 +90,10 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#load" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Load and Save Data</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="data_cleaning.html#filter" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Filtering Rows/Columns</a>
+                  <a href="data_cleaning.html#subset" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Subset</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="data_cleaning.html#sort" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Sort &amp; rename</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#gen" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Generating and Summarizing Variables</a>
@@ -271,61 +274,98 @@ haven::write_dta(d, 'filename.dta')"</code>
               </div>
             </div>
           </div>
-          <div id="filter">
+          <div id="subset">
             <div class="w-full max-w-5xl mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Filtering Rows/Columns</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Subset</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Filter rows by logical statement</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">drop if month == 1
+                  <code class="language-stata">keep in 1/200 
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
 keepif origin == "LGA"
 keep if regex(origin,"LGA")
-keep if inlist(month,11,12)</code>
+keep if inlist(month,3,4,11,12) 
+drop if month == 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[!(month == 1 ]
-d[day &gt; 5 &amp; day &lt; 10, ]
-d[between(day,5,10)]
-d[origin == 'LGA', ]
+                  <code class="language-r">d[1:200] 
+d[day &gt; 5 &amp; day &lt; 10]
+d[between(day,5,10)] # Or: d[day %in% 5:10] 
+d[origin=='LGA']
 d[origin %like% 'LGA']
-d[month %in% c(11,12)]</code>
+d[month %in% c(3,4,11,12)] 
+d[month!=1]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Filter rows by row number</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Subset columns</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep in 1/200</code>
+                  <code class="language-stata">keep month day carrier 
+
+
+drop origin dest 
+keep year-arr_delay
+keep *_delay 
+
+ds, has(type string) pair with next line 
+drop `r(varlist)'</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[1:200, ]</code>
+                  <code class="language-r">d[, .(month, day, carrier)] 
+d[, c('month', 'day', 'carrier')] # same as above 
+
+d[, -c('origin', 'dest')] 
+d[, year:arr_delay] 
+d[, .SD, .SDcols = patterns('*_delay')] 
+
+# Matches the final two lines on the left:
+d[, .SD, .SDcols = !is.character]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Filter out duplicates</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Subset rows and columns</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">keepif origin == "LGA"
+keep month day carrier</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Matches the two lines on the left:
+d[origin=="LGA", .(month, day, carrier)]</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Drop duplicates</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">duplicates drop
-duplicates drop year month day carrier, force
+duplicates drop month day carrier, force
 </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">unique(d)
-unique(d, by = c('year', 'month', 'day', 'carrier'))
-d[, unique(.SD), by = .(year, month, day, carrier)] # Another option</code>
+unique(d, by = c('month', 'day', 'carrier'))</code>
                 </pre>
+              </div>
+            </div>
+          </div>
+          <div id="sort">
+            <div class="w-full max-w-5xl mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Sort &amp; rename</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Ordering Rows</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Sort rows</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">sort air_time 
@@ -342,24 +382,7 @@ setorder(d, -air_time)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Selecting variables</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep month day carrier 
-drop origin dest
-keep year-arr_delay
-keep *_delay</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[ , .(month, day, carrier)] 
-d[, -c('origin', 'dest')] 
-d[ , year:arr_delay] 
-d[, .SD, .SDcols = patterns('*_delay')]</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Ordering Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Sort columns</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">order month day</code>
@@ -370,17 +393,25 @@ d[, .SD, .SDcols = patterns('*_delay')]</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Renaming variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Rename columns</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">rename arr_delay arrival_delay 
-rename (carrier origin) (carrier_codeorigin_code)
+                  <code class="language-stata">* rename (old) (new) 
+
+rename arr_delay arrival_delay 
+rename (carrier origin) (carrier_code, origin_code) 
+
+
 rename arr_* arrival_*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">setnames(d, 'arr_delay', 'arrival_delay')
-setnames(d,c('carrier','origin'c('carrier_code','origin_code'))
-setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_',x))</code>
+                  <code class="language-r"># setnames(d, old = ..., new = ...) 
+
+setnames(d, 'arr_delay', 'arrival_delay') 
+setnames(d, c('carrier','origin'), c('carrier_code','origin_code')) 
+
+# Easiest just to reassign names using gsub 
+names(d) = gsub('arr_', 'arrival_', names(d))</code>
                 </pre>
               </div>
             </div>
@@ -392,7 +423,7 @@ setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_'
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Creating Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Create Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">gen total_delay = dep_delay + arr_delay 
@@ -478,7 +509,7 @@ collapse (max) unique_dest, by(origin)</code>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[ , .(mean_delay = mean(arr_delay) by=carrier] 
 d[ , .(min_d = min(distance max_d = max(distance) by=origin] 
-# This line matches the final two lines on the left:
+# Matches the final two lines on the left:
 d[, .(unique_dest = length(unique(dest)) by=origin]</code>
                 </pre>
               </div>
