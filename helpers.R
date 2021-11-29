@@ -62,8 +62,19 @@ tags$body(
 # Table of Contents
 # ------------------------------------------------------------------------------
 
-commands <- readr::read_delim("commands.txt", delim=" --- ")
-setDT(commands)
+# This reads the text file as a character vector
+commands_raw <- scan("commands.txt", what=character(), sep="\n")
+vec <- 1:length(commands)
+
+commands <- data.table(
+  Page = commands_raw[vec %% 6 == 1],
+  cat_id = commands_raw[vec %% 6 == 2],
+  Category = commands_raw[vec %% 6 == 3],
+  Example = commands_raw[vec %% 6 == 4],
+  stata_code = commands_raw[vec %% 6 == 5],
+  r_code = commands_raw[vec %% 6 == 0]
+)
+
 
 create_toc_container <- function(...) {
     div(class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4",
