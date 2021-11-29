@@ -37,8 +37,8 @@ data_cleaning
 subset
 Subset
 Subset rows
-keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,3,4,11,12) \ndrop if month == 1
-d[1:200] \nd[day > 5 & day < 10]\nd[between(day,5,10)] # Or: d[day %in% 5:10] \nd[origin=='LGA']\nd[origin %like% 'LGA']\nd[month %in% c(3,4,11,12)] \nd[month!=1]
+keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA") \nkeep if inlist(month,3,4,11,12) \nkeep if inlist(origin,"JFK","LGA") \ndrop if month == 1
+d[1:200] \nd[day > 5 & day < 10] \nd[between(day,5,10)] # Or: d[day %in% 5:10] \nd[origin=='LGA']\nd[origin %like% 'LGA'] \nd[month %in% c(3,4,11,12)] \nd[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings \nd[month!=1]
 
 data_cleaning
 subset
@@ -85,16 +85,16 @@ d[ , total_delay := dep_delay + arr_delay] \n\n # Conditional modification \nd[m
 data_cleaning
 modify
 Modify
-Using cases
-generate origin_state = "New York" if inlist(origin,"JFK","LGA")\nreplace origin_state = "New Jersey" if origin == "EWR"\ngenerate flight_length = "Long" if air_time > 500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time)
-d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings\n\t\torigin == 'EWR','New Jersey')]\n# fifelse is the base-R ifelse, but (f)aster!\nd[, flight_length := fifelse(air_time > 500, 'Long','Short')]
+Using Booleans & control-flow
+generate long_flight = air_time>500 & !missing(air_time) \n\ngenerate flight_length = "Long" if air_time>500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time) \n\ngenerate flight_length2 = "Long" \nreplace flight_length2 = "Med" if air_time<=500  \nreplace flight_length2 = "Short" if air_time<=120
+d[, long_flight := air_time>500] \n\nd[, flight_length := fifelse(air_time>500, 'Long', 'Short')] \n# fifelse is like base-R ifelse, but (f)aster! \n\n# for nested ifelse, easier to use fcase \nd[, flight_length2 := fcase(air_time<=120, 'Short', \n                            air_time<=500, 'Med', \n                            default = 'Long')]
 
 data_cleaning
 modify
 Modify
 Row-wise calculations
-* Pre-packaged row calculations \negen total_delay = rowtotal(*_delay) \n\n* Customrow calculations\n* ?
-# Pre-packaged row calculations \nd[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')] \n\n# Custom row calculations\nd[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]
+* Pre-packaged row calculations: \negen total_delay = rowtotal(*_delay) \n\n* Custom row calculations:\n* ?
+# Pre-packaged row calculations: \nd[, total_delay := rowSums(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \nd[, new_var := mapply(custom_func, var1, var2)] \nd[, new_var := custom_func(var1, var2)), by = 1:nrow(d)] # Another option
 
 data_cleaning
 collapse

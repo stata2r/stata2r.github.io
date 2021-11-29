@@ -346,17 +346,19 @@ names(d) = gsub('arr_', 'arrival_', names(d))</code>
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
 keepif origin == "LGA"
-keep if regex(origin,"LGA")
+keep if regex(origin,"LGA") 
 keep if inlist(month,3,4,11,12) 
+keep if inlist(origin,"JFK","LGA") 
 drop if month == 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[1:200] 
-d[day &gt; 5 &amp; day &lt; 10]
+d[day &gt; 5 &amp; day &lt; 10] 
 d[between(day,5,10)] # Or: d[day %in% 5:10] 
 d[origin=='LGA']
-d[origin %like% 'LGA']
+d[origin %like% 'LGA'] 
 d[month %in% c(3,4,11,12)] 
+d[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings 
 d[month!=1]</code>
                 </pre>
               </div>
@@ -480,19 +482,28 @@ d[1, distance := 0]</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Using cases</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Using Booleans &amp; control-flow</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">generate origin_state = "New York" if inlist(origin,"JFK","LGA")
-replace origin_state = "New Jersey" if origin == "EWR"
-generate flight_length = "Long" if air_time &gt; 500 &amp; !missing(air_time)
-replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_time)</code>
+                  <code class="language-stata">generate long_flight = air_time&gt;500 &amp; !missing(air_time) 
+
+generate flight_length = "Long" if air_time&gt;500 &amp; !missing(air_time)
+replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_time) 
+
+generate flight_length2 = "Long" 
+replace flight_length2 = "Med" if air_time&lt;=500  
+replace flight_length2 = "Short" if air_time&lt;=120</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings
-\t\torigin == 'EWR','New Jersey')]
-# fifelse is the base-R ifelse, but (f)aster!
-d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
+                  <code class="language-r">d[, long_flight := air_time&gt;500] 
+
+d[, flight_length := fifelse(air_time&gt;500, 'Long', 'Short')] 
+# fifelse is like base-R ifelse, but (f)aster! 
+
+# for nested ifelse, easier to use fcase 
+d[, flight_length2 := fcase(air_time&lt;=120, 'Short', 
+                            air_time&lt;=500, 'Med', 
+                            default = 'Long')]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -500,18 +511,19 @@ d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Row-wise calculations</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* Pre-packaged row calculations 
+                  <code class="language-stata">* Pre-packaged row calculations: 
 egen total_delay = rowtotal(*_delay) 
 
-* Customrow calculations
+* Custom row calculations:
 * ?</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># Pre-packaged row calculations 
-d[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')] 
+                  <code class="language-r"># Pre-packaged row calculations: 
+d[, total_delay := rowSums(.SD), .SDcols = patterns('*_delay')] 
 
-# Custom row calculations
-d[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]</code>
+# Custom row calculations: 
+d[, new_var := mapply(custom_func, var1, var2)] 
+d[, new_var := custom_func(var1, var2)), by = 1:nrow(d)] # Another option</code>
                 </pre>
               </div>
             </div>
