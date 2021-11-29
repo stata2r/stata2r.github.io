@@ -64,7 +64,7 @@ tags$body(
 
 # This reads the text file as a character vector
 commands_raw <- scan("commands.txt", what=character(), sep="\n")
-vec <- 1:length(commands)
+vec <- 1:length(commands_raw)
 
 commands <- data.table(
   Page = commands_raw[vec %% 6 == 1],
