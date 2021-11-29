@@ -1,44 +1,16 @@
 data_cleaning
-load
-Load and Save Data
-Load .csv
+data
+Data I/O
+Read and write .csv
 import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear\nexport delimited using "flightdata.csv", replace
 d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')\nfwrite(d, 'flightdata.csv')
 
 data_cleaning
-load
-Load and Save Data
-Load .dta
+data
+Data I/O
+Read and write .dta
 use "filename.dta" clear\nsave "filename.dta", replace
 # Note: this command requires the package `haven` \nd = haven::read_dta('filename.dta')\nhaven::write_dta(d, 'filename.dta')"
-
-data_cleaning
-subset
-Subset
-Subset rows
-keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,3,4,11,12) \ndrop if month == 1
-d[1:200] \nd[day > 5 & day < 10]\nd[between(day,5,10)] # Or: d[day %in% 5:10] \nd[origin=='LGA']\nd[origin %like% 'LGA']\nd[month %in% c(3,4,11,12)] \nd[month!=1]
-
-data_cleaning
-subset
-Subset
-Subset columns
-keep month day carrier \n\n\ndrop origin dest \nkeep year-arr_delay\nkeep *_delay \n\nds, has(type string) pair with next line \ndrop `r(varlist)'
-d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, -c('origin', 'dest')] \nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\n# Matches the final two lines on the left:\nd[, .SD, .SDcols = !is.character]
-
-data_cleaning
-subset
-Subset
-Subset rows and columns
-keepif origin == "LGA"\nkeep month day carrier
-# Matches the two lines on the left:\nd[origin=="LGA", .(month, day, carrier)]
-
-data_cleaning
-subset
-Subset
-Drop duplicates
-duplicates drop\nduplicates drop month day carrier, force\n
-unique(d)\nunique(d, by = c('month', 'day', 'carrier'))
 
 data_cleaning
 sort
@@ -58,78 +30,99 @@ data_cleaning
 sort
 Sort & rename
 Rename columns
-* rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code, origin_code) \n\n\nrename arr_* arrival_*
+* rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code origin_code) \n\n\nrename arr_* arrival_*
 # setnames(d, old = ..., new = ...) \n\nsetnames(d, 'arr_delay', 'arrival_delay') \nsetnames(d, c('carrier','origin'), c('carrier_code','origin_code')) \n\n# Easiest just to reassign names using gsub \nnames(d) = gsub('arr_', 'arrival_', names(d))
 
 data_cleaning
-gen
-Generating and Summarizing Variables
-Create Variables
+subset
+Subset
+Subset rows
+keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA")\nkeep if inlist(month,3,4,11,12) \ndrop if month == 1
+d[1:200] \nd[day > 5 & day < 10]\nd[between(day,5,10)] # Or: d[day %in% 5:10] \nd[origin=='LGA']\nd[origin %like% 'LGA']\nd[month %in% c(3,4,11,12)] \nd[month!=1]
+
+data_cleaning
+subset
+Subset
+Subset columns
+keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\ndrop origin dest \n\n\nds, has(type string) pair with next line \ndrop `r(varlist)'
+d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the final two lines on the left:\nd[, .SD, .SDcols = !is.character]
+
+data_cleaning
+subset
+Subset
+Subset rows and columns
+keepif origin == "LGA"\nkeep month day carrier
+# Matches the two lines on the left:\nd[origin=="LGA", .(month, day, carrier)]
+
+data_cleaning
+subset
+Subset
+Drop duplicates
+duplicates drop\nduplicates drop month day carrier, force\n
+unique(d)\nunique(d, by = c('month', 'day', 'carrier'))
+
+data_cleaning
+modify
+Modify
+Create variables
 gen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
 d[ , total_delay := dep_delay + arr_delay] \nd[ , first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
 
 data_cleaning
-gen
-Generating and Summarizing Variables
-Manipulating Variables
+modify
+Modify
+Manipulate variables
 replace total_delay = dep_delay + arr_delay \nreplace distance = distance + 1if month == 9\nreplace distance = 0 in 1
 d[ , total_delay := dep_delay + arr_delay] \nd[month == 9, distance := distance + 1]\nd[1, distance := 0]
 
 data_cleaning
-gen
-Generating and Summarizing Variables
-Creating Variables  with Groups
-bysort origin: egen mean_dep_delay = mean(dep_delay)
-d[ , mean_dep_delay := mean(dep_delay by = origin]
-
-data_cleaning
-gen
-Generating and Summarizing Variables
-Using Cases
+modify
+Modify
+Using cases
 generate origin_state = "New York" if inlist(origin,"JFK","LGA")\nreplace origin_state = "New Jersey" if origin == "EWR"\ngenerate flight_length = "Long" if air_time > 500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time)
 d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings\n\t\torigin == 'EWR','New Jersey')]\n# fifelse is the base-R ifelse, but (f)aster!\nd[, flight_length := fifelse(air_time > 500, 'Long','Short')]
 
 data_cleaning
-gen
-Generating and Summarizing Variables
+modify
+Modify
 Row-wise calculations
-* Pre-packaged row calculations\negen total_delay = rowtotal(*_delay)\n* Customrow calculations\n* ?
-# Pre-packaged row calculations\nd[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')]\n# Custom row calculations\nd[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]
+* Pre-packaged row calculations \negen total_delay = rowtotal(*_delay) \n\n* Customrow calculations\n* ?
+# Pre-packaged row calculations \nd[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')] \n\n# Custom row calculations\nd[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]
 
 data_cleaning
-gen
-Generating and Summarizing Variables
-Summarizing Variables
-collapse (mean) mean_delay = arr_delay, by(carrier) \ncollapse (min) min_d =distance (max) max_d = distance, by(origin) \negen unique_dest = group(dest by(origin) \ncollapse (max) unique_dest, by(origin)
-d[ , .(mean_delay = mean(arr_delay) by=carrier] \nd[ , .(min_d = min(distance max_d = max(distance) by=origin] \n# Matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest)) by=origin]
+modify
+Modify
+Create variables within groups
+bysort origin: egen mean_dep_delay = mean(dep_delay) \n\nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
+d[, mean_dep_delay := mean(dep_delay), by = origin] \n\nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
+
+data_cleaning
+collapse
+Collapse
+Collapse by group
+collapse (mean) mean_delay = arr_delay, by(carrier) \ncollapse (min) min_d =distance (max) max_d = distance, by(origin) \n\negen unique_dest = group(dest by(origin) \ncollapse (max) unique_dest, by(origin)
+d[ , .(mean_delay = mean(arr_delay) by=carrier] \nd[ , .(min_d = min(distance max_d = max(distance) by=origin] \n\n# Matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest))), by=origin]
+
+data_cleaning
+collapse
+Collapse
+Count rows
+count\ncount if month == 10
+nrow(d) # Or: d[, .N] \nd[month == 10, .N]
 
 data_cleaning
 reshape
-Reshaping and Merging
-Reshaping Long
-* Prepare to reshape long:\ngenerate id = _n\nrename (dep_delay arr_delay)(delay_dep delay_arr)\nreshape long delay_, i(id) j(delay_type) s
-# Prepare to reshape long:\nd[, id := .I]\nmelt(d, measure.vars = c('arr_delay','dep_delay'))\n# note id.vars would normally be specified too, but here we're treating each row as its own ID
+Reshape
+Reshape long
+* Prepare to reshape long (this dataset only):\ngenerate id = _n \nrename (dep_delay arr_delay)(delay_dep delay_arr)\n\nreshape long delay_, i(id) j(delay_type) s
+# Prepare to reshape long (this dataset only):\nd[, id := .I] \n\nmelt(d, measure.vars = c('arr_delay','dep_delay'))\n# note id.vars would normally be specified too, but here we're treating each row as its own ID
 
 data_cleaning
 reshape
-Reshaping and Merging
-Reshaping Wide
+Reshape
+Reshape wide
 * This starts with the reshaped-long data from above\nreshape wide delay_, (id) j(delay_type) s
-# This starts with the reshaped-long data from above\ndcast(d, id ~ variable)\n# (this drops all variables except id and *_delay, but we could preserve them\n# with id+origin+dest+etc. instead of just id)
-
-data_cleaning
-useful_nums
-Accessing Useful Numbers
-Counting Rows
-count\ncount if month == 10\nbysort carrier: g rows_per_carrier = _N\nbysortcarrier: g index_within_carrier = _n
-nrow(d)\nd[, sum(month == 10)]\nd[, rows_per_carrier := .N, by = carrier]\nd[, index_within_carrier := .I, by = carrier]
-
-data_cleaning
-useful_nums
-Accessing Useful Numbers
-Counting Group
-egen origin_index = group(origin)
-d[, origin_index := .GRP, by = origin]
+# This starts with the reshaped-long data from above\ndcast(d, id ~ variable)\n# (this drops all variables except id & *_delay, \n# but we could preserve them\n# with id+origin+dest+etc. instead of just id)
 
 regression
 formula
