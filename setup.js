@@ -1,9 +1,11 @@
+/* 
 Prism.plugins.NormalizeWhitespace.setDefaults({
     'remove-trailing': true, 
     'remove-indent': true, 
     'left-trim': true, 
     'right-trim': true
 });
+*/
 
 window.onload = function(e){ 
 // Display table of contents with menu button
