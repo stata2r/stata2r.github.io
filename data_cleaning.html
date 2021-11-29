@@ -550,8 +550,8 @@ egen unique_dest = group(dest by(origin)
 collapse (max) unique_dest, by(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[, .(mean_delay = mean(arr_delay) by=carrier] 
-d[, .(min_d = min(distance), max_d = max(distance)) by=origin] 
+                  <code class="language-r">d[, .(mean_delay = mean(arr_delay), by=carrier] 
+d[, .(min_d = min(distance), max_d = max(distance)), by=origin] 
 
 # Less typing to collapse multiple variables via .SD(cols) 
 d[, lapply(.SD, mean), .SDcols = c('dep_delay', 'arr_delay', 'air_time', 'distance'), by = carrier] 
