@@ -9,8 +9,8 @@ data_cleaning
 data
 Data I/O
 Read and write .dta
-use "filename.dta" clear\nsave "filename.dta", replace
-# Note: this command requires the package `haven` \nd = haven::read_dta('filename.dta')\nhaven::write_dta(d, 'filename.dta')"
+use "filename.dta" clear \nsave "filename.dta", replace
+# These commands require the `haven` package \nd = haven::read_dta('filename.dta') \nhaven::write_dta(d, 'filename.dta')"
 
 data_cleaning
 sort
@@ -64,16 +64,23 @@ unique(d)\nunique(d, by = c('month', 'day', 'carrier'))
 data_cleaning
 modify
 Modify
-Create variables
+Create new variables
 gen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
-d[ , total_delay := dep_delay + arr_delay] \nd[ , first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
+d[, total_delay := dep_delay + arr_delay] \nd[, first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
 
 data_cleaning
 modify
 Modify
-Manipulate variables
-replace total_delay = dep_delay + arr_delay \nreplace distance = distance + 1if month == 9\nreplace distance = 0 in 1
-d[ , total_delay := dep_delay + arr_delay] \nd[month == 9, distance := distance + 1]\nd[1, distance := 0]
+Create new variables within groups
+bysort origin: egen mean_dep_delay = mean(dep_delay) \n\nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
+d[, mean_dep_delay := mean(dep_delay), by = origin] \n\nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
+
+data_cleaning
+modify
+Modify
+Modify existing variables
+replace total_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month == 9\nreplace distance = 0 in 1
+d[ , total_delay := dep_delay + arr_delay] \n\n # Conditional modification \nd[month == 9, distance := distance + 1]\nd[1, distance := 0]
 
 data_cleaning
 modify
@@ -90,18 +97,11 @@ Row-wise calculations
 # Pre-packaged row calculations \nd[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')] \n\n# Custom row calculations\nd[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]
 
 data_cleaning
-modify
-Modify
-Create variables within groups
-bysort origin: egen mean_dep_delay = mean(dep_delay) \n\nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
-d[, mean_dep_delay := mean(dep_delay), by = origin] \n\nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
-
-data_cleaning
 collapse
 Collapse
 Collapse by group
 collapse (mean) mean_delay = arr_delay, by(carrier) \ncollapse (min) min_d =distance (max) max_d = distance, by(origin) \n\negen unique_dest = group(dest by(origin) \ncollapse (max) unique_dest, by(origin)
-d[ , .(mean_delay = mean(arr_delay) by=carrier] \nd[ , .(min_d = min(distance max_d = max(distance) by=origin] \n\n# Matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest))), by=origin]
+d[, .(mean_delay = mean(arr_delay) by=carrier] \nd[, .(min_d = min(distance max_d = max(distance) by=origin] \n\n# Matches the final two lines on the left:\nd[, .(unique_dest = length(unique(dest))), by=origin]
 
 data_cleaning
 collapse

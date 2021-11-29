@@ -263,12 +263,12 @@ fwrite(d, 'flightdata.csv')</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .dta</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">use "filename.dta" clear
+                  <code class="language-stata">use "filename.dta" clear 
 save "filename.dta", replace</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># Note: this command requires the package `haven` 
-d = haven::read_dta('filename.dta')
+                  <code class="language-r"># These commands require the `haven` package 
+d = haven::read_dta('filename.dta') 
 haven::write_dta(d, 'filename.dta')"</code>
                 </pre>
               </div>
@@ -427,7 +427,7 @@ unique(d, by = c('month', 'day', 'carrier'))</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Create variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">gen total_delay = dep_delay + arr_delay 
@@ -435,22 +435,45 @@ gen first_letter = substr(origin, 1,1)
 gen flight_path = origin + '_' + dest</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
-d[ , first_letter := substr(origin,1,1)] 
+                  <code class="language-r">d[, total_delay := dep_delay + arr_delay] 
+d[, first_letter := substr(origin,1,1)] 
 d[, flight_path := paste(origin, dest, sep='_')]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Manipulate variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Create new variables within groups</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay) 
+
+bysort carrier: g rows_per_carrier = _N 
+bysortcarrier: g index_within_carrier = _n 
+egen origin_index = group(origin)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">d[, mean_dep_delay := mean(dep_delay), by = origin] 
+
+d[, rows_per_carrier := .N, by = carrier] 
+d[, index_within_carrier := .I, by = carrier] 
+d[, origin_index := .GRP, by = origin]</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Modify existing variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">replace total_delay = dep_delay + arr_delay 
-replace distance = distance + 1if month == 9
+
+* Conditional modification 
+replace distance = distance + 1 if month == 9
 replace distance = 0 in 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[ , total_delay := dep_delay + arr_delay] 
+
+ # Conditional modification 
 d[month == 9, distance := distance + 1]
 d[1, distance := 0]</code>
                 </pre>
@@ -491,25 +514,6 @@ d[, total_delay := rowSums(.SD .SDcols = patterns('*_delay')]
 d[, total_delay := sum(.SD .SDcols = patterns('*_delay' by = 1:nrow(d)]</code>
                 </pre>
               </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Create variables within groups</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay) 
-
-bysort carrier: g rows_per_carrier = _N 
-bysortcarrier: g index_within_carrier = _n 
-egen origin_index = group(origin)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[, mean_dep_delay := mean(dep_delay), by = origin] 
-
-d[, rows_per_carrier := .N, by = carrier] 
-d[, index_within_carrier := .I, by = carrier] 
-d[, origin_index := .GRP, by = origin]</code>
-                </pre>
-              </div>
             </div>
           </div>
           <div id="collapse">
@@ -529,8 +533,8 @@ egen unique_dest = group(dest by(origin)
 collapse (max) unique_dest, by(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[ , .(mean_delay = mean(arr_delay) by=carrier] 
-d[ , .(min_d = min(distance max_d = max(distance) by=origin] 
+                  <code class="language-r">d[, .(mean_delay = mean(arr_delay) by=carrier] 
+d[, .(min_d = min(distance max_d = max(distance) by=origin] 
 
 # Matches the final two lines on the left:
 d[, .(unique_dest = length(unique(dest))), by=origin]</code>
