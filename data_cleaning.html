@@ -470,13 +470,24 @@ d[!is.na(air_time) &amp; !is.na(dest)] # Same</code>
                   <code class="language-stata">gen dist_sq = distance^2 
 gen tot_delay = dep_delay + arr_delay 
 gen first_letter = substr(origin, 1,1) 
-gen flight_path = origin + '_' + dest</code>
+gen flight_path = origin + '_' + dest 
+
+* These next operations don't have a great Stata 
+* equivalent, although you could implement a loop</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[, dist_sq := distance^2] 
 d[, tot_delay := dep_delay + arr_delay] 
 d[, first_letter := substr(origin,1,1)] 
-d[, flight_path := paste(origin, dest, sep='_')]</code>
+d[, flight_path := paste(origin, dest, sep='_')] 
+
+# Multiple variables can be created at the same time 
+d[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] 
+d[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent 
+
+# We can also chain back-to-back d[...][...] 
+# (this holds for any data.table operation) 
+d[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
