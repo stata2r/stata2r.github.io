@@ -44,7 +44,7 @@ data_cleaning
 subset
 Subset
 Subset columns
-keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\ndrop origin dest \n\n\nds, has(type string) pair with next line \ndrop `r(varlist)'
+keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
 d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the final two lines on the left:\nd[, .SD, .SDcols = !is.character]
 
 data_cleaning
