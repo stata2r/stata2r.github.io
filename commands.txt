@@ -44,8 +44,8 @@ data_cleaning
 subset
 Subset
 Subset columns
-keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
-d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the final two lines on the left:\nd[, .SD, .SDcols = !is.character]
+keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist) \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
+d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\n# Matches the two lines on the left: \nd[, .SD, .SDcols = is.integer] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the two lines on the left:\nd[, .SD, .SDcols = !is.character]
 
 data_cleaning
 subset
@@ -59,28 +59,35 @@ subset
 Subset
 Drop duplicates
 duplicates drop\nduplicates drop month day carrier, force\n
-unique(d)\nunique(d, by = c('month', 'day', 'carrier'))
+unique(d) \nunique(d, by = c('month', 'day', 'carrier'))
+
+data_cleaning
+subset
+Subset
+Drop missing
+missings dropvars, force \nmissings air_time dest, force \n* Requires: ssc inst missings
+na.omit(d) \nna.omit(d, c('air_time', 'dest')) \nd[!is.na(air_time) & !is.na(dest)] # Same
 
 data_cleaning
 modify
 Modify
 Create new variables
-gen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
-d[, total_delay := dep_delay + arr_delay] \nd[, first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
+gen dist_sq = distance^2 \ngen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
+d[, dist_sq := distance^2] \nd[, total_delay := dep_delay + arr_delay] \nd[, first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
 
 data_cleaning
 modify
 Modify
 Create new variables within groups
-bysort origin: egen mean_dep_delay = mean(dep_delay) \n\nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
-d[, mean_dep_delay := mean(dep_delay), by = origin] \n\nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
+bysort origin: egen mean_dep_delay = mean(dep_delay) \n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
+d[, mean_dep_delay := mean(dep_delay), by = origin] \n\n# Some short-cut symbols \nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
 
 data_cleaning
 modify
 Modify
 Modify existing variables
-replace total_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month == 9\nreplace distance = 0 in 1
-d[ , total_delay := dep_delay + arr_delay] \n\n# Conditional modification \nd[month == 9, distance := distance + 1]\nd[1, distance := 0]
+replace total_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1
+d[, total_delay := dep_delay + arr_delay] \n\n# Conditional modification \nd[month==9, distance := distance + 1]\nd[1, distance := 0]
 
 data_cleaning
 modify
