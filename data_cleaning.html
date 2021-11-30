@@ -101,8 +101,11 @@ document.getElementById("menu-hamburger").onclick = function () {
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#collapse" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Collapse</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
                 </li>
               </ul>
             </div>
@@ -684,6 +687,95 @@ dcast(d, id ~ variable)
 # (this drops all variables except id &amp; *_delay, 
 # but we could preserve them
 # with id+origin+dest+etc. instead of just id)</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div id="merge">
+            <div class="w-full max-w-5xl mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Merge</h2>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Import seconday (airport) dataset</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv"</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">d2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Inner join</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* placeholder text</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">merge(d, d2, by.x='dest', by.y='faa') 
+
+# Simpler if 'by/on' column(s) share same name 
+d2[, dest := faa] 
+merge(d, d2, by='dest') 
+
+# If using keys, don't need 'by'/'on' (and faster) 
+setkey(d, dest); setkey(d2, dest) 
+merge(d, d2)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Left join</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* placeholder text</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Continues from above 
+merge(d, d2, by='dest', all.x=TRUE) 
+merge(d, d2, all.x=TRUE) # Requires keys</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Right join</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* placeholder text</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Continues from above 
+merge(d, d2, by='dest', all.y=TRUE) 
+merge(d, d2, all.y=TRUE) # Requires keys</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Full join</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* placeholder text</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Continues from above 
+merge(d, d2, by='dest', all=TRUE) 
+merge(d, d2, all=TRUE) # Requires keys</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Anti join</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* placeholder text</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Continues from above 
+d[!d2, on='dest'] 
+d[!d2] # Requires keys</code>
                 </pre>
               </div>
             </div>

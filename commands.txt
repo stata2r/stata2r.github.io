@@ -131,6 +131,49 @@ Reshape wide
 * This starts with the reshaped-long data from above\nreshape wide delay_, (id) j(delay_type) s
 # This starts with the reshaped-long data from above\ndcast(d, id ~ variable)\n# (this drops all variables except id & *_delay, \n# but we could preserve them\n# with id+origin+dest+etc. instead of just id)
 
+data_cleaning
+merge
+Merge
+Import seconday (airport) dataset
+import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv"
+d2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")
+
+data_cleaning
+merge
+Merge
+Inner join
+* placeholder text
+merge(d, d2, by.x='dest', by.y='faa') \n\n# Simpler if 'by/on' column(s) share same name \nd2[, dest := faa] \nmerge(d, d2, by='dest') \n\n# If using keys, don't need 'by'/'on' (and faster) \nsetkey(d, dest); setkey(d2, dest) \nmerge(d, d2)
+
+data_cleaning
+merge
+Merge
+Left join
+* placeholder text
+# Continues from above \nmerge(d, d2, by='dest', all.x=TRUE) \nmerge(d, d2, all.x=TRUE) # Requires keys
+
+
+data_cleaning
+merge
+Merge
+Right join
+* placeholder text
+# Continues from above \nmerge(d, d2, by='dest', all.y=TRUE) \nmerge(d, d2, all.y=TRUE) # Requires keys
+
+data_cleaning
+merge
+Merge
+Full join
+* placeholder text
+# Continues from above \nmerge(d, d2, by='dest', all=TRUE) \nmerge(d, d2, all=TRUE) # Requires keys
+
+data_cleaning
+merge
+Merge
+Anti join
+* placeholder text
+# Continues from above \nd[!d2, on='dest'] \nd[!d2] # Requires keys
+
 regression
 formula
 Formula Creation
