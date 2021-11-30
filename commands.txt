@@ -107,7 +107,7 @@ data_cleaning
 collapse
 Collapse
 Collapse by group
-collapse (mean) arr_delay, by(carrier) \ncollapse (mean) arr_delay, by(carrier month) \ncollapse (mean) mean_adel = arr_delay, by(carrier) \n\ncollapse (min) min_d = distance (max) max_d = distance, by(origin) \n\ncollapse (mean) *_delay, by(origin) \ncollapse (mean) dep_delay arr_delay air_time distance, by(origin) \n\n\negen egen unique_dest = tag(dest origin) \ncollapse (sum) unique_dest, by(origin
+collapse (mean) arr_delay, by(carrier) \ncollapse (mean) arr_delay, by(carrier month) \ncollapse (mean) mean_adel = arr_delay, by(carrier) \n\ncollapse (min) min_d = distance (max) max_d = distance, by(origin) \n\ncollapse (mean) *_delay, by(origin) \ncollapse (mean) dep_delay arr_delay air_time distance, by(origin) \n\n\negen unique_dest = tag(dest origin) \ncollapse (sum) unique_dest, by(origin)
 d[, mean(arr_delay), by=carrier] \nd[, mean(arr_delay), by=.(carrier, month)] \nd[, .(mean_adel = mean(arr_delay)), by=carrier] \n\nd[, .(min_d = min(distance), max_d = max(distance)), by=origin] \n\nd[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] \nd[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] \nd[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same \n\n# Matches the final two lines on the left: \nd[, .(unique_dest = uniqueN(dest)), by = origin]
 
 data_cleaning

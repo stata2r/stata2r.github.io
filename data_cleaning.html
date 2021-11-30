@@ -616,8 +616,8 @@ collapse (mean) *_delay, by(origin)
 collapse (mean) dep_delay arr_delay air_time distance, by(origin) 
 
 
-egen egen unique_dest = tag(dest origin) 
-collapse (sum) unique_dest, by(origin</code>
+egen unique_dest = tag(dest origin) 
+collapse (sum) unique_dest, by(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[, mean(arr_delay), by=carrier] 
