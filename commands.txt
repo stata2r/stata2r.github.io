@@ -2,15 +2,15 @@ data_cleaning
 data
 Data I/O
 Read and write .csv
-import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear\nexport delimited using "flightdata.csv", replace
+import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear \nexport delimited using "flightdata.csv", replace
 d = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')\nfwrite(d, 'flightdata.csv')
 
 data_cleaning
 data
 Data I/O
 Read and write .dta
-use "filename.dta" clear \nsave "filename.dta", replace
-# These commands require the `haven` package \nd = haven::read_dta('filename.dta') \nhaven::write_dta(d, 'filename.dta')
+* .dta is Stata's native (proprietary) filetype \nuse "filename.dta", clear \n\n\nsave "filename.dta", replace
+# These commands require the `haven` package \nd = haven::read_dta('filename.dta') \nsetDT(d) # Or: d = as.data.table(d) \n \nhaven::write_dta(d, 'filename.dta')
 
 data_cleaning
 sort
@@ -44,8 +44,8 @@ data_cleaning
 subset
 Subset
 Subset columns
-keep month day carrier \n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist) \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
-d[, .(month, day, carrier)] \nd[, c('month', 'day', 'carrier')] # same as above \n\nd[, year:arr_delay] \nd[, .SD, .SDcols = patterns('*_delay')] \n\n# Matches the two lines on the left: \nd[, .SD, .SDcols = is.integer] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the two lines on the left:\nd[, .SD, .SDcols = !is.character]
+keep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist) \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
+d[, .(month, day, carrier)] \nd[, list(month, day, carrier)] # same as above \nd[, c('month', 'day', 'carrier')] # ditto \n\nd[, year:arr_delay] \nd[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \nd[, .SD, .SDcols=is.integer] \n\nd[, -c('origin', 'dest')]\nd[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the two lines on the left:\nd[, .SD, .SDcols=!is.character]
 
 data_cleaning
 subset
@@ -72,8 +72,8 @@ data_cleaning
 modify
 Modify
 Create new variables
-gen dist_sq = distance^2 \ngen total_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
-d[, dist_sq := distance^2] \nd[, total_delay := dep_delay + arr_delay] \nd[, first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
+gen dist_sq = distance^2 \ngen tot_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest
+d[, dist_sq := distance^2] \nd[, tot_delay := dep_delay + arr_delay] \nd[, first_letter := substr(origin,1,1)] \nd[, flight_path := paste(origin, dest, sep='_')]
 
 data_cleaning
 modify
@@ -86,8 +86,8 @@ data_cleaning
 modify
 Modify
 Modify existing variables
-replace total_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1
-d[, total_delay := dep_delay + arr_delay] \n\n# Conditional modification \nd[month==9, distance := distance + 1]\nd[1, distance := 0]
+replace tot_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1
+d[, tot_delay := dep_delay + arr_delay] \n\n# Conditional modification \nd[month==9, distance := distance + 1]\nd[1, distance := 0]
 
 data_cleaning
 modify
@@ -100,8 +100,8 @@ data_cleaning
 modify
 Modify
 Row-wise calculations
-* Pre-packaged row calculations: \negen total_delay = rowtotal(*_delay) \n\n* Custom row calculations:\n* ?
-# Pre-packaged row calculations: \nd[, total_delay := rowSums(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \nd[, new_var := mapply(custom_func, var1, var2)] \nd[, new_var := custom_func(var1, var2)), by=1:nrow(d)] # Another option
+* Pre-packaged row calculations: \negen tot_delay = rowtotal(*_delay) \n\n* Custom row calculations:\n* ?
+# Pre-packaged row calculations: \nd[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \nd[, new_var := mapply(custom_func, var1, var2)] \nd[, new_var := custom_func(var1, var2)), by=1:nrow(d)] # Another option
 
 data_cleaning
 collapse
@@ -115,7 +115,7 @@ collapse
 Collapse
 Count rows
 count\ncount if month==10
-d[, .N] # Or: nrow(d) \nd[month==10, .N]
+d[, .N] # Or: nrow(d) \nd[month==10, .N] # Or: nrow(d[month==10])
 
 data_cleaning
 reshape

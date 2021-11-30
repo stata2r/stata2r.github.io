@@ -257,7 +257,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .csv</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.tablemaster/vignettes/flights14.csv" clear
+                  <code class="language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear 
 export delimited using "flightdata.csv", replace</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
@@ -270,12 +270,17 @@ fwrite(d, 'flightdata.csv')</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .dta</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">use "filename.dta" clear 
+                  <code class="language-stata">* .dta is Stata's native (proprietary) filetype 
+use "filename.dta", clear 
+
+
 save "filename.dta", replace</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># These commands require the `haven` package 
 d = haven::read_dta('filename.dta') 
+setDT(d) # Or: d = as.data.table(d) 
+ 
 haven::write_dta(d, 'filename.dta')</code>
                 </pre>
               </div>
@@ -377,6 +382,7 @@ d[month!=1]</code>
                   <code class="language-stata">keep month day carrier 
 
 
+
 keep year-arr_delay
 keep *_delay 
 
@@ -391,19 +397,20 @@ drop `r(varlist)'</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[, .(month, day, carrier)] 
-d[, c('month', 'day', 'carrier')] # same as above 
+d[, list(month, day, carrier)] # same as above 
+d[, c('month', 'day', 'carrier')] # ditto 
 
 d[, year:arr_delay] 
-d[, .SD, .SDcols = patterns('*_delay')] 
+d[, .SD, .SDcols=patterns('*_delay')] 
 
 # Matches the two lines on the left: 
-d[, .SD, .SDcols = is.integer] 
+d[, .SD, .SDcols=is.integer] 
 
 d[, -c('origin', 'dest')]
 d[, c('origin', 'dest') := NULL] # drop by ref 
 
 # Matches the two lines on the left:
-d[, .SD, .SDcols = !is.character]</code>
+d[, .SD, .SDcols=!is.character]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -461,13 +468,13 @@ d[!is.na(air_time) &amp; !is.na(dest)] # Same</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">gen dist_sq = distance^2 
-gen total_delay = dep_delay + arr_delay 
+gen tot_delay = dep_delay + arr_delay 
 gen first_letter = substr(origin, 1,1) 
 gen flight_path = origin + '_' + dest</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[, dist_sq := distance^2] 
-d[, total_delay := dep_delay + arr_delay] 
+d[, tot_delay := dep_delay + arr_delay] 
 d[, first_letter := substr(origin,1,1)] 
 d[, flight_path := paste(origin, dest, sep='_')]</code>
                 </pre>
@@ -498,14 +505,14 @@ d[, origin_index := .GRP, by = origin]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Modify existing variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">replace total_delay = dep_delay + arr_delay 
+                  <code class="language-stata">replace tot_delay = dep_delay + arr_delay 
 
 * Conditional modification 
 replace distance = distance + 1 if month==9
 replace distance = 0 in 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[, total_delay := dep_delay + arr_delay] 
+                  <code class="language-r">d[, tot_delay := dep_delay + arr_delay] 
 
 # Conditional modification 
 d[month==9, distance := distance + 1]
@@ -545,14 +552,14 @@ d[, flight_length2 := fcase(air_time&lt;=120, 'Short',
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Pre-packaged row calculations: 
-egen total_delay = rowtotal(*_delay) 
+egen tot_delay = rowtotal(*_delay) 
 
 * Custom row calculations:
 * ?</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Pre-packaged row calculations: 
-d[, total_delay := rowSums(.SD), .SDcols = patterns('*_delay')] 
+d[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')] 
 
 # Custom row calculations: 
 d[, new_var := mapply(custom_func, var1, var2)] 
@@ -609,7 +616,7 @@ count if month==10</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[, .N] # Or: nrow(d) 
-d[month==10, .N]</code>
+d[month==10, .N] # Or: nrow(d[month==10])</code>
                 </pre>
               </div>
             </div>
