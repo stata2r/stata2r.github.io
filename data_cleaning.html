@@ -496,6 +496,13 @@ d[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay) 
+bysort origin dest: egen mean_dep_delay2 = mean(dep_delay) 
+
+* Multiple grouped variables (manual demean ex.) 
+foreach x of varlist dep_delay arr_delay air_time 
+egen mean_`x'=mean(`x'), by(origin) 
+gen `x'_dm = `x` - mean_`x' 
+drop mean* 
 
 * Some short-cut symbols 
 bysort carrier: g rows_per_carrier = _N 
@@ -503,7 +510,14 @@ bysortcarrier: g index_within_carrier = _n
 egen origin_index = group(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">d[, mean_dep_delay := mean(dep_delay), by = origin] 
+                  <code class="language-r">d[, mean_dep_delay := mean(dep_delay), by=origin] 
+d[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] 
+
+# Multiple grouped variables (manual demean ex.) 
+dmcols = c('dep_delay', 'arr_delay', 'air_time') 
+d[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),
+  .SDcols = dmcols,
+  by=origin] 
 
 # Some short-cut symbols 
 d[, rows_per_carrier := .N, by = carrier] 

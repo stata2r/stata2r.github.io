@@ -79,8 +79,8 @@ data_cleaning
 modify
 Modify
 Create new variables within groups
-bysort origin: egen mean_dep_delay = mean(dep_delay) \n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
-d[, mean_dep_delay := mean(dep_delay), by = origin] \n\n# Some short-cut symbols \nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
+bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean ex.) \nforeach x of varlist dep_delay arr_delay air_time \negen mean_`x'=mean(`x'), by(origin) \ngen `x'_dm = `x` - mean_`x' \ndrop mean* \n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysortcarrier: g index_within_carrier = _n \negen origin_index = group(origin)
+d[, mean_dep_delay := mean(dep_delay), by=origin] \nd[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] \n\n# Multiple grouped variables (manual demean ex.) \ndmcols = c('dep_delay', 'arr_delay', 'air_time') \nd[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),\n  .SDcols = dmcols,\n  by=origin] \n\n# Some short-cut symbols \nd[, rows_per_carrier := .N, by = carrier] \nd[, index_within_carrier := .I, by = carrier] \nd[, origin_index := .GRP, by = origin]
 
 data_cleaning
 modify
