@@ -134,19 +134,18 @@ document.getElementById("menu-hamburger").onclick = function () {
           <div class="w-full max-w-5xl mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">
-                Cleaning Data with 
-                <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 italic font-semibold">data.table</a>
-                .
+                Cleaning data with 
+                <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 italic font-semibold">data.table</a>
               </h1>
             </div>
             <div class="max-w-prose prose pt-8 text-gray-700 text-xl">
               <p>
-                <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 font-semibold underline">data.table</a>
-                 is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All the examples below will use a dataset of nyc flights loaded in the
-                <span class="font-semibold">Load Data</span>
-                 section. A lot of these examples were reworked from
-                <a class="text-emerald-600" href="https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/">this blog post.</a>
-                 Don't forget to load the package with 
+                <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a>
+                 (by Matt Dowle, Arun Srinivasan 
+                <span class="italic">et. al.</span>
+                ) is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the 
+                <span class="font-semibold">Data I/O</span>
+                 section. Don't forget to load the package with 
                 <span class="font-semibold">library(data.table)</span>
                  first. Unlike in Stata, you have to re-load a package if you want to use it every time you start a new session.
               </p>
@@ -159,10 +158,10 @@ document.getElementById("menu-hamburger").onclick = function () {
             <div class="max-w-prose prose pt-8 text-gray-700 text-xl">
               <p>
                 The 
-                <a href="https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html" class="text-emerald-800 font-semibold underline">data.table</a>
+                <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a>
                  package centers around 
-                <span class="font-semibold">data.tables,</span>
-                 which are highly efficient data sets that can be manipulated using the package's syntax.
+                <span class="font-semibold">data.tables</span>
+                , which are highly efficient data frames that can be manipulated using the package's syntax.
               </p>
               <p>
                 If we have a 
@@ -218,12 +217,20 @@ document.getElementById("menu-hamburger").onclick = function () {
               </p>
               <p>
                 <span class="font-semibold">data.table</span>
-                 uses these three simple components more flexibly than Stata does, and you can get quite a lot out of 
+                 uses these three simple components more flexibly than Stata does. The upshot is that you can can perform complicated operations in a single line of concise 
                 <span class="font-semibold">data.table</span>
-                 using only these three components that would require multiple other commands in Stata to accomplish. But even if you aren't doing anything fancy.
+                 code, which may have required multiple commands in other languages to accomplish. But even if you aren't doing anything fancy, 
+                <span class="font-semibold">data.table</span>
+                 has you covered with a stable set of functions that can be deployed on virtually any data wrangling task.
               </p>
               <p>
-                These operations are very fast, not only compared to Stata but also many other data-manipulation packages in R or Python. As a bonus, many of them can be done 
+                Finally,  
+                <span class="font-semibold">data.table</span>
+                 is extremely fast. It has long set the standard for in-memory data wrangling 
+                <a href="https://h2oai.github.io/db-benchmark" class="text-emerald-800 font-semibold underline">benchmarks</a>
+                 across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many 
+                <span class="font-semibold">data.table</span>
+                 operations can be done 
                 <span class="italic">in-place,</span>
                  which means that it will affect 
                 <span class="italic">only the parts you're actually changing,</span>

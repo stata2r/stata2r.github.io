@@ -8,18 +8,16 @@ source(here::here("helpers.R"))
 splash <- create_section(
     create_splash_header(
         h1(class = "text-black text-4xl font-bold", 
-        "Cleaning Data with ",
-        a(href = "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html", class = "text-emerald-800 italic font-semibold", "data.table"), 
-        "."
+        "Cleaning data with ",
+        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 italic font-semibold", "data.table")
         )
     ),
     create_splash_body(
         p(
-        a(href = "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html", class = "text-emerald-800 font-semibold underline", "data.table"), 
-        " is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All the examples below will use a dataset of nyc flights loaded in the",
-        span(class = "font-semibold", "Load Data"), 
-        " section. A lot of these examples were reworked from",
-        a(class = "text-emerald-600", href = "https://web.archive.org/web/20171023203000/http://johnricco.github.io/2016/06/14/stata-dplyr/", "this blog post."), " Don't forget to load the package with ",
+        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"), 
+        " (by Matt Dowle, Arun Srinivasan ", span(class = "italic", "et. al."), ") is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the ",
+        span(class = "font-semibold", "Data I/O"), 
+        " section. Don't forget to load the package with ",
             span(class = "font-semibold", "library(data.table)"), " first. Unlike in Stata, you have to re-load a package if you want to use it every time you start a new session."
         )
     )
@@ -31,8 +29,8 @@ tutorial <- create_section(
     ),
     create_splash_body(
         p(
-        "The ", a(href = "https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html", class = "text-emerald-800 font-semibold underline", "data.table"),
-        " package centers around ", span(class = "font-semibold", "data.tables,"), " which are highly efficient data sets that can be manipulated using the package's syntax."
+        "The ", a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"),
+        " package centers around ", span(class = "font-semibold", "data.tables"), ", which are highly efficient data frames that can be manipulated using the package's syntax."
         ),
         p(
         "If we have a ", span(class = "font-semibold", "data.table"), " called ", span(class = "font-semibold", "d"),
@@ -51,9 +49,9 @@ tutorial <- create_section(
         span(class = "font-semibold", "by,"), " the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with ", span(class = "font-semibold", "bysort.") 
         ),
         p(
-        span(class = "font-semibold", "data.table"), " uses these three simple components more flexibly than Stata does, and you can get quite a lot out of ", span(class = "font-semibold", "data.table"), " using only these three components that would require multiple other commands in Stata to accomplish. But even if you aren't doing anything fancy."
-        ),
-        p("These operations are very fast, not only compared to Stata but also many other data-manipulation packages in R or Python. As a bonus, many of them can be done ",
+        span(class = "font-semibold", "data.table"), " uses these three simple components more flexibly than Stata does. The upshot is that you can can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
+        ), 
+        p("Finally,  ", span(class = "font-semibold", "data.table"), " is extremely fast. It has long set the standard for in-memory data wrangling ", a(href = "https://h2oai.github.io/db-benchmark", class = "text-emerald-800 font-semibold underline", "benchmarks"), " across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many ", span(class = "font-semibold", "data.table"), " operations can be done ",
         span(class = "italic", "in-place,"), " which means that it will affect ", span(class = "italic", "only the parts you're actually changing,"),
         " without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word",
         span(class = "font-semibold", "set"), " in it, or the ", span(class = "font-semibold", ":="), " operator, that's an in-place operation. Speedy!")   
