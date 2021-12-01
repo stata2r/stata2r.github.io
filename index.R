@@ -14,7 +14,11 @@ splash <- create_section(
                 a(href = "regression.html", class = "text-[#315450] italic font-semibold", "fixest")
             )
         ),
-        p(" There are other packages that work well and are easy to use as well, but these two are blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎).")
+        p(" There are other packages that work well and are easy to use as well, but these two are blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎)."),
+        p("Plus, they are ", span(class = "italic", "flexible"), 
+          " (👌✨) and can help you avoid R's 'package overload.' Depending on what you do in Stata, you might even be able to cut back, going from three packages - ", 
+          span(class = "font-semibold", "reghdfe, estout"), " and ", 
+          span(class = "font-semibold", "gtools"), " - to just two.")
     )
 )
 
