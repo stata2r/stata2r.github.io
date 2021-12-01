@@ -37,7 +37,7 @@ data_cleaning
 subset
 Subset
 Subset rows
-keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeepif origin == "LGA"\nkeep if regex(origin,"LGA") \nkeep if inlist(month,3,4,11,12) \nkeep if inlist(origin,"JFK","LGA") \ndrop if month == 1
+keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeep if origin == "LGA"\nkeep if regex(origin,"LGA") \nkeep if inlist(month,3,4,11,12) \nkeep if inlist(origin,"JFK","LGA") \ndrop if month == 1
 dat1 = dat[1:200] \ndat1 = dat[day > 5 & day < 10] \ndat1 = dat[between(day,5,10)] # Or: dat1 = dat[day %in% 5:10] \ndat1 = dat[origin=='LGA']\ndat1 = dat[origin %like% 'LGA'] \ndat1 = dat[month %in% c(3,4,11,12)] \ndat1 = dat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings \ndat1 = dat[month!=1]
 
 data_cleaning
@@ -45,7 +45,7 @@ subset
 Subset
 Subset columns
 keep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist)'\n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
-dat1 = dat[, .(month, day, carrier)] \ndat1 = dat[, list(month, day, carrier)] # same as above \ndat1 = dat[, c('month', 'day', 'carrier')] # ditto \n\ndat1 = dat[, year:arr_delay] \ndat1 = dat[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \ndat1 = dat[, .SD, .SDcols=is.integer] \n\ndat1 = dat[, -c('origin', 'dest')]\ndat1 = dat[, c('origin', 'dest') := NULL] # drop by ref \n\n# Matches the two lines on the left:\ndat1 = dat[, .SD, .SDcols=!is.character]
+dat1 = dat[, .(month, day, carrier)] \ndat1 = dat[, list(month, day, carrier)] # same as above \ndat1 = dat[, c('month', 'day', 'carrier')] # ditto \n\ndat1 = dat[, year:arr_delay] \ndat1 = dat[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \ndat1 = dat[, .SD, .SDcols=is.integer] \n\ndat1 = dat[, -c('origin', 'dest')]\ndat1 = dat[, c('origin', 'dest') := NULL] # same effect as above, but in-place \n\n# Matches the two lines on the left:\ndat1 = dat[, .SD, .SDcols=!is.character]
 
 data_cleaning
 subset
@@ -66,7 +66,7 @@ subset
 Subset
 Drop missing
 keep if !missing(dest)\n* Requires: ssc inst missings\nmissings dropvars, force \nmissings air_time dest, force \n
-dat1 = dat[!is.na(dest)]\ndat1 = na.omit(dat) \ndat1 = na.omit(dat, c('air_time', 'dest')) \ndat1 = dat[!is.na(air_time) & !is.na(dest)] # Same
+dat1 = dat[!is.na(dest)]\n\ndat1 = na.omit(dat) \ndat1 = na.omit(dat, c('air_time', 'dest')) \ndat1 = dat[!is.na(air_time) & !is.na(dest)] # Same as above
 
 data_cleaning
 modify

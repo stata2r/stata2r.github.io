@@ -373,7 +373,7 @@ names(dat) = gsub('arr_', 'arrival_', names(dat))</code>
                   <code class="language-stata">keep in 1/200 
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
-keepif origin == "LGA"
+keep if origin == "LGA"
 keep if regex(origin,"LGA") 
 keep if inlist(month,3,4,11,12) 
 keep if inlist(origin,"JFK","LGA") 
@@ -423,7 +423,7 @@ dat1 = dat[, .SD, .SDcols=patterns('*_delay')]
 dat1 = dat[, .SD, .SDcols=is.integer] 
 
 dat1 = dat[, -c('origin', 'dest')]
-dat1 = dat[, c('origin', 'dest') := NULL] # drop by ref 
+dat1 = dat[, c('origin', 'dest') := NULL] # same effect as above, but in-place 
 
 # Matches the two lines on the left:
 dat1 = dat[, .SD, .SDcols=!is.character]</code>
@@ -469,9 +469,10 @@ missings air_time dest, force
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat1 = dat[!is.na(dest)]
+
 dat1 = na.omit(dat) 
 dat1 = na.omit(dat, c('air_time', 'dest')) 
-dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same</code>
+dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
                 </pre>
               </div>
             </div>
