@@ -40,12 +40,14 @@
   <div class="bg-[#fdf9f3] px-4 md:px-8">
     <div class="w-full max-w-[96rem] mx-auto min-h-screen">
       <div class="flex flex-col xl:gap-x-8 xl:flex-row">
-        <script>Prism.plugins.NormalizeWhitespace.setDefaults({
+        <script>/* 
+Prism.plugins.NormalizeWhitespace.setDefaults({
     'remove-trailing': true, 
     'remove-indent': true, 
     'left-trim': true, 
     'right-trim': true
 });
+*/
 
 window.onload = function(e){ 
 // Display table of contents with menu button
@@ -390,6 +392,7 @@ setnames(d, names(d)[names(d) %like% 'arr_'], function(x) gsub('arr_','arrival_'
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Generating and Summarizing Variables</h2>
               </div>
+              <div class="flex flex-row prose mt-6"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Creating Variables</h2>
@@ -443,7 +446,7 @@ replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_tim
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">d[ , origin_state = fcase(origin %chin% c('JFK','LGA'), 'New York', # %chin% is just like %in% from earlier, but faster for strings
-\t\torigin == 'EWR','New Jersey')]
+        origin == 'EWR','New Jersey')]
 # fifelse is the base-R ifelse, but (f)aster!
 d[, flight_length := fifelse(air_time &gt; 500, 'Long','Short')]</code>
                 </pre>

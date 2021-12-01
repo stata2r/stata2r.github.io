@@ -1,6 +1,33 @@
 library(htmltools)
 library(data.table)
 
+
+# This reads the text file as a character vector
+commands_raw <- scan("commands.txt", what=character(), sep="\n")
+commands_raw <- stringr::str_replace_all(commands_raw, "\\\\t", "    ")
+vec <- 1:length(commands_raw)
+
+commands <- data.table(
+  Page = commands_raw[vec %% 6 == 1],
+  cat_id = commands_raw[vec %% 6 == 2],
+  Category = commands_raw[vec %% 6 == 3],
+  Example = commands_raw[vec %% 6 == 4],
+  stata_code = commands_raw[vec %% 6 == 5],
+  r_code = commands_raw[vec %% 6 == 0]
+)
+
+# This reads the text file as a character vector
+notes_raw <- scan("notes.txt", what=character(), sep="\n")
+notes_raw <- stringr::str_replace_all(notes_raw, "\\\\t", "    ")
+vec <- 1:length(notes_raw)
+
+notes <- data.table(
+  Page = notes_raw[vec %% 4 == 1],
+  cat_id = notes_raw[vec %% 4 == 2],
+  Category = notes_raw[vec %% 4 == 3],
+  note = notes_raw[vec %% 4 == 0]
+)
+
 # ------------------------------------------------------------------------------
 # Head of HTML
 # ------------------------------------------------------------------------------
@@ -62,20 +89,6 @@ tags$body(
 # Table of Contents
 # ------------------------------------------------------------------------------
 
-# This reads the text file as a character vector
-commands_raw <- scan("commands.txt", what=character(), sep="\n")
-vec <- 1:length(commands)
-
-commands <- data.table(
-  Page = commands_raw[vec %% 6 == 1],
-  cat_id = commands_raw[vec %% 6 == 2],
-  Category = commands_raw[vec %% 6 == 3],
-  Example = commands_raw[vec %% 6 == 4],
-  stata_code = commands_raw[vec %% 6 == 5],
-  r_code = commands_raw[vec %% 6 == 0]
-)
-
-
 create_toc_container <- function(...) {
     div(class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4",
         # Logo and Menu Button 
@@ -127,10 +140,10 @@ htmltools::tagList(
 )
 }
 
-data_cats <- unique(commands[commands$Page == "data_cleaning", ][["Category"]])
+data_cats <- unique(commands[Page == "data_cleaning", ][["Category"]])
 data_table_toc <- create_toc_list(data_cats)
 
-fixest_cats <- unique(commands[commands$Page == "regression", ][["Category"]])
+fixest_cats <- unique(commands[Page == "regression", ][["Category"]])
 fixest_toc <- create_toc_list(fixest_cats)
 
 toc <- create_toc_container(
@@ -172,12 +185,19 @@ create_row = function(name, stata_code, r_code, subitem = FALSE) {
     )
   )
 }
+
 create_section = function(...) 
     div(class = "w-full max-w-5xl mx-auto py-12", ... )
 
 create_section_header = function(name) {
   div(class = "flex flex-row",
     h2(class = "inline-block font-bold text-2xl text-[#315450]", name)
+  )
+}
+
+create_section_notes = function(notes) {
+  div(class = "flex flex-row prose mt-6",
+      HTML(notes)
   )
 }
 
@@ -190,6 +210,7 @@ create_splash_body = function(...)
 make_cheatsheet <- function(cats) {
     cheatsheet <- NULL
 
+    # Examples
     for(i in 1:length(cats)) {
         cat <- cats[i]
         examples <- commands[Category == cat, ]
@@ -212,11 +233,17 @@ make_cheatsheet <- function(cats) {
         }
 
         id <- examples[1, ][["cat_id"]]
+        
+        # notes
+        note <- notes[Category == cat, ]
+        note_html <- NULL
+        if(nrow(note) > 0) note_html <- create_section_notes(note$note)
 
         cheatsheet <- c(cheatsheet, 
             htmltools::tagList(div(id = id,
                 create_section(
                     create_section_header(cat),
+                    note_html,
                     rows
                 )
             ))
