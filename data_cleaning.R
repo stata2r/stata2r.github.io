@@ -49,7 +49,10 @@ tutorial <- create_section(
         span(class = "font-semibold", "by,"), " the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with ", span(class = "font-semibold", "bysort.") 
         ),
         p(
-        span(class = "font-semibold", "data.table"), " uses these three simple components more flexibly than Stata does. The upshot is that you can can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
+            "Another tool you'll see regularly is ", span(class = "font-semibold", ".SD,"), " which refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have ", span(class = "font-semibold", "by"), " specified, but more often it's a way to perform column operations on lots of columns with one line of code. By default, ", span(class = "font-semibold", ".SD"), " refers to all columns not in ", span(class = "font-semibold", "by,"), " but you can specify the columns you want with the ", span(class = "font-semibold", ".SDcols"), " argument."
+        ),
+        p(
+        span(class = "font-semibold", "data.table"), " uses these simple components more flexibly than Stata does. The upshot is that you can can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
         ), 
         p("Finally,  ", span(class = "font-semibold", "data.table"), " is extremely fast. It has long set the standard for in-memory data wrangling ", a(href = "https://h2oai.github.io/db-benchmark", class = "text-emerald-800 font-semibold underline", "benchmarks"), " across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many ", span(class = "font-semibold", "data.table"), " operations can be done ",
         span(class = "italic", "in-place,"), " which means that it will affect ", span(class = "italic", "only the parts you're actually changing,"),
@@ -87,7 +90,6 @@ htmltools::tagList(
 # - calculations from within data.table
 # - Inexact/rolling merges?
 # Working with macros/.SD
-# merge
 # shift
 # fill and froll
 

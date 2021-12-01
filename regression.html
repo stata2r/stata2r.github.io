@@ -172,7 +172,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x, absorb(fe)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | fe, data)</code>
+                  <code class="language-r">feols(y ~ x | fe, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -183,7 +183,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x i.cat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat), data)</code>
+                  <code class="language-r">feols(y ~ x + i(cat), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -194,7 +194,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x ib1.cat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, ref = 1), data)</code>
+                  <code class="language-r">feols(y ~ x + i(cat, ref = 1), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -205,7 +205,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x i.cat#i.cat2</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, i.cat2), data)</code>
+                  <code class="language-r">feols(y ~ x + i(cat, i.cat2), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -216,7 +216,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x c.cont#i.cat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, cont), data)</code>
+                  <code class="language-r">feols(y ~ x + i(cat, cont), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -229,7 +229,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">vars = c(...) 
- feols(y ~ x + .[vars], data)</code>
+ feols(y ~ x + .[vars], dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -240,7 +240,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x age_*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + ..('age_'), data)</code>
+                  <code class="language-r">feols(y ~ x + ..('age_'), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -251,7 +251,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x v1-v4</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + v.[1:4], data)</code>
+                  <code class="language-r">feols(y ~ x + v.[1:4], dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -262,7 +262,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata"> </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + ..('regex_exp'), data)</code>
+                  <code class="language-r">feols(y ~ x + ..('regex_exp'), dat)</code>
                 </pre>
               </div>
             </div>
@@ -280,7 +280,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <code class="language-stata">reghdfe y x, vce(hc1)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, data, vcov = 'hc1')</code>
+                  <code class="language-r">feols(y ~ x, dat, vcov = 'hc1')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -292,8 +292,8 @@ document.getElementById("menu-hamburger").onclick = function () {
 ivreghdfe y x, bw(auto) robust</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, data, vcov = NW() ~ id + period)
-feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
+                  <code class="language-r">feols(y ~ x, dat, vcov = NW() ~ id + period)
+feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -304,7 +304,7 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata">reghdfe y x, cluster(clust)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, data, vcov = ~clust)</code>
+                  <code class="language-r">feols(y ~ x, dat, vcov = ~clust)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -315,7 +315,7 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata">reghdfe y x, cluster(clust1 clust2)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, data, vcov = ~clust1 + clust2)</code>
+                  <code class="language-r">feols(y ~ x, dat, vcov = ~clust1 + clust2)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -326,7 +326,7 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata"> </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, data, vcov = conley('lat', 'lon', 50))</code>
+                  <code class="language-r">feols(y ~ x, dat, vcov = conley('lat', 'lon', 50))</code>
                 </pre>
               </div>
             </div>
@@ -380,8 +380,8 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
  reg y x l1.x l2.x</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(df, ~unit + time) 
- feols(y ~ x + l(x, 1:2), df)</code>
+                  <code class="language-r">panel(dat, ~unit + time) 
+ feols(y ~ x + l(x, 1:2), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -393,8 +393,8 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
  reg y x f1.x f2.x</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(df, ~unit + time) 
- feols(y ~ x + l(x, -2:-1), df)</code>
+                  <code class="language-r">panel(dat, ~unit + time) 
+ feols(y ~ x + l(x, -2:-1), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -406,8 +406,8 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
  reg y x D.x</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(df, ~unit + time) 
- feols(y ~ x + d(x), df)</code>
+                  <code class="language-r">panel(dat, ~unit + time) 
+ feols(y ~ x + d(x), dat)</code>
                 </pre>
               </div>
             </div>
@@ -425,7 +425,7 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata">ivreghdfe 2sls y x (x1 = z1)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | x1 ~ z1, df)</code>
+                  <code class="language-r">feols(y ~ x | x1 ~ z1, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -436,7 +436,7 @@ feols(y ~ x, data, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata">ivreghdfe 2sls y x (x1 = z1), absorb(fe1)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | fe1 | x1 ~ z1, df)</code>
+                  <code class="language-r">feols(y ~ x | fe1 | x1 ~ z1, dat)</code>
                 </pre>
               </div>
             </div>
