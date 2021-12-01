@@ -89,7 +89,5 @@ htmltools::tagList(
 # "stuff that's easy in data.table but not in stata
 # - calculations from within data.table
 # - Inexact/rolling merges?
-# Working with macros/.SD
-# shift
-# fill and froll
+# - froll
 

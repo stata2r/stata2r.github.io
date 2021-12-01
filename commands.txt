@@ -79,15 +79,15 @@ data_cleaning
 modify
 Modify
 Create new variables within groups
-bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean example) \nforeach x of varlist dep_delay arr_delay air_time {\n    egen mean_`x'=mean(`x'), by(origin) \n    gen `x'_dm = `x` - mean_`x' \n    drop mean* \n}\n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysort carrier: g index_within_carrier = _n \negen origin_index = group(origin)
-dat[, mean_dep_delay := mean(dep_delay), by=origin] \ndat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] \n\n# Multiple grouped variables (manual demean example) \ndmcols = c('dep_delay', 'arr_delay', 'air_time') \ndat[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand\n  .SDcols = dmcols,\n  by=origin] \n\n\n# Some short-cut symbols \ndat[, rows_per_carrier := .N, by = carrier] \ndat[, index_within_carrier := .I, by = carrier] \ndat[, origin_index := .GRP, by = origin]
+bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean example) \nforeach x of varlist dep_delay arr_delay air_time {\n    egen mean_`x'=mean(`x'), by(origin) \n    gen `x'_dm = `x` - mean_`x' \n    drop mean* \n}\n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysort carrier: g index_within_carrier = _n \negen origin_index = group(origin)\n\n* Refer to other rows (uses generic data set)\nsort group time\nby group: generate growth = X/X[_n-1]\nby group: generate growth_since_first = X/X[1]
+dat[, mean_dep_delay := mean(dep_delay), by=origin] \ndat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] \n\n# Multiple grouped variables (manual demean example) \ndmcols = c('dep_delay', 'arr_delay', 'air_time') \ndat[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand\n  .SDcols = dmcols,\n  by=origin] \n\n\n# Some short-cut symbols \ndat[, rows_per_carrier := .N, by = carrier] \ndat[, index_within_carrier := .I, by = carrier] \ndat[, origin_index := .GRP, by = origin]\n\n# Refer to other rows (uses generic data set)\nsetorder(dat, group, time)\ndat[, growth := X/shift(X, 1), by = group]\ndat[, growth_since_first := X/first(X), by = group]
 
 data_cleaning
 modify
 Modify
 Modify existing variables
 replace tot_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1
-dat[, tot_delay := dep_delay + arr_delay] \n\n# Conditional modification \ndat[month==9, distance := distance + 1]\ndat[1, distance := 0]
+dat[, tot_delay := dep_delay + arr_delay] \n\n# Conditional modification \ndat[month==9, distance := distance + 1]\ndat[1, distance := 0]\n\n# Modify multiple variables at once with the same function\ncols = c('origin','dest')\ndat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), .SDcols = cols] # before R 4.1 you need function(x) instead of the \(x) shorthand
 
 data_cleaning
 modify
@@ -100,8 +100,15 @@ data_cleaning
 modify
 Modify
 Row-wise calculations
-* Pre-packaged row calculations: \negen tot_delay = rowtotal(*_delay) \n\n* Custom row calculations:\n* ?
-# Pre-packaged row calculations: \ndat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \ndat[, new_var := mapply(custom_func, var1, var2)] \ndat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option
+* Pre-packaged row calculations: \negen tot_delay = rowtotal(*_delay)\negen any_delay = rowfirst(*_delay)\n\n* Custom row calculations:\n* ?
+# Pre-packaged row calculations: \ndat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')]\ndat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \ndat[, new_var := mapply(custom_func, var1, var2)] \ndat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option\n\n
+
+data_cleaning
+modify
+Modify
+Fill in Time Series/Panel Data
+* Carry forward the last-known observation\nsort id time\nby id: replace x = x[_n-1] if missing(x)\n* Carry back the next-known observation\ngsort id -time\nby id: replace x = x[_n-1] if missing(x)
+# Carry forward the last-known observation\nsetorder(dat, id, time)\ndat[, x := nafill(x, type = 'locf'), by = id]\n# Carry back the next-known observation\ndat[, x := nafill(x, type = 'nocb'), by = id]
 
 data_cleaning
 collapse

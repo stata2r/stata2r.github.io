@@ -527,7 +527,12 @@ foreach x of varlist dep_delay arr_delay air_time {
 * Some short-cut symbols 
 bysort carrier: g rows_per_carrier = _N 
 bysort carrier: g index_within_carrier = _n 
-egen origin_index = group(origin)</code>
+egen origin_index = group(origin)
+
+* Refer to other rows (uses generic data set)
+sort group time
+by group: generate growth = X/X[_n-1]
+by group: generate growth_since_first = X/X[1]</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, mean_dep_delay := mean(dep_delay), by=origin] 
@@ -543,7 +548,12 @@ dat[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'
 # Some short-cut symbols 
 dat[, rows_per_carrier := .N, by = carrier] 
 dat[, index_within_carrier := .I, by = carrier] 
-dat[, origin_index := .GRP, by = origin]</code>
+dat[, origin_index := .GRP, by = origin]
+
+# Refer to other rows (uses generic data set)
+setorder(dat, group, time)
+dat[, growth := X/shift(X, 1), by = group]
+dat[, growth_since_first := X/first(X), by = group]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -562,7 +572,11 @@ replace distance = 0 in 1</code>
 
 # Conditional modification 
 dat[month==9, distance := distance + 1]
-dat[1, distance := 0]</code>
+dat[1, distance := 0]
+
+# Modify multiple variables at once with the same function
+cols = c('origin','dest')
+dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), .SDcols = cols] # before R 4.1 you need function(x) instead of the \(x) shorthand</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -598,18 +612,42 @@ dat[, flight_length2 := fcase(air_time&lt;=120, 'Short',
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Pre-packaged row calculations: 
-egen tot_delay = rowtotal(*_delay) 
+egen tot_delay = rowtotal(*_delay)
+egen any_delay = rowfirst(*_delay)
 
 * Custom row calculations:
 * ?</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Pre-packaged row calculations: 
-dat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')] 
+dat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')]
+dat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')] 
 
 # Custom row calculations: 
 dat[, new_var := mapply(custom_func, var1, var2)] 
-dat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option</code>
+dat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option
+
+</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Fill in Time Series/Panel Data</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Carry forward the last-known observation
+sort id time
+by id: replace x = x[_n-1] if missing(x)
+* Carry back the next-known observation
+gsort id -time
+by id: replace x = x[_n-1] if missing(x)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Carry forward the last-known observation
+setorder(dat, id, time)
+dat[, x := nafill(x, type = 'locf'), by = id]
+# Carry back the next-known observation
+dat[, x := nafill(x, type = 'nocb'), by = id]</code>
                 </pre>
               </div>
             </div>
@@ -768,7 +806,7 @@ dat_merged = merge(dat, dat2, by='dest', all.x = TRUE)
 # Keep matches and "using" non-matches (right join)
 dat_merged = merge(dat, dat2, by='dest', all.y = TRUE)
 
-dat_merged = merge(dat, dat2[, .(dest, lat, lon)], by='dest', all = TRUE
+dat_merged = merge(dat, dat2[, .(dest, lat, lon)], by='dest', all = TRUE)
 
 # Alternate merging approaches
 # Skip the setnames() and just merge with different variable names
@@ -783,19 +821,6 @@ dat_merged = merge(dat, dat2)
 dat_merged = dat[dat2, on='dest']
 # Keep only non-matches (anti-join)
 dat_merged = dat[!dat2, on='dest']</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Anti join</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* placeholder text</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># Continues from above 
-dat_merged = dat[!dat2, on='dest'] 
-dat_merged = dat[!dat2] # Requires keys</code>
                 </pre>
               </div>
             </div>
