@@ -511,7 +511,7 @@ dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Modify</h2>
               </div>
-              <div class="flex flex-row prose mt-6"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p></div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
@@ -562,8 +562,8 @@ egen origin_index = group(origin)
 
 * Refer to other rows (uses generic data set)
 sort group time
-by group: generate growth = X/X[_n-1]
-by group: generate growth_since_first = X/X[1]</code>
+by group: gen growth = X/X[_n-1]
+by group: gen growth_since_first = X/X[1]</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, mean_dep_delay := mean(dep_delay), by=origin] 
@@ -615,13 +615,13 @@ dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), .SDcols = cols] # before R
                   <h2 class="text-gray-600 text-lg font-semibold">Using Booleans &amp; control-flow</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">generate long_flight = air_time&gt;500 &amp; !missing(air_time) 
+                  <code class="language-stata">gen long_flight = air_time&gt;500 &amp; !missing(air_time) 
 
-generate flight_length = "Long" if air_time&gt;500 &amp; !missing(air_time)
+gen flight_length = "Long" if air_time&gt;500 &amp; !missing(air_time)
 replace flight_length = "Short" if missing(flight_length) &amp; !missing(air_time) 
 
 
-generate flight_length2 = "Long" if !missing(air_time) 
+gen flight_length2 = "Long" if !missing(air_time) 
 replace flight_length2 = "Med" if air_time&lt;=500  
 replace flight_length2 = "Short" if air_time&lt;=120</code>
                 </pre>
@@ -747,7 +747,7 @@ dat[month==10, .N] # Or: nrow(dat[month==10])</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Prepare to reshape long (this dataset only):
-generate id = _n 
+gen id = _n 
 rename (dep_delay arr_delay) (delay_dep delay_arr)
 
 reshape long delay_, i(id) j(delay_type) s</code>

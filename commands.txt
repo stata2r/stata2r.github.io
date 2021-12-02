@@ -79,7 +79,7 @@ data_cleaning
 modify
 Modify
 Create new variables within groups
-bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean example) \nforeach x of varlist dep_delay arr_delay air_time {\n    egen mean_`x'=mean(`x'), by(origin) \n    gen `x'_dm = `x` - mean_`x' \n    drop mean* \n}\n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysort carrier: g index_within_carrier = _n \negen origin_index = group(origin)\n\n* Refer to other rows (uses generic data set)\nsort group time\nby group: generate growth = X/X[_n-1]\nby group: generate growth_since_first = X/X[1]
+bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean example) \nforeach x of varlist dep_delay arr_delay air_time {\n    egen mean_`x'=mean(`x'), by(origin) \n    gen `x'_dm = `x` - mean_`x' \n    drop mean* \n}\n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysort carrier: g index_within_carrier = _n \negen origin_index = group(origin)\n\n* Refer to other rows (uses generic data set)\nsort group time\nby group: gen growth = X/X[_n-1]\nby group: gen growth_since_first = X/X[1]
 dat[, mean_dep_delay := mean(dep_delay), by=origin] \ndat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] \n\n# Multiple grouped variables (manual demean example) \ndmcols = c('dep_delay', 'arr_delay', 'air_time') \ndat[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand\n  .SDcols = dmcols,\n  by=origin] \n\n\n# Some short-cut symbols \ndat[, rows_per_carrier := .N, by = carrier] \ndat[, index_within_carrier := .I, by = carrier] \ndat[, origin_index := .GRP, by = origin]\n\n# Refer to other rows (uses generic data set)\nsetorder(dat, group, time)\ndat[, growth := X/shift(X, 1), by = group]\ndat[, growth_since_first := X/first(X), by = group]
 
 data_cleaning
@@ -93,7 +93,7 @@ data_cleaning
 modify
 Modify
 Using Booleans & control-flow
-generate long_flight = air_time>500 & !missing(air_time) \n\ngenerate flight_length = "Long" if air_time>500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time) \n\n\ngenerate flight_length2 = "Long" if !missing(air_time) \nreplace flight_length2 = "Med" if air_time<=500  \nreplace flight_length2 = "Short" if air_time<=120
+gen long_flight = air_time>500 & !missing(air_time) \n\ngen flight_length = "Long" if air_time>500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time) \n\n\ngen flight_length2 = "Long" if !missing(air_time) \nreplace flight_length2 = "Med" if air_time<=500  \nreplace flight_length2 = "Short" if air_time<=120
 dat[, long_flight := air_time>500] \n\ndat[, flight_length := fifelse(air_time>500, 'Long', 'Short')] \n# fifelse is like base-R ifelse, but (f)aster! \n\n# for nested ifelse, easier to use fcase \ndat[, flight_length2 := fcase(air_time<=120, 'Short', \n                            air_time<=500, 'Med', \n                            default = 'Long')]
 
 data_cleaning
@@ -128,7 +128,7 @@ data_cleaning
 reshape
 Reshape
 Reshape long
-* Prepare to reshape long (this dataset only):\ngenerate id = _n \nrename (dep_delay arr_delay) (delay_dep delay_arr)\n\nreshape long delay_, i(id) j(delay_type) s
+* Prepare to reshape long (this dataset only):\ngen id = _n \nrename (dep_delay arr_delay) (delay_dep delay_arr)\n\nreshape long delay_, i(id) j(delay_type) s
 # Prepare to reshape long (this dataset only):\ndat[, id := .I] \n\ndat1 = melt(dat, measure.vars = c('arr_delay','dep_delay'))\n# note id.vars would normally be specified too, but here we're treating each row as its own ID
 
 data_cleaning
