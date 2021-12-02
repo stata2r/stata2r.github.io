@@ -15,10 +15,21 @@ splash <- create_section(
     create_splash_body(
         p(
         a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"), 
-        " (by Matt Dowle, Arun Srinivasan ", span(class = "italic", "et. al."), ") is a package designed from the ground up in C++ to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the ",
-        span(class = "font-semibold", "Data I/O"), 
-        " section. Don't forget to load the package with ",
-            span(class = "font-semibold", "library(data.table)"), " first. Unlike in Stata, you have to re-load a package if you want to use it every time you start a new session."
+        " (by Matt Dowle, Arun Srinivasan ", span(class = "italic", "et. al."), ") is a package written in C to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the ",
+        a(href = "#data", class = "text-emerald-800 font-semibold underline", "Data I/O"), 
+        " section."),
+        p(
+            "Before continuing, make sure that you have installed ",
+        span(class = "font-semibold", "data.table"), ". This is a command you only have to run once, or as often as you want to update the package."
+        ),
+        p(
+            span(class = "font-semibold", "install.packages(data.table)")
+        ),
+        p(
+            "Once ", span(class = "font-semibold", "data.table"), " is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session."
+        ),
+        p(
+            span(class = "font-semibold", "library(data.table)")
         )
     )
 )
@@ -30,29 +41,19 @@ tutorial <- create_section(
     create_splash_body(
         p(
         "The ", a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"),
-        " package centers around ", span(class = "font-semibold", "data.tables"), ", which are highly efficient data frames that can be manipulated using the package's syntax."
+        " package centers around ", span(class = "font-semibold", "data.tables"), ", which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a ", span(class = "font-semibold", "data.table"), " called ", span(class = "font-semibold", "dat"),
+        " (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e. ", span(class = "font-semibold", "dat[]"), ". The three main components of a ", span(class = "font-semibold", "data.table"), " operation are ", span(class = "font-semibold", "i, j,"), " and ", span(class = "font-semibold", "by,"), " which go in the order ", span(class = "font-semibold", "dat[i, j, by]"), " (note you don't have to specify the latter two if you're not currently using them.)",
+        tags$ul(
+            tags$li(span(class = "font-semibold", "i,"), " the first component, selects the ",  span(class = "italic", "rows"), " of the ", span(class = "font-semibold", "data.table"), " that you'll be working with, like how in Stata the ", span(class = "font-semibold", "if"), " or ", span(class = "font-semibold", "in"), " command options let you refer to certain rows."), 
+            tags$li( span(class = "font-semibold", "j,"), " the second component, both selects and operates on the ",  span(class = "italic", "columns"), " of the ",  span(class = "font-semibold", "data.table,"), " like how in Stata the ", span(class = "font-semibold", "keep"), " or ", span(class = "font-semibold", "drop"), " commands select specific columns of your data, or how ", span(class = "font-semibold", "generate"), " or ", span(class = "font-semibold", "replace"), " create or modify columns in your data."),
+            tags$li(span(class = "font-semibold", "by,"), " the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with ", span(class = "font-semibold", "bysort."))
+            )
         ),
         p(
-        "If we have a ", span(class = "font-semibold", "data.table"), " called ", span(class = "font-semibold", "d"),
-        " then we can use and manipulate it by putting arguments into its square brackets, i.e. ", span(class = "font-semibold", "d[].")
+            "Like Stata, ", span(class = "font-semibold", "data.table"), "also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in ", span(class = "font-semibold", "data.table"), ". We'll see more examples in cheatsheat below, but we do want to quickly highlight one special symbol in particular: ", span(class = "font-semibold", ".SD"), " refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have ", span(class = "font-semibold", "by"), " specified, but more often it's a way to perform column operations on lots of columns with one line of code. By default, ", span(class = "font-semibold", ".SD"), " refers to all columns not in ", span(class = "font-semibold", "by,"), " but you can specify the columns you want with the ", span(class = "font-semibold", ".SDcols"), " argument. Again, we'll see a bunch of examples below."
         ),
         p(
-        "The three main components of a ", span(class = "font-semibold", "data.table"), " operation are ", span(class = "font-semibold", "i, j,"), " and ", span(class = "font-semibold", "by,"), " which go in the order ", span(class = "font-semibold", "d[i, j, by]"), " (note you don't have to specify the latter two if you're not currently using them.)"
-        ),
-        p(
-        span(class = "font-semibold", "i,"), " the first component, selects the ",  span(class = "italic", "rows"), " of the ", span(class = "font-semibold", "data.table"), " that you'll be working with, like how in Stata the ", span(class = "font-semibold", "if"), " or ", span(class = "font-semibold", "in"), " command options let you refer to certain rows."
-        ),
-        p(
-        span(class = "font-semibold", "j,"), " the second component, both selects and operates on the ",  span(class = "italic", "columns"), " of the ",  span(class = "font-semibold", "data.table,"), " like how in Stata the ", span(class = "font-semibold", "keep"), " or ", span(class = "font-semibold", "drop"), " commands select specific columns of your data, or how ", span(class = "font-semibold", "generate"), " or ", span(class = "font-semibold", "replace"), " create or modify columns in your data."
-        ),
-        p(
-        span(class = "font-semibold", "by,"), " the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with ", span(class = "font-semibold", "bysort.") 
-        ),
-        p(
-            "Another tool you'll see regularly is ", span(class = "font-semibold", ".SD,"), " which refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have ", span(class = "font-semibold", "by"), " specified, but more often it's a way to perform column operations on lots of columns with one line of code. By default, ", span(class = "font-semibold", ".SD"), " refers to all columns not in ", span(class = "font-semibold", "by,"), " but you can specify the columns you want with the ", span(class = "font-semibold", ".SDcols"), " argument."
-        ),
-        p(
-        span(class = "font-semibold", "data.table"), " uses these simple components more flexibly than Stata does. The upshot is that you can can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
+        span(class = "font-semibold", "data.table"), " uses these simple components very flexibly. The upshot is that you can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages or libraries to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
         ), 
         p("Finally,  ", span(class = "font-semibold", "data.table"), " is extremely fast. It has long set the standard for in-memory data wrangling ", a(href = "https://h2oai.github.io/db-benchmark", class = "text-emerald-800 font-semibold underline", "benchmarks"), " across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many ", span(class = "font-semibold", "data.table"), " operations can be done ",
         span(class = "italic", "in-place,"), " which means that it will affect ", span(class = "italic", "only the parts you're actually changing,"),
