@@ -1,4 +1,4 @@
 data_cleaning
-gen
-Generating and Summarizing Variables
+modify
+Modify
 <p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p>
