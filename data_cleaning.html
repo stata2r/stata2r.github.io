@@ -155,10 +155,19 @@ document.getElementById("menu-hamburger").onclick = function () {
               <p>
                 Before continuing, make sure that you have installed 
                 <span class="font-semibold">data.table</span>
-                . This is a command you only have to run once, or as often as you want to update the package.
+                . You only have to do this 
+                <span class="italic">once</span>
+                 (or as often as you want to update the package).
               </p>
               <p>
-                <span class="font-semibold">install.packages(data.table)</span>
+                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
+                  <pre class="language-r"># Install from CRAN (recommended) 
+install.packages(data.table)
+
+# Install the development version from GitHub (advanced) 
+# Requires Rtools and the remotes package 
+# remotes::install_github('Rdatatable/data.table')</pre>
+                </code>
               </p>
               <p>
                 Once 
@@ -166,7 +175,10 @@ document.getElementById("menu-hamburger").onclick = function () {
                  is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
-                <span class="font-semibold">library(data.table)</span>
+                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
+                  <pre class="language-r"># Load data.table into our current R session 
+library(data.table)</pre>
+                </code>
               </p>
             </div>
           </div>

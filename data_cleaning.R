@@ -20,16 +20,16 @@ splash <- create_section(
         " section."),
         p(
             "Before continuing, make sure that you have installed ",
-        span(class = "font-semibold", "data.table"), ". This is a command you only have to run once, or as often as you want to update the package."
+        span(class = "font-semibold", "data.table"), ". You only have to do this ", span(class = "italic", "once"), " (or as often as you want to update the package)."
         ),
         p(
-            span(class = "font-semibold", "install.packages(data.table)")
+            tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Install from CRAN (recommended) \ninstall.packages(data.table)\n\n# Install the development version from GitHub (advanced) \n# Requires Rtools and the remotes package \n# remotes::install_github('Rdatatable/data.table')"))
         ),
         p(
             "Once ", span(class = "font-semibold", "data.table"), " is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session."
         ),
         p(
-            span(class = "font-semibold", "library(data.table)")
+            tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Load data.table into our current R session \nlibrary(data.table)"))
         )
     )
 )
