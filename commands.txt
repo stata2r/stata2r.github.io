@@ -37,36 +37,36 @@ data_cleaning
 subset
 Subset
 Subset rows
-keep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeep if origin == "LGA"\nkeep if regex(origin,"LGA") \nkeep if inlist(month,3,4,11,12) \nkeep if inlist(origin,"JFK","LGA") \ndrop if month == 1
-dat1 = dat[1:200] \ndat1 = dat[day > 5 & day < 10] \ndat1 = dat[between(day,5,10)] # Or: dat1 = dat[day %in% 5:10] \ndat1 = dat[origin=='LGA']\ndat1 = dat[origin %like% 'LGA'] \ndat1 = dat[month %in% c(3,4,11,12)] \ndat1 = dat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings \ndat1 = dat[month!=1]
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep in 1/200 \nkeep if day > 5 & day < 10\nkeep if inrange(day,5,10)\nkeep if origin == "LGA"\nkeep if regex(origin,"LGA") \nkeep if inlist(month,3,4,11,12) \nkeep if inlist(origin,"JFK","LGA") \ndrop if month == 1
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[1:200] \n\ndat[1:200] \ndat[day > 5 & day < 10] \ndat[between(day,5,10)] # Or: dat[day %in% 5:10] \ndat[origin=='LGA']\ndat[origin %like% 'LGA'] \ndat[month %in% c(3,4,11,12)] \ndat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings \ndat[month!=1]
 
 data_cleaning
 subset
 Subset
 Subset columns
-keep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist)'\n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
-dat1 = dat[, .(month, day, carrier)] \ndat1 = dat[, list(month, day, carrier)] # same as above \ndat1 = dat[, c('month', 'day', 'carrier')] # ditto \n\ndat1 = dat[, year:arr_delay] \ndat1 = dat[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \ndat1 = dat[, .SD, .SDcols=is.integer] \n\ndat1 = dat[, -c('origin', 'dest')]\ndat1 = dat[, c('origin', 'dest') := NULL] # same effect as above, but in-place \n\n# Matches the two lines on the left:\ndat1 = dat[, .SD, .SDcols=!is.character]
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist)'\n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, .(month, day, carrier)] \n\ndat[, .(month, day, carrier)] \ndat[, list(month, day, carrier)] # same as above \ndat[, c('month', 'day', 'carrier')] # ditto \n\ndat[, year:arr_delay] \ndat[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \ndat[, .SD, .SDcols=is.integer] \n\ndat[, -c('origin', 'dest')]\ndat[, c('origin', 'dest') := NULL] # same, but drops columns in-place \n\n# Matches the two lines on the left:\ndat[, .SD, .SDcols=!is.character]
 
 data_cleaning
 subset
 Subset
 Subset rows and columns
-keep if origin == "LGA"\nkeep month day carrier
-# Matches the two lines on the left:\ndat1 = dat[origin=="LGA", .(month, day, carrier)]
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep if origin == "LGA"\nkeep month day carrier
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[origin=="LGA", .(month, day, carrier)] \n\n# Matches the two lines on the left:\ndat[origin=="LGA", .(month, day, carrier)]
 
 data_cleaning
 subset
 Subset
 Drop duplicates
-duplicates drop\nduplicates drop month day carrier, force\n
-dat1 = unique(dat) \ndat1 = unique(dat, by = c('month', 'day', 'carrier'))
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nduplicates drop\nduplicates drop month day carrier, force\n
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = unique(dat) \n\nunique(dat) \nunique(dat, by = c('month', 'day', 'carrier'))
 
 data_cleaning
 subset
 Subset
 Drop missing
-keep if !missing(dest)\n* Requires: ssc inst missings\nmissings dropvars, force \nmissings air_time dest, force \n
-dat1 = dat[!is.na(dest)]\n\ndat1 = na.omit(dat) \ndat1 = na.omit(dat, c('air_time', 'dest')) \ndat1 = dat[!is.na(air_time) & !is.na(dest)] # Same as above
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep if !missing(dest)\n* Requires: ssc inst missings\nmissings dropvars, force \nmissings air_time dest, force \n
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat = dat[!is.na(dest)] \n\ndat[!is.na(dest)]\n\nna.omit(dat) \nna.omit(dat, c('air_time', 'dest')) \ndat[!is.na(air_time) & !is.na(dest)] # Same as above
 
 data_cleaning
 modify

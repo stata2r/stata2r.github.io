@@ -394,12 +394,17 @@ names(dat) = gsub('arr_', 'arrival_', names(dat))</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Subset</h2>
               </div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Unlike Stata, multiple R datasets can exist in memory and subsetting operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. "dat1 = dat[origin=='LGA']".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep in 1/200 
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+keep in 1/200 
 keep if day &gt; 5 &amp; day &lt; 10
 keep if inrange(day,5,10)
 keep if origin == "LGA"
@@ -409,14 +414,18 @@ keep if inlist(origin,"JFK","LGA")
 drop if month == 1</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat1 = dat[1:200] 
-dat1 = dat[day &gt; 5 &amp; day &lt; 10] 
-dat1 = dat[between(day,5,10)] # Or: dat1 = dat[day %in% 5:10] 
-dat1 = dat[origin=='LGA']
-dat1 = dat[origin %like% 'LGA'] 
-dat1 = dat[month %in% c(3,4,11,12)] 
-dat1 = dat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings 
-dat1 = dat[month!=1]</code>
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = dat[1:200] 
+
+dat[1:200] 
+dat[day &gt; 5 &amp; day &lt; 10] 
+dat[between(day,5,10)] # Or: dat[day %in% 5:10] 
+dat[origin=='LGA']
+dat[origin %like% 'LGA'] 
+dat[month %in% c(3,4,11,12)] 
+dat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings 
+dat[month!=1]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -424,7 +433,11 @@ dat1 = dat[month!=1]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Subset columns</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep month day carrier 
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+keep month day carrier 
 
 
 
@@ -441,21 +454,25 @@ ds, has(type string)
 drop `r(varlist)'</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat1 = dat[, .(month, day, carrier)] 
-dat1 = dat[, list(month, day, carrier)] # same as above 
-dat1 = dat[, c('month', 'day', 'carrier')] # ditto 
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = dat[, .(month, day, carrier)] 
 
-dat1 = dat[, year:arr_delay] 
-dat1 = dat[, .SD, .SDcols=patterns('*_delay')] 
+dat[, .(month, day, carrier)] 
+dat[, list(month, day, carrier)] # same as above 
+dat[, c('month', 'day', 'carrier')] # ditto 
+
+dat[, year:arr_delay] 
+dat[, .SD, .SDcols=patterns('*_delay')] 
 
 # Matches the two lines on the left: 
-dat1 = dat[, .SD, .SDcols=is.integer] 
+dat[, .SD, .SDcols=is.integer] 
 
-dat1 = dat[, -c('origin', 'dest')]
-dat1 = dat[, c('origin', 'dest') := NULL] # same effect as above, but in-place 
+dat[, -c('origin', 'dest')]
+dat[, c('origin', 'dest') := NULL] # same, but drops columns in-place 
 
 # Matches the two lines on the left:
-dat1 = dat[, .SD, .SDcols=!is.character]</code>
+dat[, .SD, .SDcols=!is.character]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -463,12 +480,20 @@ dat1 = dat[, .SD, .SDcols=!is.character]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows and columns</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep if origin == "LGA"
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+keep if origin == "LGA"
 keep month day carrier</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># Matches the two lines on the left:
-dat1 = dat[origin=="LGA", .(month, day, carrier)]</code>
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = dat[origin=="LGA", .(month, day, carrier)] 
+
+# Matches the two lines on the left:
+dat[origin=="LGA", .(month, day, carrier)]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -476,13 +501,21 @@ dat1 = dat[origin=="LGA", .(month, day, carrier)]</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Drop duplicates</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">duplicates drop
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+duplicates drop
 duplicates drop month day carrier, force
 </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat1 = unique(dat) 
-dat1 = unique(dat, by = c('month', 'day', 'carrier'))</code>
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = unique(dat) 
+
+unique(dat) 
+unique(dat, by = c('month', 'day', 'carrier'))</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -490,18 +523,26 @@ dat1 = unique(dat, by = c('month', 'day', 'carrier'))</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Drop missing</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">keep if !missing(dest)
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+keep if !missing(dest)
 * Requires: ssc inst missings
 missings dropvars, force 
 missings air_time dest, force 
 </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat1 = dat[!is.na(dest)]
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat = dat[!is.na(dest)] 
 
-dat1 = na.omit(dat) 
-dat1 = na.omit(dat, c('air_time', 'dest')) 
-dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
+dat[!is.na(dest)]
+
+na.omit(dat) 
+na.omit(dat, c('air_time', 'dest')) 
+dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
                 </pre>
               </div>
             </div>
@@ -511,7 +552,7 @@ dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Modify</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
