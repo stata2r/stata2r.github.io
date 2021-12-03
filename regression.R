@@ -25,7 +25,7 @@ splash <- create_section(
             tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Install from CRAN (recommended) \ninstall.packages(fixest)\n\n# Install the development version from GitHub (advanced) \n# Requires Rtools and the remotes package \n# remotes::install_github('lrberge/fixest')"))
         ),
         p(
-            "Once ", span(class = "font-semibold", "fixest"), " is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session."
+            "Once ", span(class = "font-semibold", "fixest"), " is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session."
         ),
         p(
             tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Load fixest into our current R session \nlibrary(fixest)"))

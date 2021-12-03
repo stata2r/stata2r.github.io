@@ -172,7 +172,7 @@ install.packages(data.table)
               <p>
                 Once 
                 <span class="font-semibold">data.table</span>
-                 is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session.
+                 is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
                 <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
@@ -244,29 +244,29 @@ library(data.table)</pre>
                 </ul>
               </p>
               <p>
-                Like Stata, 
-                <span class="font-semibold">data.table</span>
-                also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in 
-                <span class="font-semibold">data.table</span>
-                . We'll see more examples in cheatsheat below, but we do want to quickly highlight one special symbol in particular: 
-                <span class="font-semibold">.SD</span>
-                 refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have 
-                <span class="font-semibold">by</span>
-                 specified, but more often it's a way to perform column operations on lots of columns with one line of code. By default, 
-                <span class="font-semibold">.SD</span>
-                 refers to all columns not in 
-                <span class="font-semibold">by,</span>
-                 but you can specify the columns you want with the 
-                <span class="font-semibold">.SDcols</span>
-                 argument. Again, we'll see a bunch of examples below.
-              </p>
-              <p>
                 <span class="font-semibold">data.table</span>
                  uses these simple components very flexibly. The upshot is that you can perform complicated operations in a single line of concise 
                 <span class="font-semibold">data.table</span>
                  code, which may have required multiple commands in other languages or libraries to accomplish. But even if you aren't doing anything fancy, 
                 <span class="font-semibold">data.table</span>
                  has you covered with a stable set of functions that can be deployed on virtually any data wrangling task.
+              </p>
+              <p>
+                Like Stata, 
+                <span class="font-semibold">data.table</span>
+                also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in 
+                <span class="font-semibold">data.table</span>
+                , while `.(x1, x2)` is short for `list(x1, x2)`. We'll see more examples in cheatsheat below. But we do want to quickly highlight one special symbol in particular: 
+                <span class="font-semibold">.SD</span>
+                 refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have 
+                <span class="font-semibold">by</span>
+                 specified, but more generally it's a way to perform operations on lots of columns with one line of code. By default, 
+                <span class="font-semibold">.SD</span>
+                 refers to all columns not in 
+                <span class="font-semibold">by,</span>
+                 but you can specify the columns you want with the 
+                <span class="font-semibold">.SDcols</span>
+                 argument. Again, we'll see a bunch of examples below.
               </p>
               <p>
                 Finally,  

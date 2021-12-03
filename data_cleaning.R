@@ -26,7 +26,7 @@ splash <- create_section(
             tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Install from CRAN (recommended) \ninstall.packages(data.table)\n\n# Install the development version from GitHub (advanced) \n# Requires Rtools and the remotes package \n# remotes::install_github('Rdatatable/data.table')"))
         ),
         p(
-            "Once ", span(class = "font-semibold", "data.table"), " is installed, don't forget to load it whenever you want to use it. Unlike in Stata, you have to re-load a package every time you start a new R session."
+            "Once ", span(class = "font-semibold", "data.table"), " is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session."
         ),
         p(
             tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Load data.table into our current R session \nlibrary(data.table)"))
@@ -50,11 +50,11 @@ tutorial <- create_section(
             )
         ),
         p(
-            "Like Stata, ", span(class = "font-semibold", "data.table"), "also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in ", span(class = "font-semibold", "data.table"), ". We'll see more examples in cheatsheat below, but we do want to quickly highlight one special symbol in particular: ", span(class = "font-semibold", ".SD"), " refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have ", span(class = "font-semibold", "by"), " specified, but more often it's a way to perform column operations on lots of columns with one line of code. By default, ", span(class = "font-semibold", ".SD"), " refers to all columns not in ", span(class = "font-semibold", "by,"), " but you can specify the columns you want with the ", span(class = "font-semibold", ".SDcols"), " argument. Again, we'll see a bunch of examples below."
-        ),
-        p(
         span(class = "font-semibold", "data.table"), " uses these simple components very flexibly. The upshot is that you can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages or libraries to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
         ), 
+        p(
+            "Like Stata, ", span(class = "font-semibold", "data.table"), "also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in ", span(class = "font-semibold", "data.table"), ", while `.(x1, x2)` is short for `list(x1, x2)`. We'll see more examples in cheatsheat below. But we do want to quickly highlight one special symbol in particular: ", span(class = "font-semibold", ".SD"), " refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have ", span(class = "font-semibold", "by"), " specified, but more generally it's a way to perform operations on lots of columns with one line of code. By default, ", span(class = "font-semibold", ".SD"), " refers to all columns not in ", span(class = "font-semibold", "by,"), " but you can specify the columns you want with the ", span(class = "font-semibold", ".SDcols"), " argument. Again, we'll see a bunch of examples below."
+        ),
         p("Finally,  ", span(class = "font-semibold", "data.table"), " is extremely fast. It has long set the standard for in-memory data wrangling ", a(href = "https://h2oai.github.io/db-benchmark", class = "text-emerald-800 font-semibold underline", "benchmarks"), " across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many ", span(class = "font-semibold", "data.table"), " operations can be done ",
         span(class = "italic", "in-place,"), " which means that it will affect ", span(class = "italic", "only the parts you're actually changing,"),
         " without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word",
