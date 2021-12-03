@@ -511,7 +511,7 @@ dat1 = dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Modify</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p></div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
@@ -571,10 +571,10 @@ dat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)]
 
 # Multiple grouped variables (manual demean example) 
 dmcols = c('dep_delay', 'arr_delay', 'air_time') 
-dat[, paste0(dmcols, '_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand
-  .SDcols = dmcols,
-  by=origin] 
-
+dat[,
+    paste0(dmcols,'_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand
+    .SDcols = dmcols,
+    by = origin] 
 
 # Some short-cut symbols 
 dat[, rows_per_carrier := .N, by = carrier] 
@@ -688,14 +688,59 @@ dat[, x := nafill(x, type = 'nocb'), by = id]</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Collapse</h2>
               </div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl">Unlike Stata, multiple datasets can exist in memory and R's collapse operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Collapse with no grouping</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+collapse (mean) dep_delay 
+collapse (mean) mean_ddel=dep_delay 
+
+collapse (mean) mean_ddel=dep_delay mean_adel=arr_delay 
+
+
+
+collapse (mean) *delay 
+
+ds, has(type long)
+collapse (mean) `r(varlist)'</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = dat[, mean(dep_delay)] 
+
+dat[, mean(dep_delay)] # scalar 
+dat[, .(mean_ddel=mean(dep_delay))] # data.table 
+
+dat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]
+dat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')] # same 
+dat[, lapply(.SD, mean), .SDcols=arr_delay:dep_delay] # ditto 
+
+dat[, lapply(.SD, mean), .SDcols=patterns('delay')] 
+
+ # Matches the two lines on the left
+dat[, lapply(.SD, mean), .SDcols=is.numeric]</code>
+                </pre>
+              </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse by group</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">collapse (mean) arr_delay, by(carrier) 
-collapse (mean) arr_delay, by(carrier month) 
+                  <code class="language-stata">* Reminder: You'll need to use preserve/restore
+* if you want to retain the original dataset in 
+* the examples that follow. 
+
+collapse (mean) arr_delay, by(carrier) 
 collapse (mean) mean_adel = arr_delay, by(carrier) 
+
+collapse (mean) arr_delay, by(carrier month) 
 
 collapse (min) min_d = distance (max) max_d = distance, by(origin) 
 
@@ -707,18 +752,30 @@ egen unique_dest = tag(dest origin)
 collapse (sum) unique_dest, by(origin)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat1 = dat[, .(arr_delay = mean(arr_delay)), by=carrier] 
-dat1 = dat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] 
-dat1 = dat[, .(mean_adel = mean(arr_delay)), by=carrier] 
+                  <code class="language-r"># Reminder: You'll need to (re)assign the 
+# collapsed dataset if you want to use it later,
+# e.g. dat1 = dat[, mean(dep_delay), by=origin] 
 
-dat1 = dat[, .(min_d = min(distance), max_d = max(distance)), by=origin] 
+dat[, .(arr_delay = mean(arr_delay)), by=carrier] 
+dat[, .(mean_adel = mean(arr_delay)), by=carrier] 
 
-dat1 = dat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] 
-dat1 = dat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] 
-dat1 = dat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same as above 
+dat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] 
+
+dat[, .(min_d = min(distance), max_d = max(distance)), by=origin] 
+
+dat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] 
+dat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] 
+dat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same as above 
 
 # Matches the final two lines on the left: 
-dat1 = dat[, .(unique_dest = uniqueN(dest)), by = origin]</code>
+dat[, .(unique_dest = uniqueN(dest)), by = origin] 
+
+# Bonus: You can also do complicated (grouped)
+# aggregations as part of a dcast (i.e. reshape 
+# wide) call. E.g. Get the min, mean and max
+# arrival and departure delays, by origin airport.
+dcast(dat, origin~., fun=list(min,mean,max),
+      value.var=c('arr_delay','dep_delay'))</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

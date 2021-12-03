@@ -1,4 +1,9 @@
 data_cleaning
 modify
 Modify
-<p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add <code>, na.rm=TRUE</code>  to remove these on the fly. E.g. <code>mean(var1, na.rm=TRUE)</code> or <code>lapply(.SD, mean, na.rm=TRUE)</code>.</p>
+<p>Note: In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p>
+
+data_cleaning
+collapse
+Collapse
+Unlike Stata, multiple datasets can exist in memory and R's collapse operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p>
