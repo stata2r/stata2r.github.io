@@ -564,7 +564,7 @@ gen first_letter = substr(origin, 1,1)
 gen flight_path = origin + '_' + dest 
 
 * These next operations don't have a great Stata 
-* equivalent, although you could implement a loop</code>
+* equivalent, although you could implement a loop.</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, dist_sq := distance^2] 
@@ -572,9 +572,12 @@ dat[, tot_delay := dep_delay + arr_delay]
 dat[, first_letter := substr(origin,1,1)] 
 dat[, flight_path := paste(origin, dest, sep='_')] 
 
-# Multiple variables can be created at the same time 
+# Multiple variables can be created at once.
+# These next few lines all do the same thing.
+# Just pick your favourite. 
 dat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] 
 dat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent 
+dat[, let(dist_sq=distance^2, dist_cu=distance^3)] # requires dev version of data.table
 
 # We can also chain back-to-back dat[...][...] 
 # (this holds for any data.table operation) 

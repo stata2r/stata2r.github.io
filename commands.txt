@@ -72,8 +72,8 @@ data_cleaning
 modify
 Modify
 Create new variables
-gen dist_sq = distance^2 \ngen tot_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest \n\n* These next operations don't have a great Stata \n* equivalent, although you could implement a loop
-dat[, dist_sq := distance^2] \ndat[, tot_delay := dep_delay + arr_delay] \ndat[, first_letter := substr(origin,1,1)] \ndat[, flight_path := paste(origin, dest, sep='_')] \n\n# Multiple variables can be created at the same time \ndat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] \ndat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent \n\n# We can also chain back-to-back dat[...][...] \n# (this holds for any data.table operation) \ndat[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]
+gen dist_sq = distance^2 \ngen tot_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest \n\n* These next operations don't have a great Stata \n* equivalent, although you could implement a loop.
+dat[, dist_sq := distance^2] \ndat[, tot_delay := dep_delay + arr_delay] \ndat[, first_letter := substr(origin,1,1)] \ndat[, flight_path := paste(origin, dest, sep='_')] \n\n# Multiple variables can be created at once.\n# These next few lines all do the same thing.\n# Just pick your favourite. \ndat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] \ndat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent \ndat[, let(dist_sq=distance^2, dist_cu=distance^3)] # requires dev version of data.table\n\n# We can also chain back-to-back dat[...][...] \n# (this holds for any data.table operation) \ndat[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]
 
 data_cleaning
 modify
