@@ -640,7 +640,12 @@ dat[, growth_since_first := X/first(X), by = group]</code>
 
 * Conditional modification 
 replace distance = distance + 1 if month==9
-replace distance = 0 in 1</code>
+replace distance = 0 in 1 
+
+* Modify multiple variables (same function) 
+foreach x of varlist origin dest {
+    replace `x' = `x' + " Airport"
+}</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, tot_delay := dep_delay + arr_delay] 
@@ -649,9 +654,14 @@ replace distance = 0 in 1</code>
 dat[month==9, distance := distance + 1]
 dat[1, distance := 0]
 
-# Modify multiple variables at once with the same function
+# Modify multiple variables (same function) 
 cols = c('origin','dest')
-dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), .SDcols = cols] # before R 4.1 you need function(x) instead of the \(x) shorthand</code>
+dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')),  ## Note: before R 4.1 you need function(x) instead of the \(x) shorthand 
+    .SDcols = cols] 
+
+# Aside: We don't normally use a gen -&gt; replace 
+# workflow in R, the way we do in Stata. See the 
+# 'Using Booleans &amp; control-flow' section below.</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -677,8 +687,8 @@ dat[, flight_length := fifelse(air_time&gt;500, 'Long', 'Short')]
 
 # for nested ifelse, easier to use fcase 
 dat[, flight_length2 := fcase(air_time&lt;=120, 'Short', 
-                            air_time&lt;=500, 'Med', 
-                            default = 'Long')]</code>
+                              air_time&lt;=500, 'Med', 
+                              default = 'Long')]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

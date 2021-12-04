@@ -86,15 +86,15 @@ data_cleaning
 modify
 Modify
 Modify existing variables
-replace tot_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1
-dat[, tot_delay := dep_delay + arr_delay] \n\n# Conditional modification \ndat[month==9, distance := distance + 1]\ndat[1, distance := 0]\n\n# Modify multiple variables at once with the same function\ncols = c('origin','dest')\ndat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), .SDcols = cols] # before R 4.1 you need function(x) instead of the \(x) shorthand
+replace tot_delay = dep_delay + arr_delay \n\n* Conditional modification \nreplace distance = distance + 1 if month==9\nreplace distance = 0 in 1 \n\n* Modify multiple variables (same function) \nforeach x of varlist origin dest {\n    replace `x' = `x' + " Airport"\n}
+dat[, tot_delay := dep_delay + arr_delay] \n\n# Conditional modification \ndat[month==9, distance := distance + 1]\ndat[1, distance := 0]\n\n# Modify multiple variables (same function) \ncols = c('origin','dest')\ndat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')),  ## Note: before R 4.1 you need function(x) instead of the \(x) shorthand \n    .SDcols = cols] \n\n# Aside: We don't normally use a gen -> replace \n# workflow in R, the way we do in Stata. See the \n# 'Using Booleans & control-flow' section below.
 
 data_cleaning
 modify
 Modify
 Using Booleans & control-flow
 gen long_flight = air_time>500 & !missing(air_time) \n\ngen flight_length = "Long" if air_time>500 & !missing(air_time)\nreplace flight_length = "Short" if missing(flight_length) & !missing(air_time) \n\n\ngen flight_length2 = "Long" if !missing(air_time) \nreplace flight_length2 = "Med" if air_time<=500  \nreplace flight_length2 = "Short" if air_time<=120
-dat[, long_flight := air_time>500] \n\ndat[, flight_length := fifelse(air_time>500, 'Long', 'Short')] \n# fifelse is like base-R ifelse, but (f)aster! \n\n# for nested ifelse, easier to use fcase \ndat[, flight_length2 := fcase(air_time<=120, 'Short', \n                            air_time<=500, 'Med', \n                            default = 'Long')]
+dat[, long_flight := air_time>500] \n\ndat[, flight_length := fifelse(air_time>500, 'Long', 'Short')] \n# fifelse is like base-R ifelse, but (f)aster! \n\n# for nested ifelse, easier to use fcase \ndat[, flight_length2 := fcase(air_time<=120, 'Short', \n                              air_time<=500, 'Med', \n                              default = 'Long')]
 
 data_cleaning
 modify
