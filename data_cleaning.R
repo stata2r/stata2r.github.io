@@ -23,13 +23,13 @@ splash <- create_section(
         span(class = "font-semibold", "data.table"), ". You only have to do this ", span(class = "italic", "once"), " (or as often as you want to update the package)."
         ),
         p(
-            tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Install from CRAN (recommended) \ninstall.packages(data.table)\n\n# Install the development version from GitHub (advanced) \n# Requires Rtools and the remotes package \n# remotes::install_github('Rdatatable/data.table')"))
+            code_block("language-r", "# Install from CRAN (recommended) \ninstall.packages(data.table)\n\n# Install the development version from GitHub (advanced) \n# Requires Rtools and the remotes package \n# remotes::install_github('Rdatatable/data.table')")
         ),
         p(
             "Once ", span(class = "font-semibold", "data.table"), " is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session."
         ),
         p(
-            tags$code(class="before:content-[''] after:content-['']", tags$pre(class="language-r", "# Load data.table into our current R session \nlibrary(data.table)"))
+            code_block("language-r", "# Load data.table into our current R session \nlibrary(data.table)")
         )
     )
 )
@@ -43,12 +43,14 @@ tutorial <- create_section(
         "The ", a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"),
         " package centers around ", span(class = "font-semibold", "data.tables"), ", which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a ", span(class = "font-semibold", "data.table"), " called ", span(class = "font-semibold", "dat"),
         " (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e. ", span(class = "font-semibold", "dat[]"), ". The three main components of a ", span(class = "font-semibold", "data.table"), " operation are ", span(class = "font-semibold", "i, j,"), " and ", span(class = "font-semibold", "by,"), " which go in the order ", span(class = "font-semibold", "dat[i, j, by]"), " (note you don't have to specify the latter two if you're not currently using them.)",
-        tags$ul(
+        
+        tags$ul(class="list-disc list-inside",
             tags$li(span(class = "font-semibold", "i,"), " the first component, selects the ",  span(class = "italic", "rows"), " of the ", span(class = "font-semibold", "data.table"), " that you'll be working with, like how in Stata the ", span(class = "font-semibold", "if"), " or ", span(class = "font-semibold", "in"), " command options let you refer to certain rows."), 
             tags$li( span(class = "font-semibold", "j,"), " the second component, both selects and operates on the ",  span(class = "italic", "columns"), " of the ",  span(class = "font-semibold", "data.table,"), " like how in Stata the ", span(class = "font-semibold", "keep"), " or ", span(class = "font-semibold", "drop"), " commands select specific columns of your data, or how ", span(class = "font-semibold", "generate"), " or ", span(class = "font-semibold", "replace"), " create or modify columns in your data."),
             tags$li(span(class = "font-semibold", "by,"), " the third component, gives the variable(s) designating groups that you'll be doing your calculations within, like how in Stata you can precede a command with ", span(class = "font-semibold", "bysort."))
             )
         ),
+        
         p(
         span(class = "font-semibold", "data.table"), " uses these simple components very flexibly. The upshot is that you can perform complicated operations in a single line of concise ", span(class = "font-semibold", "data.table"), " code, which may have required multiple commands in other languages or libraries to accomplish. But even if you aren't doing anything fancy, ", span(class = "font-semibold", "data.table"), " has you covered with a stable set of functions that can be deployed on virtually any data wrangling task."
         ), 

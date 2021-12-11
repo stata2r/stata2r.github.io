@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
 
 <!-- tailwindCSS -->
-<script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"></script>
+<script src="https://cdn.tailwindcss.com/3.0.0?plugins=forms@0.4.0,typography@0.5.0,aspect-ratio@0.4.0,line-clamp@0.3.0"></script>
 <style type="text/tailwindcss">
         pre[class*="language-"] {
             @apply bg-white px-4 py-4 lg:py-2 m-0;
@@ -62,7 +62,7 @@ document.getElementById("menu-hamburger").onclick = function () {
     document.getElementById("menu-x").classList.toggle("hidden");
 };
 }</script>
-        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
+        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
               <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
@@ -136,14 +136,14 @@ document.getElementById("menu-hamburger").onclick = function () {
           </div>
         </div>
         <div class="flex-grow min-h-screen py-16 pb-96">
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">
                 Running regressions using 
                 <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 italic font-semibold">fixest</a>
               </h1>
             </div>
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
                 <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a>
                  (by Laurent Berge) is a package designed from the ground up in C++ to make running regressions fast and incredibly easy. It provides in-built support for a variety of linear and non-linear models, as well as regression tables and plotting methods.
@@ -178,11 +178,11 @@ library(fixest)</pre>
               </p>
             </div>
           </div>
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Introduction to fixest</h1>
             </div>
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
                 The 
                 <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a>
@@ -220,7 +220,7 @@ library(fixest)</pre>
                 with the
                 <span class="font-semibold">vcov</span>
                 option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. 
-                You even get some stuff that's rather tricky in Stata, automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
+                You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
               </p>
               <p>
                 Using
@@ -231,13 +231,13 @@ library(fixest)</pre>
               </p>
             </div>
           </div>
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Cheat Sheet</h1>
             </div>
           </div>
           <div id="formula">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula Creation</h2>
               </div>
@@ -345,7 +345,7 @@ library(fixest)</pre>
             </div>
           </div>
           <div id="std_errors">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Standard Errors</h2>
               </div>
@@ -409,7 +409,7 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
             </div>
           </div>
           <div id="post">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Postestimation</h2>
               </div>
@@ -444,7 +444,7 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
             </div>
           </div>
           <div id="panel">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel Data</h2>
               </div>
@@ -490,7 +490,7 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
             </div>
           </div>
           <div id="iv">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Instrumental Variables</h2>
               </div>

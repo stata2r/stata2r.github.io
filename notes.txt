@@ -1,7 +1,7 @@
 data_cleaning
 subset
 Subset
-<p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and subsetting operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. "dat1 = dat[origin=='LGA']".</p>
+<p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and <span class="font-semibold">subsetting operations won't overwrite your original dataset</span>. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. `dat1 = dat[origin=='LGA']`.</p>
 
 data_cleaning
 modify

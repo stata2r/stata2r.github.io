@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
 
 <!-- tailwindCSS -->
-<script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"></script>
+<script src="https://cdn.tailwindcss.com/3.0.0?plugins=forms@0.4.0,typography@0.5.0,aspect-ratio@0.4.0,line-clamp@0.3.0"></script>
 <style type="text/tailwindcss">
         pre[class*="language-"] {
             @apply bg-white px-4 py-4 lg:py-2 m-0;
@@ -62,7 +62,7 @@ document.getElementById("menu-hamburger").onclick = function () {
     document.getElementById("menu-x").classList.toggle("hidden");
 };
 }</script>
-        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
+        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
               <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
@@ -107,7 +107,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Combining Data Sets</a>
                 </li>
               </ul>
             </div>
@@ -136,8 +136,8 @@ document.getElementById("menu-hamburger").onclick = function () {
           </div>
         </div>
         <div class="flex-grow min-h-screen py-16 pb-96">
-          <div class="w-full max-w-5xl mx-auto py-12">
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+          <div class="w-full mx-auto py-12">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>The goal of this site is to provide a simple 'on-ramp' to R for Stata users. There are two pages (✌️📄) on this site:</p>
               <ol type="1" class="list-decimal list-inside pl-2">
                 <li>

@@ -50,7 +50,7 @@ head = function(title){
       tags$script(src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-r.js"),
       tags$script(src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"),
       HTML("\n<!-- tailwindCSS -->"),
-      tags$script(src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"),
+      tags$script(src="https://cdn.tailwindcss.com/3.0.0?plugins=forms@0.4.0,typography@0.5.0,aspect-ratio@0.4.0,line-clamp@0.3.0"),
       tags$style(type="text/tailwindcss", r"(
         pre[class*="language-"] {
             @apply bg-white px-4 py-4 lg:py-2 m-0;
@@ -90,7 +90,7 @@ tags$body(
 # ------------------------------------------------------------------------------
 
 create_toc_container <- function(...) {
-    div(class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4",
+    div(class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4",
         # Logo and Menu Button 
         div(class = "flex flex-row space-between items-center pb-4",
             a(
@@ -165,9 +165,15 @@ toc <- create_toc_container(
 # Cheat Sheet
 # ------------------------------------------------------------------------------
 
+code_block <- function(language, code) {
+  pre(
+    class = "bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4",
+    code(class = language, code)
+  )
+}
+
 # Row of Code
 create_row = function(name, stata_code, r_code, subitem = FALSE) {
-  code_class = glue::glue("bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4")
 
   h2_class = ifelse(subitem, "lg:ml-4 italic", "font-semibold")
 
@@ -175,19 +181,13 @@ create_row = function(name, stata_code, r_code, subitem = FALSE) {
 
   div(class = "grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8",
     div(class="xl:col-span-2", h2(class = h2_class, name)),
-    pre(
-      class = code_class,
-      code(class = "language-stata", stata_code)
-    ),
-    pre(
-      class = code_class,
-      code(class = "language-r", r_code)
-    )
+    code_block("language-stata", stata_code),
+    code_block("language-r", r_code)
   )
 }
 
 create_section = function(...) 
-    div(class = "w-full max-w-5xl mx-auto py-12", ... )
+    div(class = "w-full mx-auto py-12", ... )
 
 create_section_header = function(name) {
   div(class = "flex flex-row",
@@ -196,7 +196,7 @@ create_section_header = function(name) {
 }
 
 create_section_notes = function(notes) {
-  div(class = "flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl",
+  div(class = "flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl",
       HTML(notes)
   )
 }
@@ -205,7 +205,7 @@ create_splash_header = function(...)
   div(class="pb-4 border-b-2 border-gray-600", ...)
 
 create_splash_body = function(...) 
-  div(class = "max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl", ...)
+  div(class = "flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl", ...)
 
 make_cheatsheet <- function(cats) {
     cheatsheet <- NULL

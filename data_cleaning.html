@@ -16,7 +16,7 @@
 <script src="https://cdn.jsdelivr.net/npm/prismjs@1.25.0/components/prism-stan.js"></script>
 
 <!-- tailwindCSS -->
-<script src="https://cdn-tailwindcss.vercel.app/3.0.0-alpha.2?plugins=forms@0.4.0-alpha.2,typography@0.5.0-alpha.3,aspect-ratio@0.3.0,line-clamp@0.2.2"></script>
+<script src="https://cdn.tailwindcss.com/3.0.0?plugins=forms@0.4.0,typography@0.5.0,aspect-ratio@0.4.0,line-clamp@0.3.0"></script>
 <style type="text/tailwindcss">
         pre[class*="language-"] {
             @apply bg-white px-4 py-4 lg:py-2 m-0;
@@ -62,7 +62,7 @@ document.getElementById("menu-hamburger").onclick = function () {
     document.getElementById("menu-x").classList.toggle("hidden");
 };
 }</script>
-        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[24rem] sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
+        <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
               <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
@@ -136,14 +136,14 @@ document.getElementById("menu-hamburger").onclick = function () {
           </div>
         </div>
         <div class="flex-grow min-h-screen py-16 pb-96">
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">
                 Cleaning data with 
                 <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 italic font-semibold">data.table</a>
               </h1>
             </div>
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
                 <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a>
                  (by Matt Dowle, Arun Srinivasan 
@@ -160,14 +160,14 @@ document.getElementById("menu-hamburger").onclick = function () {
                  (or as often as you want to update the package).
               </p>
               <p>
-                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
-                  <pre class="language-r"># Install from CRAN (recommended) 
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Install from CRAN (recommended) 
 install.packages(data.table)
 
 # Install the development version from GitHub (advanced) 
 # Requires Rtools and the remotes package 
-# remotes::install_github('Rdatatable/data.table')</pre>
-                </code>
+# remotes::install_github('Rdatatable/data.table')</code>
+                </pre>
               </p>
               <p>
                 Once 
@@ -175,18 +175,18 @@ install.packages(data.table)
                  is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
-                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
-                  <pre class="language-r"># Load data.table into our current R session 
-library(data.table)</pre>
-                </code>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Load data.table into our current R session 
+library(data.table)</code>
+                </pre>
               </p>
             </div>
           </div>
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Introduction to data.table</h1>
             </div>
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
                 The 
                 <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a>
@@ -207,7 +207,7 @@ library(data.table)</pre>
                  which go in the order 
                 <span class="font-semibold">dat[i, j, by]</span>
                  (note you don't have to specify the latter two if you're not currently using them.)
-                <ul>
+                <ul class="list-disc list-inside">
                   <li>
                     <span class="font-semibold">i,</span>
                      the first component, selects the 
@@ -287,13 +287,13 @@ library(data.table)</pre>
               </p>
             </div>
           </div>
-          <div class="w-full max-w-5xl mx-auto py-12">
+          <div class="w-full mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Cheat Sheet</h1>
             </div>
           </div>
           <div id="data">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Data I/O</h2>
               </div>
@@ -332,7 +332,7 @@ haven::write_dta(dat, 'filename.dta')</code>
             </div>
           </div>
           <div id="sort">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Sort &amp; rename</h2>
               </div>
@@ -386,11 +386,11 @@ setnames(dat, gsub('arr_', 'arrival_', names(dat)))</code>
             </div>
           </div>
           <div id="subset">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Subset</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and subsetting operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. "dat1 = dat[origin=='LGA']".</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and <span class="font-semibold">subsetting operations won't overwrite your original dataset</span>. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. `dat1 = dat[origin=='LGA']`.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
@@ -544,11 +544,11 @@ dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
             </div>
           </div>
           <div id="modify">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Modify</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
@@ -765,11 +765,11 @@ dat[, x := nafill(x, type = 'nocb'), by = id]</code>
             </div>
           </div>
           <div id="collapse">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Collapse</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse with no grouping</h2>
@@ -879,7 +879,7 @@ dat[, .N, by = origin])</code>
             </div>
           </div>
           <div id="reshape">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Reshape</h2>
               </div>
@@ -920,7 +920,7 @@ dat2 = dcast(dat1, id ~ variable)
             </div>
           </div>
           <div id="merge">
-            <div class="w-full max-w-5xl mx-auto py-12">
+            <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Combining Data Sets</h2>
               </div>
