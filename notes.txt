@@ -12,3 +12,9 @@ data_cleaning
 collapse
 Collapse
 <p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p>
+
+regression
+panel
+Panel Data
+<p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.
+

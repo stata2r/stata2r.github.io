@@ -448,6 +448,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel Data</h2>
               </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>
