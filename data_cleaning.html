@@ -107,7 +107,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Combining Data Sets</a>
                 </li>
               </ul>
             </div>
@@ -343,7 +343,7 @@ haven::write_dta(dat, 'filename.dta')</code>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">sort air_time 
 sort air_time dest 
-sort -air_time
+gsort -air_time
 
 </code>
                 </pre>
@@ -373,8 +373,6 @@ setorder(dat, -air_time)</code>
 
 rename arr_delay arrival_delay 
 rename (carrier origin) (carrier_code origin_code) 
-
-
 rename arr_* arrival_*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
@@ -382,9 +380,7 @@ rename arr_* arrival_*</code>
 
 setnames(dat, 'arr_delay', 'arrival_delay') 
 setnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) 
-
-# Easiest just to reassign names using gsub 
-names(dat) = gsub('arr_', 'arrival_', names(dat))</code>
+setnames(dat, gsub('arr_', 'arrival_', names(dat)))</code>
                 </pre>
               </div>
             </div>
@@ -394,7 +390,7 @@ names(dat) = gsub('arr_', 'arrival_', names(dat))</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Subset</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>Unlike Stata, multiple R datasets can exist in memory and subsetting operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. "dat1 = dat[origin=='LGA']".</p></div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and subsetting operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. "dat1 = dat[origin=='LGA']".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
@@ -541,7 +537,7 @@ missings air_time dest, force
 dat[!is.na(dest)]
 
 na.omit(dat) 
-na.omit(dat, c('air_time', 'dest')) 
+na.omit(dat, cols = c('air_time', 'dest')) 
 dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
                 </pre>
               </div>
@@ -629,6 +625,37 @@ dat[, origin_index := .GRP, by = origin]
 setorder(dat, group, time)
 dat[, growth := X/shift(X, 1), by = group]
 dat[, growth_since_first := X/first(X), by = group]</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Work With Dates</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Give ourselves a date variable to work with
+tostring year month day, replace
+gen day_string = year + "/" + month + "/" + day
+gen date = date(day_string, "YMD")
+format date %td
+
+* Pull out year (quarter, month, etc. work too)
+gen the_year = year(date)
+
+* Shift forward 7 days
+replace date = date + 7</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Make ourselves a date variable
+dat[, day_string := paste(year, month, day, sep = '/')]
+dat[, date := as.IDate(day_string)]
+
+
+
+# Pull out year (quarter, month, etc. work too)
+dat[, the_year := year(date)]
+
+# Shift forward 7 days
+dat[, date := date + 7]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -742,7 +769,7 @@ dat[, x := nafill(x, type = 'nocb'), by = id]</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Collapse</h2>
               </div>
-              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl">Unlike Stata, multiple datasets can exist in memory and R's collapse operations won't overwrite your original dataset. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
+              <div class="flex flex-row prose mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse with no grouping</h2>
@@ -769,8 +796,8 @@ collapse (mean) `r(varlist)'</code>
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[, mean(dep_delay)] 
 
-dat[, mean(dep_delay)] # scalar 
-dat[, .(mean_ddel=mean(dep_delay))] # data.table 
+dat[, mean(dep_delay)] # Just give me the number! As a scalar. 
+dat[, .(mean_ddel=mean(dep_delay))] # Give me back a data.table (note the .() here, that's what does it) 
 
 dat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]
 dat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')] # same 
@@ -838,11 +865,15 @@ dcast(dat, origin~., fun=list(min,mean,max),
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">count
-count if month==10</code>
+count if month==10
+* Count rows by group:
+tabulate origin</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, .N] # Or: nrow(dat) 
-dat[month==10, .N] # Or: nrow(dat[month==10])</code>
+dat[month==10, .N] # Or: nrow(dat[month==10]
+# Count rows by group:
+dat[, .N, by = origin])</code>
                 </pre>
               </div>
             </div>
@@ -891,7 +922,7 @@ dat2 = dcast(dat1, id ~ variable)
           <div id="merge">
             <div class="w-full max-w-5xl mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Merge</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Combining Data Sets</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
@@ -963,6 +994,21 @@ dat_merged = merge(dat, dat2)
 dat_merged = dat[dat2, on='dest']
 # Keep only non-matches (anti-join)
 dat_merged = dat[!dat2, on='dest']</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Appending Data</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* This just appends the flights data to itself
+save data_to_append.dta, replace
+append using data_to_append.dta</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># This just appends the flights data to itself
+rbindlist(list(dat, dat)) # Or rbind(dat, dat)
+# The fill = TRUE option is handy if the one data set has columns the other doesn't</code>
                 </pre>
               </div>
             </div>

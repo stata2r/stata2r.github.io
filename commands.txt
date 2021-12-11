@@ -16,7 +16,7 @@ data_cleaning
 sort
 Sort & rename
 Sort rows
-sort air_time \nsort air_time dest \nsort -air_time\n\n
+sort air_time \nsort air_time dest \ngsort -air_time\n\n
 setorder(dat, air_time) \nsetorder(dat, air_time, dest) \nsetorder(dat, -air_time)
 
 data_cleaning
@@ -30,8 +30,8 @@ data_cleaning
 sort
 Sort & rename
 Rename columns
-* rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code origin_code) \n\n\nrename arr_* arrival_*
-# setnames(dat, old = ..., new = ...) \n\nsetnames(dat, 'arr_delay', 'arrival_delay') \nsetnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) \n\n# Easiest just to reassign names using gsub \nnames(dat) = gsub('arr_', 'arrival_', names(dat))
+* rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code origin_code) \nrename arr_* arrival_*
+# setnames(dat, old = ..., new = ...) \n\nsetnames(dat, 'arr_delay', 'arrival_delay') \nsetnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) \nsetnames(dat, gsub('arr_', 'arrival_', names(dat)))
 
 data_cleaning
 subset
@@ -66,7 +66,7 @@ subset
 Subset
 Drop missing
 * Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep if !missing(dest)\n* Requires: ssc inst missings\nmissings dropvars, force \nmissings air_time dest, force \n
-# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat = dat[!is.na(dest)] \n\ndat[!is.na(dest)]\n\nna.omit(dat) \nna.omit(dat, c('air_time', 'dest')) \ndat[!is.na(air_time) & !is.na(dest)] # Same as above
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat = dat[!is.na(dest)] \n\ndat[!is.na(dest)]\n\nna.omit(dat) \nna.omit(dat, cols = c('air_time', 'dest')) \ndat[!is.na(air_time) & !is.na(dest)] # Same as above
 
 data_cleaning
 modify
@@ -81,6 +81,14 @@ Modify
 Create new variables within groups
 bysort origin: egen mean_dep_delay = mean(dep_delay) \nbysort origin dest: egen mean_dep_delay2 = mean(dep_delay) \n\n* Multiple grouped variables (manual demean example) \nforeach x of varlist dep_delay arr_delay air_time {\n    egen mean_`x'=mean(`x'), by(origin) \n    gen `x'_dm = `x` - mean_`x' \n    drop mean* \n}\n\n* Some short-cut symbols \nbysort carrier: g rows_per_carrier = _N \nbysort carrier: g index_within_carrier = _n \negen origin_index = group(origin)\n\n* Refer to other rows (uses generic data set)\nsort group time\nby group: gen growth = X/X[_n-1]\nby group: gen growth_since_first = X/X[1]
 dat[, mean_dep_delay := mean(dep_delay), by=origin] \ndat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] \n\n# Multiple grouped variables (manual demean example) \ndmcols = c('dep_delay', 'arr_delay', 'air_time') \ndat[,\n    paste0(dmcols,'_dm') := lapply(.SD, \(x) x-mean(x)),  # before R 4.1 you'll need function(x) instead of the \(x) shorthand\n    .SDcols = dmcols,\n    by = origin] \n\n# Some short-cut symbols \ndat[, rows_per_carrier := .N, by = carrier] \ndat[, index_within_carrier := .I, by = carrier] \ndat[, origin_index := .GRP, by = origin]\n\n# Refer to other rows (uses generic data set)\nsetorder(dat, group, time)\ndat[, growth := X/shift(X, 1), by = group]\ndat[, growth_since_first := X/first(X), by = group]
+
+data_cleaning
+modify
+Modify
+Work With Dates
+* Give ourselves a date variable to work with\ntostring year month day, replace\ngen day_string = year + "/" + month + "/" + day\ngen date = date(day_string, "YMD")\nformat date %td\n\n* Pull out year (quarter, month, etc. work too)\ngen the_year = year(date)\n\n* Shift forward 7 days\nreplace date = date + 7
+# Make ourselves a date variable\ndat[, day_string := paste(year, month, day, sep = '/')]\ndat[, date := as.IDate(day_string)]\n\n\n\n# Pull out year (quarter, month, etc. work too)\ndat[, the_year := year(date)]\n\n# Shift forward 7 days\ndat[, date := date + 7]
+
 
 data_cleaning
 modify
@@ -115,7 +123,7 @@ collapse
 Collapse
 Collapse with no grouping
 * Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\ncollapse (mean) dep_delay \ncollapse (mean) mean_ddel=dep_delay \n\ncollapse (mean) mean_ddel=dep_delay mean_adel=arr_delay \n\n\n\ncollapse (mean) *delay \n\nds, has(type long)\ncollapse (mean) `r(varlist)'
-# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, mean(dep_delay)] \n\ndat[, mean(dep_delay)] # scalar \ndat[, .(mean_ddel=mean(dep_delay))] # data.table \n\ndat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]\ndat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')] # same \ndat[, lapply(.SD, mean), .SDcols=arr_delay:dep_delay] # ditto \n\ndat[, lapply(.SD, mean), .SDcols=patterns('delay')] \n\n # Matches the two lines on the left\ndat[, lapply(.SD, mean), .SDcols=is.numeric]
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, mean(dep_delay)] \n\ndat[, mean(dep_delay)] # Just give me the number! As a scalar. \ndat[, .(mean_ddel=mean(dep_delay))] # Give me back a data.table (note the .() here, that's what does it) \n\ndat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]\ndat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')] # same \ndat[, lapply(.SD, mean), .SDcols=arr_delay:dep_delay] # ditto \n\ndat[, lapply(.SD, mean), .SDcols=patterns('delay')] \n\n # Matches the two lines on the left\ndat[, lapply(.SD, mean), .SDcols=is.numeric]
 
 data_cleaning
 collapse
@@ -128,8 +136,8 @@ data_cleaning
 collapse
 Collapse
 Count rows
-count\ncount if month==10
-dat[, .N] # Or: nrow(dat) \ndat[month==10, .N] # Or: nrow(dat[month==10])
+count\ncount if month==10\n* Count rows by group:\ntabulate origin
+dat[, .N] # Or: nrow(dat) \ndat[month==10, .N] # Or: nrow(dat[month==10]\n# Count rows by group:\ndat[, .N, by = origin])
 
 data_cleaning
 reshape
@@ -147,17 +155,24 @@ Reshape wide
 
 data_cleaning
 merge
-Merge
+Combining Data Sets
 Import secondary (airport) dataset
 import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear\nsave dat2.dta, replace\nimport delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
 dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")
 
 data_cleaning
 merge
-Merge
+Combining Data Sets
 Various Merges
 rename dest faa\n* Only keep matches (inner join)\nmerge m:1 faa using dat2.dta, keep(3) nogen\n* Keep all observations (full join)\nmerge m:1 faa using dat2.dta, nogen\n* Keep matches and "master" non-matches (left join)\nmerge m:1 faa using dat2.dta, keep(1 3) nogen\n* Keep matches and "using" non-matches (right join)\nmerge m:1 faa using dat2.dta, keep(2 3) nogen\n\nmerge m:1 faa using dat2.dta, keepusing(lat lon)\n\n\n\n\n\n\n\n\n\n\n\n\n* Keep only non-matches (anti-join)\nmerge m:1 faa using dat2.dta, keep(1 2) nogen
 setnames(dat, 'dest', 'faa')\n# Only keep matches (inner join)\ndat_merged = merge(dat, dat2, by='dest')\n# Keep all observations (full join)\ndat_merged = merge(dat, dat2, by='dest', all = TRUE)\n# Keep matches and "master" non-matches (left join)\ndat_merged = merge(dat, dat2, by='dest', all.x = TRUE)\n# Keep matches and "using" non-matches (right join)\ndat_merged = merge(dat, dat2, by='dest', all.y = TRUE)\n\ndat_merged = merge(dat, dat2[, .(dest, lat, lon)], by='dest', all = TRUE)\n\n# Alternate merging approaches\n# Skip the setnames() and just merge with different variable names\ndat_merged = merge(dat, dat2, by.x='dest', by.y='faa') \n\n# If using keys, don't need 'by'/'on' (and faster) \nsetkey(dat, dest); setkey(dat2, dest) \ndat_merged = merge(dat, dat2)\n\n# Alternate, more data-tably syntax\n# That is also faster for some applications\ndat_merged = dat[dat2, on='dest']\n# Keep only non-matches (anti-join)\ndat_merged = dat[!dat2, on='dest']
+
+data_cleaning
+merge
+Combining Data Sets
+Appending Data
+* This just appends the flights data to itself\nsave data_to_append.dta, replace\nappend using data_to_append.dta
+# This just appends the flights data to itself\nrbindlist(list(dat, dat)) # Or rbind(dat, dat)\n# The fill = TRUE option is handy if the one data set has columns the other doesn't
 
 
 regression

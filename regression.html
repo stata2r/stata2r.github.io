@@ -107,7 +107,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Combining Data Sets</a>
                 </li>
               </ul>
             </div>
@@ -182,7 +182,52 @@ library(fixest)</pre>
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Introduction to fixest</h1>
             </div>
-            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl"></div>
+            <div class="max-w-prose prose pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+              <p>
+                The 
+                <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a>
+                 package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. 
+                While the package certainly doesn't cover 
+                <span class="italic">every</span>
+                 model that exists, there is a non-negligible subset of Stata users, 
+                for whom every model they've ever needed to run is covered by 
+                <span class="font-semibold">fixest.</span>
+              </p>
+              <p>
+                This includes regular ol' linear regression, as well as instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like, all in the
+                <span class="font-semibold">feols</span>
+                function. 
+                <span class="font-semibold">fixest</span>
+                isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in
+                <span class="font-semibold">feglm</span>
+                and
+                <span class="font-semibold">fepois.</span>
+              </p>
+              <p>
+                <span class="font-semibold">fixest.</span>
+                covers all of this while being very fast. If you felt a speed boost going from Stata's
+                <span class="font-semibold">xtreg</span>
+                to
+                <span class="font-semibold">reghdfe</span>
+                get ready for another significant improvement when moving to
+                <span class="font-semibold">fixest.</span>
+              </p>
+              <p>
+                You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in
+                <span class="font-semibold">fixest.</span>
+                with the
+                <span class="font-semibold">vcov</span>
+                option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, and the choice of reference for categorical variables are all made easy. 
+                You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, or Conley standard errors.
+              </p>
+              <p>
+                Using
+                <span class="font-semibold">fixest</span>
+                for regression starts with writing a formula. While there are plenty of bells and whistles to add, at its core regression formulas take the form
+                <span class="font-semibold">y ~ x1 + x2 | fe1 + fe2</span>
+                where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.
+              </p>
+            </div>
           </div>
           <div class="w-full max-w-5xl mx-auto py-12">
             <div class="pb-4 border-b-2 border-gray-600">
