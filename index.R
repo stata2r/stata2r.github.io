@@ -1,6 +1,11 @@
 source(here::here("helpers.R"))
 
 splash <- create_section(
+    create_splash_header(
+      h1(class = "text-black text-4xl font-bold", 
+         "Transitioning from Stata to R"
+      )
+    ),
     create_splash_body(
         p("The goal of this site is to provide a simple 'on-ramp' to R for Stata users. There are two pages (✌️📄) on this site:"),
         tags$ol(
