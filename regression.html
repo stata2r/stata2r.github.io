@@ -156,14 +156,14 @@ document.getElementById("menu-hamburger").onclick = function () {
                  (or as often as you want to update the package).
               </p>
               <p>
-                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
-                  <pre class="language-r"># Install from CRAN (recommended) 
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Install from CRAN (recommended) 
 install.packages(fixest)
 
 # Install the development version from GitHub (advanced) 
 # Requires Rtools and the remotes package 
-# remotes::install_github('lrberge/fixest')</pre>
-                </code>
+# remotes::install_github('lrberge/fixest')</code>
+                </pre>
               </p>
               <p>
                 Once 
@@ -171,10 +171,10 @@ install.packages(fixest)
                  is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
-                <code class="before:content-[&#39;&#39;] after:content-[&#39;&#39;]">
-                  <pre class="language-r"># Load fixest into our current R session 
-library(fixest)</pre>
-                </code>
+                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Load fixest into our current R session 
+library(fixest)</code>
+                </pre>
               </p>
             </div>
           </div>
@@ -246,10 +246,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed Effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x, absorb(fe)</code>
+                  <code class="language-stata">reghdfe wage educ, absorb(fe)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | fe, dat)</code>
+                  <code class="language-r">feols(wage ~ educ | countyfips, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -257,10 +257,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x i.cat</code>
+                  <code class="language-stata">reghdfe wage educ i.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + i(treat), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -268,10 +268,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">With Baseline</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x ib1.cat</code>
+                  <code class="language-stata">reghdfe wage educ ib0.cat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, ref = 1), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + i(treat, ref = 0), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -279,10 +279,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Interact Categoricals</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x i.cat#i.cat2</code>
+                  <code class="language-stata">reghdfe wage educ i.treat#i.hisp</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, i.cat2), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + i(treat, i.hisp), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -290,10 +290,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical and Continuous</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x c.cont#i.cat</code>
+                  <code class="language-stata">reghdfe wage educ c.age#i.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + i(cat, cont), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + i(treat, age), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -301,12 +301,12 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Macros</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">local vars varlist 
- reghdfe y x `vars'</code>
+                  <code class="language-stata">local vars age black hisp marr 
+ reghdfe wage educ `vars'</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">vars = c(...) 
- feols(y ~ x + .[vars], dat)</code>
+                  <code class="language-r">vars = c("age", "black", "hisp", "marr") 
+ feols(wage ~ educ + .[vars], dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -314,21 +314,21 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">Wildcard</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x age_*</code>
+                  <code class="language-stata">reghdfe wage educ x*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + ..('age_'), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + ..('x'), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Variables v1 ... v4</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Variables x1 ... x4</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x v1-v4</code>
+                  <code class="language-stata">reghdfe wage educ x1-x4</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + v.[1:4], dat)</code>
+                  <code class="language-r">feols(wage ~ educ + x.[1:4], dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -339,7 +339,7 @@ library(fixest)</pre>
                   <code class="language-stata"> </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x + ..('regex_exp'), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + ..('regex_exp'), dat)</code>
                 </pre>
               </div>
             </div>
@@ -354,10 +354,10 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">HC</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x, vce(hc1)</code>
+                  <code class="language-stata">reghdfe wage educ, vce(hc1)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, dat, vcov = 'hc1')</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = 'hc1')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -365,12 +365,12 @@ library(fixest)</pre>
                   <h2 class="text-gray-600 text-lg font-semibold">HAC</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">xtset id period
-ivreghdfe y x, bw(auto) robust</code>
+                  <code class="language-stata">xtset id year
+ivreghdfe wage educ, bw(auto) robust</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, dat, vcov = NW() ~ id + period)
-feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = NW() ~ id + year)
+feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -378,10 +378,10 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Cluster</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x, cluster(clust)</code>
+                  <code class="language-stata">reghdfe wage educ, cluster(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, dat, vcov = ~clust)</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -389,10 +389,10 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Two-way</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe y x, cluster(clust1 clust2)</code>
+                  <code class="language-stata">reghdfe wage educ, cluster(countyfips year)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, dat, vcov = ~clust1 + clust2)</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips + year)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -403,7 +403,7 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <code class="language-stata"> </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x, dat, vcov = conley('lat', 'lon', 50))</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = conley("25 mi"))</code>
                 </pre>
               </div>
             </div>
@@ -418,12 +418,12 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">regression Table</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe ... 
+                  <code class="language-stata">reghdfe wage educ age black hisp marr 
  eststore est1 
  estout ...</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">est1 = feols(...) 
+                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
  etable(est1)</code>
                 </pre>
               </div>
@@ -432,12 +432,12 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Coefficient Plot</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe ... 
+                  <code class="language-stata">reghdfe wage educ age black hisp marr  
  eststore est1 
- estout ...</code>
+ coefplot ...</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">est1 = feols(...) 
+                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
  coefplot(est1)</code>
                 </pre>
               </div>
@@ -453,12 +453,11 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">xtset unit time 
- reg y x l1.x l2.x</code>
+                  <code class="language-stata">xtset id year 
+ reg wage educ l1.wage</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(dat, ~unit + time) 
- feols(y ~ x + l(x, 1:2), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -466,12 +465,11 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Lead Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">xtset unit time 
- reg y x f1.x f2.x</code>
+                  <code class="language-stata">xtset id year 
+ reg wage educ f1.wage</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(dat, ~unit + time) 
- feols(y ~ x + l(x, -2:-1), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -479,12 +477,11 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">First Difference</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">xtset unit time 
- reg y x D.x</code>
+                  <code class="language-stata">xtset id year 
+ reg wage educ D.x</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">panel(dat, ~unit + time) 
- feols(y ~ x + d(x), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
             </div>
@@ -499,10 +496,10 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Instrumental Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">ivreghdfe 2sls y x (x1 = z1)</code>
+                  <code class="language-stata">ivreghdfe 2sls wage (educ = age)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | x1 ~ z1, dat)</code>
+                  <code class="language-r">feols(wage ~ 1 | educ ~ age, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -510,10 +507,10 @@ feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">with Fixed Effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">ivreghdfe 2sls y x (x1 = z1), absorb(fe1)</code>
+                  <code class="language-stata">ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(y ~ x | fe1 | x1 ~ z1, dat)</code>
+                  <code class="language-r">feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                 </pre>
               </div>
             </div>
