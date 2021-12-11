@@ -48,8 +48,8 @@ tutorial <- create_section(
             'for whom every model they\'ve ever needed to run is covered by ', span(class = "font-semibold", "fixest.")
         ),
         p(
-            'This includes regular ol\' linear regression, as well as instrumental variables via 2SLS, and of course support for as many fixed effects as you\'d like, all in the', span(class = "font-semibold", "feols"), 'function. ',
-            span(class = "font-semibold", "fixest"), 'isn\'t limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in', span(class = "font-semibold", "feglm"),'and',span(class = "font-semibold", "fepois.")
+            'This includes regular ol\' linear regression, which builds off of the Base R standard regression function',  span(class = "font-semibold", "lm()"), 'as well as instrumental variables via 2SLS, and of course support for as many fixed effects as you\'d like, all in the', span(class = "font-semibold", "feols()"), 'function. ',
+            span(class = "font-semibold", "fixest"), 'isn\'t limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in', span(class = "font-semibold", "feglm()"),'and',span(class = "font-semibold", "fepois().")
         ),
         p(
             span(class = "font-semibold", "fixest."), 'covers all of this while being very fast. If you felt a speed boost going from Stata\'s', span(class = "font-semibold", "xtreg"), 'to', span(class = "font-semibold", "reghdfe"),
