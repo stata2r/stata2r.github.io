@@ -205,7 +205,7 @@ create_splash_header = function(...)
   div(class="pb-4 border-b-2 border-gray-600", ...)
 
 create_splash_body = function(...) 
-  div(class = "flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl", ...)
+  div(class = "flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl", ...)
 
 make_cheatsheet <- function(cats) {
     cheatsheet <- NULL

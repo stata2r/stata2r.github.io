@@ -41,28 +41,18 @@ tutorial <- create_section(
         )
     ),
     create_splash_body(
-        p(
-            'The ', a(href="https://lrberge.github.io/fixest/index.html", class="text-emerald-800 font-semibold underline", "fixest"), 
-            ' package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. ',
-            'While the package certainly doesn\'t cover ', span(class = "italic", "every"), ' model that exists, there is a non-negligible subset of Stata users ',
-            'for whom every model they\'ve ever needed to run is covered by ', span(class = "font-semibold", "fixest.")
-        ),
-        p(
-            'This includes regular ol\' linear regression in the', span(class = "font-semibold", "feols()"), 'function, which builds off of the Base R standard regression function',  span(class = "font-semibold", "lm(),"), 'but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you\'d like. ',
-            span(class = "font-semibold", "fixest"), 'isn\'t limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in', span(class = "font-semibold", "feglm()"),'and',span(class = "font-semibold", "fepois().")
-        ),
-        p(
-            span(class = "font-semibold", "fixest"), 'covers all of this while being very fast. If you felt a speed boost going from Stata\'s', span(class = "font-semibold", "xtreg"), 'to', span(class = "font-semibold", "reghdfe,"),
-            'get ready for another significant improvement when moving to', span(class = "font-semibold", "fixest.")
-        ),
-        p(
-            'You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in', span(class = "font-semibold", "fixest"), 'with the',
-            span(class = "font-semibold", "vcov"), 'option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. ',
-            'You even get some stuff that\'s rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.'
-        ),
-        p(
-            'Using',span(class = "font-semibold", "fixest"),'for regression starts with writing a formula. While there are plenty of bells and whistles to add, at its core regression formulas take the form', span(class = "font-semibold", "y ~ x1 + x2 | fe1 + fe2"), 'where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.'
-        )
+        HTML(r"(
+             <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
+             <p>This includes regular ol' linear regression in the <span class="font-semibold">feols()</span> function, which builds off of the Base R standard regression function <span class="font-semibold">lm(),</span> but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. <span class="font-semibold">fixest</span> isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in <span class="font-semibold">feglm()</span> and <span class="font-semibold">fepois().</span></p>
+             <p><span class="font-semibold">fixest</span> covers all of this while being very fast. If you felt a speed boost going from Stata's <span class="font-semibold">xtreg</span> to <span class="font-semibold">reghdfe,</span> get ready for another significant improvement when moving to <span class="font-semibold">fixest.</span></p>
+             <p>You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in <span class="font-semibold">fixest</span> with the <span class="font-semibold">vcov</span> option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.</p>
+             <p>Using <span class="font-semibold">fixest</span> for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form <span class="font-semibold">y ~ x1 + x2 | fe1 + fe2</span> where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.</p>
+             <p>To begin, we will use a modified dataset from the CPS with some added variables for demonstrations purposes. To load the data run the following:</p>
+             <div class="grid grid-cols-1 justify-start gap-y-4 mt-8 text-sm">
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-stata"><code class=" language-stata">import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_mixtape.csv", clear</code></pre>
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">dat = fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_mixtape.csv')</code></pre>
+             </div>
+        )")
     )
 )
 
