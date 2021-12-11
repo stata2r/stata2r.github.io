@@ -58,7 +58,7 @@ tutorial <- create_section(
         p(
             'You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in', span(class = "font-semibold", "fixest"), 'with the',
             span(class = "font-semibold", "vcov"), 'option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. ',
-            'You even get some stuff that\'s rather tricky in Stata, automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.'
+            'You even get some stuff that\'s rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.'
         ),
         p(
             'Using',span(class = "font-semibold", "fixest"),'for regression starts with writing a formula. While there are plenty of bells and whistles to add, at its core regression formulas take the form', span(class = "font-semibold", "y ~ x1 + x2 | fe1 + fe2"), 'where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.'
