@@ -41,3 +41,5 @@ cps$lon = state_county[cps$row,][["lon"]]
 cps$lat = state_county[cps$row,][["lat"]]
 
 dat = cps
+
+fwrite(dat, file = here::here("data/cps_long.csv"))
