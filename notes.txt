@@ -18,3 +18,4 @@ panel
 Panel Data
 <p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.
 
+

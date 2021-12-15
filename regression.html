@@ -197,10 +197,10 @@ library(fixest)</code>
              <p><span class="font-semibold">fixest</span> covers all of this while being very fast. If you felt a speed boost going from Stata's <span class="font-semibold">xtreg</span> to <span class="font-semibold">reghdfe,</span> get ready for another significant improvement when moving to <span class="font-semibold">fixest.</span></p>
              <p>You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in <span class="font-semibold">fixest</span> with the <span class="font-semibold">vcov</span> option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.</p>
              <p>Using <span class="font-semibold">fixest</span> for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form <span class="font-semibold">y ~ x1 + x2 | fe1 + fe2</span> where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.</p>
-             <p>To begin, we will use a modified dataset from the CPS with some added variables for demonstrations purposes. To load the data run the following:</p>
+             <p>To begin, we will use a modified dataset from the CPS with some added variables for demonstration purposes. To load the data run the following:</p>
              <div class="grid grid-cols-1 justify-start gap-y-4 mt-8 text-sm">
-             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-stata"><code class=" language-stata">import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_mixtape.csv", clear</code></pre>
-             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">dat = fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_mixtape.csv')</code></pre>
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-stata"><code class=" language-stata">import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear</code></pre>
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">library(data.table); dat = fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')</code></pre>
              </div>
         </div>
           </div>
@@ -219,10 +219,12 @@ library(fixest)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed Effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, absorb(fe)</code>
+                  <code class="language-stata">reghdfe wage educ i.fe
+reghdfe wage educ, absorb(fe)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ | countyfips, dat)</code>
+                  <code class="language-r">feols(wage ~ educ + factor(countyfips), data = dat)
+feols(wage ~ educ | countyfips, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -230,21 +232,14 @@ library(fixest)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical Variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ i.treat</code>
+                  <code class="language-stata">reghdfe wage educ i.treat
+* Specifying a baseline:
+reghdfe wage educ ib1.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat), dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">With Baseline</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ ib0.cat</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat, ref = 0), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + factor(treat), dat)
+# Specifying a baseline:
+feols(wage ~ educ + i(treat, ref = 1), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -252,21 +247,28 @@ library(fixest)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Interact Categoricals</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ i.treat#i.hisp</code>
+                  <code class="language-stata">
+
+reghdfe wage educ i.treat#i.hisp</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat, i.hisp), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + treat*hisp, data = dat) # base-R approach
+# Approach specific to fixest that makes iplot() work later if desired:
+feols(wage ~ educ + i(treat, i.hisp), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Categorical and Continuous</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact Categorical and Continuous</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ c.age#i.treat</code>
+                  <code class="language-stata">
+reghdfe wage educ c.age#i.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat, age), dat)</code>
+                  <code class="language-r">feols(wage ~ educt + treat*age, data = dat) # base-R approach
+# Approach specific to fixest that makes iplot() work later if desired:
+feols(wage ~ educ + i(treat, age), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -373,7 +375,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                   <h2 class="text-gray-600 text-lg font-semibold">Conley Standard Errors</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata"> </code>
+                  <code class="language-stata">* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = conley("25 mi"))</code>
@@ -393,11 +395,19 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr 
  eststore est1 
- estout ...</code>
+ esttab est1
+
+reghdfe wage educ age black hisp
+eststore est2
+esttab est1 est2</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
- etable(est1)</code>
+ etable(est1)
+
+
+est2 = feols(wage ~ educ + age + black + hisp, dat) 
+etable(est1,est2)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

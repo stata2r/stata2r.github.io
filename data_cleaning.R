@@ -84,10 +84,3 @@ htmltools::tagList(
   as.character() |> 
   cat(file = "data_cleaning.html")
 
-
-#### TO ADD:
-# "stuff that's easy in data.table but not in stata
-# - calculations from within data.table
-# - Inexact/rolling merges?
-# - froll
-

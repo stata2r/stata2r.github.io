@@ -179,36 +179,29 @@ regression
 formula
 Formula Creation
 Fixed Effects
-reghdfe wage educ, absorb(fe)
-feols(wage ~ educ | countyfips, dat)
+reghdfe wage educ i.fe\nreghdfe wage educ, absorb(fe)
+feols(wage ~ educ + factor(countyfips), data = dat)\nfeols(wage ~ educ | countyfips, dat)
 
 regression
 formula
 Formula Creation
 Categorical Variables
-reghdfe wage educ i.treat
-feols(wage ~ educ + i(treat), dat)
-
-regression
-formula
-Formula Creation
-With Baseline
-reghdfe wage educ ib0.cat
-feols(wage ~ educ + i(treat, ref = 0), dat)
+reghdfe wage educ i.treat\n* Specifying a baseline:\nreghdfe wage educ ib1.treat
+feols(wage ~ educ + factor(treat), dat)\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
 
 regression
 formula
 Formula Creation
 Interact Categoricals
-reghdfe wage educ i.treat#i.hisp
-feols(wage ~ educ + i(treat, i.hisp), dat)
+\n\nreghdfe wage educ i.treat#i.hisp
+feols(wage ~ educ + treat*hisp, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, i.hisp), dat)
 
 regression
 formula
 Formula Creation
-Categorical and Continuous
-reghdfe wage educ c.age#i.treat
-feols(wage ~ educ + i(treat, age), dat)
+Interact Categorical and Continuous
+\nreghdfe wage educ c.age#i.treat
+feols(wage ~ educt + treat*age, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, age), dat)
 
 regression
 formula
@@ -270,7 +263,7 @@ regression
 std_errors
 Standard Errors
 Conley Standard Errors
- 
+* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
 feols(wage ~ educ, dat, vcov = conley("25 mi"))
 
 regression
@@ -278,8 +271,8 @@ post
 Postestimation
 
 regression Table
-reghdfe wage educ age black hisp marr \n eststore est1 \n estout ...
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)
+reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
+est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1,est2)
 
 regression
 post
