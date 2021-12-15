@@ -9,12 +9,12 @@ splash <- create_section(
     create_splash_header(
         h1(class = "text-black text-4xl font-bold", 
             "Running regressions using ",
-            a(href = "https://lrberge.github.io/fixest/index.html", class = "text-emerald-800 italic font-semibold", "fixest")
+            a(href = "https://lrberge.github.io/fixest/index.html", class = "text-[#4c807b] italic font-semibold", "fixest")
         )
     ),
     create_splash_body(
         p(
-            a(href="https://lrberge.github.io/fixest/index.html", class="text-emerald-800 font-semibold underline", "fixest"),
+            a(href="https://lrberge.github.io/fixest/index.html", class="text-[#4c807b] font-semibold underline", "fixest"),
             " (by Laurent Berge) is a package designed from the ground up in C++ to make running regressions fast and incredibly easy. It provides in-built support for a variety of linear and non-linear models, as well as regression tables and plotting methods."
         ),
         p(
@@ -42,7 +42,7 @@ tutorial <- create_section(
     ),
     create_splash_body(
         HTML(r"(
-             <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
+             <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
              <p>This includes regular ol' linear regression in the <span class="font-semibold">feols()</span> function, which builds off of the Base R standard regression function <span class="font-semibold">lm(),</span> but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. <span class="font-semibold">fixest</span> isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in <span class="font-semibold">feglm()</span> and <span class="font-semibold">fepois().</span></p>
              <p><span class="font-semibold">fixest</span> covers all of this while being very fast. If you felt a speed boost going from Stata's <span class="font-semibold">xtreg</span> to <span class="font-semibold">reghdfe,</span> get ready for another significant improvement when moving to <span class="font-semibold">fixest.</span></p>
              <p>You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in <span class="font-semibold">fixest</span> with the <span class="font-semibold">vcov</span> option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.</p>

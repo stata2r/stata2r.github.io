@@ -9,12 +9,12 @@ ggplot <- create_section(
     create_splash_header(
         h1(class = "text-black text-4xl font-bold", 
            "Making Figures with ",
-           a(href = "ggplot2.tidyverse.org/", class = "text-emerald-800 italic font-semibold", "ggplot2")
+           a(href = "ggplot2.tidyverse.org/", class = "text-[#4c807b] italic font-semibold", "ggplot2")
         )
     ),
     create_splash_body(
         p(
-            a(href="ggplot2.tidyverse.org/", class="text-emerald-800 font-semibold underline", "ggplot2"),
+            a(href="ggplot2.tidyverse.org/", class="text-[#4c807b] font-semibold underline", "ggplot2"),
             " ..."
         ),
         p(

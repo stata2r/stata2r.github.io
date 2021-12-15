@@ -65,7 +65,7 @@ document.getElementById("menu-hamburger").onclick = function () {
         <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
-              <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
+              <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#315450] tracking-wide">
                  Stata
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#315450]" fill="none" viewbox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -154,12 +154,12 @@ document.getElementById("menu-hamburger").onclick = function () {
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">
                 Running regressions using 
-                <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 italic font-semibold">fixest</a>
+                <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] italic font-semibold">fixest</a>
               </h1>
             </div>
             <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
-                <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a>
+                <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] font-semibold underline">fixest</a>
                  (by Laurent Berge) is a package designed from the ground up in C++ to make running regressions fast and incredibly easy. It provides in-built support for a variety of linear and non-linear models, as well as regression tables and plotting methods.
               </p>
               <p>
@@ -170,7 +170,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                  (or as often as you want to update the package).
               </p>
               <p>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Install from CRAN (recommended) 
 install.packages(fixest)
 
@@ -185,7 +185,7 @@ install.packages(fixest)
                  is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Load fixest into our current R session 
 library(fixest)</code>
                 </pre>
@@ -197,7 +197,7 @@ library(fixest)</code>
               <h1 class="text-black text-4xl font-bold">Introduction to fixest</h1>
             </div>
             <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
-             <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-emerald-800 font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
+             <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
              <p>This includes regular ol' linear regression in the <span class="font-semibold">feols()</span> function, which builds off of the Base R standard regression function <span class="font-semibold">lm(),</span> but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. <span class="font-semibold">fixest</span> isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in <span class="font-semibold">feglm()</span> and <span class="font-semibold">fepois().</span></p>
              <p><span class="font-semibold">fixest</span> covers all of this while being very fast. If you felt a speed boost going from Stata's <span class="font-semibold">xtreg</span> to <span class="font-semibold">reghdfe,</span> get ready for another significant improvement when moving to <span class="font-semibold">fixest.</span></p>
              <p>You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in <span class="font-semibold">fixest</span> with the <span class="font-semibold">vcov</span> option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.</p>
@@ -223,11 +223,11 @@ library(fixest)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed Effects</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ i.fe
 reghdfe wage educ, absorb(fe)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + factor(countyfips), data = dat)
 feols(wage ~ educ | countyfips, dat)</code>
                 </pre>
@@ -236,12 +236,12 @@ feols(wage ~ educ | countyfips, dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ i.treat
 * Specifying a baseline:
 reghdfe wage educ ib1.treat</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + factor(treat), dat)
 # Specifying a baseline:
 feols(wage ~ educ + i(treat, ref = 1), dat)</code>
@@ -251,12 +251,12 @@ feols(wage ~ educ + i(treat, ref = 1), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Interact Categoricals</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">
 
 reghdfe wage educ i.treat#i.hisp</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + treat*hisp, data = dat) # base-R approach
 # Approach specific to fixest that makes iplot() work later if desired:
 feols(wage ~ educ + i(treat, i.hisp), dat)</code>
@@ -266,11 +266,11 @@ feols(wage ~ educ + i(treat, i.hisp), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Interact Categorical and Continuous</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">
 reghdfe wage educ c.age#i.treat</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educt + treat*age, data = dat) # base-R approach
 # Approach specific to fixest that makes iplot() work later if desired:
 feols(wage ~ educ + i(treat, age), dat)</code>
@@ -280,11 +280,11 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Macros</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">local vars age black hisp marr 
  reghdfe wage educ `vars'</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">vars = c("age", "black", "hisp", "marr") 
  feols(wage ~ educ + .[vars], dat)</code>
                 </pre>
@@ -293,10 +293,10 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Wildcard</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ x*</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + ..('x'), dat)</code>
                 </pre>
               </div>
@@ -304,10 +304,10 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Variables x1 ... x4</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ x1-x4</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + x.[1:4], dat)</code>
                 </pre>
               </div>
@@ -315,10 +315,10 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Regex</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata"> </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + ..('regex_exp'), dat)</code>
                 </pre>
               </div>
@@ -333,10 +333,10 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">HC</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ, vce(hc1)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = 'hc1')</code>
                 </pre>
               </div>
@@ -344,11 +344,11 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">HAC</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year
 ivreghdfe wage educ, bw(auto) robust</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = NW() ~ id + year)
 feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
@@ -357,10 +357,10 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Cluster</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ, cluster(countyfips)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips)</code>
                 </pre>
               </div>
@@ -368,10 +368,10 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Two-way</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ, cluster(countyfips year)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips + year)</code>
                 </pre>
               </div>
@@ -379,10 +379,10 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Conley Standard Errors</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = conley("25 mi"))</code>
                 </pre>
               </div>
@@ -397,7 +397,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">regression Table</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr 
  eststore est1 
  esttab est1
@@ -406,7 +406,7 @@ reghdfe wage educ age black hisp
 eststore est2
 esttab est1 est2</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
  etable(est1)
 
@@ -419,12 +419,12 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Coefficient Plot</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr  
  eststore est1 
  coefplot ...</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
  coefplot(est1)</code>
                 </pre>
@@ -441,11 +441,11 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
  reg wage educ l1.wage</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
@@ -453,11 +453,11 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lead Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
  reg wage educ f1.wage</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
@@ -465,11 +465,11 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">First Difference</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
  reg wage educ D.x</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)</code>
                 </pre>
               </div>
@@ -484,10 +484,10 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Instrumental Variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">ivreghdfe 2sls wage (educ = age)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ 1 | educ ~ age, dat)</code>
                 </pre>
               </div>
@@ -495,10 +495,10 @@ etable(est1,est2)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">with Fixed Effects</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                 </pre>
               </div>

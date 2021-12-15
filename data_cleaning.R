@@ -9,14 +9,14 @@ splash <- create_section(
     create_splash_header(
         h1(class = "text-black text-4xl font-bold", 
         "Cleaning data with ",
-        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 italic font-semibold", "data.table")
+        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-[#4c807b] italic font-semibold", "data.table")
         )
     ),
     create_splash_body(
         p(
-        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-emerald-800 font-semibold underline", "data.table"), 
+        a(href = "https://rdatatable.gitlab.io/data.table", class = "text-[#4c807b] font-semibold underline", "data.table"), 
         " (by Matt Dowle, Arun Srinivasan ", span(class = "italic", "et. al."), ") is a package written in C to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the ",
-        a(href = "#data", class = "text-emerald-800 font-semibold underline", "Data I/O"), 
+        a(href = "#data", class = "text-[#4c807b] font-semibold underline", "Data I/O"), 
         " section."),
         p(
             "Before continuing, make sure that you have installed ",
@@ -41,7 +41,7 @@ tutorial <- create_section(
     create_splash_body(
       HTML(r"(
            <p>
-           The  <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a> package centers around  <span class="font-semibold">data.tables</span> , which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a  <span class="font-semibold">data.table</span> called  <span class="font-semibold">dat</span> (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e.  <span class="font-semibold">dat[]</span> . The three main components of a  <span class="font-semibold">data.table</span> operation are  <span class="font-semibold">i, j,</span> and  <span class="font-semibold">by,</span> which go in the order  <span class="font-semibold">dat[i, j, by]</span> (note you don't have to specify the latter two if you're not currently using them.)
+           The  <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] font-semibold underline">data.table</a> package centers around  <span class="font-semibold">data.tables</span> , which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a  <span class="font-semibold">data.table</span> called  <span class="font-semibold">dat</span> (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e.  <span class="font-semibold">dat[]</span> . The three main components of a  <span class="font-semibold">data.table</span> operation are  <span class="font-semibold">i, j,</span> and  <span class="font-semibold">by,</span> which go in the order  <span class="font-semibold">dat[i, j, by]</span> (note you don't have to specify the latter two if you're not currently using them.)
            </p>
            <ul class="list-disc list-inside">
            <li> <span class="font-semibold">i,</span> the first component, selects the  <span class="italic">rows</span> of the  <span class="font-semibold">data.table</span> that you'll be working with, like how in Stata the  <span class="font-semibold">if</span> or  <span class="font-semibold">in</span> command options let you refer to certain rows. </li>
@@ -55,7 +55,7 @@ tutorial <- create_section(
            Like Stata,  <span class="font-semibold">data.table</span> also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in  <span class="font-semibold">data.table</span>, while `.(x1, x2)` is short for `list(x1, x2)`. We'll see more examples in cheatsheat below. But we do want to quickly highlight one special symbol in particular:  <span class="font-semibold">.SD</span> refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have  <span class="font-semibold">by</span> specified, but more generally it's a way to perform operations on lots of columns with one line of code. By default,  <span class="font-semibold">.SD</span> refers to all columns not in  <span class="font-semibold">by,</span> but you can specify the columns you want with the  <span class="font-semibold">.SDcols</span> argument. Again, we'll see a bunch of examples below.
            </p>
            <p>
-           Finally, <span class="font-semibold">data.table</span> is extremely fast. It has long set the standard for in-memory data wrangling <a href="https://h2oai.github.io/db-benchmark" class="text-emerald-800 font-semibold underline">benchmarks</a> across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many <span class="font-semibold">data.table</span> operations can be done <span class="italic">in-place,</span> which means that it will affect <span class="italic">only the parts you're actually changing,</span> without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word <span class="font-semibold">set</span> in it, or the <span class="font-semibold">:=</span> operator, that's an in-place operation. Speedy!
+           Finally, <span class="font-semibold">data.table</span> is extremely fast. It has long set the standard for in-memory data wrangling <a href="https://h2oai.github.io/db-benchmark" class="text-[#4c807b] font-semibold underline">benchmarks</a> across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many <span class="font-semibold">data.table</span> operations can be done <span class="italic">in-place,</span> which means that it will affect <span class="italic">only the parts you're actually changing,</span> without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word <span class="font-semibold">set</span> in it, or the <span class="font-semibold">:=</span> operator, that's an in-place operation. Speedy!
            </p>
       )")
     )

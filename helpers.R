@@ -95,7 +95,7 @@ create_toc_container <- function(...) {
         div(class = "flex flex-row space-between items-center pb-4",
             a(
                 class = "flex-grow", href="index.html",
-                h1(class = "text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide", 
+                h1(class = "text-3xl flex flex-row items-center gap-x-2 text-[#315450] tracking-wide", 
                 " Stata",
                 tags$svg(
                     xmlns = "http://www.w3.org/2000/svg", class = "h-8 w-8 text-[#315450]", fill = "none", viewbox = "0 0 24 24", stroke = "currentColor",
@@ -183,7 +183,7 @@ toc <- create_toc_container(
 
 code_block <- function(language, code) {
   pre(
-    class = "bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4",
+    class = "bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4",
     code(class = language, code)
   )
 }

@@ -65,7 +65,7 @@ document.getElementById("menu-hamburger").onclick = function () {
         <div class="flex max-h-screen flex-col xl:px-2 w-full xl:w-[20rem] flex-shrink-0 sticky bg-[#fdf9f3] xl:h-screen top-0 pt-8 md:pt-16 pb-4">
           <div class="flex flex-row space-between items-center pb-4">
             <a class="flex-grow" href="index.html">
-              <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#3d6762] tracking-wide">
+              <h1 class="text-3xl flex flex-row items-center gap-x-2 text-[#315450] tracking-wide">
                  Stata
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#315450]" fill="none" viewbox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -154,16 +154,16 @@ document.getElementById("menu-hamburger").onclick = function () {
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">
                 Cleaning data with 
-                <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 italic font-semibold">data.table</a>
+                <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] italic font-semibold">data.table</a>
               </h1>
             </div>
             <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
               <p>
-                <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a>
+                <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] font-semibold underline">data.table</a>
                  (by Matt Dowle, Arun Srinivasan 
                 <span class="italic">et. al.</span>
                 ) is a package written in C to make cleaning data fast, easy and incredibly powerful. All of the examples below will use real-life 2014 New York air traffic data, which we'll import in the 
-                <a href="#data" class="text-emerald-800 font-semibold underline">Data I/O</a>
+                <a href="#data" class="text-[#4c807b] font-semibold underline">Data I/O</a>
                  section.
               </p>
               <p>
@@ -174,7 +174,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                  (or as often as you want to update the package).
               </p>
               <p>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Install from CRAN (recommended) 
 install.packages(data.table)
 
@@ -189,7 +189,7 @@ install.packages(data.table)
                  is installed, don't forget to load it whenever you want to use it. Unlike Stata, you have to re-load a package every time you start a new R session.
               </p>
               <p>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Load data.table into our current R session 
 library(data.table)</code>
                 </pre>
@@ -202,7 +202,7 @@ library(data.table)</code>
             </div>
             <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
            <p>
-           The  <a href="https://rdatatable.gitlab.io/data.table" class="text-emerald-800 font-semibold underline">data.table</a> package centers around  <span class="font-semibold">data.tables</span> , which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a  <span class="font-semibold">data.table</span> called  <span class="font-semibold">dat</span> (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e.  <span class="font-semibold">dat[]</span> . The three main components of a  <span class="font-semibold">data.table</span> operation are  <span class="font-semibold">i, j,</span> and  <span class="font-semibold">by,</span> which go in the order  <span class="font-semibold">dat[i, j, by]</span> (note you don't have to specify the latter two if you're not currently using them.)
+           The  <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] font-semibold underline">data.table</a> package centers around  <span class="font-semibold">data.tables</span> , which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a  <span class="font-semibold">data.table</span> called  <span class="font-semibold">dat</span> (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e.  <span class="font-semibold">dat[]</span> . The three main components of a  <span class="font-semibold">data.table</span> operation are  <span class="font-semibold">i, j,</span> and  <span class="font-semibold">by,</span> which go in the order  <span class="font-semibold">dat[i, j, by]</span> (note you don't have to specify the latter two if you're not currently using them.)
            </p>
            <ul class="list-disc list-inside">
            <li> <span class="font-semibold">i,</span> the first component, selects the  <span class="italic">rows</span> of the  <span class="font-semibold">data.table</span> that you'll be working with, like how in Stata the  <span class="font-semibold">if</span> or  <span class="font-semibold">in</span> command options let you refer to certain rows. </li>
@@ -216,7 +216,7 @@ library(data.table)</code>
            Like Stata,  <span class="font-semibold">data.table</span> also provides some special shortcut symbols for common operations. For example, `_N` in Stata is equivalent to `.N` in  <span class="font-semibold">data.table</span>, while `.(x1, x2)` is short for `list(x1, x2)`. We'll see more examples in cheatsheat below. But we do want to quickly highlight one special symbol in particular:  <span class="font-semibold">.SD</span> refers to the (S)ubset of (D)ata you're working with. This can be used to do complex within-group calculations when you have  <span class="font-semibold">by</span> specified, but more generally it's a way to perform operations on lots of columns with one line of code. By default,  <span class="font-semibold">.SD</span> refers to all columns not in  <span class="font-semibold">by,</span> but you can specify the columns you want with the  <span class="font-semibold">.SDcols</span> argument. Again, we'll see a bunch of examples below.
            </p>
            <p>
-           Finally, <span class="font-semibold">data.table</span> is extremely fast. It has long set the standard for in-memory data wrangling <a href="https://h2oai.github.io/db-benchmark" class="text-emerald-800 font-semibold underline">benchmarks</a> across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many <span class="font-semibold">data.table</span> operations can be done <span class="italic">in-place,</span> which means that it will affect <span class="italic">only the parts you're actually changing,</span> without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word <span class="font-semibold">set</span> in it, or the <span class="font-semibold">:=</span> operator, that's an in-place operation. Speedy!
+           Finally, <span class="font-semibold">data.table</span> is extremely fast. It has long set the standard for in-memory data wrangling <a href="https://h2oai.github.io/db-benchmark" class="text-[#4c807b] font-semibold underline">benchmarks</a> across a variety of libraries and languages. You will likely see an order(s) of magnitude performance difference as you compare the code chunks below. As a bonus for Stata users, many <span class="font-semibold">data.table</span> operations can be done <span class="italic">in-place,</span> which means that it will affect <span class="italic">only the parts you're actually changing,</span> without wasting memory and time on the parts that aren't being changed. Any time in the below cheat sheet you see a function with the word <span class="font-semibold">set</span> in it, or the <span class="font-semibold">:=</span> operator, that's an in-place operation. Speedy!
            </p>
       </div>
           </div>
@@ -234,11 +234,11 @@ library(data.table)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .csv</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear 
 export delimited using "flightdata.csv", replace</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
 fwrite(dat, 'flightdata.csv')</code>
                 </pre>
@@ -247,14 +247,14 @@ fwrite(dat, 'flightdata.csv')</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .dta</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* .dta is Stata's native (proprietary) filetype 
 use "filename.dta", clear 
 
 
 save "filename.dta", replace</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># These commands require the `haven` package 
 dat = haven::read_dta('filename.dta') 
 setDT(dat) # Or: dat = as.data.table(dat) 
@@ -273,14 +273,14 @@ haven::write_dta(dat, 'filename.dta')</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Sort rows</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">sort air_time 
 sort air_time dest 
 gsort -air_time
 
 </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">setorder(dat, air_time) 
 setorder(dat, air_time, dest) 
 setorder(dat, -air_time)</code>
@@ -290,10 +290,10 @@ setorder(dat, -air_time)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Sort columns</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">order month day</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">setcolorder(dat, c('month','day'))</code>
                 </pre>
               </div>
@@ -301,14 +301,14 @@ setorder(dat, -air_time)</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Rename columns</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* rename (old) (new) 
 
 rename arr_delay arrival_delay 
 rename (carrier origin) (carrier_code origin_code) 
 rename arr_* arrival_*</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># setnames(dat, old = ..., new = ...) 
 
 setnames(dat, 'arr_delay', 'arrival_delay') 
@@ -328,7 +328,7 @@ setnames(dat, gsub('arr_', 'arrival_', names(dat)))</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -342,7 +342,7 @@ keep if inlist(month,3,4,11,12)
 keep if inlist(origin,"JFK","LGA") 
 drop if month == 1</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[1:200] 
@@ -361,7 +361,7 @@ dat[month!=1]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset columns</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -382,7 +382,7 @@ drop origin dest
 ds, has(type string) 
 drop `r(varlist)'</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[, .(month, day, carrier)] 
@@ -408,7 +408,7 @@ dat[, .SD, .SDcols=!is.character]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows and columns</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -416,7 +416,7 @@ dat[, .SD, .SDcols=!is.character]</code>
 keep if origin == "LGA"
 keep month day carrier</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[origin=="LGA", .(month, day, carrier)] 
@@ -429,7 +429,7 @@ dat[origin=="LGA", .(month, day, carrier)]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Drop duplicates</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -438,7 +438,7 @@ duplicates drop
 duplicates drop month day carrier, force
 </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = unique(dat) 
@@ -451,7 +451,7 @@ unique(dat, by = c('month', 'day', 'carrier'))</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Drop missing</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -462,7 +462,7 @@ missings dropvars, force
 missings air_time dest, force 
 </code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat = dat[!is.na(dest)] 
@@ -486,7 +486,7 @@ dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">gen dist_sq = distance^2 
 gen tot_delay = dep_delay + arr_delay 
 gen first_letter = substr(origin, 1,1) 
@@ -495,7 +495,7 @@ gen flight_path = origin + '_' + dest
 * These next operations don't have a great Stata 
 * equivalent, although you could implement a loop.</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, dist_sq := distance^2] 
 dat[, tot_delay := dep_delay + arr_delay] 
 dat[, first_letter := substr(origin,1,1)] 
@@ -517,7 +517,7 @@ dat[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables within groups</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">bysort origin: egen mean_dep_delay = mean(dep_delay) 
 bysort origin dest: egen mean_dep_delay2 = mean(dep_delay) 
 
@@ -538,7 +538,7 @@ sort group time
 by group: gen growth = X/X[_n-1]
 by group: gen growth_since_first = X/X[1]</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, mean_dep_delay := mean(dep_delay), by=origin] 
 dat[, mean_dep_delay2 := mean(dep_delay), by=.(origin, dest)] 
 
@@ -564,7 +564,7 @@ dat[, growth_since_first := X/first(X), by = group]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Work With Dates</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Give ourselves a date variable to work with
 tostring year month day, replace
 gen day_string = year + "/" + month + "/" + day
@@ -577,7 +577,7 @@ gen the_year = year(date)
 * Shift forward 7 days
 replace date = date + 7</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Make ourselves a date variable
 dat[, day_string := paste(year, month, day, sep = '/')]
 dat[, date := as.IDate(day_string)]
@@ -595,7 +595,7 @@ dat[, date := date + 7]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Modify existing variables</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">replace tot_delay = dep_delay + arr_delay 
 
 * Conditional modification 
@@ -607,7 +607,7 @@ foreach x of varlist origin dest {
     replace `x' = `x' + " Airport"
 }</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, tot_delay := dep_delay + arr_delay] 
 
 # Conditional modification 
@@ -628,7 +628,7 @@ dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')),  ## Note: before R 4.1 you
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Using Booleans &amp; control-flow</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">gen long_flight = air_time&gt;500 &amp; !missing(air_time) 
 
 gen flight_length = "Long" if air_time&gt;500 &amp; !missing(air_time)
@@ -639,7 +639,7 @@ gen flight_length2 = "Long" if !missing(air_time)
 replace flight_length2 = "Med" if air_time&lt;=500  
 replace flight_length2 = "Short" if air_time&lt;=120</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, long_flight := air_time&gt;500] 
 
 dat[, flight_length := fifelse(air_time&gt;500, 'Long', 'Short')] 
@@ -655,7 +655,7 @@ dat[, flight_length2 := fcase(air_time&lt;=120, 'Short',
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Row-wise calculations</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Pre-packaged row calculations: 
 egen tot_delay = rowtotal(*_delay)
 egen any_delay = rowfirst(*_delay)
@@ -663,7 +663,7 @@ egen any_delay = rowfirst(*_delay)
 * Custom row calculations:
 * ?</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Pre-packaged row calculations: 
 dat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')]
 dat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')] 
@@ -679,7 +679,7 @@ dat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Fill in Time Series/Panel Data</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Carry forward the last-known observation
 sort id time
 by id: replace x = x[_n-1] if missing(x)
@@ -687,7 +687,7 @@ by id: replace x = x[_n-1] if missing(x)
 gsort id -time
 by id: replace x = x[_n-1] if missing(x)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Carry forward the last-known observation
 setorder(dat, id, time)
 dat[, x := nafill(x, type = 'locf'), by = id]
@@ -707,7 +707,7 @@ dat[, x := nafill(x, type = 'nocb'), by = id]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse with no grouping</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -724,7 +724,7 @@ collapse (mean) *delay
 ds, has(type long)
 collapse (mean) `r(varlist)'</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[, mean(dep_delay)] 
@@ -746,7 +746,7 @@ dat[, lapply(.SD, mean), .SDcols=is.numeric]</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse by group</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Reminder: You'll need to use preserve/restore
 * if you want to retain the original dataset in 
 * the examples that follow. 
@@ -765,7 +765,7 @@ collapse (mean) dep_delay arr_delay air_time distance, by(origin)
 egen unique_dest = tag(dest origin) 
 collapse (sum) unique_dest, by(origin)</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Reminder: You'll need to (re)assign the 
 # collapsed dataset if you want to use it later,
 # e.g. dat1 = dat[, mean(dep_delay), by=origin] 
@@ -796,13 +796,13 @@ dcast(dat, origin~., fun=list(min,mean,max),
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Count rows</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">count
 count if month==10
 * Count rows by group:
 tabulate origin</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat[, .N] # Or: nrow(dat) 
 dat[month==10, .N] # Or: nrow(dat[month==10]
 # Count rows by group:
@@ -820,14 +820,14 @@ dat[, .N, by = origin])</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Reshape long</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Prepare to reshape long (this dataset only):
 gen id = _n 
 rename (dep_delay arr_delay) (delay_dep delay_arr)
 
 reshape long delay_, i(id) j(delay_type) s</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Prepare to reshape long (this dataset only):
 dat[, id := .I] 
 
@@ -839,11 +839,11 @@ dat1 = melt(dat, measure.vars = c('arr_delay','dep_delay'))
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Reshape wide</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* This starts with the reshaped-long data from above
 reshape wide delay_, (id) j(delay_type) s</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># This starts with the reshaped-long data from above
 dat2 = dcast(dat1, id ~ variable)
 # (this drops all variables except id &amp; *_delay, 
@@ -861,12 +861,12 @@ dat2 = dcast(dat1, id ~ variable)
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Import secondary (airport) dataset</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear
 save dat2.dta, replace
 import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")</code>
                 </pre>
               </div>
@@ -874,7 +874,7 @@ import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Various Merges</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">rename dest faa
 * Only keep matches (inner join)
 merge m:1 faa using dat2.dta, keep(3) nogen
@@ -901,7 +901,7 @@ merge m:1 faa using dat2.dta, keepusing(lat lon)
 * Keep only non-matches (anti-join)
 merge m:1 faa using dat2.dta, keep(1 2) nogen</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">setnames(dat, 'dest', 'faa')
 # Only keep matches (inner join)
 dat_merged = merge(dat, dat2, by='dest')
@@ -933,12 +933,12 @@ dat_merged = dat[!dat2, on='dest']</code>
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Appending Data</h2>
                 </div>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* This just appends the flights data to itself
 save data_to_append.dta, replace
 append using data_to_append.dta</code>
                 </pre>
-                <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4">
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># This just appends the flights data to itself
 rbindlist(list(dat, dat)) # Or rbind(dat, dat)
 # The fill = TRUE option is handy if the one data set has columns the other doesn't</code>
