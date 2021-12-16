@@ -4,28 +4,6 @@
 
 source(here::here("helpers.R"))
 
-# Section 1
-ggplot <- create_section(
-    create_splash_header(
-        h1(class = "text-black text-4xl font-bold", 
-           "Making Figures with ",
-           a(href = "ggplot2.tidyverse.org/", class = "text-[#4c807b] italic font-semibold", "ggplot2")
-        )
-    ),
-    create_splash_body(
-        p(
-            a(href="ggplot2.tidyverse.org/", class="text-[#4c807b] font-semibold underline", "ggplot2"),
-            " ..."
-        ),
-        p(
-            "Before continuing, make sure that you have installed ",
-            span(class = "font-semibold", "fixest"), ". You only have to do this ", span(class = "italic", "once"), " (or as often as you want to update the package)."
-        ),
-        p(
-            code_block("language-r", "ggplot(mtcars) +\n geom_point()")
-        ),
-    )
-)
 
 # Tutorial
 
@@ -33,7 +11,23 @@ ggplot <- create_section(
 cheat_sheet_splash <- create_section(
     create_splash_header(
         h1(class = "text-black text-4xl font-bold", "Other Packages")
+    ),
+    create_splash_body(
+        p(
+            "While we think you can get pretty darn far in R with just ",
+            span(class = "font-semibold", "data.table"), " and ", span(class = "font-semibold", "fixest,"),
+            " of course those two don't cover everything."
+        ),
+        p(
+            "This page covers a small list of packages you may find especially useful when getting started with R. ",
+            "We won't try to cover everything under the sun here. Just a few places to get going. For the rest, well, that's what Google is for (or, indeed, to learn about each of these in more detail)."
+        ),
+        p(
+            "For each of the below examples, keep in mind first that, as always, you need to load the relevant R package before using them. Also, these give just ",
+            span(class = "font-italic", "one or two"), " examples of how the package can be used. Every one of them has far more applications than is shown."
+        )
     )
+    
 )
 
 htmltools::tagList(
@@ -44,7 +38,7 @@ htmltools::tagList(
         toc,
         div(class="flex-grow min-h-screen py-16 pb-96",
             cheat_sheet_splash,
-            ggplot,
+            misc_cheatsheet,
         ),
     )   
 ) |> 

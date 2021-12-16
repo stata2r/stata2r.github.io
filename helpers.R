@@ -146,6 +146,9 @@ data_table_toc <- create_toc_list(data_cats)
 fixest_cats <- unique(commands[Page == "regression", ][["Category"]])
 fixest_toc <- create_toc_list(fixest_cats)
 
+misc_cats <- unique(commands[Page == "misc", ][["Category"]])
+misc_toc <- create_toc_list(misc_cats)
+
 toc <- create_toc_container(
     # data.table TOC
     div(
@@ -271,3 +274,4 @@ make_cheatsheet <- function(cats) {
 
 data_cheatsheet <- make_cheatsheet(data_cats)
 fixest_cheatsheet <- make_cheatsheet(fixest_cats)
+misc_cheatsheet <- make_cheatsheet(misc_cats)

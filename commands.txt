@@ -315,3 +315,38 @@ Instrumental Variables
 with Fixed Effects
 ivreghdfe 2sls wage (educ = age), absorb(countyfips)
 feols(wage ~ 1 | countyfips | educ ~ age, dat)
+
+misc
+ggplot
+Graphing with ggplot2
+Basic Scatterplot
+twoway scatter yvar xvar
+ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+
+misc
+tidyverse
+The Tidyverse
+Manipulating Dates with Lubridate
+* Shift a date forward one month (not 30 days, one month)\n* ??? 
+# Shift a date forward one month (not 30 days, one month)\nshifted_date = date + months(1)
+
+misc
+tidyverse
+The Tidyverse
+Iterating with purrr
+* Read in many files and append them together\nlocal filelist: dir "Data/" files "*.dta"\nlocal firsttime = 1\nforeach f in filelist {\n    use `f', clear\n    if `firsttime' == 0 {\n        append using compiled_data.dta\n    }\n    save compiled_data.dta, replace\n}
+# Read in many files and append them together\n# (this combines purrr with the data.table function fread)\nfilelist = list.files('Data/', pattern = '.csv')\ndat = filelist %>%\n    map_df(fread)
+
+misc
+tidyverse
+The Tidyverse
+String Functions with stringr
+subinstr(string, "remove", "replace", .)\nsubstr(string, start, length)\nregex(string, "regex")
+str_replace_all(string, "remove", "replace")\nstr_sub(string, start, end)\nstr_detect(string, "regex")\n# Note all the stringr functions accept regex input
+
+misc
+car
+car and nlWaldTest for Coefficient Combinations
+Basic combinations
+regress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
+m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
