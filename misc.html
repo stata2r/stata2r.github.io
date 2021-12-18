@@ -197,7 +197,7 @@ document.getElementById("menu-hamburger").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">The Tidyverse</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>The <span class="font-semibold">tidyverse</span> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>. Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>The <span class="font-semibold">tidyverse</span> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>. Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Manipulating Dates with Lubridate</h2>
@@ -258,10 +258,10 @@ str_detect(string, "regex")
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">car and nlWaldTest for Coefficient Combinations</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.</div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Basic combinations</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Basic Combinations</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">regress y x z
@@ -272,6 +272,57 @@ nlcom _b[x]/_b[z]</code>
                   <code class="language-r">m = feols(y ~ x + z, data = dat)
 linearHypothesis(m, 'x + z')
 nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div id="modelsummary">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">modelsummary for Regression Tables</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable and presentable, outputting in all kinds of formats. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options. Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Regression Table</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reghdfe wage educ age black hisp marr 
+ eststore est1 
+ esttab est1
+
+reghdfe wage educ age black hisp
+eststore est2
+esttab est1 est2</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
+ etable(est1)
+
+
+est2 = feols(wage ~ educ + age + black + hisp, dat) 
+modelsummary(list(est1,est2))</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div id="marginaleffects">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects for Marginal Effects</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Basic Logit Marginal Effects</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">logit Y X Z
+margins, dydx(*)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
+summary(marginaleffects(m))</code>
                 </pre>
               </div>
             </div>

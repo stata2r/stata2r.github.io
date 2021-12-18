@@ -269,8 +269,7 @@ feols(wage ~ educ, dat, vcov = conley("25 mi"))
 regression
 post
 Postestimation
-
-regression Table
+Regression Table
 reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
 est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1,est2)
 
@@ -347,6 +346,20 @@ str_replace_all(string, "remove", "replace")\nstr_sub(string, start, end)\nstr_d
 misc
 car
 car and nlWaldTest for Coefficient Combinations
-Basic combinations
+Basic Combinations
 regress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
 m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+
+misc
+modelsummary
+modelsummary for Regression Tables
+Regression Table
+reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
+est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \nmodelsummary(list(est1,est2))
+
+misc
+marginaleffects
+marginaleffects for Marginal Effects
+Basic Logit Marginal Effects
+logit Y X Z\nmargins, dydx(*)
+m = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
