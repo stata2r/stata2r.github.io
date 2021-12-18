@@ -157,7 +157,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                 <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] italic font-semibold">fixest</a>
               </h1>
             </div>
-            <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-lg md:text-xl xl:text-2xl">
               <p>
                 <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] font-semibold underline">fixest</a>
                  (by Laurent Berge) is a package designed from the ground up in C++ to make running regressions fast and incredibly easy. It provides in-built support for a variety of linear and non-linear models, as well as regression tables and plotting methods.
@@ -196,7 +196,7 @@ library(fixest)</code>
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Introduction to fixest</h1>
             </div>
-            <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-lg md:text-xl xl:text-2xl">
              <p>The <a href="https://lrberge.github.io/fixest/index.html" class="text-[#4c807b] font-semibold underline">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover <span class="italic">every</span> model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by <span class="font-semibold">fixest.</span></p>
              <p>This includes regular ol' linear regression in the <span class="font-semibold">feols()</span> function, which builds off of the Base R standard regression function <span class="font-semibold">lm(),</span> but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. <span class="font-semibold">fixest</span> isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in <span class="font-semibold">feglm()</span> and <span class="font-semibold">fepois().</span></p>
              <p><span class="font-semibold">fixest</span> covers all of this while being very fast. If you felt a speed boost going from Stata's <span class="font-semibold">xtreg</span> to <span class="font-semibold">reghdfe,</span> get ready for another significant improvement when moving to <span class="font-semibold">fixest.</span></p>
@@ -349,7 +349,7 @@ feols(wage ~ educ + i(treat, age), dat)</code>
 ivreghdfe wage educ, bw(auto) robust</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ, dat, vcov = NW() ~ id + year)
+                  <code class="language-r">feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
 feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</code>
                 </pre>
               </div>
@@ -395,7 +395,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">regression Table</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Regression Table</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr 
@@ -436,7 +436,7 @@ etable(est1,est2)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel Data</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.</div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>

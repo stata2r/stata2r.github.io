@@ -157,7 +157,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                 <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] italic font-semibold">data.table</a>
               </h1>
             </div>
-            <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-lg md:text-xl xl:text-2xl">
               <p>
                 <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] font-semibold underline">data.table</a>
                  (by Matt Dowle, Arun Srinivasan 
@@ -200,7 +200,7 @@ library(data.table)</code>
             <div class="pb-4 border-b-2 border-gray-600">
               <h1 class="text-black text-4xl font-bold">Introduction to data.table</h1>
             </div>
-            <div class="flex flex-col gap-y-4 max-w-prose text-gray-800 pt-8 text-gray-700 text-normal md:text-lg xl:text-xl">
+            <div class="flex flex-col gap-y-4 text-gray-800 pt-8 text-gray-700 text-lg md:text-xl xl:text-2xl">
            <p>
            The  <a href="https://rdatatable.gitlab.io/data.table" class="text-[#4c807b] font-semibold underline">data.table</a> package centers around  <span class="font-semibold">data.tables</span> , which are highly efficient data frames that can be manipulated using the package's concise syntax. For example, say we have a  <span class="font-semibold">data.table</span> called  <span class="font-semibold">dat</span> (you can call it whatever you want). Then we can manipulate it by putting arguments into its square brackets, i.e.  <span class="font-semibold">dat[]</span> . The three main components of a  <span class="font-semibold">data.table</span> operation are  <span class="font-semibold">i, j,</span> and  <span class="font-semibold">by,</span> which go in the order  <span class="font-semibold">dat[i, j, by]</span> (note you don't have to specify the latter two if you're not currently using them.)
            </p>
@@ -323,7 +323,7 @@ setnames(dat, gsub('arr_', 'arrival_', names(dat)))</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Subset</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and <span class="font-semibold">subsetting operations won't overwrite your original dataset</span>. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. `dat1 = dat[origin=='LGA']`.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R, and <span class="font-semibold">subsetting operations won't overwrite your original dataset</span>. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your subsetted data if you want to use it again later. E.g. `dat1 = dat[origin=='LGA']`.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Subset rows</h2>
@@ -481,7 +481,7 @@ dat[!is.na(air_time) &amp; !is.na(dest)] # Same as above</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Modify</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>In R, any missing (i.e. "NA") values will propagate during aggregating functions. If you have NA values in your real-life dataset — we don't in this example dataset — you probably want to add "na.rm=TRUE" to remove these on the fly. E.g. "mean(var1, na.rm=TRUE)" or "lapply(.SD, mean, na.rm=TRUE)".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Create new variables</h2>
@@ -702,7 +702,7 @@ dat[, x := nafill(x, type = 'nocb'), by = id]</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Collapse</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-normal md:text-lg xl:text-xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Collapse with no grouping</h2>

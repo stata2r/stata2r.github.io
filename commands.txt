@@ -243,7 +243,7 @@ std_errors
 Standard Errors
 HAC
 xtset id year\nivreghdfe wage educ, bw(auto) robust
-feols(wage ~ educ, dat, vcov = NW() ~ id + year)\nfeols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
+feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)\nfeols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
 
 regression
 std_errors
