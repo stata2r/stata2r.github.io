@@ -24,7 +24,8 @@ cheat_sheet_splash <- create_section(
         ),
         p(
             "For each of the below examples, keep in mind first that, as always, you need to load the relevant R package before using them. Also, these give just ",
-            span(class = "font-italic", "one or two"), " examples of how the package can be used. Every one of them has far more applications than is shown."
+            span(class = "font-italic", "one or two"), " examples of how the package can be used. Every one of them has far more applications than is shown. Finally, don't forget to install them with ",
+            span(class = "font-semibold", "install.packages()"), " and load them with ", span(class = "font-semibold", "library()"), " before running the below code."
         )
     )
     

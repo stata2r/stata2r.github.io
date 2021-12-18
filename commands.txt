@@ -319,8 +319,8 @@ misc
 ggplot
 Graphing with ggplot2
 Basic Scatterplot
-twoway scatter yvar xvar
-ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+twoway scatter yvar xvar\n* "Graphing the same thing separately across groups" is absurdly easier in ggplot2 than in Stata\n twoway (scatter yvar xvar if group == 1, mc(blue)) (scatter yvar xvar if group == 2, mc(red))
+ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()\n# "Graphing the same thing separately across groups" is absurdly easier in ggplot2 than in Stata\nggplot(dat, aes(x = xvar, y = yvar, color = group)) + geom_point()
 
 misc
 tidyverse
@@ -347,19 +347,40 @@ misc
 car
 car and nlWaldTest for Coefficient Combinations
 Basic Combinations
-regress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
-m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+\nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
+# This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
 
 misc
 modelsummary
 modelsummary for Regression Tables
 Regression Table
-reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \nmodelsummary(list(est1,est2))
+\nreghdfe Y X Z \n eststore est1 \n esttab est1\n\nreghdfe Y X Z A\neststore est2\nesttab est1 est2
+# This example incorporates the fixest function feols()\nest1 = feols(Y ~ X + Z, dat) \n etable(est1)\n\n\nest2 = feols(Y ~ X + Z + A, dat) \nmodelsummary(list(est1,est2))
 
 misc
 marginaleffects
 marginaleffects for Marginal Effects
 Basic Logit Marginal Effects
-logit Y X Z\nmargins, dydx(*)
-m = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
+* A logit:\nlogit Y X Z\nmargins, dydx(*)
+# This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
+
+misc
+sandwich
+sandwich for Additional Standard Error Adjustments
+Linear Model Adjustments
+* ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
+# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default\nm = feols(Y ~ X + Z, vcov = vcovHC)
+
+misc
+lme4
+lme4 for Random Effects
+Random Effects Models
+xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
+# No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
+
+misc
+collapse 
+collapse for Even Faster Grouped Calculations
+Means of Everything
+collapse (mean) varlist, by(group)
+fmean(dat, dat$group)

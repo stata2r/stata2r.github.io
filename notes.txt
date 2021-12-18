@@ -26,7 +26,7 @@ Graphing with ggplot2
 misc
 tidyverse
 The Tidyverse
-<p>The <span class="font-semibold">tidyverse</span> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>. Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p>
+<p>The <span class="font-semibold">tidyverse</span> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>). Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p>
 
 misc
 car
@@ -36,9 +36,24 @@ car and nlWaldTest for Coefficient Combinations
 misc
 modelsummary
 modelsummary for Regression Tables
-<p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable and presentable, outputting in all kinds of formats. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options. Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.</p>
+<p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, it's highly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.</p>
 
 misc
 marginaleffects
 marginaleffects for Marginal Effects
 <p>The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!</p>
+
+misc
+sandwich
+sandwich for Additional Standard Error Adjustments
+<p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <span class="font-semibold">sandwich</span> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?</p>
+
+misc
+lme4
+lme4 for Random Effects
+<p><span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <span class="font-semibold">lme4</span> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.</p>
+
+misc
+collapse
+collapse for Even Faster Grouped Calculations
+<p>Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything besides, like, learning C yourself (and sometimes even then). But there is one package that can boast even faster times than <span class="font-semibold">data.table</span>, at least at some tasks, and that's <span class="font-semibold">collapse</span>, which is just about as fast as it gets at computing by-group calculations like means or standard deviations.</p>
