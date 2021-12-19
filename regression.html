@@ -107,7 +107,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Combining Data Sets</a>
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
                 </li>
               </ul>
             </div>
@@ -117,19 +117,19 @@ document.getElementById("menu-hamburger").onclick = function () {
               </h1>
               <ul class="mt-4 relative">
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
+                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula creation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
+                  <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard errors</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
+                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel data</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
+                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental variables</a>
                 </li>
               </ul>
             </div>
@@ -217,11 +217,11 @@ library(fixest)</code>
           <div id="formula">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula Creation</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula creation</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Fixed Effects</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ i.fe
@@ -234,7 +234,7 @@ feols(wage ~ educ | countyfips, dat)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Categorical Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Categorical variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ i.treat
@@ -249,7 +249,7 @@ feols(wage ~ educ + i(treat, ref = 1), dat)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Interact Categoricals</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact categoricals</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">
@@ -327,7 +327,7 @@ feols(wage ~ educ + i(treat, age), dat)</code>
           <div id="std_errors">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Standard Errors</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Standard errors</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
@@ -355,7 +355,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Cluster</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Clustered</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ, cluster(countyfips)</code>
@@ -377,7 +377,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Conley Standard Errors</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Conley standard errors</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/</code>
@@ -395,7 +395,7 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Regression Table</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Regression table</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr 
@@ -417,7 +417,7 @@ etable(est1,est2)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Coefficient Plot</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Coefficient plot</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr  
@@ -434,12 +434,12 @@ etable(est1,est2)</code>
           <div id="panel">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel Data</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel data</h2>
               </div>
               <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Lag Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Lag variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
@@ -451,7 +451,7 @@ etable(est1,est2)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Lead Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Lead variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
@@ -463,7 +463,7 @@ etable(est1,est2)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">First Difference</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">First difference</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year 
@@ -478,11 +478,11 @@ etable(est1,est2)</code>
           <div id="iv">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Instrumental Variables</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Instrumental variables</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Instrumental Variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Instrumental variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">ivreghdfe 2sls wage (educ = age)</code>
@@ -493,7 +493,7 @@ etable(est1,est2)</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">with Fixed Effects</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">With fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>

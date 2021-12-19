@@ -107,7 +107,7 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="data_cleaning.html#reshape" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Reshape</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Combining Data Sets</a>
+                  <a href="data_cleaning.html#merge" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Merge</a>
                 </li>
               </ul>
             </div>
@@ -117,19 +117,19 @@ document.getElementById("menu-hamburger").onclick = function () {
               </h1>
               <ul class="mt-4 relative">
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula Creation</a>
+                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula creation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard Errors</a>
+                  <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard errors</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel Data</a>
+                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel data</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental Variables</a>
+                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental variables</a>
                 </li>
               </ul>
             </div>
@@ -182,7 +182,7 @@ document.getElementById("menu-hamburger").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Graphing with ggplot2</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><span class="font-semibold">ggplot2</span> is considered one of the best graphing packages available today, and not just in R either but across many languages. It provides an intuitive syntax that applies in the same way across many, many different kinds of graphics, and with a deep level of available customization. Plus, endless additional plugins to do what you want (including easy interactivity, animation, maps, etc.). We thought about giving <span class="font-semibold">ggplot2</span> its own page like <span class="font-semibold">data.table</span> and <span class="font-semibold">fixest</span>, but instead we'll point you to the <span class="font-semibold"><a  href = "https://lost-stats.github.io/Presentation/Figures/Figures.html">Figures</a></span> section of the Library of Statistical Techniques, which already shows how to do many different graphing tasks in both Stata and <span class="font-semibold">ggplot2</span>. Or for a more in-depth introduction, there are many books available, including <span class="font-semibold"><a href = "https://socviz.co/">Kieran Healy's Data Visualization</a></span>.</div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><a href = "https://ggplot2.tidyverse.org/" class="text-[#4c807b] font-semibold underline">ggplot2</a> is considered one of the best graphing packages available today, and not just in R either but across many languages. It provides an intuitive syntax that applies in the same way across many, many different kinds of graphics, and with a deep level of available customization. Plus, endless additional plugins to do what you want (including easy interactivity, animation, maps, etc.). We thought about giving <span class="font-semibold">ggplot2</span> its own page like <span class="font-semibold">data.table</span> and <span class="font-semibold">fixest</span>, but instead we'll point you to the <span class="text-[#4c807b] font-semibold underline"><a  href = "https://lost-stats.github.io/Presentation/Figures/Figures.html">Figures</a></span> section of the Library of Statistical Techniques, which already shows how to do many different graphing tasks in both Stata and <span class="font-semibold">ggplot2</span>. Or for a more in-depth introduction, there are many books available, including <span class="text-[#4c807b] font-semibold underline"><a href = "https://socviz.co/">Kieran Healy's Data Visualization</a></span>.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic Scatterplot</h2>
@@ -203,12 +203,12 @@ ggplot(dat, aes(x = xvar, y = yvar, color = group)) + geom_point()</code>
           <div id="tidyverse">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">The Tidyverse</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">The tidyverse</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">tidyverse</span> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>). Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <a href = "https://www.tidyverse.org" class="text-[#4c807b] font-semibold underline">tidyverse</a> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>). Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Manipulating Dates with Lubridate</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Manipulating dates with lubridate</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Shift a date forward one month (not 30 days, one month)
@@ -245,7 +245,7 @@ dat = filelist %&gt;%
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">String Functions with stringr</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">String operations with stringr</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">subinstr(string, "remove", "replace", .)
@@ -264,9 +264,9 @@ str_detect(string, "regex")
           <div id="car">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">car and nlWaldTest for Coefficient Combinations</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">car and nlWaldTest for joint coefficient tests</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>One deficiency in R that can be surprising for Stata switchers is the lack of inbuilt, complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span>. Still, we've already seen that <span class="font-semibold">fixest</span> covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <a href = "http://multcomp.r-forge.r-project.org/" class="text-[#4c807b] font-semibold underline">multcomp</a> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <a href = "https://cran.r-project.org/web/packages/car/" class="text-[#4c807b] font-semibold underline">car</a> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic Combinations</h2>
@@ -289,9 +289,9 @@ nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval<
           <div id="modelsummary">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">modelsummary for Regression Tables</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">modelsummary for regression and summary tables</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, it's highly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it is only really intended to work with models from the same package. So we also recommend checking out the fanastic <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">modelsummary</a>. It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, is incredibly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Oh, and it also supports coefficient plots! Check out the <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">package website</a> for more.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Regression Table</h2>
@@ -321,9 +321,9 @@ modelsummary(list(est1,est2))</code>
           <div id="marginaleffects">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects for Marginal Effects</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects for marginal effects</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic Logit Marginal Effects</h2>
@@ -344,12 +344,12 @@ summary(marginaleffects(m))</code>
           <div id="sandwich">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich for Additional Standard Error Adjustments</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich for additional standard error adjustments</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <span class="font-semibold">sandwich</span> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <a href = "https://sandwich.r-forge.r-project.org/articles/sandwich.html" class="text-[#4c807b] font-semibold underline">sandwich</a> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Linear Model Adjustments</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Linear model adjustments</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* ", robust" uses hc1 which isn't great for small samples
@@ -365,12 +365,12 @@ m = feols(Y ~ X + Z, vcov = vcovHC)</code>
           <div id="lme4">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">lme4 for Random Effects</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">lme4 for random effects and mixed models</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <span class="font-semibold">lme4</span> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <a href = "https://cran.r-project.org/web/packages/lme4/index.html" class="text-[#4c807b] font-semibold underline">lme4</a> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Random Effects Models</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Random effects models</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset group time
@@ -388,18 +388,33 @@ nm = lmer(Y~(1+x|group) + X, data = dat)</code>
           <div id="collapse ">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">collapse for Even Faster Grouped Calculations</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">collapse for extra convenience functions and super fast aggregations</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything besides, like, learning C yourself (and sometimes even then). But there is one package that can boast even faster times than <span class="font-semibold">data.table</span>, at least at some tasks, and that's <span class="font-semibold">collapse</span>, which is just about as fast as it gets at computing by-group calculations like means or standard deviations.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything else. But there is another R package that can boast even faster computation times for certain grouped calculations and transformations, and that's <a href = "https://sebkrantz.github.io/collapse/index.html" class="text-[#4c807b] font-semibold underline">collapse</a>. The <span class="font-semibold">collapse</span> package doesn't try to do everything that <span class="font-semibold">data.table</span> does. But the two <a href="https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html">play very well together</a> and the former offers some convenience functions like `descr` and `collap`, which essentially mimic the equivalent functions in Stata and might be particularly appealing to readers of this guide. (P.S. If you'd like to load <span class="font-semibold">data.table</span> and <span class="font-semibold">collapse</span> at the same time, plus some other high-performance packages, check out the <a href = "https://sebkrantz.github.io/fastverse/index.html" class="text-[#4c807b] font-semibold underline">fastverse</a>.)</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Means of Everything</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Quick summaries</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">collapse (mean) varlist, by(group)</code>
+                  <code class="language-stata">summarize
+describe</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">fmean(dat, dat$group)</code>
+                  <code class="language-r">qsu(dat)
+descr(dat)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Multiple grouped aggregations</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">collapse (mean) var1, by(group1)
+collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">collap(dat, var1 ~ group1, fmean) # 'fmean' =&gt; fast mean
+collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))</code>
                 </pre>
               </div>
             </div>
