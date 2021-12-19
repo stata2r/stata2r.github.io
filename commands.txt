@@ -317,77 +317,77 @@ feols(wage ~ 1 | countyfips | educ ~ age, dat)
 
 misc
 ggplot
-Graphing with ggplot2
-Basic Scatterplot
+ggplot2: Beautiful and customizable plots
+Basic scatterplot
 twoway scatter yvar xvar\n* "Graphing the same thing separately across groups" is absurdly easier in ggplot2 than in Stata\n twoway (scatter yvar xvar if group == 1, mc(blue)) (scatter yvar xvar if group == 2, mc(red))
 ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()\n# "Graphing the same thing separately across groups" is absurdly easier in ggplot2 than in Stata\nggplot(dat, aes(x = xvar, y = yvar, color = group)) + geom_point()
 
 misc
 tidyverse
-The tidyverse
+tidyverse
 Manipulating dates with lubridate
 * Shift a date forward one month (not 30 days, one month)\n* ??? 
 # Shift a date forward one month (not 30 days, one month)\nshifted_date = date + months(1)
 
 misc
 tidyverse
-The tidyverse
+tidyverse
 Iterating with purrr
 * Read in many files and append them together\nlocal filelist: dir "Data/" files "*.dta"\nlocal firsttime = 1\nforeach f in filelist {\n    use `f', clear\n    if `firsttime' == 0 {\n        append using compiled_data.dta\n    }\n    save compiled_data.dta, replace\n}
 # Read in many files and append them together\n# (this combines purrr with the data.table function fread)\nfilelist = list.files('Data/', pattern = '.csv')\ndat = filelist %>%\n    map_df(fread)
 
 misc
 tidyverse
-The tidyverse
+tidyverse
 String operations with stringr
 subinstr(string, "remove", "replace", .)\nsubstr(string, start, length)\nregex(string, "regex")
 str_replace_all(string, "remove", "replace")\nstr_sub(string, start, end)\nstr_detect(string, "regex")\n# Note all the stringr functions accept regex input
 
 misc
-car
-car and nlWaldTest for joint coefficient tests
-Basic Combinations
-\nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
-# This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
-
-misc
-modelsummary
-modelsummary for regression and summary tables
-Regression Table
-\nreghdfe Y X Z \n eststore est1 \n esttab est1\n\nreghdfe Y X Z A\neststore est2\nesttab est1 est2
-# This example incorporates the fixest function feols()\nest1 = feols(Y ~ X + Z, dat) \n etable(est1)\n\n\nest2 = feols(Y ~ X + Z + A, dat) \nmodelsummary(list(est1,est2))
-
-misc
-marginaleffects
-marginaleffects for marginal effects
-Basic Logit Marginal Effects
-* A logit:\nlogit Y X Z\nmargins, dydx(*)
-# This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
-
-misc
-sandwich
-sandwich for additional standard error adjustments
-Linear model adjustments
-* ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
-# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default\nm = feols(Y ~ X + Z, vcov = vcovHC)
-
-misc
-lme4
-lme4 for random effects and mixed models
-Random effects models
-xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
-# No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
-
-misc
 collapse 
-collapse for extra convenience functions and super fast aggregations
+collapse: Extra convenience functions and super fast aggregations
 Quick summaries
 summarize\ndescribe
 qsu(dat)\ndescr(dat)
 
 misc
 collapse 
-collapse for extra convenience functions and super fast aggregations
+collapse: Extra convenience functions and super fast aggregations
 Multiple grouped aggregations
 collapse (mean) var1, by(group1)\ncollapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
 collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean\ncollap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
+
+misc
+sandwich
+sandwich: More standard error adjustments
+Linear model adjustments
+* ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
+# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default\nm = feols(Y ~ X + Z, vcov = vcovHC)
+
+misc
+modelsummary
+modelsummary: Summary tables, regression tables, and more
+Regression tables
+reg Y X Z \neststore est1 \nesttab est1b\n\nreg Y X Z, vce(hc3) \neststore est1b \nesttab est1b \n\nesttab est1 est1b\n\nreg Y X Z A, vce(hc3)\neststore est2\nesttab est1 est1b est2
+est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary()\n\n\n# SEs for existing models can be adjusted on-the-fly \nmsummary(est1, vcov='HC3')\n\n# Multiple SEs for the same model\nmsummary(est1, vcov=list('iid', 'HC3')) \n\nest3 = lm(Y ~ X + Z + A, dat) \nmsummary(list(est1, est1, est3),\n         vcov = list('iid', 'HC3', 'HC3'))
+
+misc
+marginaleffects
+marginaleffects: Marginal effects, constrasts, etc.
+Basic logit marginal effects
+* A logit:\nlogit Y X Z\nmargins, dydx(*)
+# This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
+
+misc
+lme4
+lme4: Random effects and mixed models
+Random effects models
+xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
+# No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
+
+misc
+car
+car and nlWaldTest: Joint coefficient tests
+Basic coefficient combinations
+\nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
+# This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
