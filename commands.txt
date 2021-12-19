@@ -345,7 +345,7 @@ str_replace_all(string, "remove", "replace")\nstr_sub(string, start, end)\nstr_d
 
 misc
 car
-car and nlWaldTest for coefficient combinations
+car and nlWaldTest for joint coefficient tests
 Basic Combinations
 \nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
 # This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
