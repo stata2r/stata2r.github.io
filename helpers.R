@@ -167,7 +167,7 @@ toc <- create_toc_container(
     # misc TOC
     div(
       h1(class="text-2xl font-semibold tracking-tight mt-8 text-[#315450]", 
-         a(href="misc.html", "extra packages")
+         a(href="misc.html", "extras")
       )
     ),
     # Github
