@@ -155,163 +155,163 @@ Reshape wide
 
 data_cleaning
 merge
-Combining Data Sets
+Merge
 Import secondary (airport) dataset
 import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear\nsave dat2.dta, replace\nimport delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
 dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")
 
 data_cleaning
 merge
-Combining Data Sets
-Various Merges
+Merge
+Various merges
 rename dest faa\n* Only keep matches (inner join)\nmerge m:1 faa using dat2.dta, keep(3) nogen\n* Keep all observations (full join)\nmerge m:1 faa using dat2.dta, nogen\n* Keep matches and "master" non-matches (left join)\nmerge m:1 faa using dat2.dta, keep(1 3) nogen\n* Keep matches and "using" non-matches (right join)\nmerge m:1 faa using dat2.dta, keep(2 3) nogen\n\nmerge m:1 faa using dat2.dta, keepusing(lat lon)\n\n\n\n\n\n\n\n\n\n\n\n\n* Keep only non-matches (anti-join)\nmerge m:1 faa using dat2.dta, keep(1 2) nogen
 setnames(dat, 'dest', 'faa')\n# Only keep matches (inner join)\ndat_merged = merge(dat, dat2, by='dest')\n# Keep all observations (full join)\ndat_merged = merge(dat, dat2, by='dest', all = TRUE)\n# Keep matches and "master" non-matches (left join)\ndat_merged = merge(dat, dat2, by='dest', all.x = TRUE)\n# Keep matches and "using" non-matches (right join)\ndat_merged = merge(dat, dat2, by='dest', all.y = TRUE)\n\ndat_merged = merge(dat, dat2[, .(dest, lat, lon)], by='dest', all = TRUE)\n\n# Alternate merging approaches\n# Skip the setnames() and just merge with different variable names\ndat_merged = merge(dat, dat2, by.x='dest', by.y='faa') \n\n# If using keys, don't need 'by'/'on' (and faster) \nsetkey(dat, dest); setkey(dat2, dest) \ndat_merged = merge(dat, dat2)\n\n# Alternate, more data-tably syntax\n# That is also faster for some applications\ndat_merged = dat[dat2, on='dest']\n# Keep only non-matches (anti-join)\ndat_merged = dat[!dat2, on='dest']
 
 data_cleaning
 merge
-Combining Data Sets
-Appending Data
+Merge
+Appending data
 * This just appends the flights data to itself\nsave data_to_append.dta, replace\nappend using data_to_append.dta
 # This just appends the flights data to itself\nrbindlist(list(dat, dat)) # Or rbind(dat, dat)\n# The fill = TRUE option is handy if the one data set has columns the other doesn't
 
 
 regression
 formula
-Formula Creation
-Fixed Effects
+Formula creation
+Fixed effects
 reghdfe wage educ i.fe\nreghdfe wage educ, absorb(fe)
 feols(wage ~ educ + factor(countyfips), data = dat)\nfeols(wage ~ educ | countyfips, dat)
 
 regression
 formula
-Formula Creation
-Categorical Variables
+Formula creation
+Categorical variables
 reghdfe wage educ i.treat\n* Specifying a baseline:\nreghdfe wage educ ib1.treat
 feols(wage ~ educ + factor(treat), dat)\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
 
 regression
 formula
-Formula Creation
-Interact Categoricals
+Formula creation
+Interact categoricals
 \n\nreghdfe wage educ i.treat#i.hisp
 feols(wage ~ educ + treat*hisp, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, i.hisp), dat)
 
 regression
 formula
-Formula Creation
+Formula creation
 Interact Categorical and Continuous
 \nreghdfe wage educ c.age#i.treat
 feols(wage ~ educt + treat*age, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, age), dat)
 
 regression
 formula
-Formula Creation
+Formula creation
 Macros
 local vars age black hisp marr \n reghdfe wage educ `vars'
 vars = c("age", "black", "hisp", "marr") \n feols(wage ~ educ + .[vars], dat)
 
 regression
 formula
-Formula Creation
+Formula creation
 Wildcard
 reghdfe wage educ x*
 feols(wage ~ educ + ..('x'), dat)
 
 regression
 formula
-Formula Creation
+Formula creation
 Variables x1 ... x4
 reghdfe wage educ x1-x4
 feols(wage ~ educ + x.[1:4], dat)
 
 regression
 formula
-Formula Creation
+Formula creation
 Regex
  
 feols(wage ~ educ + ..('regex_exp'), dat)
 
 regression
 std_errors
-Standard Errors
+Standard errors
 HC
 reghdfe wage educ, vce(hc1)
 feols(wage ~ educ, dat, vcov = 'hc1')
 
 regression
 std_errors
-Standard Errors
+Standard errors
 HAC
 xtset id year\nivreghdfe wage educ, bw(auto) robust
 feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)\nfeols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
 
 regression
 std_errors
-Standard Errors
-Cluster
+Standard errors
+Clustered
 reghdfe wage educ, cluster(countyfips)
 feols(wage ~ educ, dat, vcov = ~countyfips)
 
 regression
 std_errors
-Standard Errors
+Standard errors
 Two-way
 reghdfe wage educ, cluster(countyfips year)
 feols(wage ~ educ, dat, vcov = ~countyfips + year)
 
 regression
 std_errors
-Standard Errors
-Conley Standard Errors
+Standard errors
+Conley standard errors
 * Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
 feols(wage ~ educ, dat, vcov = conley("25 mi"))
 
 regression
 post
 Postestimation
-Regression Table
+Regression table
 reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
 est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1,est2)
 
 regression
 post
 Postestimation
-Coefficient Plot
+Coefficient plot
 reghdfe wage educ age black hisp marr  \n eststore est1 \n coefplot ...
 est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n coefplot(est1)
 
 regression
 panel
-Panel Data
-Lag Variables
+Panel data
+Lag variables
 xtset id year \n reg wage educ l1.wage
 feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)
 
 regression
 panel
-Panel Data
-Lead Variables
+Panel data
+Lead variables
 xtset id year \n reg wage educ f1.wage
 feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)
 
 regression
 panel
-Panel Data
-First Difference
+Panel data
+First difference
 xtset id year \n reg wage educ D.x
 feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)
 
 regression
 iv
-Instrumental Variables
-Instrumental Variables
+Instrumental variables
+Instrumental variables
 ivreghdfe 2sls wage (educ = age)
 feols(wage ~ 1 | educ ~ age, dat)
 
 regression
 iv
-Instrumental Variables
-with Fixed Effects
+Instrumental variables
+With fixed effects
 ivreghdfe 2sls wage (educ = age), absorb(countyfips)
 feols(wage ~ 1 | countyfips | educ ~ age, dat)
 
@@ -324,63 +324,63 @@ ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()\n# "Graphing the same thing 
 
 misc
 tidyverse
-The Tidyverse
-Manipulating Dates with Lubridate
+The tidyverse
+Manipulating dates with lubridate
 * Shift a date forward one month (not 30 days, one month)\n* ??? 
 # Shift a date forward one month (not 30 days, one month)\nshifted_date = date + months(1)
 
 misc
 tidyverse
-The Tidyverse
+The tidyverse
 Iterating with purrr
 * Read in many files and append them together\nlocal filelist: dir "Data/" files "*.dta"\nlocal firsttime = 1\nforeach f in filelist {\n    use `f', clear\n    if `firsttime' == 0 {\n        append using compiled_data.dta\n    }\n    save compiled_data.dta, replace\n}
 # Read in many files and append them together\n# (this combines purrr with the data.table function fread)\nfilelist = list.files('Data/', pattern = '.csv')\ndat = filelist %>%\n    map_df(fread)
 
 misc
 tidyverse
-The Tidyverse
-String Functions with stringr
+The tidyverse
+String operations with stringr
 subinstr(string, "remove", "replace", .)\nsubstr(string, start, length)\nregex(string, "regex")
 str_replace_all(string, "remove", "replace")\nstr_sub(string, start, end)\nstr_detect(string, "regex")\n# Note all the stringr functions accept regex input
 
 misc
 car
-car and nlWaldTest for Coefficient Combinations
+car and nlWaldTest for coefficient combinations
 Basic Combinations
 \nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
 # This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
 
 misc
 modelsummary
-modelsummary for Regression Tables
+modelsummary for regression and summary tables
 Regression Table
 \nreghdfe Y X Z \n eststore est1 \n esttab est1\n\nreghdfe Y X Z A\neststore est2\nesttab est1 est2
 # This example incorporates the fixest function feols()\nest1 = feols(Y ~ X + Z, dat) \n etable(est1)\n\n\nest2 = feols(Y ~ X + Z + A, dat) \nmodelsummary(list(est1,est2))
 
 misc
 marginaleffects
-marginaleffects for Marginal Effects
+marginaleffects for marginal effects
 Basic Logit Marginal Effects
 * A logit:\nlogit Y X Z\nmargins, dydx(*)
 # This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
 
 misc
 sandwich
-sandwich for Additional Standard Error Adjustments
-Linear Model Adjustments
+sandwich for additional standard error adjustments
+Linear model adjustments
 * ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
 # vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default\nm = feols(Y ~ X + Z, vcov = vcovHC)
 
 misc
 lme4
-lme4 for Random Effects
-Random Effects Models
+lme4 for random effects
+Random effects models
 xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
 # No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
 
 misc
 collapse 
-collapse for Even Faster Grouped Calculations
+collapse for extra convenience functions and super fast aggregations
 Means of Everything
 collapse (mean) varlist, by(group)
 fmean(dat, dat$group)
