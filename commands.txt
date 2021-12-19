@@ -130,7 +130,7 @@ collapse
 Collapse
 Collapse by group
 * Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\ncollapse (mean) arr_delay, by(carrier) \ncollapse (mean) mean_adel = arr_delay, by(carrier) \n\ncollapse (mean) arr_delay, by(carrier month) \n\ncollapse (min) min_d = distance (max) max_d = distance, by(origin) \n\ncollapse (mean) *_delay, by(origin) \ncollapse (mean) dep_delay arr_delay air_time distance, by(origin) \n\n\negen unique_dest = tag(dest origin) \ncollapse (sum) unique_dest, by(origin)
-# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, mean(dep_delay), by=origin] \n\ndat[, .(arr_delay = mean(arr_delay)), by=carrier] \ndat[, .(mean_adel = mean(arr_delay)), by=carrier] \n\ndat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] \n\ndat[, .(min_d = min(distance), max_d = max(distance)), by=origin] \n\ndat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] \ndat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] \ndat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same as above \n\n# Matches the final two lines on the left: \ndat[, .(unique_dest = uniqueN(dest)), by = origin] \n\n# Bonus: You can also do complicated (grouped)\n# aggregations as part of a dcast (i.e. reshape \n# wide) call. E.g. Get the min, mean and max\n# arrival and departure delays, by origin airport.\ndcast(dat, origin~., fun=list(min,mean,max),\n      value.var=c('arr_delay','dep_delay'))
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, mean(dep_delay), by=origin] \n\ndat[, .(arr_delay = mean(arr_delay)), by=carrier] \ndat[, .(mean_adel = mean(arr_delay)), by=carrier] \n\ndat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] \n\ndat[, .(min_d = min(distance), max_d = max(distance)), by=origin] \n\ndat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] \ndat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] \ndat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same as above \n\n# Matches the final two lines on the left: \ndat[, .(unique_dest = uniqueN(dest)), by = origin] \n\n# Bonus: You can also do complicated (grouped)\n# aggregations as part of a dcast (i.e. reshape \n# wide) call. E.g. Get the min, mean and max\n# departure and arrival delays, by origin airport.\ndcast(dat, origin~., fun=list(min,mean,max),\n      value.var=c('dep_delay','arr_delay'))
 
 data_cleaning
 collapse
@@ -381,6 +381,13 @@ xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
 misc
 collapse 
 collapse for extra convenience functions and super fast aggregations
-Means of Everything
-collapse (mean) varlist, by(group)
-fmean(dat, dat$group)
+Quick summaries
+summarize\ndescribe
+qsu(dat)\ndescr(dat)
+
+misc
+collapse 
+collapse for extra convenience functions and super fast aggregations
+Multiple grouped aggregations
+collapse (mean) var1, by(group1)\ncollapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
+collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean\ncollap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
