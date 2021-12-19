@@ -373,7 +373,7 @@ Linear model adjustments
 
 misc
 lme4
-lme4 for random effects
+lme4 for random effects and mixed models
 Random effects models
 xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
 # No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
