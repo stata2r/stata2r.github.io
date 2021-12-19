@@ -23,9 +23,8 @@ cheat_sheet_splash <- create_section(
             "We won't try to cover everything under the sun here. Just a few places to get going. For the rest, well, that's what Google is for (or, indeed, to learn about each of these in more detail)."
         ),
         p(
-            "For each of the below examples, keep in mind first that, as always, you need to load the relevant R package before using them. Also, these give just ",
-            span(class = "font-italic", "one or two"), " examples of how the package can be used. Every one of them has far more applications than is shown. Finally, don't forget to install them with ",
-            span(class = "font-semibold", "install.packages()"), " and load them with ", span(class = "font-semibold", "library()"), " before running the below code."
+            "All of the below packages have far more applications than is shown here. We'll just provide one or two examples of how each can be used. Finally, don't forget to install them with ",
+            span(class = "font-semibold", "install.packages()"), " (just once) and load them with ", span(class = "font-semibold", "library()"), " (whenever you want to use them in a new R session)."
         )
     )
     
