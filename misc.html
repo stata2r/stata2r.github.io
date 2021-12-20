@@ -180,7 +180,7 @@ document.getElementById("menu-hamburger").onclick = function () {
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">ggplot2: Beautiful and customizable plots</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><a href = "https://ggplot2.tidyverse.org/" class="text-[#4c807b] font-semibold underline">ggplot2</a> is considered one of the best graphing packages available today, and not just in R either but across many languages. It provides an intuitive syntax that applies in the same way across many, many different kinds of graphics, and with a deep level of available customization. Plus, endless additional plugins to do what you want (including easy interactivity, animation, maps, etc.). We thought about giving <span class="font-semibold">ggplot2</span> its own page like <span class="font-semibold">data.table</span> and <span class="font-semibold">fixest</span>, but instead we'll point you to the <span class="text-[#4c807b] font-semibold underline"><a  href = "https://lost-stats.github.io/Presentation/Figures/Figures.html">Figures</a></span> section of the Library of Statistical Techniques, which already shows how to do many different graphing tasks in both Stata and <span class="font-semibold">ggplot2</span>. Or for a more in-depth introduction, there are many books available, including Kieran Healy's <span class="text-[#4c807b] font-semibold underline italic"><a href = "https://socviz.co/">Data Visualization</a></span>.</div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><a href = "https://ggplot2.tidyverse.org/" class="text-[#4c807b] font-semibold underline">ggplot2</a> is widely considered one of the preeminent plotting libraries available in any language. It provides an intuitive syntax that applies in the same way across many, many different kinds of vizualisations, and with a deep level of available customization. Plus, endless additional plugins to do what you want, including easy interactivity, animation, maps, etc. We thought about giving <span class="font-semibold">ggplot2</span> its own dedicated page like <span class="font-semibold">data.table</span> and <span class="font-semibold">fixest</span>. But instead we'll point you to the <span class="text-[#4c807b] font-semibold underline"><a  href = "https://lost-stats.github.io/Presentation/Figures/Figures.html">Figures</a></span> section of the Library of Statistical Techniques, which already shows how to do many different graphing tasks in both Stata and <span class="font-semibold">ggplot2</span>. For a more in-depth overview you can always consult the excellent <a href = "https://ggplot2.tidyverse.org/" class="text-[#4c807b] font-semibold underline">package documentation</a>, or a book like Kieran Healy's <span class="text-[#4c807b] font-semibold underline italic"><a href = "https://socviz.co/">Data Visualization</a></span>.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic scatterplot</h2>
@@ -203,7 +203,42 @@ ggplot(dat, aes(x = xvar, y = yvar, color = group)) + geom_point()</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">tidyverse</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <a href = "https://www.tidyverse.org" class="text-[#4c807b] font-semibold underline">tidyverse</a> is one of the most common ways to work with data in R. This package is actually a collection of many smaller packages that are all designed to work together and have a shared syntax (and there are many other packages that aren't included in the <span class="font-semibold">tidyverse</span> package but remain, nevertheless, part of the tidyverse). We've already covered <span class="font-semibold">ggplot2</span> which is an honorary member, but there is plenty more (including <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span> which offer their own approach to cleaning data, although we still recommend <span class="font-semibold">data.table</span>). Several worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <a href = "https://www.tidyverse.org" class="text-[#4c807b] font-semibold underline">tidyverse</a> provides an extremely popular framework for data science tasks in R. This meta-package is actually a collection of smaller packages that are all designed to work together, based on a shared philosophy and syntax. We've already covered <span class="font-semibold">ggplot2</span> above, but there are plenty more. These include <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span>, which offer an alternative syntax and approach to data wrangling tasks.  While we personally recommend <span class="font-semibold">data.table</span>, these <span class="font-semibold">tidyverse</span> packages have many ardent fans. You too may find that you prefer their modular design and verbal syntax more. But don't feel bound either way: it's totally fine to combine them. Some other tidyverse packages worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Data wrangling with dplyr</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Subset by rows and then columns 
+keep if var1=="value" 
+keep var1 var2 var3 
+
+
+* Create a new variable by group 
+bysort group1: egen mean_var1 = mean(var1) 
+
+
+
+* Collapse by group 
+collapse (mean) arr_delay, by(carrier)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Subset by rows and then columns 
+ dat %&gt;%   # `%&gt;%` is the tidyverse "pipe" operator
+   filter(var1=="value") %&gt;%
+   select(var1, var2, var3) 
+
+# Create a new variable by group 
+dat %&gt;% 
+  group_by(group1) %&gt;% 
+  mutate(mean_var1 = mean(var1)) 
+
+# Collapse by group 
+dat %&gt;% 
+  group_by(group1) %&gt;% 
+  summarise(mean_var1 = mean(var1))</code>
+                </pre>
+              </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Manipulating dates with lubridate</h2>
@@ -293,33 +328,34 @@ collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))</code>
               </div>
             </div>
           </div>
-          <div id="sandwich">
-            <div class="w-full mx-auto py-12">
-              <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich: More standard error adjustments</h2>
-              </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <a href = "https://sandwich.r-forge.r-project.org/articles/sandwich.html" class="text-[#4c807b] font-semibold underline">sandwich</a> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?</p></div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Linear model adjustments</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* ", robust" uses hc1 which isn't great for small samples
-regress Y X Z, vce(hc3)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
-m = feols(Y ~ X + Z, vcov = vcovHC)</code>
-                </pre>
-              </div>
-            </div>
-          </div>
           <div id="modelsummary">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">modelsummary: Summary tables, regression tables, and more</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it is only really intended to work with models from the same package. So we also recommend checking out the fantastic <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">modelsummary</a> package. It works with all sorts of model objects, including those not from <span class="font-semibold">fixest</span>, is incredibly customizable, and outputs to a bunch of different formats (PDF, HTML, DOCX, etc). It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Oh, and it also supports coefficient plots! Check out the <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">package website</a> for more.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it is only really intended to work with models from the same package. So we also recommend checking out the fantastic <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">modelsummary</a> package. It works with all sorts of model objects, including those not from <span class="font-semibold">fixest</span>, is incredibly customizable, and outputs to a bunch of different formats (PDF, HTML, DOCX, etc). Similarly, <span class="font-semibold">modelsummary</span> has a wealth of options for producing publication-ready summary tables. Oh, and it produces coefficient plots too. Check out the <a href = "https://vincentarelbundock.github.io/modelsummary/" class="text-[#4c807b] font-semibold underline">package website</a> for more.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Summary tables</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Summary stats table 
+estpost summarize 
+esttab, cells("count mean sd min max") nomtitle nonumber 
+
+* Balance table 
+by treat_var: eststo: estpost summarize 
+esttab, cells("mean sd") label nodepvar</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Summary stats table 
+datasummary_skim(dat) 
+
+
+# Balance table 
+datasummary_balance(~treat_var, dat)</code>
+                </pre>
+              </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Regression tables</h2>
@@ -343,8 +379,8 @@ esttab est1 est1b est2</code>
                   <code class="language-r">est1 = lm(Y ~ X + Z, dat) 
 msummary(est1) # msummary() = alias for modelsummary()
 
-
-# SEs for existing models can be adjusted on-the-fly 
+# Like fixest::etable(), SEs for existing models can
+# be adjusted on-the-fly 
 msummary(est1, vcov='HC3')
 
 # Multiple SEs for the same model
@@ -357,12 +393,33 @@ msummary(list(est1, est1, est3),
               </div>
             </div>
           </div>
+          <div id="sandwich">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich: More standard error adjustments</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there are, of course, many more than that. A host of additional options are covered by the <a href = "https://sandwich.r-forge.r-project.org/articles/sandwich.html" class="text-[#4c807b] font-semibold underline">sandwich</a> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHC()</span> for HC1-5. These can slot right into <span class="font-semibold">fixest</span> estimates, too. You shouldn't be using those `, robust` errors for smaller samples anyway... but you <a href = "http://datacolada.org/99" class="text-[#4c807b] underline">knew that</a>, right?</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Linear model adjustments</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
+m = feols(Y ~ X + Z, vcov = vcovHC)</code>
+                </pre>
+              </div>
+            </div>
+          </div>
           <div id="marginaleffects">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects: Marginal effects, constrasts, etc.</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is great. How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Very fast too.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic logit marginal effects</h2>

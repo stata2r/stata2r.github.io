@@ -325,6 +325,13 @@ ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()\n# "Graphing the same thing 
 misc
 tidyverse
 tidyverse
+Data wrangling with dplyr
+* Subset by rows and then columns \nkeep if var1=="value" \nkeep var1 var2 var3 \n\n\n* Create a new variable by group \nbysort group1: egen mean_var1 = mean(var1) \n\n\n\n* Collapse by group \ncollapse (mean) arr_delay, by(carrier)
+# Subset by rows and then columns \n dat %>%   # `%>%` is the tidyverse "pipe" operator\n   filter(var1=="value") %>%\n   select(var1, var2, var3) \n\n# Create a new variable by group \ndat %>% \n  group_by(group1) %>% \n  mutate(mean_var1 = mean(var1)) \n\n# Collapse by group \ndat %>% \n  group_by(group1) %>% \n  summarise(mean_var1 = mean(var1))
+
+misc
+tidyverse
+tidyverse
 Manipulating dates with lubridate
 * Shift a date forward one month (not 30 days, one month)\n* ??? 
 # Shift a date forward one month (not 30 days, one month)\nshifted_date = date + months(1)
@@ -358,6 +365,13 @@ collapse (mean) var1, by(group1)\ncollapse (min) min_var1=var1 min_var2=var2 (ma
 collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean\ncollap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
 
 misc
+modelsummary
+modelsummary: Summary tables, regression tables, and more
+Summary tables
+* Summary stats table \nestpost summarize \nesttab, cells("count mean sd min max") nomtitle nonumber \n\n* Balance table \nby treat_var: eststo: estpost summarize \nesttab, cells("mean sd") label nodepvar
+# Summary stats table \ndatasummary_skim(dat) \n\n\n# Balance table \ndatasummary_balance(~treat_var, dat)
+
+misc
 sandwich
 sandwich: More standard error adjustments
 Linear model adjustments
@@ -369,7 +383,7 @@ modelsummary
 modelsummary: Summary tables, regression tables, and more
 Regression tables
 reg Y X Z \neststore est1 \nesttab est1b\n\nreg Y X Z, vce(hc3) \neststore est1b \nesttab est1b \n\nesttab est1 est1b\n\nreg Y X Z A, vce(hc3)\neststore est2\nesttab est1 est1b est2
-est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary()\n\n\n# SEs for existing models can be adjusted on-the-fly \nmsummary(est1, vcov='HC3')\n\n# Multiple SEs for the same model\nmsummary(est1, vcov=list('iid', 'HC3')) \n\nest3 = lm(Y ~ X + Z + A, dat) \nmsummary(list(est1, est1, est3),\n         vcov = list('iid', 'HC3', 'HC3'))
+est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary()\n\n# Like fixest::etable(), SEs for existing models can\n# be adjusted on-the-fly \nmsummary(est1, vcov='HC3')\n\n# Multiple SEs for the same model\nmsummary(est1, vcov=list('iid', 'HC3')) \n\nest3 = lm(Y ~ X + Z + A, dat) \nmsummary(list(est1, est1, est3),\n         vcov = list('iid', 'HC3', 'HC3'))
 
 misc
 marginaleffects
