@@ -327,7 +327,7 @@ tidyverse
 tidyverse
 Data wrangling with dplyr
 * Subset by rows and then columns \nkeep if var1=="value" \nkeep var1 var2 var3 \n\n\n* Create a new variable by group \nbysort group1: egen mean_var1 = mean(var1) \n\n\n\n* Collapse by group \ncollapse (mean) arr_delay, by(carrier)
-# Subset by rows and then columns \n dat %>%   # `%>%` is the tidyverse "pipe" operator\n   filter(var1=="value") %>%\n   select(var1, var2, var3) \n\n# Create a new variable by group \ndat %>% \n  group_by(group1) %>% \n  mutate(mean_var1 = mean(var1)) \n\n# Collapse by group \ndat %>% \n  group_by(group1) %>% \n  summarise(mean_var1 = mean(var1))
+# Subset by rows and then columns \n dat %>%   # `%>%` is the tidyverse "pipe" operator\n   filter(var1=="value") %>%\n   select(var1, var2, var3) \n\n# Create a new variable by group \ndat %>% \n  group_by(group1) %>% \n  mutate(mean_var1 = mean(var1)) \n\n# Collapse by group \ndat %>% \n  group_by(group1) %>% \n  summarise(mean_var1 = mean(var1)) \n\n# PS. dplyr doesn't modify data in place. So you'll need\n# to (re)assign if you want to keep the above changes. \n# E.g. dat = dat %>% group_by...
 
 misc
 tidyverse
@@ -404,4 +404,4 @@ car
 car and nlWaldTest: Joint coefficient tests
 Basic coefficient combinations
 \nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
-# This example incorporates the fixest function feols()\nm = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval

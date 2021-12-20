@@ -24,7 +24,7 @@ cheat_sheet_splash <- create_section(
         ),
         p(
             "All of the below packages have far more applications than is shown here. We'll just provide one or two examples of how each can be used. Finally, don't forget to install them with ",
-            span(class = "font-semibold", "install.packages()"), " (just once) and load them with ", span(class = "font-semibold", "library()"), " (whenever you want to use them in a new R session)."
+            span(class = "font-semibold", "install.packages('PKGNAME')"), " and load them with ", span(class = "font-semibold", "library(PKGNAME)"), ". The former command you only have to run once per package (or as often as you want to update it); the latter whenever you want to use a package in a new R session."
         )
     )
     

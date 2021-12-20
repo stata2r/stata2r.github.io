@@ -168,10 +168,10 @@ document.getElementById("menu-hamburger").onclick = function () {
               </p>
               <p>
                 All of the below packages have far more applications than is shown here. We'll just provide one or two examples of how each can be used. Finally, don't forget to install them with 
-                <span class="font-semibold">install.packages()</span>
-                 (just once) and load them with 
-                <span class="font-semibold">library()</span>
-                 (whenever you want to use them in a new R session).
+                <span class="font-semibold">install.packages('PKGNAME')</span>
+                 and load them with 
+                <span class="font-semibold">library(PKGNAME)</span>
+                . The former command you only have to run once per package (or as often as you want to update it); the latter whenever you want to use a package in a new R session.
               </p>
             </div>
           </div>
@@ -203,7 +203,7 @@ ggplot(dat, aes(x = xvar, y = yvar, color = group)) + geom_point()</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">tidyverse</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <a href = "https://www.tidyverse.org" class="text-[#4c807b] font-semibold underline">tidyverse</a> provides an extremely popular framework for data science tasks in R. This meta-package is actually a collection of smaller packages that are all designed to work together, based on a shared philosophy and syntax. We've already covered <span class="font-semibold">ggplot2</span> above, but there are plenty more. These include <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span>, which offer an alternative syntax and approach to data wrangling tasks.  While we personally recommend <span class="font-semibold">data.table</span>, these <span class="font-semibold">tidyverse</span> packages have many ardent fans. You too may find that you prefer their modular design and verbal syntax more. But don't feel bound either way: it's totally fine to combine them. Some other tidyverse packages worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <a href = "https://www.tidyverse.org" class="text-[#4c807b] font-semibold underline">tidyverse</a> provides an extremely popular framework for data science tasks in R. This meta-package is actually a collection of smaller packages that are all designed to work together, based on a shared philosophy and syntax. We've already covered <span class="font-semibold">ggplot2</span> above, but there are plenty more. These include <span class="font-semibold">dplyr</span> and <span class="font-semibold">tidyr</span>, which offer an alternative syntax and approach to data wrangling tasks.  While we personally recommend <span class="font-semibold">data.table</span>, these <span class="font-semibold">tidyverse</span> packages have many ardent fans too. You may find that you prefer their modular design and verbal syntax. But don't feel bound either way: it's totally fine to combine them. Some other tidyverse packages worth knowing about include <span class="font-semibold">purrr</span>, which contains a suite of functions for automating and looping your work, <span class="font-semibold">lubridate</span> which makes working with date-based data easy, and <span class="font-semibold">stringr</span> which offers functions with straightforward syntax for working with string variables.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Data wrangling with dplyr</h2>
@@ -236,7 +236,11 @@ dat %&gt;%
 # Collapse by group 
 dat %&gt;% 
   group_by(group1) %&gt;% 
-  summarise(mean_var1 = mean(var1))</code>
+  summarise(mean_var1 = mean(var1)) 
+
+# PS. dplyr doesn't modify data in place. So you'll need
+# to (re)assign if you want to keep the above changes. 
+# E.g. dat = dat %&gt;% group_by...</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -477,8 +481,7 @@ lincom x + z
 nlcom _b[x]/_b[z]</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># This example incorporates the fixest function feols()
-m = feols(y ~ x + z, data = dat)
+                  <code class="language-r">m = feols(y ~ x + z, data = dat)
 linearHypothesis(m, 'x + z')
 nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval</code>
                 </pre>
