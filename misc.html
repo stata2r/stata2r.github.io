@@ -488,6 +488,34 @@ nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval<
               </div>
             </div>
           </div>
+          <div id="sf">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">sf: Geospatial operations</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>R has outstanding support for geospatial computation and mapping. There are a variety of packages to choose from here, depending on what you want (e.g. interactive maps, high-dimensional data cubes, etc.) But the workhorse geospatial tool for most R users is the incredibly versatile <a href = "https://r-spatial.github.io/sf/" class="text-[#4c807b] font-semibold underline">sf</a> package. We'll only provide a simple mapping example below. The <span class="font-semibold">sf</span> <a href = "https://r-spatial.github.io/sf/" class="text-[#4c807b] underline">website</a> has several in-depth tutorials, and we also recommend the <span class="text-[#4c807b] font-semibold underline italic"><a href = "https://geocompr.robinlovelace.net/">Geocomputation with R</a></span> book by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Simple map</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Mapping in Stata requires the spmap and shp2dta 
+* commands, and also that you convert your (say) 
+* shapefile to .dta format first. We won't go through 
+* all that here, but see: 
+* https://www.stata.com/support/faqs/graphics/spmap-and-maps/</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># This example uses the North Carolina shapefile that is
+# bundled with the sf package. 
+nc = st_read(system.file("shape/nc.shp", package = "sf")) 
+plot(nc[, 'BIR74'])
+# Or, if you have ggplot2 loaded: 
+ggplot(nc, aes(fill=BIR74)) + geom_sf()</code>
+                </pre>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

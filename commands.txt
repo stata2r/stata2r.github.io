@@ -405,3 +405,10 @@ car and nlWaldTest: Joint coefficient tests
 Basic coefficient combinations
 \nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
 m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+
+misc
+sf
+sf: Geospatial operations
+Simple map
+* Mapping in Stata requires the spmap and shp2dta \n* commands, and also that you convert your (say) \n* shapefile to .dta format first. We won't go through \n* all that here, but see: \n* https://www.stata.com/support/faqs/graphics/spmap-and-maps/
+# This example uses the North Carolina shapefile that is\n# bundled with the sf package. \nnc = st_read(system.file("shape/nc.shp", package = "sf")) \nplot(nc[, 'BIR74'])\n# Or, if you have ggplot2 loaded: \nggplot(nc, aes(fill=BIR74)) + geom_sf()
