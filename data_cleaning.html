@@ -967,7 +967,34 @@ mdat = merge(dat, dat2, by.x='dest', by.y='faa')
 
 # Set keys for even faster merges and syntax shortcuts 
 setkey(dat, dest); setkey(dat2, dest) 
-mdat = merge(dat, dat2) ## note: don't need 'by'</code>
+mdat = merge(dat, dat2) ## note: don't need 'by' 
+
+# Non-equi joins 
+# Non-equi joins are a bit hard to understand if you've 
+# never seen them before. But they are incredibly 
+# powerful and solve a suprisingly common problem: 
+# Merging datasets over a range (e.g. start to end 
+# dates), rather than exact matches. 
+# Simple example where we want to subset the 1st qtr 
+# flights for American Airlines and 2nd qtr flights 
+# for United Airlines: 
+dat3 = data.table(carrier     = c('AA', 'UA'),
+                  start_month = c(1, 4),
+                  end_month   = c(3, 6)) 
+dat[dat3, on = .(carrier,
+                 month &gt;= start_month,
+                 month &lt;= end_month)] 
+
+# Rolling joins are similar and allow you to match a set
+# of dates forwards or backwards. For example, our `dat` 
+# datset ends in October. Let's say we want to carry the 
+# last known entries for American and United Airlines 
+# forward to (random) future dates. 
+dat4 = data.table(carrier  = c('AA', 'UA'),
+                  new_date = as.IDate(c('2014-11-01',
+                                        '2014-11-15'))) 
+dat[, date := as.IDate(paste(year, month, day, sep='-'))] 
+dat[dat4, on = .(carrier, date=new_date), roll='nearest']</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
