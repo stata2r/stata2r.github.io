@@ -407,18 +407,18 @@ collapse (mean) var1, by(group1)\ncollapse (min) min_var1=var1 min_var2=var2 (ma
 collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean\ncollap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
 
 misc
+sandwich
+sandwich: More standard error adjustments
+Linear model adjustments
+* ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
+# sandwich's vcovHC uses HC3 by default\nfeols(Y ~ X + Z, dat,vcov = sandwich::vcovHC) \n\n# Aside: Remember that you can also adjust the SEs \n# for existing models on the fly \nm = feols(Y ~ X + Z, dat) \nsummary(m, vcov = sandwich::vcovHC)
+
+misc
 modelsummary
 modelsummary: Summary tables, regression tables, and more
 Summary tables
 * Summary stats table \nestpost summarize \nesttab, cells("count mean sd min max") nomtitle nonumber \n\n* Balance table \nby treat_var: eststo: estpost summarize \nesttab, cells("mean sd") label nodepvar
 # Summary stats table \ndatasummary_skim(dat) \n\n\n# Balance table \ndatasummary_balance(~treat_var, dat)
-
-misc
-sandwich
-sandwich: More standard error adjustments
-Linear model adjustments
-* ", robust" uses hc1 which isn't great for small samples\nregress Y X Z, vce(hc3)
-# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default\nm = feols(Y ~ X + Z, vcov = vcovHC)
 
 misc
 modelsummary
@@ -430,8 +430,8 @@ est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary
 misc
 lme4
 lme4: Random effects and mixed models
-Random effects models
-xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
+Random effects and mixed models
+xtset group time\nxtreg Y X, re\nmixed lifeexp || countryn: gdppercap
 # No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
 
 misc

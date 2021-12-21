@@ -332,6 +332,32 @@ collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))</code>
               </div>
             </div>
           </div>
+          <div id="sandwich">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich: More standard error adjustments</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there are, of course, many more than that. A host of additional options are covered by the <a href = "https://sandwich.r-forge.r-project.org/articles/sandwich.html" class="text-[#4c807b] font-semibold underline">sandwich</a> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHC()</span> for HC1-5. These can slot right into <span class="font-semibold">fixest</span> estimates, too. You shouldn't be using those `, robust` errors for smaller samples anyway... but you <a href = "http://datacolada.org/99" class="text-[#4c807b] underline">knew that</a>, right?</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Linear model adjustments</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># sandwich's vcovHC uses HC3 by default
+feols(Y ~ X + Z, dat,vcov = sandwich::vcovHC) 
+
+# Aside: Remember that you can also adjust the SEs 
+# for existing models on the fly 
+m = feols(Y ~ X + Z, dat) 
+summary(m, vcov = sandwich::vcovHC)</code>
+                </pre>
+              </div>
+            </div>
+          </div>
           <div id="modelsummary">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
@@ -397,41 +423,20 @@ msummary(list(est1, est1, est3),
               </div>
             </div>
           </div>
-          <div id="sandwich">
-            <div class="w-full mx-auto py-12">
-              <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">sandwich: More standard error adjustments</h2>
-              </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there are, of course, many more than that. A host of additional options are covered by the <a href = "https://sandwich.r-forge.r-project.org/articles/sandwich.html" class="text-[#4c807b] font-semibold underline">sandwich</a> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHC()</span> for HC1-5. These can slot right into <span class="font-semibold">fixest</span> estimates, too. You shouldn't be using those `, robust` errors for smaller samples anyway... but you <a href = "http://datacolada.org/99" class="text-[#4c807b] underline">knew that</a>, right?</p></div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Linear model adjustments</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* ", robust" uses hc1 which isn't great for small samples
-regress Y X Z, vce(hc3)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
-m = feols(Y ~ X + Z, vcov = vcovHC)</code>
-                </pre>
-              </div>
-            </div>
-          </div>
           <div id="lme4">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">lme4: Random effects and mixed models</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <a href = "https://cran.r-project.org/web/packages/lme4/index.html" class="text-[#4c807b] font-semibold underline">lme4</a> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p><span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll quick highlight random-effects and mixed models. The <a href = "https://cran.r-project.org/web/packages/lme4/index.html" class="text-[#4c807b] font-semibold underline">lme4</a> package and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions. (<span class="font-semibold">Aside:</span> If you prefer Bayesian models for this kind of thing, check out the <a href = "https://paul-buerkner.github.io/brms/" class="text-[#4c807b] font-semibold underline">brms</a> package.)</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Random effects models</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Random effects and mixed models</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset group time
 xtreg Y X, re
- mixed lifeexp || countryn: gdppercap</code>
+mixed lifeexp || countryn: gdppercap</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># No need for an xtset equivalent
@@ -446,7 +451,7 @@ nm = lmer(Y~(1+x|group) + X, data = dat)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects: Marginal effects, constrasts, etc.</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is great. How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Very fast too.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is great. To replicate it in R, we recommend the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations, etc. It's also very fast.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Basic logit marginal effects</h2>
