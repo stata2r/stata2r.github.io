@@ -818,21 +818,36 @@ dat[, .N, by = origin])</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Reshape prep (this dataset only)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* We'll generate row IDs to avoid the (reshape) ambiguity 
+* of repeated entries per date 
+gen id = _n 
+
+* For the Stata reshape, it's also going to prove 
+* convenient to rename the delay vars. 
+rename (dep_delay arr_delay) (delay_dep delay_arr)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># We'll generate row IDs to avoid the (reshape) ambiguity 
+# of repeated entries per date 
+dat[, id := .I] </code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Reshape long</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* Prepare to reshape long (this dataset only):
-gen id = _n 
-rename (dep_delay arr_delay) (delay_dep delay_arr)
-
-reshape long delay_, i(id) j(delay_type) s</code>
+                  <code class="language-stata">reshape long delay_, i(id) j(delay_type) s</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># Prepare to reshape long (this dataset only):
-dat[, id := .I] 
+                  <code class="language-r">ldat = melt(dat, measure=patterns('_delay'))
 
-dat1 = melt(dat, measure.vars = c('arr_delay','dep_delay'))
-# note id.vars would normally be specified too, but here we're treating each row as its own ID</code>
+# Aside: you can also choose different names for your
+# new reshaped columns if you'd like, e.g. 
+melt(dat, measure=patterns('_delay'), variable='d_type')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -841,13 +856,20 @@ dat1 = melt(dat, measure.vars = c('arr_delay','dep_delay'))
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* This starts with the reshaped-long data from above
-reshape wide delay_, (id) j(delay_type) s</code>
+reshape wide delay_, i(id) j(delay_type) s</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># This starts with the reshaped-long data from above
-dat2 = dcast(dat1, id ~ variable)
-# (this drops all variables except id &amp; *_delay, 
-# but we could preserve them with id+origin+dest+etc. instead of just id)</code>
+wdat = dcast(ldat, ... ~ variable)
+
+# Aside 1: If you just want to keep the id &amp; *_delay cols
+dcast(ldat, id ~ variable)
+
+# Aside 2: It's also possible to perform complex and 
+# powerful data aggregating tasks as part of the dcast 
+# (i.e. reshape wide) call.
+dcast(dat, origin~., fun=list(min,mean,max),
+      value.var=c('dep_delay','arr_delay'))</code>
                 </pre>
               </div>
             </div>

@@ -142,16 +142,23 @@ dat[, .N] # Or: nrow(dat) \ndat[month==10, .N] # Or: nrow(dat[month==10]\n# Coun
 data_cleaning
 reshape
 Reshape
+Reshape prep (this dataset only)
+* We'll generate row IDs to avoid the (reshape) ambiguity \n* of repeated entries per date \ngen id = _n \n\n* For the Stata reshape, it's also going to prove \n* convenient to rename the delay vars. \nrename (dep_delay arr_delay) (delay_dep delay_arr)
+# We'll generate row IDs to avoid the (reshape) ambiguity \n# of repeated entries per date \ndat[, id := .I] 
+
+data_cleaning
+reshape
+Reshape
 Reshape long
-* Prepare to reshape long (this dataset only):\ngen id = _n \nrename (dep_delay arr_delay) (delay_dep delay_arr)\n\nreshape long delay_, i(id) j(delay_type) s
-# Prepare to reshape long (this dataset only):\ndat[, id := .I] \n\ndat1 = melt(dat, measure.vars = c('arr_delay','dep_delay'))\n# note id.vars would normally be specified too, but here we're treating each row as its own ID
+reshape long delay_, i(id) j(delay_type) s
+ldat = melt(dat, measure=patterns('_delay'))\n\n# Aside: you can also choose different names for your\n# new reshaped columns if you'd like, e.g. \nmelt(dat, measure=patterns('_delay'), variable='d_type')
 
 data_cleaning
 reshape
 Reshape
 Reshape wide
-* This starts with the reshaped-long data from above\nreshape wide delay_, (id) j(delay_type) s
-# This starts with the reshaped-long data from above\ndat2 = dcast(dat1, id ~ variable)\n# (this drops all variables except id & *_delay, \n# but we could preserve them with id+origin+dest+etc. instead of just id)
+* This starts with the reshaped-long data from above\nreshape wide delay_, i(id) j(delay_type) s
+# This starts with the reshaped-long data from above\nwdat = dcast(ldat, ... ~ variable)\n\n# Aside 1: If you just want to keep the id & *_delay cols\ndcast(ldat, id ~ variable)\n\n# Aside 2: It's also possible to perform complex and \n# powerful data aggregating tasks as part of the dcast \n# (i.e. reshape wide) call.\ndcast(dat, origin~., fun=list(min,mean,max),\n      value.var=c('dep_delay','arr_delay'))
 
 data_cleaning
 merge
