@@ -862,7 +862,7 @@ reshape wide delay_, i(id) j(delay_type) s</code>
                   <code class="language-r"># This starts with the reshaped-long data from above
 wdat = dcast(ldat, ... ~ variable)
 
-# Aside 1: If you just want to keep the id &amp; *_delay cols
+# Aside 1: If you only want to keep the id &amp; *_delay cols
 dcast(ldat, id ~ variable)
 
 # Aside 2: It's also possible to perform complex and 
@@ -881,74 +881,93 @@ dcast(dat, origin~., fun=list(min,mean,max),
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Import secondary (airport) dataset</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Import and prep secondary dataset on airport characterists</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear
+* Stata requires that merge ID variables have the same 
+* name across datasets. 
+rename faa dest 
 save dat2.dta, replace
 import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv")</code>
+                  <code class="language-r">dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv") 
+# R _doesn't_ require that merge ID variables share the 
+# same name across datasets. But we'll add this anyway.
+dat2[, dest := faa]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Various merges</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Inner merge (i.e. keep row matches only)</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">rename dest faa
-* Only keep matches (inner join)
-merge m:1 faa using dat2.dta, keep(3) nogen
-* Keep all observations (full join)
-merge m:1 faa using dat2.dta, nogen
-* Keep matches and "master" non-matches (left join)
-merge m:1 faa using dat2.dta, keep(1 3) nogen
-* Keep matches and "using" non-matches (right join)
-merge m:1 faa using dat2.dta, keep(2 3) nogen
-
-merge m:1 faa using dat2.dta, keepusing(lat lon)
-
-
-
-
-
-
-
-
-
-
-
-
-* Keep only non-matches (anti-join)
-merge m:1 faa using dat2.dta, keep(1 2) nogen</code>
+                  <code class="language-stata">merge m:1 dest using dat2.dta, keep(3) nogen</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">setnames(dat, 'dest', 'faa')
-# Only keep matches (inner join)
-dat_merged = merge(dat, dat2, by='dest')
-# Keep all observations (full join)
-dat_merged = merge(dat, dat2, by='dest', all = TRUE)
-# Keep matches and "master" non-matches (left join)
-dat_merged = merge(dat, dat2, by='dest', all.x = TRUE)
-# Keep matches and "using" non-matches (right join)
-dat_merged = merge(dat, dat2, by='dest', all.y = TRUE)
+                  <code class="language-r">mdat = merge(dat, dat2, by='dest') </code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Full merge (i.e. keep all rows)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">merge m:1 dest using dat2.dta, nogen</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">mdat = merge(dat, dat2, by='dest', all=TRUE)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Left merge (i.e. keep all rows from "main" dataset)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">merge m:1 dest using dat2.dta, keep(1 3) nogen</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">mdat = merge(dat, dat2, by='dest', all.x=TRUE)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Right merge (i.e. keep all rows from "secondary" dataset)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">merge m:1 dest using dat2.dta, keep(2 3) nogen</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">mdat = merge(dat, dat2, by='dest', all.y=TRUE)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Anti merge (i.e. keep non-matched rows only)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">merge m:1 dest using dat2.dta, keep(1 2) nogen</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">mdat = dat[!dat2, on='dest']</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Advanced merges (tips and tricks)</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* These next options don't really have good Stata 
+* equivalents (that we're aware of)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Merge on different ID names 
+mdat = merge(dat, dat2, by.x='dest', by.y='faa') 
 
-dat_merged = merge(dat, dat2[, .(dest, lat, lon)], by='dest', all = TRUE)
-
-# Alternate merging approaches
-# Skip the setnames() and just merge with different variable names
-dat_merged = merge(dat, dat2, by.x='dest', by.y='faa') 
-
-# If using keys, don't need 'by'/'on' (and faster) 
+# Set keys for even faster merges and syntax shortcuts 
 setkey(dat, dest); setkey(dat2, dest) 
-dat_merged = merge(dat, dat2)
-
-# Alternate, more data-tably syntax
-# That is also faster for some applications
-dat_merged = dat[dat2, on='dest']
-# Keep only non-matches (anti-join)
-dat_merged = dat[!dat2, on='dest']</code>
+mdat = merge(dat, dat2) ## note: don't need 'by'</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
