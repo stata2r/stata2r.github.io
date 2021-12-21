@@ -230,6 +230,7 @@ library(data.table)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Data I/O</h2>
               </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Like Stata's ".dta" format, R has its own native ".rds" binary file storage type. (See also the <a href = "http://www.fstpackage.org/" class="text-[#4c807b] font-semibold underline">fst</a> package.) However, we generally recommend that users avoid native—especially proprietary—data types since they hamper interoperability and reproducibility. We'll hence concentrate on common open-source file types below. We'll make an exception for .dta given our target audience, but we still recommend avoiding it if possible.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Read and write .csv</h2>
@@ -241,6 +242,22 @@ export delimited using "flightdata.csv", replace</code>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
 fwrite(dat, 'flightdata.csv')</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Read and write .parquet</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Stata currently has limited support for parquet files 
+* (and Linux/Unix only). 
+* See: https://github.com/mcaceresb/stata-parquet</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># These commands require the `arrow` package 
+pfiles = dir(pattern = ".parquet") 
+rbindlist(lapply(pfiles, arrow::read_parquet)) 
+rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

@@ -8,6 +8,13 @@ dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vign
 data_cleaning
 data
 Data I/O
+Read and write .parquet
+* Stata currently has limited support for parquet files \n* (and Linux/Unix only). \n* See: https://github.com/mcaceresb/stata-parquet
+# These commands require the `arrow` package \npfiles = dir(pattern = ".parquet") \nrbindlist(lapply(pfiles, arrow::read_parquet)) \nrbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10)
+
+data_cleaning
+data
+Data I/O
 Read and write .dta
 * .dta is Stata's native (proprietary) filetype \nuse "filename.dta", clear \n\n\nsave "filename.dta", replace
 # These commands require the `haven` package \ndat = haven::read_dta('filename.dta') \nsetDT(dat) # Or: dat = as.data.table(dat) \n \nhaven::write_dta(dat, 'filename.dta')
