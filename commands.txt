@@ -428,13 +428,6 @@ reg Y X Z \neststore est1 \nesttab est1b\n\nreg Y X Z, vce(hc3) \neststore est1b
 est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary()\n\n# Like fixest::etable(), SEs for existing models can\n# be adjusted on-the-fly \nmsummary(est1, vcov='HC3')\n\n# Multiple SEs for the same model\nmsummary(est1, vcov=list('iid', 'HC3')) \n\nest3 = lm(Y ~ X + Z + A, dat) \nmsummary(list(est1, est1, est3),\n         vcov = list('iid', 'HC3', 'HC3'))
 
 misc
-marginaleffects
-marginaleffects: Marginal effects, constrasts, etc.
-Basic logit marginal effects
-* A logit:\nlogit Y X Z\nmargins, dydx(*)
-# This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
-
-misc
 lme4
 lme4: Random effects and mixed models
 Random effects models
@@ -442,11 +435,18 @@ xtset group time\nxtreg Y X, re\n mixed lifeexp || countryn: gdppercap
 # No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
 
 misc
-car
-car and nlWaldTest: Joint coefficient tests
-Basic coefficient combinations
-\nregress y x z\nlincom x + z\nnlcom _b[x]/_b[z]
-m = feols(y ~ x + z, data = dat)\nlinearHypothesis(m, 'x + z')\nnlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+marginaleffects
+marginaleffects: Marginal effects, constrasts, etc.
+Basic logit marginal effects
+* A logit:\nlogit Y X Z\nmargins, dydx(*)
+# This example incorporates the fixest function feglm()\nm = feglm(Y ~ X + Z, family = binomial, data = mtcars)\nsummary(marginaleffects(m))
+
+misc
+multcomp
+multcomp and nlWaldTest: Joint coefficient tests
+Test other null hypotheses and coefficient combinations
+\nregress y x z \n\n\n\n\n* One-sided test \ntest _b[x]=0 \nlocal sign_wgt = sign(_b[x]) \ndisplay "H0: coef <= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) \n\n* Test linear combination of coefficients \nlincom x + z \n\n\n* Test nonlinear combination of coefficients \nnlcom _b[x]/_b[z]
+m = feols(y ~ x + z, data = dat)\n\n# Note: we recommend the dev version of multcomp \n# install.packages("multcomp", repos="http://R-Forge.R-project.org") \n\n# One-sided test \nm2 = multcomp::ghlt(m, 'x<=0')\nsummary(m2) \n\n\n# Test linear combination of coefficients \nm3 = multcomp::glht(m, 'x + z = 0') \nsummary(m3) # or confint(m3) \n\n# Test nonlinear combination of coefficients \nnlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
 
 misc
 sf

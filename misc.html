@@ -418,29 +418,6 @@ m = feols(Y ~ X + Z, vcov = vcovHC)</code>
               </div>
             </div>
           </div>
-          <div id="marginaleffects">
-            <div class="w-full mx-auto py-12">
-              <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects: Marginal effects, constrasts, etc.</h2>
-              </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is great. How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Very fast too.</p></div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Basic logit marginal effects</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* A logit:
-logit Y X Z
-margins, dydx(*)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r"># This example incorporates the fixest function feglm()
-m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
-summary(marginaleffects(m))</code>
-                </pre>
-              </div>
-            </div>
-          </div>
           <div id="lme4">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
@@ -464,26 +441,75 @@ nm = lmer(Y~(1+x|group) + X, data = dat)</code>
               </div>
             </div>
           </div>
-          <div id="car">
+          <div id="marginaleffects">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">car and nlWaldTest: Joint coefficient tests</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">marginaleffects: Marginal effects, constrasts, etc.</h2>
               </div>
-              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>One deficiency in R that can be surprising for Stata switchers is the lack of inbuilt, complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span>. Still, we've already seen that <span class="font-semibold">fixest</span> covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <a href = "http://multcomp.r-forge.r-project.org/" class="text-[#4c807b] font-semibold underline">multcomp</a> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <a href = "https://cran.r-project.org/web/packages/car/" class="text-[#4c807b] font-semibold underline">car</a> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.</p></div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>The Stata <span class="font-semibold">margins</span> command is great. How can you replicate it in R? Well, there's the <a href = "https://vincentarelbundock.github.io/marginaleffects/" class="text-[#4c807b] font-semibold underline">marginaleffects</a> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Very fast too.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Basic coefficient combinations</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Basic logit marginal effects</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* A logit:
+logit Y X Z
+margins, dydx(*)</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># This example incorporates the fixest function feglm()
+m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
+summary(marginaleffects(m))</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div id="multcomp">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">multcomp and nlWaldTest: Joint coefficient tests</h2>
+              </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Stata provides a number of inbuilt commands for (potentially complex) postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span>. We've already seen that <span class="font-semibold">fixest</span> covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? The <a href = "http://multcomp.r-forge.r-project.org/" class="text-[#4c807b] font-semibold underline">multcomp</a> package handles a variety of linear tests and combinations, while <a href = "https://cran.r-project.org/web/packages/nlWaldTest/index.html" class="text-[#4c807b] font-semibold underline">nlWaldTest</a> has you covered for nonlinear combinations.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Test other null hypotheses and coefficient combinations</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">
-regress y x z
-lincom x + z
+regress y x z 
+
+
+
+
+* One-sided test 
+test _b[x]=0 
+local sign_wgt = sign(_b[x]) 
+display "H0: coef &lt;= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) 
+
+* Test linear combination of coefficients 
+lincom x + z 
+
+
+* Test nonlinear combination of coefficients 
 nlcom _b[x]/_b[z]</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">m = feols(y ~ x + z, data = dat)
-linearHypothesis(m, 'x + z')
-nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval</code>
+
+# Note: we recommend the dev version of multcomp 
+# install.packages("multcomp", repos="http://R-Forge.R-project.org") 
+
+# One-sided test 
+m2 = multcomp::ghlt(m, 'x&lt;=0')
+summary(m2) 
+
+
+# Test linear combination of coefficients 
+m3 = multcomp::glht(m, 'x + z = 0') 
+summary(m3) # or confint(m3) 
+
+# Test nonlinear combination of coefficients 
+nlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()</code>
                 </pre>
               </div>
             </div>
