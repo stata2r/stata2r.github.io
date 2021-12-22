@@ -50,7 +50,7 @@ tutorial <- create_section(
              <p>To begin, we will use a modified dataset from the CPS with some added variables for demonstration purposes. To load the data run the following:</p>
              <div class="grid grid-cols-1 justify-start gap-y-4 mt-8 text-sm">
              <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-stata"><code class=" language-stata">import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear</code></pre>
-             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">library(data.table); dat = fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')</code></pre>
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')</code></pre>
              </div>
         )")
     )

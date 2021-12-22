@@ -205,7 +205,7 @@ library(fixest)</code>
              <p>To begin, we will use a modified dataset from the CPS with some added variables for demonstration purposes. To load the data run the following:</p>
              <div class="grid grid-cols-1 justify-start gap-y-4 mt-8 text-sm">
              <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-stata"><code class=" language-stata">import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear</code></pre>
-             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">library(data.table); dat = fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')</code></pre>
+             <pre class="bg-white border-2 rounded-lg shadow-lg flex flex-col justify-start px-4 py-4 language-r"><code class=" language-r">dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')</code></pre>
              </div>
         </div>
           </div>
@@ -224,12 +224,24 @@ library(fixest)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ i.fe
-reghdfe wage educ, absorb(fe)</code>
+                  <code class="language-stata">reghdfe wage educ i.countyfips
+reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
+
+
+
+
+
+reghdfe wage educ, absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + factor(countyfips), data = dat)
-feols(wage ~ educ | countyfips, dat)</code>
+                  <code class="language-r">feols(wage ~ educ + i(countyfips), data = dat)
+feols(wage ~ educ | countyfips, dat) 
+
+# Aside: fixest automatically clusters SEs by the first 
+# fixed effect (if there are any). We'll get to SEs 
+# later, but if you just want iid errors for a fixed 
+# effect model: 
+ feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -329,15 +341,22 @@ feols(wage ~ educ + i(treat, age), dat)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Standard errors</h2>
               </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>While you can specify standard errors inside the original <span class="font-semibold">fixest</span> model call (just like Stata), a unique feature of R is that you can adjust errors for an exisiting model <i>on the fly</i>. This has <span class="text-[#4c807b] underline"><a href = "https://grantmcdermott.com/better-way-adjust-SEs">several benefits</a></span>, including being much more efficient since you don't have to re-estimate your whole model. We'll try to highlight examples of both approaches below.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">HC</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, vce(hc1)</code>
+                  <code class="language-stata">reghdfe wage educ, vce(robust) 
+reghdfe wage educ, vce(hc3)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ, dat, vcov = 'hc1')</code>
+                  <code class="language-r">feols(wage ~ educ, dat, vcov = 'hc1') 
+feols(wage ~ educ, dat, vcov = sandwich:vcovHC) 
+
+# Note: You can also adjust the SEs of an existing model 
+m = feols(wage ~ educ, dat) 
+summary(m, vcov = 'hc1')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -346,7 +365,7 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">xtset id year
-ivreghdfe wage educ, bw(auto) robust</code>
+ivreghdfe wage educ, bw(auto) vce(robust)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
@@ -358,21 +377,36 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                   <h2 class="text-gray-600 text-lg font-semibold">Clustered</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, cluster(countyfips)</code>
+                  <code class="language-stata">reghdfe wage educ, absorb(countyfips) vce(cluster countyfips) </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips)</code>
+                  <code class="language-r">feols(wage ~ educ | countyfips, dat) # Auto clusters by FE 
+feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Two-way</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Two-way etc.</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, cluster(countyfips year)</code>
+                  <code class="language-stata">reghdfe wage educ, absorb(countyfips year) vce(cluster countyfips year) 
+
+
+reghdfe wage educ, absorb(countyfips) vce(cluster#countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ, dat, vcov = ~countyfips + year)</code>
+                  <code class="language-r">feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips + year) 
+feols(wage ~ educ | countyfips + year, dat, vcov = 'twoway') # same 
+
+feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips^year) 
+
+# Reminder that you can adjust the SEs of existing 
+# fixest models on-the-fly. 
+m = feols(wage ~ educ | countyfips + year, dat) 
+m 
+summary(m, vcov = 'twoway') 
+summmary(m, vcov = ~countyfips^year) 
+# etc.</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

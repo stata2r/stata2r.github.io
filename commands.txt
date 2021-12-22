@@ -235,8 +235,8 @@ regression
 formula
 Formula creation
 Fixed effects
-reghdfe wage educ i.fe\nreghdfe wage educ, absorb(fe)
-feols(wage ~ educ + factor(countyfips), data = dat)\nfeols(wage ~ educ | countyfips, dat)
+reghdfe wage educ i.countyfips\nreghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
+feols(wage ~ educ + i(countyfips), data = dat)\nfeols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \n feols(wage ~ educ | countyfips, dat, vcov = 'iid')
 
 regression
 formula
@@ -291,29 +291,30 @@ regression
 std_errors
 Standard errors
 HC
-reghdfe wage educ, vce(hc1)
-feols(wage ~ educ, dat, vcov = 'hc1')
+reghdfe wage educ, vce(robust) \nreghdfe wage educ, vce(hc3)
+feols(wage ~ educ, dat, vcov = 'hc1') \nfeols(wage ~ educ, dat, vcov = sandwich:vcovHC) \n\n# Note: You can also adjust the SEs of an existing model \nm = feols(wage ~ educ, dat) \nsummary(m, vcov = 'hc1')
 
 regression
 std_errors
 Standard errors
 HAC
-xtset id year\nivreghdfe wage educ, bw(auto) robust
+xtset id year\nivreghdfe wage educ, bw(auto) vce(robust)
 feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)\nfeols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
 
 regression
 std_errors
 Standard errors
 Clustered
-reghdfe wage educ, cluster(countyfips)
-feols(wage ~ educ, dat, vcov = ~countyfips)
+reghdfe wage educ, absorb(countyfips) vce(cluster countyfips) 
+feols(wage ~ educ | countyfips, dat) # Auto clusters by FE \nfeols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too
 
 regression
 std_errors
 Standard errors
-Two-way
-reghdfe wage educ, cluster(countyfips year)
-feols(wage ~ educ, dat, vcov = ~countyfips + year)
+Two-way etc.
+reghdfe wage educ, absorb(countyfips year) vce(cluster countyfips year) \n\n\nreghdfe wage educ, absorb(countyfips) vce(cluster#countyfips)
+feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips + year) \nfeols(wage ~ educ | countyfips + year, dat, vcov = 'twoway') # same \n\nfeols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips^year) \n\n# Reminder that you can adjust the SEs of existing \n# fixest models on-the-fly. \nm = feols(wage ~ educ | countyfips + year, dat) \nm \nsummary(m, vcov = 'twoway') \nsummmary(m, vcov = ~countyfips^year) \n# etc.
+
 
 regression
 std_errors
