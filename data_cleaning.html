@@ -579,7 +579,7 @@ dat[, growth_since_first := X/first(X), by = group]</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Work With Dates</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Work with dates</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">* Give ourselves a date variable to work with
@@ -596,7 +596,7 @@ replace date = date + 7</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># Make ourselves a date variable
-dat[, day_string := paste(year, month, day, sep = '/')]
+dat[, day_string := paste(year, month, day, sep='-')]
 dat[, date := as.IDate(day_string)]
 
 
@@ -824,6 +824,40 @@ tabulate origin</code>
 dat[month==10, .N] # Or: nrow(dat[month==10]
 # Count rows by group:
 dat[, .N, by = origin])</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Grouped calculations and complex objects inside a data.table</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* ??</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># data.tables support list columns, so you can have 
+# complex objects like regression models inside a 
+# data.table. Among many other things, this means you 
+# can nest simulations inside a data.table as easily  
+# as you would perform any other (grouped) operation. 
+
+# Example: Grouped regression 
+
+# Let's run a separate regression of arrival delay on 
+# departure delay for each month, inside our dataset 
+
+# Just the coefficients
+dat[,
+    .(beta = coef(lm(arr_delay ~ dep_delay, .SD))[2]),
+    by = month]
+
+# Keep the whole model for each month
+mods = dat[,
+           .(mod = list(lm(arr_delay ~ dep_delay, .SD))),
+           by = month] 
+# Now you can do things like put all 10 models in a 
+# regression table or coefficient plot 
+modelsummary::msummary(mods$mod) 
+modelsummary::modelplot(mods$mod, coef_omit = 'Inter')</code>
                 </pre>
               </div>
             </div>

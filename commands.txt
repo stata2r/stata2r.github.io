@@ -92,9 +92,9 @@ dat[, mean_dep_delay := mean(dep_delay), by=origin] \ndat[, mean_dep_delay2 := m
 data_cleaning
 modify
 Modify
-Work With Dates
+Work with dates
 * Give ourselves a date variable to work with\ntostring year month day, replace\ngen day_string = year + "/" + month + "/" + day\ngen date = date(day_string, "YMD")\nformat date %td\n\n* Pull out year (quarter, month, etc. work too)\ngen the_year = year(date)\n\n* Shift forward 7 days\nreplace date = date + 7
-# Make ourselves a date variable\ndat[, day_string := paste(year, month, day, sep = '/')]\ndat[, date := as.IDate(day_string)]\n\n\n\n# Pull out year (quarter, month, etc. work too)\ndat[, the_year := year(date)]\n\n# Shift forward 7 days\ndat[, date := date + 7]
+# Make ourselves a date variable\ndat[, day_string := paste(year, month, day, sep='-')]\ndat[, date := as.IDate(day_string)]\n\n\n\n# Pull out year (quarter, month, etc. work too)\ndat[, the_year := year(date)]\n\n# Shift forward 7 days\ndat[, date := date + 7]
 
 
 data_cleaning
@@ -145,6 +145,13 @@ Collapse
 Count rows
 count\ncount if month==10\n* Count rows by group:\ntabulate origin
 dat[, .N] # Or: nrow(dat) \ndat[month==10, .N] # Or: nrow(dat[month==10]\n# Count rows by group:\ndat[, .N, by = origin])
+
+data_cleaning
+collapse
+Collapse
+Grouped calculations and complex objects inside a data.table
+* ??
+# data.tables support list columns, so you can have \n# complex objects like regression models inside a \n# data.table. Among many other things, this means you \n# can nest simulations inside a data.table as easily  \n# as you would perform any other (grouped) operation. \n\n# Example: Grouped regression \n\n# Let's run a separate regression of arrival delay on \n# departure delay for each month, inside our dataset \n\n# Just the coefficients\ndat[,\n    .(beta = coef(lm(arr_delay ~ dep_delay, .SD))[2]),\n    by = month]\n\n# Keep the whole model for each month\nmods = dat[,\n           .(mod = list(lm(arr_delay ~ dep_delay, .SD))),\n           by = month] \n# Now you can do things like put all 10 models in a \n# regression table or coefficient plot \nmodelsummary::msummary(mods$mod) \nmodelsummary::modelplot(mods$mod, coef_omit = 'Inter')
 
 data_cleaning
 reshape
