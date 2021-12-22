@@ -20,22 +20,22 @@ Read and write .dta
 # These commands require the `haven` package \ndat = haven::read_dta('filename.dta') \nsetDT(dat) # Or: dat = as.data.table(dat) \n \nhaven::write_dta(dat, 'filename.dta')
 
 data_cleaning
-sort
-Sort & rename
+order
+Order
 Sort rows
 sort air_time \nsort air_time dest \ngsort -air_time\n\n
 setorder(dat, air_time) \nsetorder(dat, air_time, dest) \nsetorder(dat, -air_time)
 
 data_cleaning
-sort
-Sort & rename
+order
+Order
 Sort columns
 order month day
 setcolorder(dat, c('month','day'))
 
 data_cleaning
-sort
-Sort & rename
+order
+Order
 Rename columns
 * rename (old) (new) \n\nrename arr_delay arrival_delay \nrename (carrier origin) (carrier_code origin_code) \nrename arr_* arrival_*
 # setnames(dat, old = ..., new = ...) \n\nsetnames(dat, 'arr_delay', 'arrival_delay') \nsetnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) \nsetnames(dat, gsub('arr_', 'arrival_', names(dat)))
