@@ -219,12 +219,36 @@ library(fixest)</code>
               <div class="flex flex-row">
                 <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula creation</h2>
               </div>
+              <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify <i>which</i> dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that <span class="font-semibold">fixest</span> allows you to set various <span class="text-[#4c807b] underline"><a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a></span>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.</p></div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Simple model</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reg wage educ</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">feols(wage ~ educ, data = dat)
+
+# Aside 1: `data = ...` is always the first argument 
+# after the model formula. So many R users would just 
+# write: 
+feols(wage ~ educ, dat) 
+
+# Aside 2: You can also set your dataset globally so that 
+# you don't have to reference it each time. 
+setFixest_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + age) 
+# etc.</code>
+                </pre>
+              </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ i.countyfips
+                  <code class="language-stata">reg wage educ i.countyfips
 reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
 
 
@@ -234,14 +258,14 @@ reghdfe wage educ, absorb(countyfips) cluster(countyfips)
 reghdfe wage educ, absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(countyfips), data = dat)
+                  <code class="language-r">feols(wage ~ educ + i(countyfips), dat)
 feols(wage ~ educ | countyfips, dat) 
 
 # Aside: fixest automatically clusters SEs by the first 
 # fixed effect (if there are any). We'll get to SEs 
 # later, but if you just want iid errors for a fixed 
 # effect model: 
- feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
+feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -254,7 +278,7 @@ feols(wage ~ educ | countyfips, dat)
 reghdfe wage educ ib1.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + factor(treat), dat)
+                  <code class="language-r">feols(wage ~ educ + i(treat), dat)
 # Specifying a baseline:
 feols(wage ~ educ + i(treat, ref = 1), dat)</code>
                 </pre>
@@ -269,7 +293,7 @@ feols(wage ~ educ + i(treat, ref = 1), dat)</code>
 reghdfe wage educ i.treat#i.hisp</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + treat*hisp, data = dat) # base-R approach
+                  <code class="language-r">feols(wage ~ educ + treat*hisp, dat) # base-R approach
 # Approach specific to fixest that makes iplot() work later if desired:
 feols(wage ~ educ + i(treat, i.hisp), dat)</code>
                 </pre>
@@ -283,7 +307,7 @@ feols(wage ~ educ + i(treat, i.hisp), dat)</code>
 reghdfe wage educ c.age#i.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educt + treat*age, data = dat) # base-R approach
+                  <code class="language-r">feols(wage ~ educt + treat*age, dat) # base-R approach
 # Approach specific to fixest that makes iplot() work later if desired:
 feols(wage ~ educ + i(treat, age), dat)</code>
                 </pre>
@@ -414,7 +438,7 @@ summmary(m, vcov = ~countyfips^year)
                   <h2 class="text-gray-600 text-lg font-semibold">Conley standard errors</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/</code>
+                  <code class="language-stata">* See: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = conley("25 mi"))</code>
@@ -433,8 +457,8 @@ summmary(m, vcov = ~countyfips^year)
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reghdfe wage educ age black hisp marr 
- eststore est1 
- esttab est1
+eststore est1 
+esttab est1
 
 reghdfe wage educ age black hisp
 eststore est2

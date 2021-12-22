@@ -440,8 +440,8 @@ mixed lifeexp || countryn: gdppercap</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r"># No need for an xtset equivalent
-m = lmer(Y~(1|group) + X, data = dat)
-nm = lmer(Y~(1+x|group) + X, data = dat)</code>
+m = lmer(Y~(1|group) + X, dat)
+nm = lmer(Y~(1+x|group) + X, dat)</code>
                 </pre>
               </div>
             </div>
@@ -499,7 +499,7 @@ lincom x + z
 nlcom _b[x]/_b[z]</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">m = feols(y ~ x + z, data = dat)
+                  <code class="language-r">m = feols(y ~ x + z, dat)
 
 # Note: we recommend the dev version of multcomp 
 # install.packages("multcomp", repos="http://R-Forge.R-project.org") 

@@ -19,6 +19,11 @@ Collapse
 <p>While it takes some doing in Stata to work with multiple data sets at once (and most people do not use Stata this way, and it doesn't work in old versions), using multiple datasets at once is standard in R. That means you don't need to wrap everything in preserve/restore. However, it also means that you'll need to (re)assign your collapsed data if you want to use it again later. E.g. "dat1 = dat[, mean(var1)]". Also remember our earlier note about aggregating functions on columns that have missing values: Use "na.rm=TRUE" to remove these on the fly. E.g. "dat[, mean(var1, na.rm=TRUE)]".</p>
 
 regression
+formula
+Formula creation
+<p>Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify <i>which</i> dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that <span class="font-semibold">fixest</span> allows you to set various <span class="text-[#4c807b] underline"><a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a></span>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.</p>
+
+regression
 std_errors
 Standard errors
 <p>While you can specify standard errors inside the original <span class="font-semibold">fixest</span> model call (just like Stata), a unique feature of R is that you can adjust errors for an exisiting model <i>on the fly</i>. This has <span class="text-[#4c807b] underline"><a href = "https://grantmcdermott.com/better-way-adjust-SEs">several benefits</a></span>, including being much more efficient since you don't have to re-estimate your whole model. We'll try to highlight examples of both approaches below.</p>

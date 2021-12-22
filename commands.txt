@@ -230,34 +230,40 @@ Appending data
 * This just appends the flights data to itself\nsave data_to_append.dta, replace\nappend using data_to_append.dta
 # This just appends the flights data to itself\nrbindlist(list(dat, dat)) # Or rbind(dat, dat)\n# The fill = TRUE option is handy if the one data set has columns the other doesn't
 
+regression
+formula
+Formula creation
+Simple model
+reg wage educ
+feols(wage ~ educ, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so that \n# you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
 
 regression
 formula
 Formula creation
 Fixed effects
-reghdfe wage educ i.countyfips\nreghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
-feols(wage ~ educ + i(countyfips), data = dat)\nfeols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \n feols(wage ~ educ | countyfips, dat, vcov = 'iid')
+reg wage educ i.countyfips\nreghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
+feols(wage ~ educ + i(countyfips), dat)\nfeols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
 
 regression
 formula
 Formula creation
 Categorical variables
 reghdfe wage educ i.treat\n* Specifying a baseline:\nreghdfe wage educ ib1.treat
-feols(wage ~ educ + factor(treat), dat)\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
+feols(wage ~ educ + i(treat), dat)\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
 
 regression
 formula
 Formula creation
 Interact categoricals
 \n\nreghdfe wage educ i.treat#i.hisp
-feols(wage ~ educ + treat*hisp, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, i.hisp), dat)
+feols(wage ~ educ + treat*hisp, dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, i.hisp), dat)
 
 regression
 formula
 Formula creation
 Interact Categorical and Continuous
 \nreghdfe wage educ c.age#i.treat
-feols(wage ~ educt + treat*age, data = dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, age), dat)
+feols(wage ~ educt + treat*age, dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, age), dat)
 
 regression
 formula
@@ -320,14 +326,14 @@ regression
 std_errors
 Standard errors
 Conley standard errors
-* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
+* See: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
 feols(wage ~ educ, dat, vcov = conley("25 mi"))
 
 regression
 post
 Postestimation
 Regression table
-reghdfe wage educ age black hisp marr \n eststore est1 \n esttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
+reghdfe wage educ age black hisp marr \neststore est1 \nesttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
 est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1,est2)
 
 regression
@@ -447,7 +453,7 @@ lme4
 lme4: Random effects and mixed models
 Random effects and mixed models
 xtset group time\nxtreg Y X, re\nmixed lifeexp || countryn: gdppercap
-# No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, data = dat)\nnm = lmer(Y~(1+x|group) + X, data = dat)
+# No need for an xtset equivalent\nm = lmer(Y~(1|group) + X, dat)\nnm = lmer(Y~(1+x|group) + X, dat)
 
 misc
 marginaleffects
@@ -461,7 +467,7 @@ multcomp
 multcomp and nlWaldTest: Joint coefficient tests
 Test other null hypotheses and coefficient combinations
 \nregress y x z \n\n\n\n\n* One-sided test \ntest _b[x]=0 \nlocal sign_wgt = sign(_b[x]) \ndisplay "H0: coef <= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) \n\n* Test linear combination of coefficients \nlincom x + z \n\n\n* Test nonlinear combination of coefficients \nnlcom _b[x]/_b[z]
-m = feols(y ~ x + z, data = dat)\n\n# Note: we recommend the dev version of multcomp \n# install.packages("multcomp", repos="http://R-Forge.R-project.org") \n\n# One-sided test \nm2 = multcomp::ghlt(m, 'x<=0')\nsummary(m2) \n\n\n# Test linear combination of coefficients \nm3 = multcomp::glht(m, 'x + z = 0') \nsummary(m3) # or confint(m3) \n\n# Test nonlinear combination of coefficients \nnlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
+m = feols(y ~ x + z, dat)\n\n# Note: we recommend the dev version of multcomp \n# install.packages("multcomp", repos="http://R-Forge.R-project.org") \n\n# One-sided test \nm2 = multcomp::ghlt(m, 'x<=0')\nsummary(m2) \n\n\n# Test linear combination of coefficients \nm3 = multcomp::glht(m, 'x + z = 0') \nsummary(m3) # or confint(m3) \n\n# Test nonlinear combination of coefficients \nnlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
 
 misc
 sf
