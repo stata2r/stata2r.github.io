@@ -527,7 +527,8 @@ dat[, let(dist_sq=distance^2, dist_cu=distance^3)] # requires dev version of dat
 
 # We can also chain back-to-back dat[...][...] 
 # (this holds for any data.table operation) 
-dat[, dist_sq := distance^2][, dist_cu := distance*dist_sq)]</code>
+dat[, dist_sq := distance^2][
+    , dist_cu := distance*dist_sq)]</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
