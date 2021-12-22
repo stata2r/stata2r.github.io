@@ -51,8 +51,8 @@ data_cleaning
 subset
 Subset
 Subset columns
-* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\nds, has(type int) \nkeep `r(varlist)'\n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)'
-# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, .(month, day, carrier)] \n\ndat[, .(month, day, carrier)] \ndat[, list(month, day, carrier)] # same as above \ndat[, c('month', 'day', 'carrier')] # ditto \n\ndat[, year:arr_delay] \ndat[, .SD, .SDcols=patterns('*_delay')] \n\n# Matches the two lines on the left: \ndat[, .SD, .SDcols=is.integer] \n\ndat[, -c('origin', 'dest')]\ndat[, c('origin', 'dest') := NULL] # same, but drops columns in-place \n\n# Matches the two lines on the left:\ndat[, .SD, .SDcols=!is.character]
+* Reminder: You'll need to use preserve/restore\n* if you want to retain the original dataset in \n* the examples that follow. \n\nkeep month day carrier \n\n\n\nkeep year-arr_delay\nkeep *_delay \n\ndrop origin dest \n\n\nds, has(type string) \ndrop `r(varlist)' \n\nds, has(type int) \nkeep `r(varlist)'
+# Reminder: You'll need to (re)assign the \n# collapsed dataset if you want to use it later,\n# e.g. dat1 = dat[, .(month, day, carrier)] \n\ndat[, .(month, day, carrier)] \ndat[, list(month, day, carrier)] # same as above \ndat[, c('month', 'day', 'carrier')] # ditto \n\ndat[, year:arr_delay] \ndat[, .SD, .SDcols=patterns('*_delay')] \n\ndat[, -c('origin', 'dest')]\ndat[, c('origin', 'dest') := NULL] # same, but in-place \n\n# Matches the two lines on the left:\ndat[, .SD, .SDcols=!is.character] \n\n# Matches the two lines on the left: \ndat[, .SD, .SDcols=is.integer]
 
 data_cleaning
 subset
@@ -80,7 +80,7 @@ modify
 Modify
 Create new variables
 gen dist_sq = distance^2 \ngen tot_delay = dep_delay + arr_delay \ngen first_letter = substr(origin, 1,1) \ngen flight_path = origin + '_' + dest \n\n* These next operations don't have a great Stata \n* equivalent, although you could implement a loop.
-dat[, dist_sq := distance^2] \ndat[, tot_delay := dep_delay + arr_delay] \ndat[, first_letter := substr(origin,1,1)] \ndat[, flight_path := paste(origin, dest, sep='_')] \n\n# Multiple variables can be created at once.\n# These next few lines all do the same thing.\n# Just pick your favourite. \ndat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] \ndat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent \ndat[, let(dist_sq=distance^2, dist_cu=distance^3)] # requires dev version of data.table\n\n# We can also chain back-to-back dat[...][...] \n# (this holds for any data.table operation) \ndat[, dist_sq := distance^2][\n    , dist_cu := distance*dist_sq)]
+dat[, dist_sq := distance^2] \ndat[, tot_delay := dep_delay + arr_delay] \ndat[, first_letter := substr(origin,1,1)] \ndat[, flight_path := paste(origin, dest, sep='_')] \n\n# Multiple variables can be created at once.\n# These next few lines all do the same thing.\n# Just pick your favourite. \ndat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] \ndat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)] # "functional" equivalent \ndat[, let(dist_sq=distance^2, dist_cu=distance^3)] # dev version only\n\n# We can also chain back-to-back dat[...][...] \n# (this holds for any data.table operation) \ndat[, dist_sq := distance^2][\n    , dist_cu := distance*dist_sq)]
 
 data_cleaning
 modify
@@ -94,7 +94,7 @@ modify
 Modify
 Work with dates
 * Give ourselves a date variable to work with\ntostring year month day, replace\ngen day_string = year + "/" + month + "/" + day\ngen date = date(day_string, "YMD")\nformat date %td\n\n* Pull out year (quarter, month, etc. work too)\ngen the_year = year(date)\n\n* Shift forward 7 days\nreplace date = date + 7
-# Make ourselves a date variable\ndat[, day_string := paste(year, month, day, sep='-')]\ndat[, date := as.IDate(day_string)]\n\n\n\n# Pull out year (quarter, month, etc. work too)\ndat[, the_year := year(date)]\n\n# Shift forward 7 days\ndat[, date := date + 7]
+# Make ourselves a date variable\ndat[, date := as.IDate(paste(year, month, day, sep='-'))] \n\n\n\n\n# Pull out year (quarter, month, etc. work too)\ndat[, the_year := year(date)]\n\n# Shift forward 7 days\ndat[, date := date + 7]
 
 
 data_cleaning
@@ -116,7 +116,7 @@ modify
 Modify
 Row-wise calculations
 * Pre-packaged row calculations: \negen tot_delay = rowtotal(*_delay)\negen any_delay = rowfirst(*_delay)\n\n* Custom row calculations:\n* ?
-# Pre-packaged row calculations: \ndat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')]\ndat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \ndat[, new_var := mapply(custom_func, var1, var2)] \ndat[, new_var := custom_func(var1, var2)), by=1:nrow(dat)] # Another option\n\n
+# Pre-packaged row calculations: \ndat[, tot_delay := rowSums(.SD), .SDcols = patterns('*_delay')]\ndat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')] \n\n# Custom row calculations: \ndat[, new_var := mapply(custom_func, var1, var2)] \ndat[, new_var := custom_func(var1, var2)), by=.I] # dev version only\n\n
 
 data_cleaning
 modify
