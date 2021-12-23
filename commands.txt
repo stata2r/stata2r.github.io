@@ -240,6 +240,13 @@ feols(wage ~ educ, data = dat)\n\n# Aside 1: `data = ...` is always the first ar
 regression
 formula
 Formula creation
+Categorical variables
+reg wage educ i.treat \n\n* Specifying a baseline:\nreg wage educ ib1.treat
+feols(wage ~ educ + i(treat), dat) \n\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
+
+regression
+formula
+Formula creation
 Fixed effects
 reghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
 feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
@@ -247,9 +254,9 @@ feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters 
 regression
 formula
 Formula creation
-Categorical variables
-reg wage educ i.treat \n\n* Specifying a baseline:\nreg wage educ ib1.treat
-feols(wage ~ educ + i(treat), dat) \n\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
+Instrumental variables
+ivreg 2sls wage (educ = age) \n\n* With fixed effects \nivreghdfe 2sls wage (educ = age), absorb(countyfips)
+feols(wage ~ 1 | educ ~ age, dat) \n\n# With fixed effects \nfeols(wage ~ 1 | countyfips | educ ~ age, dat)
 
 regression
 formula
@@ -377,20 +384,6 @@ Panel data
 First difference
 xtset id year \n reg wage educ D.x
 feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)
-
-regression
-iv
-Instrumental variables
-Instrumental variables
-ivreghdfe 2sls wage (educ = age)
-feols(wage ~ 1 | educ ~ age, dat)
-
-regression
-iv
-Instrumental variables
-With fixed effects
-ivreghdfe 2sls wage (educ = age), absorb(countyfips)
-feols(wage ~ 1 | countyfips | educ ~ age, dat)
 
 misc
 ggplot

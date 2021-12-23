@@ -128,11 +128,8 @@ document.getElementById("menu-hamburger").onclick = function () {
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
                 </li>
-                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel data</a>
-                </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="regression.html#iv" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Instrumental variables</a>
+                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel data</a>
                 </li>
               </ul>
             </div>
@@ -248,6 +245,23 @@ feols(wage ~ educ + age)
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Categorical variables</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reg wage educ i.treat 
+
+* Specifying a baseline:
+reg wage educ ib1.treat</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">feols(wage ~ educ + i(treat), dat) 
+
+# Specifying a baseline:
+feols(wage ~ educ + i(treat, ref = 1), dat)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
@@ -271,19 +285,19 @@ feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Categorical variables</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Instrumental variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ i.treat 
+                  <code class="language-stata">ivreg 2sls wage (educ = age) 
 
-* Specifying a baseline:
-reg wage educ ib1.treat</code>
+* With fixed effects 
+ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat), dat) 
+                  <code class="language-r">feols(wage ~ 1 | educ ~ age, dat) 
 
-# Specifying a baseline:
-feols(wage ~ educ + i(treat, ref = 1), dat)</code>
+# With fixed effects 
+feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -592,35 +606,6 @@ etable(est1,est2)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)</code>
-                </pre>
-              </div>
-            </div>
-          </div>
-          <div id="iv">
-            <div class="w-full mx-auto py-12">
-              <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Instrumental variables</h2>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Instrumental variables</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">ivreghdfe 2sls wage (educ = age)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ 1 | educ ~ age, dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">With fixed effects</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                 </pre>
               </div>
             </div>
