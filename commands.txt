@@ -325,15 +325,15 @@ regression
 presentation
 Presentation
 Regression table
-reg wage educ age \neststore est1 \nesttab est1\n\nreg wage educ age black hisp\neststore est2\nesttab est1 est2
-est1 = feols(wage ~ educ + age, dat) \netable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1, est2)
+reg wage educ age \neststo est1 \nesttab est1\n\nreg wage educ age black hisp\neststo est2\nesttab est1 est2 \n\n* There aren't great Stata equivalents for these next \n* examples. You could mimic with a loop, but that will \n* require more code and be slower (since your whole \n* model has to be reestimated each time).
+est1 = feols(wage ~ educ + age, dat) \netable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1, est2) \n\n\n# SEs for existing models can be adjusted on-the-fly \netable(est1, vcov = 'hc1') \n\n# Report multiple SEs for the same model \netable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) \n\n# Multi-model example \n# (Two dep. vars, stepwise coefs, varying slopes, etc.) \nest_mult = feols(c(wage, age) ~ educ + csw(hisp, black) | \n                     statefips[year], \n                 dat, vcov = ~statefips^year) \netable(est_mult)
 
 regression
 presentation
 Presentation
 Coefficient plot
-reg wage educ age black hisp  \n eststore est1 \n coefplot ...
-est1 = feols(wage ~ educ + age + black + hisp, dat) \n coefplot(est1)
+* Assume we have est1 and est2 from above \ncoefplot est1 \ncoefplot est1 est2
+# Assume we have est1 and est2 from above \ncoefplot(est1) \ncoefplot(list(est1, est2))
 
 regression
 panel
@@ -423,7 +423,7 @@ misc
 modelsummary
 modelsummary: Summary tables, regression tables, and more
 Regression tables
-reg Y X Z \neststore est1 \nesttab est1b\n\nreg Y X Z, vce(hc3) \neststore est1b \nesttab est1b \n\nesttab est1 est1b\n\nreg Y X Z A, vce(hc3)\neststore est2\nesttab est1 est1b est2
+reg Y X Z \neststo est1 \nesttab est1b\n\nreg Y X Z, vce(hc3) \neststo est1b \nesttab est1b \n\nesttab est1 est1b\n\nreg Y X Z A, vce(hc3)\neststo est2\nesttab est1 est1b est2
 est1 = lm(Y ~ X + Z, dat) \nmsummary(est1) # msummary() = alias for modelsummary()\n\n# Like fixest::etable(), SEs for existing models can\n# be adjusted on-the-fly \nmsummary(est1, vcov='HC3')\n\n# Multiple SEs for the same model\nmsummary(est1, vcov=list('iid', 'HC3')) \n\nest3 = lm(Y ~ X + Z + A, dat) \nmsummary(list(est1, est1, est3),\n         vcov = list('iid', 'HC3', 'HC3'))
 
 misc

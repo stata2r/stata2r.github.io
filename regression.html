@@ -540,12 +540,17 @@ summmary(m, vcov = ~countyfips^year)
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reg wage educ age 
-eststore est1 
+eststo est1 
 esttab est1
 
 reg wage educ age black hisp
-eststore est2
-esttab est1 est2</code>
+eststo est2
+esttab est1 est2 
+
+* There aren't great Stata equivalents for these next 
+* examples. You could mimic with a loop, but that will 
+* require more code and be slower (since your whole 
+* model has to be reestimated each time).</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">est1 = feols(wage ~ educ + age, dat) 
@@ -553,7 +558,21 @@ etable(est1)
 
 
 est2 = feols(wage ~ educ + age + black + hisp, dat) 
-etable(est1, est2)</code>
+etable(est1, est2) 
+
+
+# SEs for existing models can be adjusted on-the-fly 
+etable(est1, vcov = 'hc1') 
+
+# Report multiple SEs for the same model 
+etable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) 
+
+# Multi-model example 
+# (Two dep. vars, stepwise coefs, varying slopes, etc.) 
+est_mult = feols(c(wage, age) ~ educ + csw(hisp, black) | 
+                     statefips[year], 
+                 dat, vcov = ~statefips^year) 
+etable(est_mult)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -561,13 +580,14 @@ etable(est1, est2)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Coefficient plot</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ age black hisp  
- eststore est1 
- coefplot ...</code>
+                  <code class="language-stata">* Assume we have est1 and est2 from above 
+coefplot est1 
+coefplot est1 est2</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp, dat) 
- coefplot(est1)</code>
+                  <code class="language-r"># Assume we have est1 and est2 from above 
+coefplot(est1) 
+coefplot(list(est1, est2))</code>
                 </pre>
               </div>
             </div>

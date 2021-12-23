@@ -392,17 +392,17 @@ datasummary_balance(~treat_var, dat)</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reg Y X Z 
-eststore est1 
+eststo est1 
 esttab est1b
 
 reg Y X Z, vce(hc3) 
-eststore est1b 
+eststo est1b 
 esttab est1b 
 
 esttab est1 est1b
 
 reg Y X Z A, vce(hc3)
-eststore est2
+eststo est2
 esttab est1 est1b est2</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
