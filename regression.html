@@ -347,13 +347,19 @@ feols(wage ~ educ + .[ctrls] | statefips)
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">reg wage c.educ#c.age 
+reg wage c.educ##c.age 
 
-reg wage c.educ##c.age</code>
+* Polynomials 
+reg wage c.age#c.age 
+reg wage c.age##c.age </code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ:age, dat) 
+feols(wage ~ educ*age, dat) 
 
-feols(wage ~ educ*age, dat)</code>
+# Polynomials 
+feols(wage ~ I(age^2), dat) 
+feols(wage ~ poly(age, 2, raw = TRUE))</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

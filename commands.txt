@@ -265,13 +265,12 @@ Macros, wildcards and shortcuts
 local ctrls age black hisp marr \nreg wage educ `ctrls' \n\nreg wage educ x* \nreg wage educ *sp  \nreg wage educ *ac*
 ctrls = c("age", "black", "hisp", "marr") \nfeols(wage ~ educ + .[ctrls], dat) \n\nfeols(wage ~ educ + ..('^x'), dat) # ^ = starts with \nfeols(wage ~ educ + ..('sp$'), dat) # $ = ends with \nfeols(wage ~ educ + ..('ac'), dat) \n\n# Many more macro options. See `?setFixest_fml` and\n# `?setFixest_estimation`. Example (reminder) where \n# you set your dataset globally, so you don't have to \n# retype `data = ...` anymore. \nsetFixed_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + .[ctrls] | statefips) \n# Etc.
 
-
 regression
 interactions
 Interactions
 Interact continuous variables
-reg wage c.educ#c.age \n\nreg wage c.educ##c.age
-feols(wage ~ educ:age, dat) \n\nfeols(wage ~ educ*age, dat)
+reg wage c.educ#c.age \nreg wage c.educ##c.age \n\n* Polynomials \nreg wage c.age#c.age \nreg wage c.age##c.age 
+feols(wage ~ educ:age, dat) \nfeols(wage ~ educ*age, dat) \n\n# Polynomials \nfeols(wage ~ I(age^2), dat) \nfeols(wage ~ poly(age, 2, raw = TRUE))
 
 regression
 interactions
