@@ -472,33 +472,33 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)</c
                   <h2 class="text-gray-600 text-lg font-semibold">Clustered</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, absorb(countyfips) vce(cluster countyfips) </code>
+                  <code class="language-stata">reghdfe wage educ, absorb(countyfips) \\\ 
+                   vce(cluster countyfips) 
+
+* Twoway clustering etc. 
+reghdfe wage educ, absorb(countyfips year) \\\ 
+                   vce(cluster countyfips year) 
+
+
+reghdfe wage educ, absorb(countyfips#year) \\\ 
+                   vce(cluster countyfips#year)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ | countyfips, dat) # Auto clusters by FE 
-feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Two-way etc.</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, absorb(countyfips year) vce(cluster countyfips year) 
+# feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too 
 
-
-reghdfe wage educ, absorb(countyfips) vce(cluster#countyfips)</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips + year) 
-feols(wage ~ educ | countyfips + year, dat, vcov = 'twoway') # same 
-
-feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips^year) 
+# Twoway clustering etc. 
+feols(wage ~ educ | countyfips + year, 
+      dat, vcov = ~countyfips + year) 
+# feols(wage ~ educ | countyfips + year, 
+#      dat, vcov = 'twoway') ## same as above 
+feols(wage ~ educ | countyfips^year, 
+      dat, vcov = ~countyfips^year) 
 
 # Reminder that you can adjust the SEs of existing 
 # fixest models on-the-fly. 
 m = feols(wage ~ educ | countyfips + year, dat) 
-m 
+m # Clustered by countyfips (default) 
 summary(m, vcov = 'twoway') 
 summmary(m, vcov = ~countyfips^year) 
 # etc.</code>

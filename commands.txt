@@ -311,16 +311,8 @@ regression
 std_errors
 Standard errors
 Clustered
-reghdfe wage educ, absorb(countyfips) vce(cluster countyfips) 
-feols(wage ~ educ | countyfips, dat) # Auto clusters by FE \nfeols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too
-
-regression
-std_errors
-Standard errors
-Two-way etc.
-reghdfe wage educ, absorb(countyfips year) vce(cluster countyfips year) \n\n\nreghdfe wage educ, absorb(countyfips) vce(cluster#countyfips)
-feols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips + year) \nfeols(wage ~ educ | countyfips + year, dat, vcov = 'twoway') # same \n\nfeols(wage ~ educ | countyfips + year, dat, vcov = ~countyfips^year) \n\n# Reminder that you can adjust the SEs of existing \n# fixest models on-the-fly. \nm = feols(wage ~ educ | countyfips + year, dat) \nm \nsummary(m, vcov = 'twoway') \nsummmary(m, vcov = ~countyfips^year) \n# etc.
-
+reghdfe wage educ, absorb(countyfips) \\\ \n                   vce(cluster countyfips) \n\n* Twoway clustering etc. \nreghdfe wage educ, absorb(countyfips year) \\\ \n                   vce(cluster countyfips year) \n\n\nreghdfe wage educ, absorb(countyfips#year) \\\ \n                   vce(cluster countyfips#year)
+feols(wage ~ educ | countyfips, dat) # Auto clusters by FE \n# feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too \n\n# Twoway clustering etc. \nfeols(wage ~ educ | countyfips + year, \n      dat, vcov = ~countyfips + year) \n# feols(wage ~ educ | countyfips + year, \n#      dat, vcov = 'twoway') ## same as above \nfeols(wage ~ educ | countyfips^year, \n      dat, vcov = ~countyfips^year) \n\n# Reminder that you can adjust the SEs of existing \n# fixest models on-the-fly. \nm = feols(wage ~ educ | countyfips + year, dat) \nm # Clustered by countyfips (default) \nsummary(m, vcov = 'twoway') \nsummmary(m, vcov = ~countyfips^year) \n# etc.
 
 regression
 std_errors
