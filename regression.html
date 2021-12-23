@@ -117,7 +117,7 @@ document.getElementById("menu-hamburger").onclick = function () {
               </h1>
               <ul class="mt-4 relative">
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula creation</a>
+                  <a href="regression.html#models" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Models</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#interactions" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Interactions</a>
@@ -126,10 +126,10 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard errors</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
-                  <a href="regression.html#post" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Postestimation</a>
+                  <a href="regression.html#presentation" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Presentation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-transparent ml-2 pl-4 pb-4 hover:border-transparent group cursor-pointer">
-                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel data</a>
+                  <a href="regression.html#panel" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Panel</a>
                 </li>
               </ul>
             </div>
@@ -214,10 +214,10 @@ library(fixest)</code>
               <h1 class="text-black text-4xl font-bold">Cheat Sheet</h1>
             </div>
           </div>
-          <div id="formula">
+          <div id="models">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Formula creation</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Models</h2>
               </div>
               <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify <i>which</i> dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that <span class="font-semibold">fixest</span> allows you to set various <span class="text-[#4c807b] underline"><a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a></span>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.</p></div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -517,10 +517,10 @@ summmary(m, vcov = ~countyfips^year)
               </div>
             </div>
           </div>
-          <div id="post">
+          <div id="presentation">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Postestimation</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Presentation</h2>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
@@ -563,7 +563,7 @@ etable(est1, est2)</code>
           <div id="panel">
             <div class="w-full mx-auto py-12">
               <div class="flex flex-row">
-                <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel data</h2>
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Panel</h2>
               </div>
               <div class="flex flex-col gap-y-4 text-gray-600 mt-6 text-lg md:text-xl xl:text-2xl"><p>Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.</div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

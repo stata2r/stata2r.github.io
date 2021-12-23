@@ -231,36 +231,36 @@ Appending data
 # This just appends the flights data to itself\nrbindlist(list(dat, dat)) # Or rbind(dat, dat)\n# The fill = TRUE option is handy if the one data set has columns the other doesn't
 
 regression
-formula
-Formula creation
+models
+Models
 Simple model
 reg wage educ \nreg wage educ age
 feols(wage ~ educ, data = dat) \nfeols(wage ~ educ + age, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so \n# that you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
 
 regression
-formula
-Formula creation
+models
+Models
 Categorical variables
 reg wage educ i.treat \n\n* Specifying a baseline:\nreg wage educ ib1.treat
 feols(wage ~ educ + i(treat), dat) \n\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
 
 regression
-formula
-Formula creation
+models
+Models
 Fixed effects
 reghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
 feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
 
 regression
-formula
-Formula creation
+models
+Models
 Instrumental variables
 ivreg 2sls wage (educ = age) \nivreg 2sls wage mar (educ = age) \n\n* With fixed effects \nivreghdfe 2sls wage mar (educ = age), absorb(countyfips)
 feols(wage ~ 1 | educ ~ age, dat)  \nfeols(wage ~ mar | educ ~ age, dat) \n\n# With fixed effects (IV 1st stage always comes last) \nfeols(wage ~ mar | countyfips | educ ~ age, dat)
 
 regression
-formula
-Formula creation
+models
+Models
 Macros, wildcards and shortcuts
 local ctrls age black hisp marr \nreg wage educ `ctrls' \n\nreg wage educ x* \nreg wage educ *sp  \nreg wage educ *ac*
 ctrls = c("age", "black", "hisp", "marr") \nfeols(wage ~ educ + .[ctrls], dat) \n\nfeols(wage ~ educ + ..('^x'), dat) # ^ = starts with \nfeols(wage ~ educ + ..('sp$'), dat) # $ = ends with \nfeols(wage ~ educ + ..('ac'), dat) \n\n# Many more macro options. See `?setFixest_fml` and\n# `?setFixest_estimation`. Example (reminder) where \n# you set your dataset globally, so you don't have to \n# retype `data = ...` anymore. \nsetFixed_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + .[ctrls] | statefips) \n# Etc.
@@ -330,36 +330,36 @@ Conley standard errors
 feols(wage ~ educ, dat, vcov = conley("25 mi"))
 
 regression
-post
-Postestimation
+presentation
+Presentation
 Regression table
 reg wage educ age \neststore est1 \nesttab est1\n\nreg wage educ age black hisp\neststore est2\nesttab est1 est2
 est1 = feols(wage ~ educ + age, dat) \netable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1, est2)
 
 regression
-post
-Postestimation
+presentation
+Presentation
 Coefficient plot
 reg wage educ age black hisp  \n eststore est1 \n coefplot ...
 est1 = feols(wage ~ educ + age + black + hisp, dat) \n coefplot(est1)
 
 regression
 panel
-Panel data
+Panel
 Lag variables
 xtset id year \n reg wage educ l1.wage
 feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)
 
 regression
 panel
-Panel data
+Panel
 Lead variables
 xtset id year \n reg wage educ f1.wage
 feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)
 
 regression
 panel
-Panel data
+Panel
 First difference
 xtset id year \n reg wage educ D.x
 feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)
