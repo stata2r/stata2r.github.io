@@ -120,6 +120,9 @@ document.getElementById("menu-hamburger").onclick = function () {
                   <a href="regression.html#formula" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Formula creation</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
+                  <a href="regression.html#interactions" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Interactions</a>
+                </li>
+                <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
                   <a href="regression.html#std_errors" class="font-medium font-light leading-4 mb-2 group-hover:font-normal">Standard errors</a>
                 </li>
                 <li class="toc-dot flex flex-col relative border-l-2 border-[#c1dddb] ml-2 pl-4 pb-4 hover:border-[#5b9a94] group cursor-pointer">
@@ -235,8 +238,8 @@ library(fixest)</code>
 # write: 
 feols(wage ~ educ, dat) 
 
-# Aside 2: You can also set your dataset globally so that 
-# you don't have to reference it each time. 
+# Aside 2: You can also set your dataset globally so 
+# that you don't have to reference it each time. 
 setFixest_estimation(data = dat) 
 feols(wage ~ educ) 
 feols(wage ~ educ + age) 
@@ -248,8 +251,7 @@ feols(wage ~ educ + age)
                   <h2 class="text-gray-600 text-lg font-semibold">Fixed effects</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ i.countyfips
-reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
+                  <code class="language-stata">reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
 
 
 
@@ -258,8 +260,7 @@ reghdfe wage educ, absorb(countyfips) cluster(countyfips)
 reghdfe wage educ, absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(countyfips), dat)
-feols(wage ~ educ | countyfips, dat) 
+                  <code class="language-r">feols(wage ~ educ | countyfips, dat) 
 
 # Aside: fixest automatically clusters SEs by the first 
 # fixed effect (if there are any). We'll get to SEs 
@@ -273,43 +274,16 @@ feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Categorical variables</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ i.treat
+                  <code class="language-stata">reg wage educ i.treat 
+
 * Specifying a baseline:
-reghdfe wage educ ib1.treat</code>
+reg wage educ ib1.treat</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + i(treat), dat)
+                  <code class="language-r">feols(wage ~ educ + i(treat), dat) 
+
 # Specifying a baseline:
 feols(wage ~ educ + i(treat, ref = 1), dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Interact categoricals</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">
-
-reghdfe wage educ i.treat#i.hisp</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + treat*hisp, dat) # base-R approach
-# Approach specific to fixest that makes iplot() work later if desired:
-feols(wage ~ educ + i(treat, i.hisp), dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Interact Categorical and Continuous</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">
-reghdfe wage educ c.age#i.treat</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educt + treat*age, dat) # base-R approach
-# Approach specific to fixest that makes iplot() work later if desired:
-feols(wage ~ educ + i(treat, age), dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -352,10 +326,99 @@ feols(wage ~ educ + i(treat, age), dat)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Regex</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata"> </code>
+                  <code class="language-stata">?</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + ..('regex_exp'), dat)</code>
+                  <code class="language-r">feols(wage ~ educ + ..('pattern'), dat)</code>
+                </pre>
+              </div>
+            </div>
+          </div>
+          <div id="interactions">
+            <div class="w-full mx-auto py-12">
+              <div class="flex flex-row">
+                <h2 class="inline-block font-bold text-2xl text-[#315450]">Interactions</h2>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact continuous variables</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reg wage c.educ#c.age 
+
+reg wage c.educ##c.age</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">feols(wage ~ educ:age, dat) 
+
+feols(wage ~ educ*age, dat)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact categorical variables</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reg wage i.treat#i.hisp 
+
+
+
+
+reg wage i.treat i.treat#i.hisp
+reg wage i.treat##i.hisp</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">feols(wage ~ i(treat, i.hisp), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat)/factor(hisp), dat) 
+feols(wage ~ factor(treat)*factor(hisp), dat)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact categorical with continuous variables</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">reg wage i.treat#c.age 
+
+
+
+
+reg wage i.treat#c.age 
+reg wage i.treat i.treat#c.age 
+reg wage i.treat##c.age</code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r">feols(wage ~ i(treat, age), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat):age, dat) 
+feols(wage ~ factor(treat)/age, dat) 
+feols(wage ~ factor(treat)*age, dat)</code>
+                </pre>
+              </div>
+              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
+                <div class="xl:col-span-2">
+                  <h2 class="text-gray-600 text-lg font-semibold">Interact fixed effects</h2>
+                </div>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-stata">* Combine fixed effects 
+reghdfe wage educ, absorb(statefips#year) 
+
+* Varying slopes (e.g. time trend for each state) 
+? </code>
+                </pre>
+                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
+                  <code class="language-r"># Combine fixed effects 
+feols(wage ~ educ | statefips^year, dat) 
+
+# Varying slopes (e.g. time trend for each state) 
+feols(wage ~ educ | statefips[year], dat)</code>
                 </pre>
               </div>
             </div>

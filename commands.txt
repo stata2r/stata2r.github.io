@@ -235,35 +235,21 @@ formula
 Formula creation
 Simple model
 reg wage educ
-feols(wage ~ educ, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so that \n# you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
+feols(wage ~ educ, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so \n# that you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
 
 regression
 formula
 Formula creation
 Fixed effects
-reg wage educ i.countyfips\nreghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
-feols(wage ~ educ + i(countyfips), dat)\nfeols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
+reghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
+feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
 
 regression
 formula
 Formula creation
 Categorical variables
-reghdfe wage educ i.treat\n* Specifying a baseline:\nreghdfe wage educ ib1.treat
-feols(wage ~ educ + i(treat), dat)\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
-
-regression
-formula
-Formula creation
-Interact categoricals
-\n\nreghdfe wage educ i.treat#i.hisp
-feols(wage ~ educ + treat*hisp, dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, i.hisp), dat)
-
-regression
-formula
-Formula creation
-Interact Categorical and Continuous
-\nreghdfe wage educ c.age#i.treat
-feols(wage ~ educt + treat*age, dat) # base-R approach\n# Approach specific to fixest that makes iplot() work later if desired:\nfeols(wage ~ educ + i(treat, age), dat)
+reg wage educ i.treat \n\n* Specifying a baseline:\nreg wage educ ib1.treat
+feols(wage ~ educ + i(treat), dat) \n\n# Specifying a baseline:\nfeols(wage ~ educ + i(treat, ref = 1), dat)
 
 regression
 formula
@@ -290,8 +276,36 @@ regression
 formula
 Formula creation
 Regex
- 
-feols(wage ~ educ + ..('regex_exp'), dat)
+?
+feols(wage ~ educ + ..('pattern'), dat)
+
+regression
+interactions
+Interactions
+Interact continuous variables
+reg wage c.educ#c.age \n\nreg wage c.educ##c.age
+feols(wage ~ educ:age, dat) \n\nfeols(wage ~ educ*age, dat)
+
+regression
+interactions
+Interactions
+Interact categorical variables
+reg wage i.treat#i.hisp \n\n\n\n\nreg wage i.treat i.treat#i.hisp\nreg wage i.treat##i.hisp
+feols(wage ~ i(treat, i.hisp), dat) \n\n# Aside: i() is a fixest-specific shortcut that also \n# has synergies with some other fixest functions. But \n# base R interaction operators all still work, e.g. \nfeols(wage ~ factor(treat)/factor(hisp), dat) \nfeols(wage ~ factor(treat)*factor(hisp), dat)
+
+regression
+interactions
+Interactions
+Interact categorical with continuous variables
+reg wage i.treat#c.age \n\n\n\n\nreg wage i.treat#c.age \nreg wage i.treat i.treat#c.age \nreg wage i.treat##c.age
+feols(wage ~ i(treat, age), dat) \n\n# Aside: i() is a fixest-specific shortcut that also \n# has synergies with some other fixest functions. But \n# base R interaction operators all still work, e.g. \nfeols(wage ~ factor(treat):age, dat) \nfeols(wage ~ factor(treat)/age, dat) \nfeols(wage ~ factor(treat)*age, dat)
+
+regression
+interactions
+Interactions
+Interact fixed effects
+* Combine fixed effects \nreghdfe wage educ, absorb(statefips#year) \n\n* Varying slopes (e.g. time trend for each state) \n? 
+# Combine fixed effects \nfeols(wage ~ educ | statefips^year, dat) \n\n# Varying slopes (e.g. time trend for each state) \nfeols(wage ~ educ | statefips[year], dat)
 
 regression
 std_errors
