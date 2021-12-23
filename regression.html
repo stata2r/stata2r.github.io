@@ -273,7 +273,13 @@ feols(wage ~ educ + i(treat, ref = 1), dat)</code>
 
 
 
-reghdfe wage educ, absorb(countyfips)</code>
+reghdfe wage educ, absorb(countyfips)  
+
+* Add more fixed effects... 
+reghdfe wage educ, absorb(countyfips year) \\\ 
+                   vce(cluster countyfips year) 
+reghdfe wage educ, absorb(countyfips#year) \\\ 
+                   vce(cluster countyfips#year)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ | countyfips, dat) 
@@ -282,7 +288,13 @@ reghdfe wage educ, absorb(countyfips)</code>
 # fixed effect (if there are any). We'll get to SEs 
 # later, but if you just want iid errors for a fixed 
 # effect model: 
-feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
+feols(wage ~ educ | countyfips, dat, vcov = 'iid') 
+
+# Add more fixed effects... 
+feols(wage ~ educ | countyfips + year, 
+      dat, vcov = ~countyfips + year) 
+feols(wage ~ educ | countyfips^year, 
+      dat) # defaults to vcov = ~countyfips^year</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">

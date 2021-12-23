@@ -248,8 +248,8 @@ regression
 models
 Models
 Fixed effects
-reghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)
-feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid')
+reghdfe wage educ, absorb(countyfips) cluster(countyfips) \n\n\n\n\n\nreghdfe wage educ, absorb(countyfips)  \n\n* Add more fixed effects... \nreghdfe wage educ, absorb(countyfips year) \\\ \n                   vce(cluster countyfips year) \nreghdfe wage educ, absorb(countyfips#year) \\\ \n                   vce(cluster countyfips#year)
+feols(wage ~ educ | countyfips, dat) \n\n# Aside: fixest automatically clusters SEs by the first \n# fixed effect (if there are any). We'll get to SEs \n# later, but if you just want iid errors for a fixed \n# effect model: \nfeols(wage ~ educ | countyfips, dat, vcov = 'iid') \n\n# Add more fixed effects... \nfeols(wage ~ educ | countyfips + year, \n      dat, vcov = ~countyfips + year) \nfeols(wage ~ educ | countyfips^year, \n      dat) # defaults to vcov = ~countyfips^year
 
 regression
 models
