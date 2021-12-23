@@ -291,61 +291,47 @@ feols(wage ~ educ | countyfips, dat, vcov = 'iid')</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">ivreg 2sls wage (educ = age) 
+ivreg 2sls wage mar (educ = age) 
 
 * With fixed effects 
-ivreghdfe 2sls wage (educ = age), absorb(countyfips)</code>
+ivreghdfe 2sls wage mar (educ = age), absorb(countyfips)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ 1 | educ ~ age, dat) 
+                  <code class="language-r">feols(wage ~ 1 | educ ~ age, dat)  
+feols(wage ~ mar | educ ~ age, dat) 
 
-# With fixed effects 
-feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
+# With fixed effects (IV 1st stage always comes last) 
+feols(wage ~ mar | countyfips | educ ~ age, dat)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
                 <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Macros</h2>
+                  <h2 class="text-gray-600 text-lg font-semibold">Macros, wildcards and shortcuts</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">local vars age black hisp marr 
- reg wage educ `vars'</code>
+                  <code class="language-stata">local ctrls age black hisp marr 
+reg wage educ `ctrls' 
+
+reg wage educ x* 
+reg wage educ *sp  
+reg wage educ *ac*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">vars = c("age", "black", "hisp", "marr") 
- feols(wage ~ educ + .[vars], dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Wildcard</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ x*</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + ..('x'), dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Variables x1 ... x4</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ x1-x4</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + x.[1:4], dat)</code>
-                </pre>
-              </div>
-              <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
-                <div class="xl:col-span-2">
-                  <h2 class="text-gray-600 text-lg font-semibold">Regex</h2>
-                </div>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">?</code>
-                </pre>
-                <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ + ..('pattern'), dat)</code>
+                  <code class="language-r">ctrls = c("age", "black", "hisp", "marr") 
+feols(wage ~ educ + .[ctrls], dat) 
+
+feols(wage ~ educ + ..('^x'), dat) # ^ = starts with 
+feols(wage ~ educ + ..('sp$'), dat) # $ = ends with 
+feols(wage ~ educ + ..('ac'), dat) 
+
+# Many more macro options. See `?setFixest_fml` and
+# `?setFixest_estimation`. Example (reminder) where 
+# you set your dataset globally, so you don't have to 
+# retype `data = ...` anymore. 
+setFixed_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + .[ctrls] | statefips) 
+# Etc.</code>
                 </pre>
               </div>
             </div>

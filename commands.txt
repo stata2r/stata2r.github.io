@@ -255,36 +255,16 @@ regression
 formula
 Formula creation
 Instrumental variables
-ivreg 2sls wage (educ = age) \n\n* With fixed effects \nivreghdfe 2sls wage (educ = age), absorb(countyfips)
-feols(wage ~ 1 | educ ~ age, dat) \n\n# With fixed effects \nfeols(wage ~ 1 | countyfips | educ ~ age, dat)
+ivreg 2sls wage (educ = age) \nivreg 2sls wage mar (educ = age) \n\n* With fixed effects \nivreghdfe 2sls wage mar (educ = age), absorb(countyfips)
+feols(wage ~ 1 | educ ~ age, dat)  \nfeols(wage ~ mar | educ ~ age, dat) \n\n# With fixed effects (IV 1st stage always comes last) \nfeols(wage ~ mar | countyfips | educ ~ age, dat)
 
 regression
 formula
 Formula creation
-Macros
-local vars age black hisp marr \n reg wage educ `vars'
-vars = c("age", "black", "hisp", "marr") \n feols(wage ~ educ + .[vars], dat)
+Macros, wildcards and shortcuts
+local ctrls age black hisp marr \nreg wage educ `ctrls' \n\nreg wage educ x* \nreg wage educ *sp  \nreg wage educ *ac*
+ctrls = c("age", "black", "hisp", "marr") \nfeols(wage ~ educ + .[ctrls], dat) \n\nfeols(wage ~ educ + ..('^x'), dat) # ^ = starts with \nfeols(wage ~ educ + ..('sp$'), dat) # $ = ends with \nfeols(wage ~ educ + ..('ac'), dat) \n\n# Many more macro options. See `?setFixest_fml` and\n# `?setFixest_estimation`. Example (reminder) where \n# you set your dataset globally, so you don't have to \n# retype `data = ...` anymore. \nsetFixed_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + .[ctrls] | statefips) \n# Etc.
 
-regression
-formula
-Formula creation
-Wildcard
-reg wage educ x*
-feols(wage ~ educ + ..('x'), dat)
-
-regression
-formula
-Formula creation
-Variables x1 ... x4
-reg wage educ x1-x4
-feols(wage ~ educ + x.[1:4], dat)
-
-regression
-formula
-Formula creation
-Regex
-?
-feols(wage ~ educ + ..('pattern'), dat)
 
 regression
 interactions
