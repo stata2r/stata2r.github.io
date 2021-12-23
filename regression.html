@@ -225,10 +225,12 @@ library(fixest)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Simple model</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reg wage educ</code>
+                  <code class="language-stata">reg wage educ 
+reg wage educ age</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">feols(wage ~ educ, data = dat)
+                  <code class="language-r">feols(wage ~ educ, data = dat) 
+feols(wage ~ educ + age, data = dat)
 
 # Aside 1: `data = ...` is always the first argument 
 # after the model formula. So many R users would just 
@@ -306,7 +308,7 @@ feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-stata">local vars age black hisp marr 
- reghdfe wage educ `vars'</code>
+ reg wage educ `vars'</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">vars = c("age", "black", "hisp", "marr") 
@@ -318,7 +320,7 @@ feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Wildcard</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ x*</code>
+                  <code class="language-stata">reg wage educ x*</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + ..('x'), dat)</code>
@@ -329,7 +331,7 @@ feols(wage ~ 1 | countyfips | educ ~ age, dat)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Variables x1 ... x4</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ x1-x4</code>
+                  <code class="language-stata">reg wage educ x1-x4</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ + x.[1:4], dat)</code>
@@ -448,8 +450,8 @@ feols(wage ~ educ | statefips[year], dat)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">HC</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ, vce(robust) 
-reghdfe wage educ, vce(hc3)</code>
+                  <code class="language-stata">reg wage educ, vce(robust) 
+reg wage educ, vce(hc3)</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
                   <code class="language-r">feols(wage ~ educ, dat, vcov = 'hc1') 
@@ -533,21 +535,21 @@ summmary(m, vcov = ~countyfips^year)
                   <h2 class="text-gray-600 text-lg font-semibold">Regression table</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ age black hisp marr 
+                  <code class="language-stata">reg wage educ age 
 eststore est1 
 esttab est1
 
-reghdfe wage educ age black hisp
+reg wage educ age black hisp
 eststore est2
 esttab est1 est2</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
- etable(est1)
+                  <code class="language-r">est1 = feols(wage ~ educ + age, dat) 
+etable(est1)
 
 
 est2 = feols(wage ~ educ + age + black + hisp, dat) 
-etable(est1,est2)</code>
+etable(est1, est2)</code>
                 </pre>
               </div>
               <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-x-8 justify-start gap-y-4 mt-8">
@@ -555,12 +557,12 @@ etable(est1,est2)</code>
                   <h2 class="text-gray-600 text-lg font-semibold">Coefficient plot</h2>
                 </div>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-stata">reghdfe wage educ age black hisp marr  
+                  <code class="language-stata">reg wage educ age black hisp  
  eststore est1 
  coefplot ...</code>
                 </pre>
                 <pre class="bg-white border-2 rounded-lg flex flex-col justify-start px-4 py-4">
-                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
+                  <code class="language-r">est1 = feols(wage ~ educ + age + black + hisp, dat) 
  coefplot(est1)</code>
                 </pre>
               </div>

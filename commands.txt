@@ -234,8 +234,8 @@ regression
 formula
 Formula creation
 Simple model
-reg wage educ
-feols(wage ~ educ, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so \n# that you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
+reg wage educ \nreg wage educ age
+feols(wage ~ educ, data = dat) \nfeols(wage ~ educ + age, data = dat)\n\n# Aside 1: `data = ...` is always the first argument \n# after the model formula. So many R users would just \n# write: \nfeols(wage ~ educ, dat) \n\n# Aside 2: You can also set your dataset globally so \n# that you don't have to reference it each time. \nsetFixest_estimation(data = dat) \nfeols(wage ~ educ) \nfeols(wage ~ educ + age) \n# etc.
 
 regression
 formula
@@ -262,21 +262,21 @@ regression
 formula
 Formula creation
 Macros
-local vars age black hisp marr \n reghdfe wage educ `vars'
+local vars age black hisp marr \n reg wage educ `vars'
 vars = c("age", "black", "hisp", "marr") \n feols(wage ~ educ + .[vars], dat)
 
 regression
 formula
 Formula creation
 Wildcard
-reghdfe wage educ x*
+reg wage educ x*
 feols(wage ~ educ + ..('x'), dat)
 
 regression
 formula
 Formula creation
 Variables x1 ... x4
-reghdfe wage educ x1-x4
+reg wage educ x1-x4
 feols(wage ~ educ + x.[1:4], dat)
 
 regression
@@ -318,7 +318,7 @@ regression
 std_errors
 Standard errors
 HC
-reghdfe wage educ, vce(robust) \nreghdfe wage educ, vce(hc3)
+reg wage educ, vce(robust) \nreg wage educ, vce(hc3)
 feols(wage ~ educ, dat, vcov = 'hc1') \nfeols(wage ~ educ, dat, vcov = sandwich:vcovHC) \n\n# Note: You can also adjust the SEs of an existing model \nm = feols(wage ~ educ, dat) \nsummary(m, vcov = 'hc1')
 
 regression
@@ -354,15 +354,15 @@ regression
 post
 Postestimation
 Regression table
-reghdfe wage educ age black hisp marr \neststore est1 \nesttab est1\n\nreghdfe wage educ age black hisp\neststore est2\nesttab est1 est2
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n etable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1,est2)
+reg wage educ age \neststore est1 \nesttab est1\n\nreg wage educ age black hisp\neststore est2\nesttab est1 est2
+est1 = feols(wage ~ educ + age, dat) \netable(est1)\n\n\nest2 = feols(wage ~ educ + age + black + hisp, dat) \netable(est1, est2)
 
 regression
 post
 Postestimation
 Coefficient plot
-reghdfe wage educ age black hisp marr  \n eststore est1 \n coefplot ...
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) \n coefplot(est1)
+reg wage educ age black hisp  \n eststore est1 \n coefplot ...
+est1 = feols(wage ~ educ + age + black + hisp, dat) \n coefplot(est1)
 
 regression
 panel
