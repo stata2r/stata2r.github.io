@@ -2,7 +2,7 @@ var yi=Object.defineProperty,bi=Object.defineProperties;var wi=Object.getOwnProp
   * vue-router v4.0.12
   * (c) 2021 Eduardo San Martin Morote
   * @license MIT
-  */const vo=typeof Symbol=="function"&&typeof Symbol.toStringTag=="symbol",qt=e=>vo?Symbol(e):"_vr_"+e,Jc=qt("rvlm"),yo=qt("rvd"),rr=qt("r"),cs=qt("rl"),ds=qt("rvl"),Ut=typeof window!="undefined";function Zc(e){return e.__esModule||vo&&e[Symbol.toStringTag]==="Module"}const ue=Object.assign;function us(e,t){const n={};for(const r in t){const s=t[r];n[r]=Array.isArray(s)?s.map(e):e(s)}return n}const xn=()=>{},Qc=/\/$/,ed=e=>e.replace(Qc,"");function fs(e,t,n="/"){let r,s={},a="",o="";const i=t.indexOf("?"),l=t.indexOf("#",i>-1?i:0);return i>-1&&(r=t.slice(0,i),a=t.slice(i+1,l>-1?l:t.length),s=e(a)),l>-1&&(r=r||t.slice(0,l),o=t.slice(l,t.length)),r=sd(r!=null?r:t,n),{fullPath:r+(a&&"?")+a+o,path:r,query:s,hash:o}}function td(e,t){const n=t.query?e(t.query):"";return t.path+(n&&"?")+n+(t.hash||"")}function bo(e,t){return!t||!e.toLowerCase().startsWith(t.toLowerCase())?e:e.slice(t.length)||"/"}function nd(e,t,n){const r=t.matched.length-1,s=n.matched.length-1;return r>-1&&r===s&&Wt(t.matched[r],n.matched[s])&&wo(t.params,n.params)&&e(t.query)===e(n.query)&&t.hash===n.hash}function Wt(e,t){return(e.aliasOf||e)===(t.aliasOf||t)}function wo(e,t){if(Object.keys(e).length!==Object.keys(t).length)return!1;for(const n in e)if(!rd(e[n],t[n]))return!1;return!0}function rd(e,t){return Array.isArray(e)?_o(e,t):Array.isArray(t)?_o(t,e):e===t}function _o(e,t){return Array.isArray(t)?e.length===t.length&&e.every((n,r)=>n===t[r]):e.length===1&&e[0]===t}function sd(e,t){if(e.startsWith("/"))return e;if(!e)return t;const n=t.split("/"),r=e.split("/");let s=n.length-1,a,o;for(a=0;a<r.length;a++)if(o=r[a],!(s===1||o==="."))if(o==="..")s--;else break;return n.slice(0,s).join("/")+"/"+r.slice(a-(a===r.length?1:0)).join("/")}var En;(function(e){e.pop="pop",e.push="push"})(En||(En={}));var Sn;(function(e){e.back="back",e.forward="forward",e.unknown=""})(Sn||(Sn={}));function ad(e){if(!e)if(Ut){const t=document.querySelector("base");e=t&&t.getAttribute("href")||"/",e=e.replace(/^\w+:\/\/[^\/]+/,"")}else e="/";return e[0]!=="/"&&e[0]!=="#"&&(e="/"+e),ed(e)}const od=/^[^#]+#/;function id(e,t){return e.replace(od,"#")+t}function ld(e,t){const n=document.documentElement.getBoundingClientRect(),r=e.getBoundingClientRect();return{behavior:t.behavior,left:r.left-n.left-(t.left||0),top:r.top-n.top-(t.top||0)}}const sr=()=>({left:window.pageXOffset,top:window.pageYOffset});function cd(e){let t;if("el"in e){const n=e.el,r=typeof n=="string"&&n.startsWith("#"),s=typeof n=="string"?r?document.getElementById(n.slice(1)):document.querySelector(n):n;if(!s)return;t=ld(s,e)}else t=e;"scrollBehavior"in document.documentElement.style?window.scrollTo(t):window.scrollTo(t.left!=null?t.left:window.pageXOffset,t.top!=null?t.top:window.pageYOffset)}function xo(e,t){return(history.state?history.state.position-t:-1)+e}const hs=new Map;function dd(e,t){hs.set(e,t)}function ud(e){const t=hs.get(e);return hs.delete(e),t}let fd=()=>location.protocol+"//"+location.host;function Eo(e,t){const{pathname:n,search:r,hash:s}=t,a=e.indexOf("#");if(a>-1){let i=s.includes(e.slice(a))?e.slice(a).length:1,l=s.slice(i);return l[0]!=="/"&&(l="/"+l),bo(l,"")}return bo(n,e)+r+s}function hd(e,t,n,r){let s=[],a=[],o=null;const i=({state:f})=>{const w=Eo(e,location),h=n.value,b=t.value;let g=0;if(f){if(n.value=w,t.value=f,o&&o===h){o=null;return}g=b?f.position-b.position:0}else r(w);s.forEach(v=>{v(n.value,h,{delta:g,type:En.pop,direction:g?g>0?Sn.forward:Sn.back:Sn.unknown})})};function l(){o=n.value}function c(f){s.push(f);const w=()=>{const h=s.indexOf(f);h>-1&&s.splice(h,1)};return a.push(w),w}function u(){const{history:f}=window;!f.state||f.replaceState(ue({},f.state,{scroll:sr()}),"")}function m(){for(const f of a)f();a=[],window.removeEventListener("popstate",i),window.removeEventListener("beforeunload",u)}return window.addEventListener("popstate",i),window.addEventListener("beforeunload",u),{pauseListeners:l,listen:c,destroy:m}}function So(e,t,n,r=!1,s=!1){return{back:e,current:t,forward:n,replaced:r,position:window.history.length,scroll:s?sr():null}}function pd(e){const{history:t,location:n}=window,r={value:Eo(e,n)},s={value:t.state};s.value||a(r.value,{back:null,current:r.value,forward:null,position:t.length-1,replaced:!0,scroll:null},!0);function a(l,c,u){const m=e.indexOf("#"),f=m>-1?(n.host&&document.querySelector("base")?e:e.slice(m))+l:fd()+e+l;try{t[u?"replaceState":"pushState"](c,"",f),s.value=c}catch(w){console.error(w),n[u?"replace":"assign"](f)}}function o(l,c){const u=ue({},t.state,So(s.value.back,l,s.value.forward,!0),c,{position:s.value.position});a(l,u,!0),r.value=l}function i(l,c){const u=ue({},s.value,t.state,{forward:l,scroll:sr()});a(u.current,u,!0);const m=ue({},So(r.value,l,null),{position:u.position+1},c);a(l,m,!1),r.value=l}return{location:r,state:s,push:i,replace:o}}function md(e){e=ad(e);const t=pd(e),n=hd(e,t.state,t.location,t.replace);function r(a,o=!0){o||n.pauseListeners(),history.go(a)}const s=ue({location:"",base:e,go:r,createHref:id.bind(null,e)},t,n);return Object.defineProperty(s,"location",{enumerable:!0,get:()=>t.location.value}),Object.defineProperty(s,"state",{enumerable:!0,get:()=>t.state.value}),s}function gd(e){return typeof e=="string"||e&&typeof e=="object"}function Co(e){return typeof e=="string"||typeof e=="symbol"}const tt={path:"/",name:void 0,params:{},query:{},hash:"",fullPath:"/",matched:[],meta:{},redirectedFrom:void 0},ko=qt("nf");var To;(function(e){e[e.aborted=4]="aborted",e[e.cancelled=8]="cancelled",e[e.duplicated=16]="duplicated"})(To||(To={}));function Kt(e,t){return ue(new Error,{type:e,[ko]:!0},t)}function kt(e,t){return e instanceof Error&&ko in e&&(t==null||!!(e.type&t))}const Ro="[^/]+?",vd={sensitive:!1,strict:!1,start:!0,end:!0},yd=/[.+*?^${}()[\]/\\]/g;function bd(e,t){const n=ue({},vd,t),r=[];let s=n.start?"^":"";const a=[];for(const c of e){const u=c.length?[]:[90];n.strict&&!c.length&&(s+="/");for(let m=0;m<c.length;m++){const f=c[m];let w=40+(n.sensitive?.25:0);if(f.type===0)m||(s+="/"),s+=f.value.replace(yd,"\\$&"),w+=40;else if(f.type===1){const{value:h,repeatable:b,optional:g,regexp:v}=f;a.push({name:h,repeatable:b,optional:g});const x=v||Ro;if(x!==Ro){w+=10;try{new RegExp(`(${x})`)}catch(A){throw new Error(`Invalid custom RegExp for param "${h}" (${x}): `+A.message)}}let C=b?`((?:${x})(?:/(?:${x}))*)`:`(${x})`;m||(C=g&&c.length<2?`(?:/${C})`:"/"+C),g&&(C+="?"),s+=C,w+=20,g&&(w+=-8),b&&(w+=-20),x===".*"&&(w+=-50)}u.push(w)}r.push(u)}if(n.strict&&n.end){const c=r.length-1;r[c][r[c].length-1]+=.7000000000000001}n.strict||(s+="/?"),n.end?s+="$":n.strict&&(s+="(?:/|$)");const o=new RegExp(s,n.sensitive?"":"i");function i(c){const u=c.match(o),m={};if(!u)return null;for(let f=1;f<u.length;f++){const w=u[f]||"",h=a[f-1];m[h.name]=w&&h.repeatable?w.split("/"):w}return m}function l(c){let u="",m=!1;for(const f of e){(!m||!u.endsWith("/"))&&(u+="/"),m=!1;for(const w of f)if(w.type===0)u+=w.value;else if(w.type===1){const{value:h,repeatable:b,optional:g}=w,v=h in c?c[h]:"";if(Array.isArray(v)&&!b)throw new Error(`Provided param "${h}" is an array but it is not repeatable (* or + modifiers)`);const x=Array.isArray(v)?v.join("/"):v;if(!x)if(g)f.length<2&&(u.endsWith("/")?u=u.slice(0,-1):m=!0);else throw new Error(`Missing required param "${h}"`);u+=x}}return u}return{re:o,score:r,keys:a,parse:i,stringify:l}}function wd(e,t){let n=0;for(;n<e.length&&n<t.length;){const r=t[n]-e[n];if(r)return r;n++}return e.length<t.length?e.length===1&&e[0]===40+40?-1:1:e.length>t.length?t.length===1&&t[0]===40+40?1:-1:0}function _d(e,t){let n=0;const r=e.score,s=t.score;for(;n<r.length&&n<s.length;){const a=wd(r[n],s[n]);if(a)return a;n++}return s.length-r.length}const xd={type:0,value:""},Ed=/[a-zA-Z0-9_]/;function Sd(e){if(!e)return[[]];if(e==="/")return[[xd]];if(!e.startsWith("/"))throw new Error(`Invalid path "${e}"`);function t(w){throw new Error(`ERR (${n})/"${c}": ${w}`)}let n=0,r=n;const s=[];let a;function o(){a&&s.push(a),a=[]}let i=0,l,c="",u="";function m(){!c||(n===0?a.push({type:0,value:c}):n===1||n===2||n===3?(a.length>1&&(l==="*"||l==="+")&&t(`A repeatable param (${c}) must be alone in its segment. eg: '/:ids+.`),a.push({type:1,value:c,regexp:u,repeatable:l==="*"||l==="+",optional:l==="*"||l==="?"})):t("Invalid state to consume buffer"),c="")}function f(){c+=l}for(;i<e.length;){if(l=e[i++],l==="\\"&&n!==2){r=n,n=4;continue}switch(n){case 0:l==="/"?(c&&m(),o()):l===":"?(m(),n=1):f();break;case 4:f(),n=r;break;case 1:l==="("?n=2:Ed.test(l)?f():(m(),n=0,l!=="*"&&l!=="?"&&l!=="+"&&i--);break;case 2:l===")"?u[u.length-1]=="\\"?u=u.slice(0,-1)+l:n=3:u+=l;break;case 3:m(),n=0,l!=="*"&&l!=="?"&&l!=="+"&&i--,u="";break;default:t("Unknown state");break}}return n===2&&t(`Unfinished custom RegExp for param "${c}"`),m(),o(),s}function Cd(e,t,n){const r=bd(Sd(e.path),n),s=ue(r,{record:e,parent:t,children:[],alias:[]});return t&&!s.record.aliasOf==!t.record.aliasOf&&t.children.push(s),s}function kd(e,t){const n=[],r=new Map;t=Po({strict:!1,end:!0,sensitive:!1},t);function s(u){return r.get(u)}function a(u,m,f){const w=!f,h=Rd(u);h.aliasOf=f&&f.record;const b=Po(t,u),g=[h];if("alias"in u){const C=typeof u.alias=="string"?[u.alias]:u.alias;for(const A of C)g.push(ue({},h,{components:f?f.record.components:h.components,path:A,aliasOf:f?f.record:h}))}let v,x;for(const C of g){const{path:A}=C;if(m&&A[0]!=="/"){const H=m.record.path,z=H[H.length-1]==="/"?"":"/";C.path=m.record.path+(A&&z+A)}if(v=Cd(C,m,b),f?f.alias.push(v):(x=x||v,x!==v&&x.alias.push(v),w&&u.name&&!Ao(v)&&o(u.name)),"children"in h){const H=h.children;for(let z=0;z<H.length;z++)a(H[z],v,f&&f.children[z])}f=f||v,l(v)}return x?()=>{o(x)}:xn}function o(u){if(Co(u)){const m=r.get(u);m&&(r.delete(u),n.splice(n.indexOf(m),1),m.children.forEach(o),m.alias.forEach(o))}else{const m=n.indexOf(u);m>-1&&(n.splice(m,1),u.record.name&&r.delete(u.record.name),u.children.forEach(o),u.alias.forEach(o))}}function i(){return n}function l(u){let m=0;for(;m<n.length&&_d(u,n[m])>=0;)m++;n.splice(m,0,u),u.record.name&&!Ao(u)&&r.set(u.record.name,u)}function c(u,m){let f,w={},h,b;if("name"in u&&u.name){if(f=r.get(u.name),!f)throw Kt(1,{location:u});b=f.record.name,w=ue(Td(m.params,f.keys.filter(x=>!x.optional).map(x=>x.name)),u.params),h=f.stringify(w)}else if("path"in u)h=u.path,f=n.find(x=>x.re.test(h)),f&&(w=f.parse(h),b=f.record.name);else{if(f=m.name?r.get(m.name):n.find(x=>x.re.test(m.path)),!f)throw Kt(1,{location:u,currentLocation:m});b=f.record.name,w=ue({},m.params,u.params),h=f.stringify(w)}const g=[];let v=f;for(;v;)g.unshift(v.record),v=v.parent;return{name:b,path:h,params:w,matched:g,meta:Pd(g)}}return e.forEach(u=>a(u)),{addRoute:a,resolve:c,removeRoute:o,getRoutes:i,getRecordMatcher:s}}function Td(e,t){const n={};for(const r of t)r in e&&(n[r]=e[r]);return n}function Rd(e){return{path:e.path,redirect:e.redirect,name:e.name,meta:e.meta||{},aliasOf:void 0,beforeEnter:e.beforeEnter,props:Ad(e),children:e.children||[],instances:{},leaveGuards:new Set,updateGuards:new Set,enterCallbacks:{},components:"components"in e?e.components||{}:{default:e.component}}}function Ad(e){const t={},n=e.props||!1;if("component"in e)t.default=n;else for(const r in e.components)t[r]=typeof n=="boolean"?n:n[r];return t}function Ao(e){for(;e;){if(e.record.aliasOf)return!0;e=e.parent}return!1}function Pd(e){return e.reduce((t,n)=>ue(t,n.meta),{})}function Po(e,t){const n={};for(const r in e)n[r]=r in t?t[r]:e[r];return n}const Lo=/#/g,Ld=/&/g,Id=/\//g,Od=/=/g,Md=/\?/g,Io=/\+/g,Dd=/%5B/g,Nd=/%5D/g,Oo=/%5E/g,Hd=/%60/g,Mo=/%7B/g,Fd=/%7C/g,Do=/%7D/g,zd=/%20/g;function ps(e){return encodeURI(""+e).replace(Fd,"|").replace(Dd,"[").replace(Nd,"]")}function Bd(e){return ps(e).replace(Mo,"{").replace(Do,"}").replace(Oo,"^")}function ms(e){return ps(e).replace(Io,"%2B").replace(zd,"+").replace(Lo,"%23").replace(Ld,"%26").replace(Hd,"`").replace(Mo,"{").replace(Do,"}").replace(Oo,"^")}function $d(e){return ms(e).replace(Od,"%3D")}function jd(e){return ps(e).replace(Lo,"%23").replace(Md,"%3F")}function qd(e){return e==null?"":jd(e).replace(Id,"%2F")}function ar(e){try{return decodeURIComponent(""+e)}catch{}return""+e}function Ud(e){const t={};if(e===""||e==="?")return t;const r=(e[0]==="?"?e.slice(1):e).split("&");for(let s=0;s<r.length;++s){const a=r[s].replace(Io," "),o=a.indexOf("="),i=ar(o<0?a:a.slice(0,o)),l=o<0?null:ar(a.slice(o+1));if(i in t){let c=t[i];Array.isArray(c)||(c=t[i]=[c]),c.push(l)}else t[i]=l}return t}function No(e){let t="";for(let n in e){const r=e[n];if(n=$d(n),r==null){r!==void 0&&(t+=(t.length?"&":"")+n);continue}(Array.isArray(r)?r.map(a=>a&&ms(a)):[r&&ms(r)]).forEach(a=>{a!==void 0&&(t+=(t.length?"&":"")+n,a!=null&&(t+="="+a))})}return t}function Wd(e){const t={};for(const n in e){const r=e[n];r!==void 0&&(t[n]=Array.isArray(r)?r.map(s=>s==null?null:""+s):r==null?r:""+r)}return t}function Cn(){let e=[];function t(r){return e.push(r),()=>{const s=e.indexOf(r);s>-1&&e.splice(s,1)}}function n(){e=[]}return{add:t,list:()=>e,reset:n}}function dt(e,t,n,r,s){const a=r&&(r.enterCallbacks[s]=r.enterCallbacks[s]||[]);return()=>new Promise((o,i)=>{const l=m=>{m===!1?i(Kt(4,{from:n,to:t})):m instanceof Error?i(m):gd(m)?i(Kt(2,{from:t,to:m})):(a&&r.enterCallbacks[s]===a&&typeof m=="function"&&a.push(m),o())},c=e.call(r&&r.instances[s],t,n,l);let u=Promise.resolve(c);e.length<3&&(u=u.then(l)),u.catch(m=>i(m))})}function gs(e,t,n,r){const s=[];for(const a of e)for(const o in a.components){let i=a.components[o];if(!(t!=="beforeRouteEnter"&&!a.instances[o]))if(Kd(i)){const c=(i.__vccOpts||i)[t];c&&s.push(dt(c,n,r,a,o))}else{let l=i();s.push(()=>l.then(c=>{if(!c)return Promise.reject(new Error(`Couldn't resolve component "${o}" at "${a.path}"`));const u=Zc(c)?c.default:c;a.components[o]=u;const f=(u.__vccOpts||u)[t];return f&&dt(f,n,r,a,o)()}))}}return s}function Kd(e){return typeof e=="object"||"displayName"in e||"props"in e||"__vccOpts"in e}function Ho(e){const t=_e(rr),n=_e(cs),r=pe(()=>t.resolve(Ze(e.to))),s=pe(()=>{const{matched:l}=r.value,{length:c}=l,u=l[c-1],m=n.matched;if(!u||!m.length)return-1;const f=m.findIndex(Wt.bind(null,u));if(f>-1)return f;const w=Fo(l[c-2]);return c>1&&Fo(u)===w&&m[m.length-1].path!==w?m.findIndex(Wt.bind(null,l[c-2])):f}),a=pe(()=>s.value>-1&&Xd(n.params,r.value.params)),o=pe(()=>s.value>-1&&s.value===n.matched.length-1&&wo(n.params,r.value.params));function i(l={}){return Gd(l)?t[Ze(e.replace)?"replace":"push"](Ze(e.to)).catch(xn):Promise.resolve()}return{route:r,href:pe(()=>r.value.href),isActive:a,isExactActive:o,navigate:i}}const Vd=Ne({name:"RouterLink",props:{to:{type:[String,Object],required:!0},replace:Boolean,activeClass:String,exactActiveClass:String,custom:Boolean,ariaCurrentValue:{type:String,default:"page"}},useLink:Ho,setup(e,{slots:t}){const n=an(Ho(e)),{options:r}=_e(rr),s=pe(()=>({[zo(e.activeClass,r.linkActiveClass,"router-link-active")]:n.isActive,[zo(e.exactActiveClass,r.linkExactActiveClass,"router-link-exact-active")]:n.isExactActive}));return()=>{const a=t.default&&t.default(n);return e.custom?a:le("a",{"aria-current":n.isExactActive?e.ariaCurrentValue:null,href:n.href,onClick:n.navigate,class:s.value},a)}}}),Yd=Vd;function Gd(e){if(!(e.metaKey||e.altKey||e.ctrlKey||e.shiftKey)&&!e.defaultPrevented&&!(e.button!==void 0&&e.button!==0)){if(e.currentTarget&&e.currentTarget.getAttribute){const t=e.currentTarget.getAttribute("target");if(/\b_blank\b/i.test(t))return}return e.preventDefault&&e.preventDefault(),!0}}function Xd(e,t){for(const n in t){const r=t[n],s=e[n];if(typeof r=="string"){if(r!==s)return!1}else if(!Array.isArray(s)||s.length!==r.length||r.some((a,o)=>a!==s[o]))return!1}return!0}function Fo(e){return e?e.aliasOf?e.aliasOf.path:e.path:""}const zo=(e,t,n)=>e!=null?e:t!=null?t:n,Jd=Ne({name:"RouterView",inheritAttrs:!1,props:{name:{type:String,default:"default"},route:Object},setup(e,{attrs:t,slots:n}){const r=_e(ds),s=pe(()=>e.route||r.value),a=_e(yo,0),o=pe(()=>s.value.matched[a]);gt(yo,a+1),gt(Jc,o),gt(ds,s);const i=ye();return Xe(()=>[i.value,o.value,e.name],([l,c,u],[m,f,w])=>{c&&(c.instances[u]=l,f&&f!==c&&l&&l===m&&(c.leaveGuards.size||(c.leaveGuards=f.leaveGuards),c.updateGuards.size||(c.updateGuards=f.updateGuards))),l&&c&&(!f||!Wt(c,f)||!m)&&(c.enterCallbacks[u]||[]).forEach(h=>h(l))},{flush:"post"}),()=>{const l=s.value,c=o.value,u=c&&c.components[e.name],m=e.name;if(!u)return Bo(n.default,{Component:u,route:l});const f=c.props[e.name],w=f?f===!0?l.params:typeof f=="function"?f(l):f:null,b=le(u,ue({},w,t,{onVnodeUnmounted:g=>{g.component.isUnmounted&&(c.instances[m]=null)},ref:i}));return Bo(n.default,{Component:b,route:l})||b}}});function Bo(e,t){if(!e)return null;const n=e(t);return n.length===1?n[0]:n}const $o=Jd;function Zd(e){const t=kd(e.routes,e),n=e.parseQuery||Ud,r=e.stringifyQuery||No,s=e.history,a=Cn(),o=Cn(),i=Cn(),l=oa(tt);let c=tt;Ut&&e.scrollBehavior&&"scrollRestoration"in history&&(history.scrollRestoration="manual");const u=us.bind(null,S=>""+S),m=us.bind(null,qd),f=us.bind(null,ar);function w(S,F){let O,B;return Co(S)?(O=t.getRecordMatcher(S),B=F):B=S,t.addRoute(B,O)}function h(S){const F=t.getRecordMatcher(S);F&&t.removeRoute(F)}function b(){return t.getRoutes().map(S=>S.record)}function g(S){return!!t.getRecordMatcher(S)}function v(S,F){if(F=ue({},F||l.value),typeof S=="string"){const J=fs(n,S,F.path),d=t.resolve({path:J.path},F),p=s.createHref(J.fullPath);return ue(J,d,{params:f(d.params),hash:ar(J.hash),redirectedFrom:void 0,href:p})}let O;if("path"in S)O=ue({},S,{path:fs(n,S.path,F.path).path});else{const J=ue({},S.params);for(const d in J)J[d]==null&&delete J[d];O=ue({},S,{params:m(S.params)}),F.params=m(F.params)}const B=t.resolve(O,F),oe=S.hash||"";B.params=u(f(B.params));const ie=td(r,ue({},S,{hash:Bd(oe),path:B.path})),ee=s.createHref(ie);return ue({fullPath:ie,hash:oe,query:r===No?Wd(S.query):S.query||{}},B,{redirectedFrom:void 0,href:ee})}function x(S){return typeof S=="string"?fs(n,S,l.value.path):ue({},S)}function C(S,F){if(c!==S)return Kt(8,{from:F,to:S})}function A(S){return k(S)}function H(S){return A(ue(x(S),{replace:!0}))}function z(S){const F=S.matched[S.matched.length-1];if(F&&F.redirect){const{redirect:O}=F;let B=typeof O=="function"?O(S):O;return typeof B=="string"&&(B=B.includes("?")||B.includes("#")?B=x(B):{path:B},B.params={}),ue({query:S.query,hash:S.hash,params:S.params},B)}}function k(S,F){const O=c=v(S),B=l.value,oe=S.state,ie=S.force,ee=S.replace===!0,J=z(O);if(J)return k(ue(x(J),{state:oe,force:ie,replace:ee}),F||O);const d=O;d.redirectedFrom=F;let p;return!ie&&nd(r,B,O)&&(p=Kt(16,{to:d,from:B}),Se(B,B,!0,!1)),(p?Promise.resolve(p):V(d,B)).catch(y=>kt(y)?y:Z(y,d,B)).then(y=>{if(y){if(kt(y,2))return k(ue(x(y.to),{state:oe,force:ie,replace:ee}),F||d)}else y=Y(d,B,!0,ee,oe);return q(d,B,y),y})}function E(S,F){const O=C(S,F);return O?Promise.reject(O):Promise.resolve()}function V(S,F){let O;const[B,oe,ie]=Qd(S,F);O=gs(B.reverse(),"beforeRouteLeave",S,F);for(const J of B)J.leaveGuards.forEach(d=>{O.push(dt(d,S,F))});const ee=E.bind(null,S,F);return O.push(ee),Vt(O).then(()=>{O=[];for(const J of a.list())O.push(dt(J,S,F));return O.push(ee),Vt(O)}).then(()=>{O=gs(oe,"beforeRouteUpdate",S,F);for(const J of oe)J.updateGuards.forEach(d=>{O.push(dt(d,S,F))});return O.push(ee),Vt(O)}).then(()=>{O=[];for(const J of S.matched)if(J.beforeEnter&&!F.matched.includes(J))if(Array.isArray(J.beforeEnter))for(const d of J.beforeEnter)O.push(dt(d,S,F));else O.push(dt(J.beforeEnter,S,F));return O.push(ee),Vt(O)}).then(()=>(S.matched.forEach(J=>J.enterCallbacks={}),O=gs(ie,"beforeRouteEnter",S,F),O.push(ee),Vt(O))).then(()=>{O=[];for(const J of o.list())O.push(dt(J,S,F));return O.push(ee),Vt(O)}).catch(J=>kt(J,8)?J:Promise.reject(J))}function q(S,F,O){for(const B of i.list())B(S,F,O)}function Y(S,F,O,B,oe){const ie=C(S,F);if(ie)return ie;const ee=F===tt,J=Ut?history.state:{};O&&(B||ee?s.replace(S.fullPath,ue({scroll:ee&&J&&J.scroll},oe)):s.push(S.fullPath,oe)),l.value=S,Se(S,F,O,ee),be()}let _;function D(){_=s.listen((S,F,O)=>{const B=v(S),oe=z(B);if(oe){k(ue(oe,{replace:!0}),B).catch(xn);return}c=B;const ie=l.value;Ut&&dd(xo(ie.fullPath,O.delta),sr()),V(B,ie).catch(ee=>kt(ee,4|8)?ee:kt(ee,2)?(k(ee.to,B).then(J=>{kt(J,4|16)&&!O.delta&&O.type===En.pop&&s.go(-1,!1)}).catch(xn),Promise.reject()):(O.delta&&s.go(-O.delta,!1),Z(ee,B,ie))).then(ee=>{ee=ee||Y(B,ie,!1),ee&&(O.delta?s.go(-O.delta,!1):O.type===En.pop&&kt(ee,4|16)&&s.go(-1,!1)),q(B,ie,ee)}).catch(xn)})}let K=Cn(),ae=Cn(),j;function Z(S,F,O){be(S);const B=ae.list();return B.length?B.forEach(oe=>oe(S,F,O)):console.error(S),Promise.reject(S)}function te(){return j&&l.value!==tt?Promise.resolve():new Promise((S,F)=>{K.add([S,F])})}function be(S){j||(j=!0,D(),K.list().forEach(([F,O])=>S?O(S):F()),K.reset())}function Se(S,F,O,B){const{scrollBehavior:oe}=e;if(!Ut||!oe)return Promise.resolve();const ie=!O&&ud(xo(S.fullPath,0))||(B||!O)&&history.state&&history.state.scroll||null;return ts().then(()=>oe(S,F,ie)).then(ee=>ee&&cd(ee)).catch(ee=>Z(ee,S,F))}const Ae=S=>s.go(S);let Me;const ke=new Set;return{currentRoute:l,addRoute:w,removeRoute:h,hasRoute:g,getRoutes:b,resolve:v,options:e,push:A,replace:H,go:Ae,back:()=>Ae(-1),forward:()=>Ae(1),beforeEach:a.add,beforeResolve:o.add,afterEach:i.add,onError:ae.add,isReady:te,install(S){const F=this;S.component("RouterLink",Yd),S.component("RouterView",$o),S.config.globalProperties.$router=F,Object.defineProperty(S.config.globalProperties,"$route",{enumerable:!0,get:()=>Ze(l)}),Ut&&!Me&&l.value===tt&&(Me=!0,A(s.location).catch(oe=>{}));const O={};for(const oe in tt)O[oe]=pe(()=>l.value[oe]);S.provide(rr,F),S.provide(cs,an(O)),S.provide(ds,l);const B=S.unmount;ke.add(S),S.unmount=function(){ke.delete(S),ke.size<1&&(c=tt,_&&_(),l.value=tt,Me=!1,j=!1),B()}}}}function Vt(e){return e.reduce((t,n)=>t.then(()=>n()),Promise.resolve())}function Qd(e,t){const n=[],r=[],s=[],a=Math.max(t.matched.length,e.matched.length);for(let o=0;o<a;o++){const i=t.matched[o];i&&(e.matched.find(c=>Wt(c,i))?r.push(i):n.push(i));const l=e.matched[o];l&&(t.matched.find(c=>Wt(c,l))||s.push(l))}return[n,r,s]}function or(){return _e(rr)}function vs(){return _e(cs)}const eu=Ne({setup(e,t){const n=ye(!1);return qe(()=>{n.value=!0}),()=>{var r,s;return n.value?(s=(r=t.slots).default)===null||s===void 0?void 0:s.call(r):null}}}),tu="modulepreload",jo={},nu="/",Be=function(t,n){return!n||n.length===0?t():Promise.all(n.map(r=>{if(r=`${nu}${r}`,r in jo)return;jo[r]=!0;const s=r.endsWith(".css"),a=s?'[rel="stylesheet"]':"";if(document.querySelector(`link[href="${r}"]${a}`))return;const o=document.createElement("link");if(o.rel=s?"stylesheet":tu,s||(o.as="script",o.crossOrigin=""),o.href=r,document.head.appendChild(o),s)return new Promise((i,l)=>{o.addEventListener("load",i),o.addEventListener("error",l)})})).then(()=>t())},qo={"v-8daa1a0e":vt(()=>Be(()=>import("./index.html.7b9e463c.js"),[])),"v-77f0ef68":vt(()=>Be(()=>import("./index.html.3733ebf7.js"),[])),"v-1c385113":vt(()=>Be(()=>import("./index.html.0a987200.js"),[])),"v-37b893e5":vt(()=>Be(()=>import("./index.html.57c62611.js"),[])),"v-3706649a":vt(()=>Be(()=>import("./404.html.22ec82b9.js"),[]))},ru={"v-8daa1a0e":()=>Be(()=>import("./index.html.8b204c1b.js"),[]).then(({data:e})=>e),"v-77f0ef68":()=>Be(()=>import("./index.html.91e93c0f.js"),[]).then(({data:e})=>e),"v-1c385113":()=>Be(()=>import("./index.html.e7070996.js"),[]).then(({data:e})=>e),"v-37b893e5":()=>Be(()=>import("./index.html.442019b1.js"),[]).then(({data:e})=>e),"v-3706649a":()=>Be(()=>import("./404.html.e275e9a9.js"),[]).then(({data:e})=>e)},Uo=ye(ru),ys=Lr({key:"",path:"",title:"",lang:"",frontmatter:{},excerpt:"",headers:[]}),ut=ye(ys),Yt=()=>ut,su=async e=>{const t=Uo.value[e];if(!t)return ys;const n=await t();return n!=null?n:ys};fr.webpackHot&&(__VUE_HMR_RUNTIME__.updatePageData=e=>{Uo.value[e.key]=()=>Promise.resolve(e),e.key===ut.value.key&&(ut.value=e)});const Wo=Symbol(""),au=()=>{const e=_e(Wo);if(!e)throw new Error("usePageFrontmatter() is called without provider.");return e},ou=e=>e.frontmatter,iu=([e,t,n])=>e==="meta"&&t.name?`${e}.${t.name}`:["title","base"].includes(e)?e:e==="template"&&t.id?`${e}.${t.id}`:JSON.stringify([e,t,n]),lu=e=>{const t=new Set,n=[];return e.forEach(r=>{const s=iu(r);t.has(s)||(t.add(s),n.push(r))}),n},cu=e=>/^(https?:)?\/\//.test(e),Ph=e=>/^mailto:/.test(e),Lh=e=>/^tel:/.test(e),Ko=e=>Object.prototype.toString.call(e)==="[object Object]",du=e=>e.replace(/\/$/,""),uu=e=>e.replace(/^\//,""),Vo=(e,t)=>{const n=Object.keys(e).sort((r,s)=>{const a=s.split("/").length-r.split("/").length;return a!==0?a:s.length-r.length});for(const r of n)if(t.startsWith(r))return r;return"/"},Yo=Symbol(""),fu=()=>{const e=_e(Yo);if(!e)throw new Error("usePageHead() is called without provider.");return e},hu=(e,t,n)=>{const r=he(t.description)?t.description:n.description,s=[...G(t.head)?t.head:[],...n.head,["title",{},e],["meta",{name:"description",content:r}]];return lu(s)},pu=Symbol(""),mu=(e,t)=>`${e.title?`${e.title} | `:""}${t.title}`,Go=Symbol(""),gu=()=>{const e=_e(Go);if(!e)throw new Error("usePageLang() is called without provider.");return e},vu=e=>e.lang||"en",bs=Symbol(""),yu=()=>{const e=_e(bs);if(!e)throw new Error("useRouteLocale() is called without provider.");return e},bu=(e,t)=>Vo(e,t),wu={base:"/",lang:"en-US",title:"Stata2R",description:"",head:[["link",{rel:"stylesheet",href:"https://fonts.googleapis.com/css?family=Source+Code+Pro"}]],locales:{}},Tt=ye(wu),_u=()=>Tt;fr.webpackHot&&(__VUE_HMR_RUNTIME__.updateSiteData=e=>{Tt.value=e});const Xo=Symbol(""),Ih=()=>{const e=_e(Xo);if(!e)throw new Error("useSiteLocaleData() is called without provider.");return e},xu=(e,t)=>Ke(Ke({},e),e.locales[t]),Eu=Symbol(""),Su=()=>{const e=vs(),t=fu(),n=gu(),r=ye([]),s=()=>{t.value.forEach(o=>{const i=Cu(o);i&&r.value.push(i)})},a=()=>{document.documentElement.lang=n.value,r.value.forEach(o=>{o.parentNode===document.head&&document.head.removeChild(o)}),r.value.splice(0,r.value.length),t.value.forEach(o=>{const i=ku(o);i!==null&&(document.head.appendChild(i),r.value.push(i))})};gt(Eu,a),qe(()=>{s(),a(),Xe(()=>e.path,()=>a())})},Cu=([e,t,n=""])=>{const r=Object.entries(t).map(([i,l])=>he(l)?`[${i}="${l}"]`:l===!0?`[${i}]`:"").join(""),s=`head > ${e}${r}`;return Array.from(document.querySelectorAll(s)).find(i=>i.innerText===n)||null},ku=([e,t,n])=>{if(!he(e))return null;const r=document.createElement(e);return Ko(t)&&Object.entries(t).forEach(([s,a])=>{he(a)?r.setAttribute(s,a):a===!0&&r.setAttribute(s,"")}),he(n)&&r.appendChild(document.createTextNode(n)),r},ws=e=>{let t;e.pageKey?t=e.pageKey:t=Yt().value.key;const n=qo[t];return n?le(n):le("div","404 Not Found")};ws.displayName="Content";ws.props={pageKey:{type:String,required:!1}};const Tu={"404":vt(()=>Be(()=>import("./404.960b20ec.js"),[])),Layout:vt(()=>Be(()=>import("./Layout.4a9b5985.js"),[]))},Jo=Ne({name:"Vuepress",setup(){const e=Yt(),t=pe(()=>{let n;if(e.value.path){const r=e.value.frontmatter.layout;he(r)?n=r:n="Layout"}else n="404";return Tu[n]||ec(n,!1)});return()=>le(t.value)}}),Gt=e=>e,ir=e=>e,Ru=e=>cu(e)?e:`${_u().value.base}${uu(e)}`;const Au=le("svg",{class:"external-link-icon",xmlns:"http://www.w3.org/2000/svg","aria-hidden":"true",focusable:"false",x:"0px",y:"0px",viewBox:"0 0 100 100",width:"15",height:"15"},[le("path",{fill:"currentColor",d:"M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"}),le("polygon",{fill:"currentColor",points:"45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"})]),_s=(e,{slots:t})=>{var n;return le("span",[Au,(n=t.default)===null||n===void 0?void 0:n.call(t)])};_s.displayName="ExternalLinkIcon";var Pu=Gt(({app:e})=>{e.component("ExternalLinkIcon",_s)});/*! medium-zoom 1.0.6 | MIT License | https://github.com/francoischalifour/medium-zoom */var Rt=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},lr=function(t){return t.tagName==="IMG"},Lu=function(t){return NodeList.prototype.isPrototypeOf(t)},cr=function(t){return t&&t.nodeType===1},Zo=function(t){var n=t.currentSrc||t.src;return n.substr(-4).toLowerCase()===".svg"},Qo=function(t){try{return Array.isArray(t)?t.filter(lr):Lu(t)?[].slice.call(t).filter(lr):cr(t)?[t].filter(lr):typeof t=="string"?[].slice.call(document.querySelectorAll(t)).filter(lr):[]}catch{throw new TypeError(`The provided selector is invalid.
+  */const vo=typeof Symbol=="function"&&typeof Symbol.toStringTag=="symbol",qt=e=>vo?Symbol(e):"_vr_"+e,Jc=qt("rvlm"),yo=qt("rvd"),rr=qt("r"),cs=qt("rl"),ds=qt("rvl"),Ut=typeof window!="undefined";function Zc(e){return e.__esModule||vo&&e[Symbol.toStringTag]==="Module"}const ue=Object.assign;function us(e,t){const n={};for(const r in t){const s=t[r];n[r]=Array.isArray(s)?s.map(e):e(s)}return n}const xn=()=>{},Qc=/\/$/,ed=e=>e.replace(Qc,"");function fs(e,t,n="/"){let r,s={},a="",o="";const i=t.indexOf("?"),l=t.indexOf("#",i>-1?i:0);return i>-1&&(r=t.slice(0,i),a=t.slice(i+1,l>-1?l:t.length),s=e(a)),l>-1&&(r=r||t.slice(0,l),o=t.slice(l,t.length)),r=sd(r!=null?r:t,n),{fullPath:r+(a&&"?")+a+o,path:r,query:s,hash:o}}function td(e,t){const n=t.query?e(t.query):"";return t.path+(n&&"?")+n+(t.hash||"")}function bo(e,t){return!t||!e.toLowerCase().startsWith(t.toLowerCase())?e:e.slice(t.length)||"/"}function nd(e,t,n){const r=t.matched.length-1,s=n.matched.length-1;return r>-1&&r===s&&Wt(t.matched[r],n.matched[s])&&wo(t.params,n.params)&&e(t.query)===e(n.query)&&t.hash===n.hash}function Wt(e,t){return(e.aliasOf||e)===(t.aliasOf||t)}function wo(e,t){if(Object.keys(e).length!==Object.keys(t).length)return!1;for(const n in e)if(!rd(e[n],t[n]))return!1;return!0}function rd(e,t){return Array.isArray(e)?_o(e,t):Array.isArray(t)?_o(t,e):e===t}function _o(e,t){return Array.isArray(t)?e.length===t.length&&e.every((n,r)=>n===t[r]):e.length===1&&e[0]===t}function sd(e,t){if(e.startsWith("/"))return e;if(!e)return t;const n=t.split("/"),r=e.split("/");let s=n.length-1,a,o;for(a=0;a<r.length;a++)if(o=r[a],!(s===1||o==="."))if(o==="..")s--;else break;return n.slice(0,s).join("/")+"/"+r.slice(a-(a===r.length?1:0)).join("/")}var En;(function(e){e.pop="pop",e.push="push"})(En||(En={}));var Sn;(function(e){e.back="back",e.forward="forward",e.unknown=""})(Sn||(Sn={}));function ad(e){if(!e)if(Ut){const t=document.querySelector("base");e=t&&t.getAttribute("href")||"/",e=e.replace(/^\w+:\/\/[^\/]+/,"")}else e="/";return e[0]!=="/"&&e[0]!=="#"&&(e="/"+e),ed(e)}const od=/^[^#]+#/;function id(e,t){return e.replace(od,"#")+t}function ld(e,t){const n=document.documentElement.getBoundingClientRect(),r=e.getBoundingClientRect();return{behavior:t.behavior,left:r.left-n.left-(t.left||0),top:r.top-n.top-(t.top||0)}}const sr=()=>({left:window.pageXOffset,top:window.pageYOffset});function cd(e){let t;if("el"in e){const n=e.el,r=typeof n=="string"&&n.startsWith("#"),s=typeof n=="string"?r?document.getElementById(n.slice(1)):document.querySelector(n):n;if(!s)return;t=ld(s,e)}else t=e;"scrollBehavior"in document.documentElement.style?window.scrollTo(t):window.scrollTo(t.left!=null?t.left:window.pageXOffset,t.top!=null?t.top:window.pageYOffset)}function xo(e,t){return(history.state?history.state.position-t:-1)+e}const hs=new Map;function dd(e,t){hs.set(e,t)}function ud(e){const t=hs.get(e);return hs.delete(e),t}let fd=()=>location.protocol+"//"+location.host;function Eo(e,t){const{pathname:n,search:r,hash:s}=t,a=e.indexOf("#");if(a>-1){let i=s.includes(e.slice(a))?e.slice(a).length:1,l=s.slice(i);return l[0]!=="/"&&(l="/"+l),bo(l,"")}return bo(n,e)+r+s}function hd(e,t,n,r){let s=[],a=[],o=null;const i=({state:f})=>{const w=Eo(e,location),h=n.value,b=t.value;let g=0;if(f){if(n.value=w,t.value=f,o&&o===h){o=null;return}g=b?f.position-b.position:0}else r(w);s.forEach(v=>{v(n.value,h,{delta:g,type:En.pop,direction:g?g>0?Sn.forward:Sn.back:Sn.unknown})})};function l(){o=n.value}function c(f){s.push(f);const w=()=>{const h=s.indexOf(f);h>-1&&s.splice(h,1)};return a.push(w),w}function u(){const{history:f}=window;!f.state||f.replaceState(ue({},f.state,{scroll:sr()}),"")}function m(){for(const f of a)f();a=[],window.removeEventListener("popstate",i),window.removeEventListener("beforeunload",u)}return window.addEventListener("popstate",i),window.addEventListener("beforeunload",u),{pauseListeners:l,listen:c,destroy:m}}function So(e,t,n,r=!1,s=!1){return{back:e,current:t,forward:n,replaced:r,position:window.history.length,scroll:s?sr():null}}function pd(e){const{history:t,location:n}=window,r={value:Eo(e,n)},s={value:t.state};s.value||a(r.value,{back:null,current:r.value,forward:null,position:t.length-1,replaced:!0,scroll:null},!0);function a(l,c,u){const m=e.indexOf("#"),f=m>-1?(n.host&&document.querySelector("base")?e:e.slice(m))+l:fd()+e+l;try{t[u?"replaceState":"pushState"](c,"",f),s.value=c}catch(w){console.error(w),n[u?"replace":"assign"](f)}}function o(l,c){const u=ue({},t.state,So(s.value.back,l,s.value.forward,!0),c,{position:s.value.position});a(l,u,!0),r.value=l}function i(l,c){const u=ue({},s.value,t.state,{forward:l,scroll:sr()});a(u.current,u,!0);const m=ue({},So(r.value,l,null),{position:u.position+1},c);a(l,m,!1),r.value=l}return{location:r,state:s,push:i,replace:o}}function md(e){e=ad(e);const t=pd(e),n=hd(e,t.state,t.location,t.replace);function r(a,o=!0){o||n.pauseListeners(),history.go(a)}const s=ue({location:"",base:e,go:r,createHref:id.bind(null,e)},t,n);return Object.defineProperty(s,"location",{enumerable:!0,get:()=>t.location.value}),Object.defineProperty(s,"state",{enumerable:!0,get:()=>t.state.value}),s}function gd(e){return typeof e=="string"||e&&typeof e=="object"}function Co(e){return typeof e=="string"||typeof e=="symbol"}const tt={path:"/",name:void 0,params:{},query:{},hash:"",fullPath:"/",matched:[],meta:{},redirectedFrom:void 0},ko=qt("nf");var To;(function(e){e[e.aborted=4]="aborted",e[e.cancelled=8]="cancelled",e[e.duplicated=16]="duplicated"})(To||(To={}));function Kt(e,t){return ue(new Error,{type:e,[ko]:!0},t)}function kt(e,t){return e instanceof Error&&ko in e&&(t==null||!!(e.type&t))}const Ro="[^/]+?",vd={sensitive:!1,strict:!1,start:!0,end:!0},yd=/[.+*?^${}()[\]/\\]/g;function bd(e,t){const n=ue({},vd,t),r=[];let s=n.start?"^":"";const a=[];for(const c of e){const u=c.length?[]:[90];n.strict&&!c.length&&(s+="/");for(let m=0;m<c.length;m++){const f=c[m];let w=40+(n.sensitive?.25:0);if(f.type===0)m||(s+="/"),s+=f.value.replace(yd,"\\$&"),w+=40;else if(f.type===1){const{value:h,repeatable:b,optional:g,regexp:v}=f;a.push({name:h,repeatable:b,optional:g});const x=v||Ro;if(x!==Ro){w+=10;try{new RegExp(`(${x})`)}catch(A){throw new Error(`Invalid custom RegExp for param "${h}" (${x}): `+A.message)}}let C=b?`((?:${x})(?:/(?:${x}))*)`:`(${x})`;m||(C=g&&c.length<2?`(?:/${C})`:"/"+C),g&&(C+="?"),s+=C,w+=20,g&&(w+=-8),b&&(w+=-20),x===".*"&&(w+=-50)}u.push(w)}r.push(u)}if(n.strict&&n.end){const c=r.length-1;r[c][r[c].length-1]+=.7000000000000001}n.strict||(s+="/?"),n.end?s+="$":n.strict&&(s+="(?:/|$)");const o=new RegExp(s,n.sensitive?"":"i");function i(c){const u=c.match(o),m={};if(!u)return null;for(let f=1;f<u.length;f++){const w=u[f]||"",h=a[f-1];m[h.name]=w&&h.repeatable?w.split("/"):w}return m}function l(c){let u="",m=!1;for(const f of e){(!m||!u.endsWith("/"))&&(u+="/"),m=!1;for(const w of f)if(w.type===0)u+=w.value;else if(w.type===1){const{value:h,repeatable:b,optional:g}=w,v=h in c?c[h]:"";if(Array.isArray(v)&&!b)throw new Error(`Provided param "${h}" is an array but it is not repeatable (* or + modifiers)`);const x=Array.isArray(v)?v.join("/"):v;if(!x)if(g)f.length<2&&(u.endsWith("/")?u=u.slice(0,-1):m=!0);else throw new Error(`Missing required param "${h}"`);u+=x}}return u}return{re:o,score:r,keys:a,parse:i,stringify:l}}function wd(e,t){let n=0;for(;n<e.length&&n<t.length;){const r=t[n]-e[n];if(r)return r;n++}return e.length<t.length?e.length===1&&e[0]===40+40?-1:1:e.length>t.length?t.length===1&&t[0]===40+40?1:-1:0}function _d(e,t){let n=0;const r=e.score,s=t.score;for(;n<r.length&&n<s.length;){const a=wd(r[n],s[n]);if(a)return a;n++}return s.length-r.length}const xd={type:0,value:""},Ed=/[a-zA-Z0-9_]/;function Sd(e){if(!e)return[[]];if(e==="/")return[[xd]];if(!e.startsWith("/"))throw new Error(`Invalid path "${e}"`);function t(w){throw new Error(`ERR (${n})/"${c}": ${w}`)}let n=0,r=n;const s=[];let a;function o(){a&&s.push(a),a=[]}let i=0,l,c="",u="";function m(){!c||(n===0?a.push({type:0,value:c}):n===1||n===2||n===3?(a.length>1&&(l==="*"||l==="+")&&t(`A repeatable param (${c}) must be alone in its segment. eg: '/:ids+.`),a.push({type:1,value:c,regexp:u,repeatable:l==="*"||l==="+",optional:l==="*"||l==="?"})):t("Invalid state to consume buffer"),c="")}function f(){c+=l}for(;i<e.length;){if(l=e[i++],l==="\\"&&n!==2){r=n,n=4;continue}switch(n){case 0:l==="/"?(c&&m(),o()):l===":"?(m(),n=1):f();break;case 4:f(),n=r;break;case 1:l==="("?n=2:Ed.test(l)?f():(m(),n=0,l!=="*"&&l!=="?"&&l!=="+"&&i--);break;case 2:l===")"?u[u.length-1]=="\\"?u=u.slice(0,-1)+l:n=3:u+=l;break;case 3:m(),n=0,l!=="*"&&l!=="?"&&l!=="+"&&i--,u="";break;default:t("Unknown state");break}}return n===2&&t(`Unfinished custom RegExp for param "${c}"`),m(),o(),s}function Cd(e,t,n){const r=bd(Sd(e.path),n),s=ue(r,{record:e,parent:t,children:[],alias:[]});return t&&!s.record.aliasOf==!t.record.aliasOf&&t.children.push(s),s}function kd(e,t){const n=[],r=new Map;t=Po({strict:!1,end:!0,sensitive:!1},t);function s(u){return r.get(u)}function a(u,m,f){const w=!f,h=Rd(u);h.aliasOf=f&&f.record;const b=Po(t,u),g=[h];if("alias"in u){const C=typeof u.alias=="string"?[u.alias]:u.alias;for(const A of C)g.push(ue({},h,{components:f?f.record.components:h.components,path:A,aliasOf:f?f.record:h}))}let v,x;for(const C of g){const{path:A}=C;if(m&&A[0]!=="/"){const H=m.record.path,z=H[H.length-1]==="/"?"":"/";C.path=m.record.path+(A&&z+A)}if(v=Cd(C,m,b),f?f.alias.push(v):(x=x||v,x!==v&&x.alias.push(v),w&&u.name&&!Ao(v)&&o(u.name)),"children"in h){const H=h.children;for(let z=0;z<H.length;z++)a(H[z],v,f&&f.children[z])}f=f||v,l(v)}return x?()=>{o(x)}:xn}function o(u){if(Co(u)){const m=r.get(u);m&&(r.delete(u),n.splice(n.indexOf(m),1),m.children.forEach(o),m.alias.forEach(o))}else{const m=n.indexOf(u);m>-1&&(n.splice(m,1),u.record.name&&r.delete(u.record.name),u.children.forEach(o),u.alias.forEach(o))}}function i(){return n}function l(u){let m=0;for(;m<n.length&&_d(u,n[m])>=0;)m++;n.splice(m,0,u),u.record.name&&!Ao(u)&&r.set(u.record.name,u)}function c(u,m){let f,w={},h,b;if("name"in u&&u.name){if(f=r.get(u.name),!f)throw Kt(1,{location:u});b=f.record.name,w=ue(Td(m.params,f.keys.filter(x=>!x.optional).map(x=>x.name)),u.params),h=f.stringify(w)}else if("path"in u)h=u.path,f=n.find(x=>x.re.test(h)),f&&(w=f.parse(h),b=f.record.name);else{if(f=m.name?r.get(m.name):n.find(x=>x.re.test(m.path)),!f)throw Kt(1,{location:u,currentLocation:m});b=f.record.name,w=ue({},m.params,u.params),h=f.stringify(w)}const g=[];let v=f;for(;v;)g.unshift(v.record),v=v.parent;return{name:b,path:h,params:w,matched:g,meta:Pd(g)}}return e.forEach(u=>a(u)),{addRoute:a,resolve:c,removeRoute:o,getRoutes:i,getRecordMatcher:s}}function Td(e,t){const n={};for(const r of t)r in e&&(n[r]=e[r]);return n}function Rd(e){return{path:e.path,redirect:e.redirect,name:e.name,meta:e.meta||{},aliasOf:void 0,beforeEnter:e.beforeEnter,props:Ad(e),children:e.children||[],instances:{},leaveGuards:new Set,updateGuards:new Set,enterCallbacks:{},components:"components"in e?e.components||{}:{default:e.component}}}function Ad(e){const t={},n=e.props||!1;if("component"in e)t.default=n;else for(const r in e.components)t[r]=typeof n=="boolean"?n:n[r];return t}function Ao(e){for(;e;){if(e.record.aliasOf)return!0;e=e.parent}return!1}function Pd(e){return e.reduce((t,n)=>ue(t,n.meta),{})}function Po(e,t){const n={};for(const r in e)n[r]=r in t?t[r]:e[r];return n}const Lo=/#/g,Ld=/&/g,Id=/\//g,Od=/=/g,Md=/\?/g,Io=/\+/g,Dd=/%5B/g,Nd=/%5D/g,Oo=/%5E/g,Hd=/%60/g,Mo=/%7B/g,Fd=/%7C/g,Do=/%7D/g,zd=/%20/g;function ps(e){return encodeURI(""+e).replace(Fd,"|").replace(Dd,"[").replace(Nd,"]")}function Bd(e){return ps(e).replace(Mo,"{").replace(Do,"}").replace(Oo,"^")}function ms(e){return ps(e).replace(Io,"%2B").replace(zd,"+").replace(Lo,"%23").replace(Ld,"%26").replace(Hd,"`").replace(Mo,"{").replace(Do,"}").replace(Oo,"^")}function $d(e){return ms(e).replace(Od,"%3D")}function jd(e){return ps(e).replace(Lo,"%23").replace(Md,"%3F")}function qd(e){return e==null?"":jd(e).replace(Id,"%2F")}function ar(e){try{return decodeURIComponent(""+e)}catch{}return""+e}function Ud(e){const t={};if(e===""||e==="?")return t;const r=(e[0]==="?"?e.slice(1):e).split("&");for(let s=0;s<r.length;++s){const a=r[s].replace(Io," "),o=a.indexOf("="),i=ar(o<0?a:a.slice(0,o)),l=o<0?null:ar(a.slice(o+1));if(i in t){let c=t[i];Array.isArray(c)||(c=t[i]=[c]),c.push(l)}else t[i]=l}return t}function No(e){let t="";for(let n in e){const r=e[n];if(n=$d(n),r==null){r!==void 0&&(t+=(t.length?"&":"")+n);continue}(Array.isArray(r)?r.map(a=>a&&ms(a)):[r&&ms(r)]).forEach(a=>{a!==void 0&&(t+=(t.length?"&":"")+n,a!=null&&(t+="="+a))})}return t}function Wd(e){const t={};for(const n in e){const r=e[n];r!==void 0&&(t[n]=Array.isArray(r)?r.map(s=>s==null?null:""+s):r==null?r:""+r)}return t}function Cn(){let e=[];function t(r){return e.push(r),()=>{const s=e.indexOf(r);s>-1&&e.splice(s,1)}}function n(){e=[]}return{add:t,list:()=>e,reset:n}}function dt(e,t,n,r,s){const a=r&&(r.enterCallbacks[s]=r.enterCallbacks[s]||[]);return()=>new Promise((o,i)=>{const l=m=>{m===!1?i(Kt(4,{from:n,to:t})):m instanceof Error?i(m):gd(m)?i(Kt(2,{from:t,to:m})):(a&&r.enterCallbacks[s]===a&&typeof m=="function"&&a.push(m),o())},c=e.call(r&&r.instances[s],t,n,l);let u=Promise.resolve(c);e.length<3&&(u=u.then(l)),u.catch(m=>i(m))})}function gs(e,t,n,r){const s=[];for(const a of e)for(const o in a.components){let i=a.components[o];if(!(t!=="beforeRouteEnter"&&!a.instances[o]))if(Kd(i)){const c=(i.__vccOpts||i)[t];c&&s.push(dt(c,n,r,a,o))}else{let l=i();s.push(()=>l.then(c=>{if(!c)return Promise.reject(new Error(`Couldn't resolve component "${o}" at "${a.path}"`));const u=Zc(c)?c.default:c;a.components[o]=u;const f=(u.__vccOpts||u)[t];return f&&dt(f,n,r,a,o)()}))}}return s}function Kd(e){return typeof e=="object"||"displayName"in e||"props"in e||"__vccOpts"in e}function Ho(e){const t=_e(rr),n=_e(cs),r=pe(()=>t.resolve(Ze(e.to))),s=pe(()=>{const{matched:l}=r.value,{length:c}=l,u=l[c-1],m=n.matched;if(!u||!m.length)return-1;const f=m.findIndex(Wt.bind(null,u));if(f>-1)return f;const w=Fo(l[c-2]);return c>1&&Fo(u)===w&&m[m.length-1].path!==w?m.findIndex(Wt.bind(null,l[c-2])):f}),a=pe(()=>s.value>-1&&Xd(n.params,r.value.params)),o=pe(()=>s.value>-1&&s.value===n.matched.length-1&&wo(n.params,r.value.params));function i(l={}){return Gd(l)?t[Ze(e.replace)?"replace":"push"](Ze(e.to)).catch(xn):Promise.resolve()}return{route:r,href:pe(()=>r.value.href),isActive:a,isExactActive:o,navigate:i}}const Vd=Ne({name:"RouterLink",props:{to:{type:[String,Object],required:!0},replace:Boolean,activeClass:String,exactActiveClass:String,custom:Boolean,ariaCurrentValue:{type:String,default:"page"}},useLink:Ho,setup(e,{slots:t}){const n=an(Ho(e)),{options:r}=_e(rr),s=pe(()=>({[zo(e.activeClass,r.linkActiveClass,"router-link-active")]:n.isActive,[zo(e.exactActiveClass,r.linkExactActiveClass,"router-link-exact-active")]:n.isExactActive}));return()=>{const a=t.default&&t.default(n);return e.custom?a:le("a",{"aria-current":n.isExactActive?e.ariaCurrentValue:null,href:n.href,onClick:n.navigate,class:s.value},a)}}}),Yd=Vd;function Gd(e){if(!(e.metaKey||e.altKey||e.ctrlKey||e.shiftKey)&&!e.defaultPrevented&&!(e.button!==void 0&&e.button!==0)){if(e.currentTarget&&e.currentTarget.getAttribute){const t=e.currentTarget.getAttribute("target");if(/\b_blank\b/i.test(t))return}return e.preventDefault&&e.preventDefault(),!0}}function Xd(e,t){for(const n in t){const r=t[n],s=e[n];if(typeof r=="string"){if(r!==s)return!1}else if(!Array.isArray(s)||s.length!==r.length||r.some((a,o)=>a!==s[o]))return!1}return!0}function Fo(e){return e?e.aliasOf?e.aliasOf.path:e.path:""}const zo=(e,t,n)=>e!=null?e:t!=null?t:n,Jd=Ne({name:"RouterView",inheritAttrs:!1,props:{name:{type:String,default:"default"},route:Object},setup(e,{attrs:t,slots:n}){const r=_e(ds),s=pe(()=>e.route||r.value),a=_e(yo,0),o=pe(()=>s.value.matched[a]);gt(yo,a+1),gt(Jc,o),gt(ds,s);const i=ye();return Xe(()=>[i.value,o.value,e.name],([l,c,u],[m,f,w])=>{c&&(c.instances[u]=l,f&&f!==c&&l&&l===m&&(c.leaveGuards.size||(c.leaveGuards=f.leaveGuards),c.updateGuards.size||(c.updateGuards=f.updateGuards))),l&&c&&(!f||!Wt(c,f)||!m)&&(c.enterCallbacks[u]||[]).forEach(h=>h(l))},{flush:"post"}),()=>{const l=s.value,c=o.value,u=c&&c.components[e.name],m=e.name;if(!u)return Bo(n.default,{Component:u,route:l});const f=c.props[e.name],w=f?f===!0?l.params:typeof f=="function"?f(l):f:null,b=le(u,ue({},w,t,{onVnodeUnmounted:g=>{g.component.isUnmounted&&(c.instances[m]=null)},ref:i}));return Bo(n.default,{Component:b,route:l})||b}}});function Bo(e,t){if(!e)return null;const n=e(t);return n.length===1?n[0]:n}const $o=Jd;function Zd(e){const t=kd(e.routes,e),n=e.parseQuery||Ud,r=e.stringifyQuery||No,s=e.history,a=Cn(),o=Cn(),i=Cn(),l=oa(tt);let c=tt;Ut&&e.scrollBehavior&&"scrollRestoration"in history&&(history.scrollRestoration="manual");const u=us.bind(null,S=>""+S),m=us.bind(null,qd),f=us.bind(null,ar);function w(S,F){let O,B;return Co(S)?(O=t.getRecordMatcher(S),B=F):B=S,t.addRoute(B,O)}function h(S){const F=t.getRecordMatcher(S);F&&t.removeRoute(F)}function b(){return t.getRoutes().map(S=>S.record)}function g(S){return!!t.getRecordMatcher(S)}function v(S,F){if(F=ue({},F||l.value),typeof S=="string"){const J=fs(n,S,F.path),d=t.resolve({path:J.path},F),p=s.createHref(J.fullPath);return ue(J,d,{params:f(d.params),hash:ar(J.hash),redirectedFrom:void 0,href:p})}let O;if("path"in S)O=ue({},S,{path:fs(n,S.path,F.path).path});else{const J=ue({},S.params);for(const d in J)J[d]==null&&delete J[d];O=ue({},S,{params:m(S.params)}),F.params=m(F.params)}const B=t.resolve(O,F),oe=S.hash||"";B.params=u(f(B.params));const ie=td(r,ue({},S,{hash:Bd(oe),path:B.path})),ee=s.createHref(ie);return ue({fullPath:ie,hash:oe,query:r===No?Wd(S.query):S.query||{}},B,{redirectedFrom:void 0,href:ee})}function x(S){return typeof S=="string"?fs(n,S,l.value.path):ue({},S)}function C(S,F){if(c!==S)return Kt(8,{from:F,to:S})}function A(S){return k(S)}function H(S){return A(ue(x(S),{replace:!0}))}function z(S){const F=S.matched[S.matched.length-1];if(F&&F.redirect){const{redirect:O}=F;let B=typeof O=="function"?O(S):O;return typeof B=="string"&&(B=B.includes("?")||B.includes("#")?B=x(B):{path:B},B.params={}),ue({query:S.query,hash:S.hash,params:S.params},B)}}function k(S,F){const O=c=v(S),B=l.value,oe=S.state,ie=S.force,ee=S.replace===!0,J=z(O);if(J)return k(ue(x(J),{state:oe,force:ie,replace:ee}),F||O);const d=O;d.redirectedFrom=F;let p;return!ie&&nd(r,B,O)&&(p=Kt(16,{to:d,from:B}),Se(B,B,!0,!1)),(p?Promise.resolve(p):V(d,B)).catch(y=>kt(y)?y:Z(y,d,B)).then(y=>{if(y){if(kt(y,2))return k(ue(x(y.to),{state:oe,force:ie,replace:ee}),F||d)}else y=Y(d,B,!0,ee,oe);return q(d,B,y),y})}function E(S,F){const O=C(S,F);return O?Promise.reject(O):Promise.resolve()}function V(S,F){let O;const[B,oe,ie]=Qd(S,F);O=gs(B.reverse(),"beforeRouteLeave",S,F);for(const J of B)J.leaveGuards.forEach(d=>{O.push(dt(d,S,F))});const ee=E.bind(null,S,F);return O.push(ee),Vt(O).then(()=>{O=[];for(const J of a.list())O.push(dt(J,S,F));return O.push(ee),Vt(O)}).then(()=>{O=gs(oe,"beforeRouteUpdate",S,F);for(const J of oe)J.updateGuards.forEach(d=>{O.push(dt(d,S,F))});return O.push(ee),Vt(O)}).then(()=>{O=[];for(const J of S.matched)if(J.beforeEnter&&!F.matched.includes(J))if(Array.isArray(J.beforeEnter))for(const d of J.beforeEnter)O.push(dt(d,S,F));else O.push(dt(J.beforeEnter,S,F));return O.push(ee),Vt(O)}).then(()=>(S.matched.forEach(J=>J.enterCallbacks={}),O=gs(ie,"beforeRouteEnter",S,F),O.push(ee),Vt(O))).then(()=>{O=[];for(const J of o.list())O.push(dt(J,S,F));return O.push(ee),Vt(O)}).catch(J=>kt(J,8)?J:Promise.reject(J))}function q(S,F,O){for(const B of i.list())B(S,F,O)}function Y(S,F,O,B,oe){const ie=C(S,F);if(ie)return ie;const ee=F===tt,J=Ut?history.state:{};O&&(B||ee?s.replace(S.fullPath,ue({scroll:ee&&J&&J.scroll},oe)):s.push(S.fullPath,oe)),l.value=S,Se(S,F,O,ee),be()}let _;function D(){_=s.listen((S,F,O)=>{const B=v(S),oe=z(B);if(oe){k(ue(oe,{replace:!0}),B).catch(xn);return}c=B;const ie=l.value;Ut&&dd(xo(ie.fullPath,O.delta),sr()),V(B,ie).catch(ee=>kt(ee,4|8)?ee:kt(ee,2)?(k(ee.to,B).then(J=>{kt(J,4|16)&&!O.delta&&O.type===En.pop&&s.go(-1,!1)}).catch(xn),Promise.reject()):(O.delta&&s.go(-O.delta,!1),Z(ee,B,ie))).then(ee=>{ee=ee||Y(B,ie,!1),ee&&(O.delta?s.go(-O.delta,!1):O.type===En.pop&&kt(ee,4|16)&&s.go(-1,!1)),q(B,ie,ee)}).catch(xn)})}let K=Cn(),ae=Cn(),j;function Z(S,F,O){be(S);const B=ae.list();return B.length?B.forEach(oe=>oe(S,F,O)):console.error(S),Promise.reject(S)}function te(){return j&&l.value!==tt?Promise.resolve():new Promise((S,F)=>{K.add([S,F])})}function be(S){j||(j=!0,D(),K.list().forEach(([F,O])=>S?O(S):F()),K.reset())}function Se(S,F,O,B){const{scrollBehavior:oe}=e;if(!Ut||!oe)return Promise.resolve();const ie=!O&&ud(xo(S.fullPath,0))||(B||!O)&&history.state&&history.state.scroll||null;return ts().then(()=>oe(S,F,ie)).then(ee=>ee&&cd(ee)).catch(ee=>Z(ee,S,F))}const Ae=S=>s.go(S);let Me;const ke=new Set;return{currentRoute:l,addRoute:w,removeRoute:h,hasRoute:g,getRoutes:b,resolve:v,options:e,push:A,replace:H,go:Ae,back:()=>Ae(-1),forward:()=>Ae(1),beforeEach:a.add,beforeResolve:o.add,afterEach:i.add,onError:ae.add,isReady:te,install(S){const F=this;S.component("RouterLink",Yd),S.component("RouterView",$o),S.config.globalProperties.$router=F,Object.defineProperty(S.config.globalProperties,"$route",{enumerable:!0,get:()=>Ze(l)}),Ut&&!Me&&l.value===tt&&(Me=!0,A(s.location).catch(oe=>{}));const O={};for(const oe in tt)O[oe]=pe(()=>l.value[oe]);S.provide(rr,F),S.provide(cs,an(O)),S.provide(ds,l);const B=S.unmount;ke.add(S),S.unmount=function(){ke.delete(S),ke.size<1&&(c=tt,_&&_(),l.value=tt,Me=!1,j=!1),B()}}}}function Vt(e){return e.reduce((t,n)=>t.then(()=>n()),Promise.resolve())}function Qd(e,t){const n=[],r=[],s=[],a=Math.max(t.matched.length,e.matched.length);for(let o=0;o<a;o++){const i=t.matched[o];i&&(e.matched.find(c=>Wt(c,i))?r.push(i):n.push(i));const l=e.matched[o];l&&(t.matched.find(c=>Wt(c,l))||s.push(l))}return[n,r,s]}function or(){return _e(rr)}function vs(){return _e(cs)}const eu=Ne({setup(e,t){const n=ye(!1);return qe(()=>{n.value=!0}),()=>{var r,s;return n.value?(s=(r=t.slots).default)===null||s===void 0?void 0:s.call(r):null}}}),tu="modulepreload",jo={},nu="/",Be=function(t,n){return!n||n.length===0?t():Promise.all(n.map(r=>{if(r=`${nu}${r}`,r in jo)return;jo[r]=!0;const s=r.endsWith(".css"),a=s?'[rel="stylesheet"]':"";if(document.querySelector(`link[href="${r}"]${a}`))return;const o=document.createElement("link");if(o.rel=s?"stylesheet":tu,s||(o.as="script",o.crossOrigin=""),o.href=r,document.head.appendChild(o),s)return new Promise((i,l)=>{o.addEventListener("load",i),o.addEventListener("error",l)})})).then(()=>t())},qo={"v-8daa1a0e":vt(()=>Be(()=>import("./index.html.7bfc39c2.js"),[])),"v-77f0ef68":vt(()=>Be(()=>import("./index.html.24a07f34.js"),[])),"v-37b893e5":vt(()=>Be(()=>import("./index.html.72946fe3.js"),[])),"v-1c385113":vt(()=>Be(()=>import("./index.html.59111943.js"),[])),"v-3706649a":vt(()=>Be(()=>import("./404.html.b3e1a76d.js"),[]))},ru={"v-8daa1a0e":()=>Be(()=>import("./index.html.8b204c1b.js"),[]).then(({data:e})=>e),"v-77f0ef68":()=>Be(()=>import("./index.html.91e93c0f.js"),[]).then(({data:e})=>e),"v-37b893e5":()=>Be(()=>import("./index.html.442019b1.js"),[]).then(({data:e})=>e),"v-1c385113":()=>Be(()=>import("./index.html.e7070996.js"),[]).then(({data:e})=>e),"v-3706649a":()=>Be(()=>import("./404.html.e275e9a9.js"),[]).then(({data:e})=>e)},Uo=ye(ru),ys=Lr({key:"",path:"",title:"",lang:"",frontmatter:{},excerpt:"",headers:[]}),ut=ye(ys),Yt=()=>ut,su=async e=>{const t=Uo.value[e];if(!t)return ys;const n=await t();return n!=null?n:ys};fr.webpackHot&&(__VUE_HMR_RUNTIME__.updatePageData=e=>{Uo.value[e.key]=()=>Promise.resolve(e),e.key===ut.value.key&&(ut.value=e)});const Wo=Symbol(""),au=()=>{const e=_e(Wo);if(!e)throw new Error("usePageFrontmatter() is called without provider.");return e},ou=e=>e.frontmatter,iu=([e,t,n])=>e==="meta"&&t.name?`${e}.${t.name}`:["title","base"].includes(e)?e:e==="template"&&t.id?`${e}.${t.id}`:JSON.stringify([e,t,n]),lu=e=>{const t=new Set,n=[];return e.forEach(r=>{const s=iu(r);t.has(s)||(t.add(s),n.push(r))}),n},cu=e=>/^(https?:)?\/\//.test(e),Ph=e=>/^mailto:/.test(e),Lh=e=>/^tel:/.test(e),Ko=e=>Object.prototype.toString.call(e)==="[object Object]",du=e=>e.replace(/\/$/,""),uu=e=>e.replace(/^\//,""),Vo=(e,t)=>{const n=Object.keys(e).sort((r,s)=>{const a=s.split("/").length-r.split("/").length;return a!==0?a:s.length-r.length});for(const r of n)if(t.startsWith(r))return r;return"/"},Yo=Symbol(""),fu=()=>{const e=_e(Yo);if(!e)throw new Error("usePageHead() is called without provider.");return e},hu=(e,t,n)=>{const r=he(t.description)?t.description:n.description,s=[...G(t.head)?t.head:[],...n.head,["title",{},e],["meta",{name:"description",content:r}]];return lu(s)},pu=Symbol(""),mu=(e,t)=>`${e.title?`${e.title} | `:""}${t.title}`,Go=Symbol(""),gu=()=>{const e=_e(Go);if(!e)throw new Error("usePageLang() is called without provider.");return e},vu=e=>e.lang||"en",bs=Symbol(""),yu=()=>{const e=_e(bs);if(!e)throw new Error("useRouteLocale() is called without provider.");return e},bu=(e,t)=>Vo(e,t),wu={base:"/",lang:"en-US",title:"Stata2R",description:"",head:[["link",{rel:"stylesheet",href:"https://fonts.googleapis.com/css?family=Source+Code+Pro"}]],locales:{}},Tt=ye(wu),_u=()=>Tt;fr.webpackHot&&(__VUE_HMR_RUNTIME__.updateSiteData=e=>{Tt.value=e});const Xo=Symbol(""),Ih=()=>{const e=_e(Xo);if(!e)throw new Error("useSiteLocaleData() is called without provider.");return e},xu=(e,t)=>Ke(Ke({},e),e.locales[t]),Eu=Symbol(""),Su=()=>{const e=vs(),t=fu(),n=gu(),r=ye([]),s=()=>{t.value.forEach(o=>{const i=Cu(o);i&&r.value.push(i)})},a=()=>{document.documentElement.lang=n.value,r.value.forEach(o=>{o.parentNode===document.head&&document.head.removeChild(o)}),r.value.splice(0,r.value.length),t.value.forEach(o=>{const i=ku(o);i!==null&&(document.head.appendChild(i),r.value.push(i))})};gt(Eu,a),qe(()=>{s(),a(),Xe(()=>e.path,()=>a())})},Cu=([e,t,n=""])=>{const r=Object.entries(t).map(([i,l])=>he(l)?`[${i}="${l}"]`:l===!0?`[${i}]`:"").join(""),s=`head > ${e}${r}`;return Array.from(document.querySelectorAll(s)).find(i=>i.innerText===n)||null},ku=([e,t,n])=>{if(!he(e))return null;const r=document.createElement(e);return Ko(t)&&Object.entries(t).forEach(([s,a])=>{he(a)?r.setAttribute(s,a):a===!0&&r.setAttribute(s,"")}),he(n)&&r.appendChild(document.createTextNode(n)),r},ws=e=>{let t;e.pageKey?t=e.pageKey:t=Yt().value.key;const n=qo[t];return n?le(n):le("div","404 Not Found")};ws.displayName="Content";ws.props={pageKey:{type:String,required:!1}};const Tu={"404":vt(()=>Be(()=>import("./404.f3bcf4a2.js"),[])),Layout:vt(()=>Be(()=>import("./Layout.84f4012d.js"),[]))},Jo=Ne({name:"Vuepress",setup(){const e=Yt(),t=pe(()=>{let n;if(e.value.path){const r=e.value.frontmatter.layout;he(r)?n=r:n="Layout"}else n="404";return Tu[n]||ec(n,!1)});return()=>le(t.value)}}),Gt=e=>e,ir=e=>e,Ru=e=>cu(e)?e:`${_u().value.base}${uu(e)}`;const Au=le("svg",{class:"external-link-icon",xmlns:"http://www.w3.org/2000/svg","aria-hidden":"true",focusable:"false",x:"0px",y:"0px",viewBox:"0 0 100 100",width:"15",height:"15"},[le("path",{fill:"currentColor",d:"M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"}),le("polygon",{fill:"currentColor",points:"45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"})]),_s=(e,{slots:t})=>{var n;return le("span",[Au,(n=t.default)===null||n===void 0?void 0:n.call(t)])};_s.displayName="ExternalLinkIcon";var Pu=Gt(({app:e})=>{e.component("ExternalLinkIcon",_s)});/*! medium-zoom 1.0.6 | MIT License | https://github.com/francoischalifour/medium-zoom */var Rt=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},lr=function(t){return t.tagName==="IMG"},Lu=function(t){return NodeList.prototype.isPrototypeOf(t)},cr=function(t){return t&&t.nodeType===1},Zo=function(t){var n=t.currentSrc||t.src;return n.substr(-4).toLowerCase()===".svg"},Qo=function(t){try{return Array.isArray(t)?t.filter(lr):Lu(t)?[].slice.call(t).filter(lr):cr(t)?[t].filter(lr):typeof t=="string"?[].slice.call(document.querySelectorAll(t)).filter(lr):[]}catch{throw new TypeError(`The provided selector is invalid.
 Expects a CSS selector, a Node element, a NodeList or an array.
 See: https://github.com/francoischalifour/medium-zoom`)}},Iu=function(t){var n=document.createElement("div");return n.classList.add("medium-zoom-overlay"),n.style.background=t,n},Ou=function(t){var n=t.getBoundingClientRect(),r=n.top,s=n.left,a=n.width,o=n.height,i=t.cloneNode(),l=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0,c=window.pageXOffset||document.documentElement.scrollLeft||document.body.scrollLeft||0;return i.removeAttribute("id"),i.style.position="absolute",i.style.top=r+l+"px",i.style.left=s+c+"px",i.style.width=a+"px",i.style.height=o+"px",i.style.transform="",i},Xt=function(t,n){var r=Rt({bubbles:!1,cancelable:!1,detail:void 0},n);if(typeof window.CustomEvent=="function")return new CustomEvent(t,r);var s=document.createEvent("CustomEvent");return s.initCustomEvent(t,r.bubbles,r.cancelable,r.detail),s},Mu=function e(t){var n=arguments.length>1&&arguments[1]!==void 0?arguments[1]:{},r=window.Promise||function(_){function D(){}_(D,D)},s=function(_){var D=_.target;if(D===V){h();return}C.indexOf(D)!==-1&&b({target:D})},a=function(){if(!(H||!E.original)){var _=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0;Math.abs(z-_)>k.scrollOffset&&setTimeout(h,150)}},o=function(_){var D=_.key||_.keyCode;(D==="Escape"||D==="Esc"||D===27)&&h()},i=function(){var _=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},D=_;if(_.background&&(V.style.background=_.background),_.container&&_.container instanceof Object&&(D.container=Rt({},k.container,_.container)),_.template){var K=cr(_.template)?_.template:document.querySelector(_.template);D.template=K}return k=Rt({},k,D),C.forEach(function(ae){ae.dispatchEvent(Xt("medium-zoom:update",{detail:{zoom:q}}))}),q},l=function(){var _=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{};return e(Rt({},k,_))},c=function(){for(var _=arguments.length,D=Array(_),K=0;K<_;K++)D[K]=arguments[K];var ae=D.reduce(function(j,Z){return[].concat(j,Qo(Z))},[]);return ae.filter(function(j){return C.indexOf(j)===-1}).forEach(function(j){C.push(j),j.classList.add("medium-zoom-image")}),A.forEach(function(j){var Z=j.type,te=j.listener,be=j.options;ae.forEach(function(Se){Se.addEventListener(Z,te,be)})}),q},u=function(){for(var _=arguments.length,D=Array(_),K=0;K<_;K++)D[K]=arguments[K];E.zoomed&&h();var ae=D.length>0?D.reduce(function(j,Z){return[].concat(j,Qo(Z))},[]):C;return ae.forEach(function(j){j.classList.remove("medium-zoom-image"),j.dispatchEvent(Xt("medium-zoom:detach",{detail:{zoom:q}}))}),C=C.filter(function(j){return ae.indexOf(j)===-1}),q},m=function(_,D){var K=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{};return C.forEach(function(ae){ae.addEventListener("medium-zoom:"+_,D,K)}),A.push({type:"medium-zoom:"+_,listener:D,options:K}),q},f=function(_,D){var K=arguments.length>2&&arguments[2]!==void 0?arguments[2]:{};return C.forEach(function(ae){ae.removeEventListener("medium-zoom:"+_,D,K)}),A=A.filter(function(ae){return!(ae.type==="medium-zoom:"+_&&ae.listener.toString()===D.toString())}),q},w=function(){var _=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},D=_.target,K=function(){var j={width:document.documentElement.clientWidth,height:document.documentElement.clientHeight,left:0,top:0,right:0,bottom:0},Z=void 0,te=void 0;if(k.container)if(k.container instanceof Object)j=Rt({},j,k.container),Z=j.width-j.left-j.right-k.margin*2,te=j.height-j.top-j.bottom-k.margin*2;else{var be=cr(k.container)?k.container:document.querySelector(k.container),Se=be.getBoundingClientRect(),Ae=Se.width,Me=Se.height,ke=Se.left,Jt=Se.top;j=Rt({},j,{width:Ae,height:Me,left:ke,top:Jt})}Z=Z||j.width-k.margin*2,te=te||j.height-k.margin*2;var S=E.zoomedHd||E.original,F=Zo(S)?Z:S.naturalWidth||Z,O=Zo(S)?te:S.naturalHeight||te,B=S.getBoundingClientRect(),oe=B.top,ie=B.left,ee=B.width,J=B.height,d=Math.min(F,Z)/ee,p=Math.min(O,te)/J,y=Math.min(d,p),R=(-ie+(Z-ee)/2+k.margin+j.left)/y,T=(-oe+(te-J)/2+k.margin+j.top)/y,L="scale("+y+") translate3d("+R+"px, "+T+"px, 0)";E.zoomed.style.transform=L,E.zoomedHd&&(E.zoomedHd.style.transform=L)};return new r(function(ae){if(D&&C.indexOf(D)===-1){ae(q);return}var j=function Ae(){H=!1,E.zoomed.removeEventListener("transitionend",Ae),E.original.dispatchEvent(Xt("medium-zoom:opened",{detail:{zoom:q}})),ae(q)};if(E.zoomed){ae(q);return}if(D)E.original=D;else if(C.length>0){var Z=C;E.original=Z[0]}else{ae(q);return}if(E.original.dispatchEvent(Xt("medium-zoom:open",{detail:{zoom:q}})),z=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0,H=!0,E.zoomed=Ou(E.original),document.body.appendChild(V),k.template){var te=cr(k.template)?k.template:document.querySelector(k.template);E.template=document.createElement("div"),E.template.appendChild(te.content.cloneNode(!0)),document.body.appendChild(E.template)}if(document.body.appendChild(E.zoomed),window.requestAnimationFrame(function(){document.body.classList.add("medium-zoom--opened")}),E.original.classList.add("medium-zoom-image--hidden"),E.zoomed.classList.add("medium-zoom-image--opened"),E.zoomed.addEventListener("click",h),E.zoomed.addEventListener("transitionend",j),E.original.getAttribute("data-zoom-src")){E.zoomedHd=E.zoomed.cloneNode(),E.zoomedHd.removeAttribute("srcset"),E.zoomedHd.removeAttribute("sizes"),E.zoomedHd.src=E.zoomed.getAttribute("data-zoom-src"),E.zoomedHd.onerror=function(){clearInterval(be),console.warn("Unable to reach the zoom image target "+E.zoomedHd.src),E.zoomedHd=null,K()};var be=setInterval(function(){E.zoomedHd.complete&&(clearInterval(be),E.zoomedHd.classList.add("medium-zoom-image--opened"),E.zoomedHd.addEventListener("click",h),document.body.appendChild(E.zoomedHd),K())},10)}else if(E.original.hasAttribute("srcset")){E.zoomedHd=E.zoomed.cloneNode(),E.zoomedHd.removeAttribute("sizes"),E.zoomedHd.removeAttribute("loading");var Se=E.zoomedHd.addEventListener("load",function(){E.zoomedHd.removeEventListener("load",Se),E.zoomedHd.classList.add("medium-zoom-image--opened"),E.zoomedHd.addEventListener("click",h),document.body.appendChild(E.zoomedHd),K()})}else K()})},h=function(){return new r(function(_){if(H||!E.original){_(q);return}var D=function K(){E.original.classList.remove("medium-zoom-image--hidden"),document.body.removeChild(E.zoomed),E.zoomedHd&&document.body.removeChild(E.zoomedHd),document.body.removeChild(V),E.zoomed.classList.remove("medium-zoom-image--opened"),E.template&&document.body.removeChild(E.template),H=!1,E.zoomed.removeEventListener("transitionend",K),E.original.dispatchEvent(Xt("medium-zoom:closed",{detail:{zoom:q}})),E.original=null,E.zoomed=null,E.zoomedHd=null,E.template=null,_(q)};H=!0,document.body.classList.remove("medium-zoom--opened"),E.zoomed.style.transform="",E.zoomedHd&&(E.zoomedHd.style.transform=""),E.template&&(E.template.style.transition="opacity 150ms",E.template.style.opacity=0),E.original.dispatchEvent(Xt("medium-zoom:close",{detail:{zoom:q}})),E.zoomed.addEventListener("transitionend",D)})},b=function(){var _=arguments.length>0&&arguments[0]!==void 0?arguments[0]:{},D=_.target;return E.original?h():w({target:D})},g=function(){return k},v=function(){return C},x=function(){return E.original},C=[],A=[],H=!1,z=0,k=n,E={original:null,zoomed:null,zoomedHd:null,template:null};Object.prototype.toString.call(t)==="[object Object]"?k=t:(t||typeof t=="string")&&c(t),k=Rt({margin:0,background:"#fff",scrollOffset:40,container:null,template:null},k);var V=Iu(k.background);document.addEventListener("click",s),document.addEventListener("keyup",o),document.addEventListener("scroll",a),window.addEventListener("resize",h);var q={open:w,close:h,toggle:b,update:i,clone:l,attach:c,detach:u,on:m,off:f,getOptions:g,getImages:v,getZoomedImage:x};return q};function Du(e,t){t===void 0&&(t={});var n=t.insertAt;if(!(!e||typeof document=="undefined")){var r=document.head||document.getElementsByTagName("head")[0],s=document.createElement("style");s.type="text/css",n==="top"&&r.firstChild?r.insertBefore(s,r.firstChild):r.appendChild(s),s.styleSheet?s.styleSheet.cssText=e:s.appendChild(document.createTextNode(e))}}var Nu=".medium-zoom-overlay{position:fixed;top:0;right:0;bottom:0;left:0;opacity:0;transition:opacity .3s;will-change:opacity}.medium-zoom--opened .medium-zoom-overlay{cursor:pointer;cursor:zoom-out;opacity:1}.medium-zoom-image{cursor:pointer;cursor:zoom-in;transition:transform .3s cubic-bezier(.2,0,.2,1)!important}.medium-zoom-image--hidden{visibility:hidden}.medium-zoom-image--opened{position:relative;cursor:pointer;cursor:zoom-out;will-change:transform}";Du(Nu);var Hu=Mu;const Fu=Symbol("mediumZoom");const zu=".theme-default-content > img, .theme-default-content :not(a) > img",Bu={},$u=400;var ju=Gt(({app:e,router:t})=>{const n=Hu(Bu);n.refresh=(r=zu)=>{n.detach(),n.attach(r)},e.provide(Fu,n),t.afterEach(()=>{setTimeout(()=>n.refresh(),$u)})});const qu={repo:"stata2r/stata2r.github.io",docsRepo:"https://github.com/stata2r/stata2r.github.io",docsBranch:"main",docsDir:"docs",editLinkPattern:":repo/edit/:branch/:path",editLinks:!0,search:!0,sidebarDepth:1,sidebar:[{text:"data.table",link:"/data.table/"},{text:"fixest",link:"/fixest/"},{text:"extras",link:"/extras/"}],locales:{"/":{selectLanguageName:"English"}},navbar:[],logo:null,darkMode:!0,selectLanguageText:"Languages",selectLanguageAriaLabel:"Select language",editLink:!0,editLinkText:"Edit this page",lastUpdated:!0,lastUpdatedText:"Last Updated",contributors:!0,contributorsText:"Contributors",notFound:["There's nothing here.","How did we get here?","That's a Four-Oh-Four.","Looks like we've got some broken links."],backToHome:"Take me home",openInNewWindow:"open in new window",toggleDarkMode:"toggle dark mode",toggleSidebar:"toggle sidebar"},ei=ye(qu),Uu=()=>ei;fr.webpackHot&&(__VUE_HMR_RUNTIME__.updateThemeData=e=>{ei.value=e});const ti=Symbol(""),Wu=()=>{const e=_e(ti);if(!e)throw new Error("useThemeLocaleData() is called without provider.");return e},Ku=(e,t)=>{var n;return Ke(Ke({},e),(n=e.locales)===null||n===void 0?void 0:n[t])};var Vu=Gt(({app:e})=>{const t=Uu(),n=e._context.provides[bs],r=pe(()=>Ku(t.value,n.value));e.provide(ti,r),Object.defineProperties(e.config.globalProperties,{$theme:{get(){return t.value}},$themeLocale:{get(){return r.value}}})});const Yu=Ne({props:{type:{type:String,required:!1,default:"tip"},text:{type:String,required:!1,default:""},vertical:{type:String,required:!1,default:void 0}},setup(e){return(t,n)=>(_t(),Gn("span",{class:ft(["badge",e.type]),style:Qt({verticalAlign:e.vertical})},[Ba(t.$slots,"default",{},()=>[Yr(pr(e.text),1)])],6))}});var Gu=Ne({name:"CodeGroup",setup(e,{slots:t}){const n=ye(-1),r=ye([]),s=(i=n.value)=>{i<r.value.length-1?n.value=i+1:n.value=0,r.value[n.value].focus()},a=(i=n.value)=>{i>0?n.value=i-1:n.value=r.value.length-1,r.value[n.value].focus()},o=(i,l)=>{i.key===" "||i.key==="Enter"?(i.preventDefault(),n.value=l):i.key==="ArrowRight"?(i.preventDefault(),s(l)):i.key==="ArrowLeft"&&(i.preventDefault(),a(l))};return()=>{var i;const l=(((i=t.default)===null||i===void 0?void 0:i.call(t))||[]).filter(c=>c.type.name==="CodeGroupItem").map(c=>(c.props===null&&(c.props={}),c));return l.length===0?null:(n.value<0||n.value>l.length-1?(n.value=l.findIndex(c=>c.props.active===""||c.props.active===!0),n.value===-1&&(n.value=0)):l.forEach((c,u)=>{c.props.active=u===n.value}),le("div",{class:"code-group"},[le("div",{class:"code-group__nav"},le("ul",{class:"code-group__ul"},l.map((c,u)=>{const m=u===n.value;return le("li",{class:"code-group__li"},le("button",{ref:f=>{f&&(r.value[u]=f)},class:{"code-group__nav-tab":!0,"code-group__nav-tab-active":m},ariaPressed:m,ariaExpanded:m,onClick:()=>n.value=u,onKeydown:f=>o(f,u)},c.props.title))}))),l]))}}});const Xu=["aria-selected"],Ju=Ne({name:"CodeGroupItem"}),Zu=Ne(An(Ke({},Ju),{props:{title:{type:String,required:!0},active:{type:Boolean,required:!1,default:!1}},setup(e){return(t,n)=>(_t(),Gn("div",{class:ft(["code-group-item",{"code-group-item__active":e.active}]),"aria-selected":e.active},[Ba(t.$slots,"default")],10,Xu))}}));function ni(e){return Hi()?(Fi(e),!0):!1}const kn=typeof window!="undefined",Qu=e=>typeof e=="string",xs=()=>{};function ef(e,t){function n(...r){e(()=>t.apply(this,r),{fn:t,thisArg:this,args:r})}return n}const tf=e=>e();var ri=Object.getOwnPropertySymbols,nf=Object.prototype.hasOwnProperty,rf=Object.prototype.propertyIsEnumerable,sf=(e,t)=>{var n={};for(var r in e)nf.call(e,r)&&t.indexOf(r)<0&&(n[r]=e[r]);if(e!=null&&ri)for(var r of ri(e))t.indexOf(r)<0&&rf.call(e,r)&&(n[r]=e[r]);return n};function af(e,t,n={}){const r=n,{eventFilter:s=tf}=r,a=sf(r,["eventFilter"]);return Xe(e,ef(s,t),a)}function of(e,t=!0){ja()?qe(e):t?e():ts(e)}const dr=kn?window:void 0;kn&&window.document;kn&&window.navigator;kn&&window.location;function lf(...e){let t,n,r,s;if(Qu(e[0])?([n,r,s]=e,t=dr):[t,n,r,s]=e,!t)return xs;let a=xs;const o=Xe(()=>Ze(t),l=>{a(),!!l&&(l.addEventListener(n,r,s),a=()=>{l.removeEventListener(n,r,s),a=xs})},{immediate:!0,flush:"post"}),i=()=>{o(),a()};return ni(i),i}function cf(e,t={}){const{window:n=dr}=t;let r;const s=ye(!1),a=()=>{!n||(r||(r=n.matchMedia(e)),s.value=r.matches)};return of(()=>{a(),!!r&&("addEventListener"in r?r.addEventListener("change",a):r.addListener(a),ni(()=>{"removeEventListener"in a?r.removeEventListener("change",a):r.removeListener(a)}))}),s}const Es="__vueuse_ssr_handlers__";globalThis[Es]=globalThis[Es]||{};const df=globalThis[Es];function uf(e,t){return df[e]||t}function ff(e){return e==null?"any":e instanceof Set?"set":e instanceof Map?"map":typeof e=="boolean"?"boolean":typeof e=="string"?"string":typeof e=="object"||Array.isArray(e)?"object":Number.isNaN(e)?"any":"number"}const hf={boolean:{read:e=>e==="true",write:e=>String(e)},object:{read:e=>JSON.parse(e),write:e=>JSON.stringify(e)},number:{read:e=>Number.parseFloat(e),write:e=>String(e)},any:{read:e=>e,write:e=>String(e)},string:{read:e=>e,write:e=>String(e)},map:{read:e=>new Map(JSON.parse(e)),write:e=>JSON.stringify(Array.from(e.entries()))},set:{read:e=>new Set(JSON.parse(e)),write:e=>JSON.stringify(Array.from(e.entries()))}};function pf(e,t,n,r={}){var s;const{flush:a="pre",deep:o=!0,listenToStorageChanges:i=!0,writeDefaults:l=!0,shallow:c,window:u=dr,eventFilter:m,onError:f=x=>{console.error(x)}}=r,w=Ze(t),h=ff(w),b=(c?oa:ye)(t),g=(s=r.serializer)!=null?s:hf[h];if(!n)try{n=uf("getDefaultStorage",()=>{var x;return(x=dr)==null?void 0:x.localStorage})()}catch(x){f(x)}function v(x){if(!(!n||x&&x.key!==e))try{const C=x?x.newValue:n.getItem(e);C==null?(b.value=w,l&&w!==null&&n.setItem(e,g.write(w))):typeof C!="string"?b.value=C:b.value=g.read(C)}catch(C){f(C)}}return v(),u&&i&&lf(u,"storage",x=>setTimeout(()=>v(x),0)),n&&af(b,()=>{try{b.value==null?n.removeItem(e):n.setItem(e,g.write(b.value))}catch(x){f(x)}},{flush:a,deep:o,eventFilter:m}),b}function mf(e){return cf("(prefers-color-scheme: dark)",e)}var si,ai;kn&&(window==null?void 0:window.navigator)&&((si=window==null?void 0:window.navigator)==null?void 0:si.platform)&&/iP(ad|hone|od)/.test((ai=window==null?void 0:window.navigator)==null?void 0:ai.platform);var gf=Object.defineProperty,oi=Object.getOwnPropertySymbols,vf=Object.prototype.hasOwnProperty,yf=Object.prototype.propertyIsEnumerable,ii=(e,t,n)=>t in e?gf(e,t,{enumerable:!0,configurable:!0,writable:!0,value:n}):e[t]=n,bf=(e,t)=>{for(var n in t||(t={}))vf.call(t,n)&&ii(e,n,t[n]);if(oi)for(var n of oi(t))yf.call(t,n)&&ii(e,n,t[n]);return e};const wf={top:0,left:0,bottom:0,right:0,height:0,width:0};bf({text:""},wf);const li=Symbol(""),Oh=()=>{const e=_e(li);if(!e)throw new Error("useDarkMode() is called without provider.");return e},_f=()=>{const e=ks(),t=mf(),n=pf("vuepress-color-scheme","auto"),r=pe({get(){return e.value.darkMode?n.value==="auto"?t.value:n.value==="dark":!1},set(s){s===t.value?n.value="auto":n.value=s?"dark":"light"}});gt(li,r),xf(r)},xf=e=>{const t=(n=e.value)=>{const r=window==null?void 0:window.document.querySelector("html");r==null||r.classList.toggle("dark",n)};qe(()=>{Xe(e,t,{immediate:!0})}),$r(()=>t())},ci=(...e)=>{const n=or().resolve(...e),r=n.matched[n.matched.length-1];if(!(r==null?void 0:r.redirect))return n;const{redirect:s}=r,a=Q(s)?s(n):s,o=he(a)?{path:a}:a;return ci(Ke({hash:n.hash,query:n.query,params:n.params},o))},Ef=e=>{const t=ci(e);return{text:t.meta.title||e,link:t.name==="404"?e:t.fullPath}};let Ss=null,Tn=null;const Sf={wait:()=>Ss,pending:()=>{Ss=new Promise(e=>Tn=e)},resolve:()=>{Tn==null||Tn(),Ss=null,Tn=null}},Cf=()=>Sf,di=Symbol("sidebarItems"),Mh=()=>{const e=_e(di);if(!e)throw new Error("useSidebarItems() is called without provider.");return e},kf=()=>{const e=ks(),t=au(),n=pe(()=>Tf(t.value,e.value));gt(di,n)},Tf=(e,t)=>{var n,r,s,a;const o=(r=(n=e.sidebar)!==null&&n!==void 0?n:t.sidebar)!==null&&r!==void 0?r:"auto",i=(a=(s=e.sidebarDepth)!==null&&s!==void 0?s:t.sidebarDepth)!==null&&a!==void 0?a:2;return e.home||o===!1?[]:o==="auto"?Af(i):G(o)?ui(o,i):Ko(o)?Pf(o,i):[]},Rf=(e,t)=>({text:e.title,link:`#${e.slug}`,children:Cs(e.children,t)}),Cs=(e,t)=>t>0?e.map(n=>Rf(n,t-1)):[],Af=e=>{const t=Yt();return[{text:t.value.title,children:Cs(t.value.headers,e)}]},ui=(e,t)=>{const n=vs(),r=Yt(),s=a=>{var o;let i;if(he(a)?i=Ef(a):i=a,i.children)return An(Ke({},i),{children:i.children.map(l=>s(l))});if(i.link===n.path){const l=((o=r.value.headers[0])===null||o===void 0?void 0:o.level)===1?r.value.headers[0].children:r.value.headers;return An(Ke({},i),{children:Cs(l,t)})}return i};return e.map(a=>s(a))},Pf=(e,t)=>{var n;const r=vs(),s=Vo(e,r.path),a=(n=e[s])!==null&&n!==void 0?n:[];return ui(a,t)},ks=()=>Wu(),Lf={class:"sr-only"},If=Ne({setup(e){const t=ks();return(n,r)=>(_t(),Vr(Ze(_s),null,{default:da(()=>[Nt("span",Lf,pr(Ze(t).openInNewWindow),1)]),_:1}))}});var Of=Gt(({app:e,router:t})=>{e.component("Badge",Yu),e.component("CodeGroup",Gu),e.component("CodeGroupItem",Zu),delete e._context.components.ExternalLinkIcon,e.component("ExternalLinkIcon",If),e.component("NavbarSearch",()=>{const r=e.component("Docsearch")||e.component("SearchBox");return r?le(r):null});const n=t.options.scrollBehavior;t.options.scrollBehavior=async(...r)=>(await Cf().wait(),n(...r))});var Mf=(e,t)=>{const n=e.__vccOpts||e;for(const[r,s]of t)n[r]=s;return n};const Df={name:"CodeCopy",props:{parent:Object,code:String,options:{align:String,color:String,backgroundTransition:Boolean,backgroundTransitionColor:String,successText:String,successTextColor:String,staticIcon:Boolean}},data(){return{success:!1,originalBackground:null,originalTransition:null}},computed:{alignClass(){return this.options.align},iconClass(){return this.options.staticIcon?"":"hover"}},mounted(){this.originalTransition=this.parent.style.transition,this.originalBackground=this.parent.style.background},beforeDestroy(){this.parent.style.transition=this.originalTransition,this.parent.style.background=this.originalBackground},methods:{hexToRgb(e){let t=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(e);return t?{r:parseInt(t[1],16),g:parseInt(t[2],16),b:parseInt(t[3],16)}:null},copyToClipboard(e){if(navigator.clipboard)navigator.clipboard.writeText(this.code).then(()=>{this.setSuccessTransitions()},()=>{});else{let t=document.createElement("textarea");document.body.appendChild(t),t.value=this.code,t.select(),document.execCommand("Copy"),t.remove(),this.setSuccessTransitions()}},setSuccessTransitions(){if(clearTimeout(this.successTimeout),this.options.backgroundTransition){this.parent.style.transition="background 350ms";let e=this.options.backgroundTransitionColor;e=e.indexOf("#")!==-1?e:"#282c34";let t=this.hexToRgb(e);this.parent.style.background=`rgba(${t.r}, ${t.g}, ${t.b}, 0.7)`}this.success=!0,this.successTimeout=setTimeout(()=>{this.options.backgroundTransition&&(this.parent.style.background=this.originalBackground,this.parent.style.transition=this.originalTransition),this.success=!1},500)}}},Nf=e=>(bl("data-v-39936cf2"),e=e(),wl(),e),Hf={class:"code-copy"},Ff=Nf(()=>Nt("path",{fill:"none",d:"M0 0h24v24H0z"},null,-1)),zf=["fill"];function Bf(e,t,n,r,s,a){return _t(),Gn("div",Hf,[(_t(),Gn("svg",{onClick:t[0]||(t[0]=(...o)=>a.copyToClipboard&&a.copyToClipboard(...o)),xmlns:"http://www.w3.org/2000/svg",viewBox:"0 0 24 24",class:ft([a.iconClass,a.alignClass])},[Ff,Nt("path",{fill:n.options.color,d:"M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm-1 4l6 6v10c0 1.1-.9 2-2 2H7.99C6.89 23 6 22.1 6 21l.01-14c0-1.1.89-2 1.99-2h7zm-1 7h5.5L14 6.5V12z"},null,8,zf)],2)),Nt("span",{class:ft([s.success?"success":"",a.alignClass]),style:Qt({color:n.options.successTextColor})},pr(n.options.successText),7)])}var fi=Mf(Df,[["render",Bf],["__scopeId","data-v-39936cf2"]]),$f=Gt(({app:e})=>{e.component("CodeCopy",fi)});const jf=({input:e,hotKeys:t})=>{const n=r=>{!e.value||t.value.length===0||r.target===document.body&&t.value.includes(r.key)&&(e.value.focus(),r.preventDefault())};qe(()=>{document.addEventListener("keydown",n)}),cn(()=>{document.removeEventListener("keydown",n)})},qf=[{title:"intro",headers:[],path:"/",pathLocale:"/",extraFields:[`
 # Translating Stata to R
@@ -580,7 +580,7 @@ dat[1, distance := 0]
 
 ## Modify multiple variables (same function)
 cols = c('origin','dest')
-dat[, (cols) := lapply(.SD, \\(x) paste(x,'Airport')),  ### Note: before R 4.1 you need function(x) instead of the \\(x) shorthand
+dat[, (cols) := lapply(.SD, \\(x) paste(x,' Airport')),  ### Note: before R 4.1 you need function(x) instead of the \\(x) shorthand
     .SDcols = cols]
 \`\`\`
 </div>
@@ -801,10 +801,6 @@ dat[, .(unique_dest = uniqueN(dest)), by = origin]
 <div class="code--container">
 <div>
 
-\`\`\`stata
-
-
-\`\`\`
 </div>
 <div>
 <i>Bonus: You can also do complicated (grouped) aggregations as part of a \`dcast\`
@@ -1182,352 +1178,6 @@ dat[dat4, on = .(carrier, date=new_date), roll='nearest']
 
 
 
-`]},{title:"extras",headers:[{level:2,title:"ggplot2: Beautiful and customizable plots",slug:"ggplot2-beautiful-and-customizable-plots",children:[{level:3,title:"Basic scatterplot",slug:"basic-scatterplot",children:[]}]},{level:2,title:"tidyverse",slug:"tidyverse",children:[{level:3,title:"Data wrangling with dplyr",slug:"data-wrangling-with-dplyr",children:[]},{level:3,title:"Manipulating dates with lubridate",slug:"manipulating-dates-with-lubridate",children:[]},{level:3,title:"Iterating with purrr",slug:"iterating-with-purrr",children:[]},{level:3,title:"String operations with stringr",slug:"string-operations-with-stringr",children:[]}]},{level:2,title:"car and nlWaldTest for Coefficient Combinations",slug:"car-and-nlwaldtest-for-coefficient-combinations",children:[{level:3,title:"Basic Combinations",slug:"basic-combinations",children:[]}]},{level:2,title:"modelsummary for Regression Tables",slug:"modelsummary-for-regression-tables",children:[{level:3,title:"Regression Table",slug:"regression-table",children:[]}]},{level:2,title:"marginaleffects for Marginal Effects",slug:"marginaleffects-for-marginal-effects",children:[{level:3,title:"Basic Logit Marginal Effects",slug:"basic-logit-marginal-effects",children:[]}]},{level:2,title:"sandwich for Additional Standard Error Adjustments",slug:"sandwich-for-additional-standard-error-adjustments",children:[{level:3,title:"Linear Model Adjustments",slug:"linear-model-adjustments",children:[]}]},{level:2,title:"lme4 for Random Effects",slug:"lme4-for-random-effects",children:[{level:3,title:"Random Effects Models",slug:"random-effects-models",children:[]}]},{level:2,title:"collapse for Even Faster Grouped Calculations",slug:"collapse-for-even-faster-grouped-calculations",children:[{level:3,title:"Means of Everything",slug:"means-of-everything",children:[]}]}],path:"/extras/",pathLocale:"/",extraFields:[`
-# Other Packages
-
-While we think you can get pretty darn far in R with just **data.table** and 
-**fixest**, of course those two don't cover everything.
-
-This page covers a small list of packages you may find especially useful when 
-getting started with R. We won't try to cover everything under the sun here. 
-Just a few places to get going. For the rest, well, that's what Google is for 
-(or, indeed, to learn about each of these in more detail).
-
-All of the below packages have far more applications than is shown here. We'll 
-just provide one or two examples of how each can be used. Finally, don't forget 
-to install them with \`install.packages('PKGNAME')\` and load them with 
-\`library(PKGNAME)\`. The former command you only have to run once per package (or 
-as often as you want to update it); the latter whenever you want to use a 
-package in a new R session.
-
-## ggplot2: Beautiful and customizable plots
-
-[**ggplot2**](https://ggplot2.tidyverse.org/) is widely considered one of the 
-preeminent plotting libraries available in any language. It provides an 
-intuitive syntax that applies in the same way across many, many different kinds 
-of vizualisations, and with a deep level of customization. Plus, endless 
-additional plugins to do what you want, including easy interactivity, animation, 
-maps, etc. We thought about giving **ggplot2** its own dedicated page like 
-**data.table** and **fixest**. But instead we'll point you to the 
-[Figures](https://lost-stats.github.io/Presentation/Figures/Figures.html) 
-section of the _Library of Statistical Techniques_, which already shows how to 
-do many different graphing tasks in both Stata and **ggplot2**. For a more 
-in-depth overview you can always consult the excellent 
-[package documentation](https://ggplot2.tidyverse.org/), or a book like Kieran 
-Healy's wonderful [_Data Visualization_](https://socviz.co/).
-
-### Basic scatterplot
-
-<div class="code--container">
-<div>
-
-\`\`\`stata
-twoway scatter yvar xvar
- twoway (scatter yvar xvar if group == 1, mc(blue)) \\\\\\
-        (scatter yvar xvar if group == 2, mc(red))
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
-ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
-  geom_point()
-\`\`\`
-</div>
-</div>
-
-
-## tidyverse
-
-The [**tidyverse**](https://www.tidyverse.org/) provides an extremely popular
-framework for data science tasks in R. This meta-package is actually a
-collection of smaller packages that are all designed to work together, based on
-a shared philosophy and syntax. We've already covered **ggplot2** above, but
-there are plenty more. These include **dplyr** and **tidyr**, which offer an
-alternative syntax and approach to data wrangling tasks. While we personally
-recommend **data.table**, these **tidyverse** packages have many ardent fans
-too. You may find that you prefer their modular design and verbal syntax. But
-don't feel bound either way: it's totally fine to combine them. Some other
-**tidyverse** packages worth knowing about include **purrr**, which contains a suite
-of functions for automating and looping your work, **lubridate** which makes
-working with date-based data easy, and **stringr** which offers functions with
-straightforward syntax for working with string variables.
-
-### Data wrangling with dplyr
-
-_Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. \`dat = dat %>% group_by...\`_
-
-<div class="code--container">
-<div>
-
-\`\`\`stata
-* Subset by rows and then columns
-keep if var1=="value"
-keep var1 var2 var3
-* Create a new variable by group
-bysort group1: egen mean_var1 = mean(var1)
-* Collapse by group
-collapse (mean) arr_delay, by(carrier)
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# Subset by rows and then columns
- dat %>%   # \`%>%\` is the tidyverse "pipe" operator
-   filter(var1=="value") %>%
-   select(var1, var2, var3)
-# Create a new variable by group
-dat %>%
-  group_by(group1) %>%
-  mutate(mean_var1 = mean(var1))
-# Collapse by group
-dat %>%
-  group_by(group1) %>%
-  summarise(mean_var1 = mean(var1))
-\`\`\`
-</div>
-</div>
-
-### Manipulating dates with lubridate
-
-<div class="code--container">
-<div>
-
-\`\`\`stata
-* Shift a date forward one month (not 30 days, one month)
-* ???
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# Shift a date forward one month (not 30 days, one month)
-shifted_date = date + months(1)
-\`\`\`
-</div>
-</div>
-
-### Iterating with purrr 
-
-<div class="code--container">
-<div>
-
-\`\`\`stata
-* Read in many files and append them together
-local filelist: dir "Data/" files "*.dta"
-local firsttime = 1
-foreach f in filelist {
-    use \`f', clear
-    if \`firsttime' == 0 {
-        append using compiled_data.dta
-    }
-    save compiled_data.dta, replace
-}
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# Read in many files and append them together
-# (this combines purrr with the data.table function fread)
-filelist = list.files('Data/', pattern = '.csv')
-dat = filelist %>%
-    map_df(fread)
-\`\`\`
-</div>
-</div>
-
-### String operations with stringr 
-
-<div class="code--container">
-<div>
-
-\`\`\`stata
-subinstr(string, "remove", "replace", .)
-substr(string, start, length)
-regex(string, "regex")
-
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-str_replace_all(string, "remove", "replace")
-str_sub(string, start, end)
-str_detect(string, "regex")
-# Note all the stringr functions accept regex input
-\`\`\`
-</div>
-</div>
-
-                     
-## car and nlWaldTest for Coefficient Combinations
-
-One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.
-
-           
-### Basic Combinations
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-
-regress y x z
-lincom x + z
-nlcom _b[x]/_b[z]
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# This example incorporates the fixest function feols()
-m = feols(y ~ x + z, data = dat)
-linearHypothesis(m, 'x + z')
-nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
-\`\`\`
-</div>
-</div>
-                     
-                     
-## modelsummary for Regression Tables
-
-The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, it's highly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.
-
-           
-### Regression Table
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-
-reghdfe Y X Z 
-eststore est1 
-esttab est1
-
-reghdfe Y X Z A
-eststore est2
-esttab est1 est2
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# This example incorporates the fixest function feols()
-est1 = feols(Y ~ X + Z, dat) 
-etable(est1)
-
-
-est2 = feols(Y ~ X + Z + A, dat) 
-modelsummary(list(est1,est2))
-\`\`\`
-</div>
-</div>
-                     
-                     
-## marginaleffects for Marginal Effects
-
-The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!
-
-           
-### Basic Logit Marginal Effects
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-* A logit:
-logit Y X Z
-margins, dydx(*)
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# This example incorporates the fixest function feglm()
-m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
-summary(marginaleffects(m))
-\`\`\`
-</div>
-</div>
-                     
-                     
-## sandwich for Additional Standard Error Adjustments
-
-The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <span class="font-semibold">sandwich</span> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?
-
-           
-### Linear Model Adjustments
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-* ", robust" uses hc1 which isn't great for small samples
-regress Y X Z, vce(hc3)
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
-m = feols(Y ~ X + Z, vcov = vcovHC)
-\`\`\`
-</div>
-</div>
-                     
-                     
-## lme4 for Random Effects
-
-<span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <span class="font-semibold">lme4</span> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.
-
-           
-### Random Effects Models
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-xtset group time
-xtreg Y X, re
-mixed lifeexp || countryn: gdppercap
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-# No need for an xtset equivalent
-m = lmer(Y~(1|group) + X, data = dat)
-nm = lmer(Y~(1+x|group) + X, data = dat)
-\`\`\`
-</div>
-</div>
-                     
-                     
-## collapse for Even Faster Grouped Calculations
-
-Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything besides, like, learning C yourself (and sometimes even then). But there is one package that can boast even faster times than <span class="font-semibold">data.table</span>, at least at some tasks, and that's <span class="font-semibold">collapse</span>, which is just about as fast as it gets at computing by-group calculations like means or standard deviations.
-
-           
-### Means of Everything
-
-<div class='code--container'>
-<div>
-
-\`\`\`stata
-collapse (mean) varlist, by(group)
-\`\`\`
-</div>
-<div>
-
-\`\`\`r
-fmean(dat, dat$group)
-\`\`\`
-</div>
-</div>
 `]},{title:"fixest",headers:[{level:2,title:"Formula Creation",slug:"formula-creation",children:[{level:3,title:"Fixed Effects",slug:"fixed-effects",children:[]},{level:3,title:"Categorical Variables",slug:"categorical-variables",children:[]},{level:3,title:"Interact Categoricals",slug:"interact-categoricals",children:[]},{level:3,title:"Interact Categorical and Continuous",slug:"interact-categorical-and-continuous",children:[]},{level:3,title:"Macros",slug:"macros",children:[]},{level:3,title:"Wildcard",slug:"wildcard",children:[]},{level:3,title:"Variables x1 ... x4",slug:"variables-x1-x4",children:[]},{level:3,title:"Regex",slug:"regex",children:[]}]},{level:2,title:"Standard Errors",slug:"standard-errors",children:[{level:3,title:"HC",slug:"hc",children:[]},{level:3,title:"HAC",slug:"hac",children:[]},{level:3,title:"Cluster",slug:"cluster",children:[]},{level:3,title:"Two-way",slug:"two-way",children:[]},{level:3,title:"Conley Standard Errors",slug:"conley-standard-errors",children:[]}]},{level:2,title:"Postestimation",slug:"postestimation",children:[{level:3,title:"Regression Table",slug:"regression-table",children:[]},{level:3,title:"Coefficient Plot",slug:"coefficient-plot",children:[]}]},{level:2,title:"Panel Data",slug:"panel-data",children:[{level:3,title:"Lag Variables",slug:"lag-variables",children:[]},{level:3,title:"Lead Variables",slug:"lead-variables",children:[]},{level:3,title:"First Difference",slug:"first-difference",children:[]}]},{level:2,title:"Instrumental Variables",slug:"instrumental-variables",children:[{level:3,title:"Instrumental Variables",slug:"instrumental-variables-1",children:[]},{level:3,title:"with Fixed Effects",slug:"with-fixed-effects",children:[]}]}],path:"/fixest/",pathLocale:"/",extraFields:[`
 # Regression analysis with fixest
 
@@ -2015,5 +1665,351 @@ feols(wage ~ 1 | countyfips | educ ~ age, dat)
 \`\`\`
 </div>
 </div>
+`]},{title:"extras",headers:[{level:2,title:"ggplot2: Beautiful and customizable plots",slug:"ggplot2-beautiful-and-customizable-plots",children:[{level:3,title:"Basic scatterplot",slug:"basic-scatterplot",children:[]}]},{level:2,title:"tidyverse",slug:"tidyverse",children:[{level:3,title:"Data wrangling with dplyr",slug:"data-wrangling-with-dplyr",children:[]},{level:3,title:"Manipulating dates with lubridate",slug:"manipulating-dates-with-lubridate",children:[]},{level:3,title:"Iterating with purrr",slug:"iterating-with-purrr",children:[]},{level:3,title:"String operations with stringr",slug:"string-operations-with-stringr",children:[]}]},{level:2,title:"car and nlWaldTest for Coefficient Combinations",slug:"car-and-nlwaldtest-for-coefficient-combinations",children:[{level:3,title:"Basic Combinations",slug:"basic-combinations",children:[]}]},{level:2,title:"modelsummary for Regression Tables",slug:"modelsummary-for-regression-tables",children:[{level:3,title:"Regression Table",slug:"regression-table",children:[]}]},{level:2,title:"marginaleffects for Marginal Effects",slug:"marginaleffects-for-marginal-effects",children:[{level:3,title:"Basic Logit Marginal Effects",slug:"basic-logit-marginal-effects",children:[]}]},{level:2,title:"sandwich for Additional Standard Error Adjustments",slug:"sandwich-for-additional-standard-error-adjustments",children:[{level:3,title:"Linear Model Adjustments",slug:"linear-model-adjustments",children:[]}]},{level:2,title:"lme4 for Random Effects",slug:"lme4-for-random-effects",children:[{level:3,title:"Random Effects Models",slug:"random-effects-models",children:[]}]},{level:2,title:"collapse for Even Faster Grouped Calculations",slug:"collapse-for-even-faster-grouped-calculations",children:[{level:3,title:"Means of Everything",slug:"means-of-everything",children:[]}]}],path:"/extras/",pathLocale:"/",extraFields:[`
+# Other Packages
+
+While we think you can get pretty darn far in R with just **data.table** and 
+**fixest**, of course those two don't cover everything.
+
+This page covers a small list of packages you may find especially useful when 
+getting started with R. We won't try to cover everything under the sun here. 
+Just a few places to get going. For the rest, well, that's what Google is for 
+(or, indeed, to learn about each of these in more detail).
+
+All of the below packages have far more applications than is shown here. We'll 
+just provide one or two examples of how each can be used. Finally, don't forget 
+to install them with \`install.packages('PKGNAME')\` and load them with 
+\`library(PKGNAME)\`. The former command you only have to run once per package (or 
+as often as you want to update it); the latter whenever you want to use a 
+package in a new R session.
+
+## ggplot2: Beautiful and customizable plots
+
+[**ggplot2**](https://ggplot2.tidyverse.org/) is widely considered one of the 
+preeminent plotting libraries available in any language. It provides an 
+intuitive syntax that applies in the same way across many, many different kinds 
+of vizualisations, and with a deep level of customization. Plus, endless 
+additional plugins to do what you want, including easy interactivity, animation, 
+maps, etc. We thought about giving **ggplot2** its own dedicated page like 
+**data.table** and **fixest**. But instead we'll point you to the 
+[Figures](https://lost-stats.github.io/Presentation/Figures/Figures.html) 
+section of the _Library of Statistical Techniques_, which already shows how to 
+do many different graphing tasks in both Stata and **ggplot2**. For a more 
+in-depth overview you can always consult the excellent 
+[package documentation](https://ggplot2.tidyverse.org/), or a book like Kieran 
+Healy's wonderful [_Data Visualization_](https://socviz.co/).
+
+### Basic scatterplot
+
+<div class="code--container">
+<div>
+
+\`\`\`stata
+twoway scatter yvar xvar
+ twoway (scatter yvar xvar if group == 1, mc(blue)) \\\\\\
+        (scatter yvar xvar if group == 2, mc(red))
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
+  geom_point()
+\`\`\`
+</div>
+</div>
+
+
+## tidyverse
+
+The [**tidyverse**](https://www.tidyverse.org/) provides an extremely popular
+framework for data science tasks in R. This meta-package is actually a
+collection of smaller packages that are all designed to work together, based on
+a shared philosophy and syntax. We've already covered **ggplot2** above, but
+there are plenty more. These include **dplyr** and **tidyr**, which offer an
+alternative syntax and approach to data wrangling tasks. While we personally
+recommend **data.table**, these **tidyverse** packages have many ardent fans
+too. You may find that you prefer their modular design and verbal syntax. But
+don't feel bound either way: it's totally fine to combine them. Some other
+**tidyverse** packages worth knowing about include **purrr**, which contains a suite
+of functions for automating and looping your work, **lubridate** which makes
+working with date-based data easy, and **stringr** which offers functions with
+straightforward syntax for working with string variables.
+
+### Data wrangling with dplyr
+
+_Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. \`dat = dat %>% group_by...\`_
+
+<div class="code--container">
+<div>
+
+\`\`\`stata
+* Subset by rows and then columns
+keep if var1=="value"
+keep var1 var2 var3
+* Create a new variable by group
+bysort group1: egen mean_var1 = mean(var1)
+* Collapse by group
+collapse (mean) arr_delay, by(carrier)
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# Subset by rows and then columns
+ dat %>%   # \`%>%\` is the tidyverse "pipe" operator
+   filter(var1=="value") %>%
+   select(var1, var2, var3)
+# Create a new variable by group
+dat %>%
+  group_by(group1) %>%
+  mutate(mean_var1 = mean(var1))
+# Collapse by group
+dat %>%
+  group_by(group1) %>%
+  summarise(mean_var1 = mean(var1))
+\`\`\`
+</div>
+</div>
+
+### Manipulating dates with lubridate
+
+<div class="code--container">
+<div>
+
+\`\`\`stata
+* Shift a date forward one month (not 30 days, one month)
+* ???
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# Shift a date forward one month (not 30 days, one month)
+shifted_date = date + months(1)
+\`\`\`
+</div>
+</div>
+
+### Iterating with purrr 
+
+<div class="code--container">
+<div>
+
+\`\`\`stata
+* Read in many files and append them together
+local filelist: dir "Data/" files "*.dta"
+local firsttime = 1
+foreach f in filelist {
+    use \`f', clear
+    if \`firsttime' == 0 {
+        append using compiled_data.dta
+    }
+    save compiled_data.dta, replace
+}
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# Read in many files and append them together
+# (this combines purrr with the data.table function fread)
+filelist = list.files('Data/', pattern = '.csv')
+dat = filelist %>%
+    map_df(fread)
+\`\`\`
+</div>
+</div>
+
+### String operations with stringr 
+
+<div class="code--container">
+<div>
+
+\`\`\`stata
+subinstr(string, "remove", "replace", .)
+substr(string, start, length)
+regex(string, "regex")
+
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+str_replace_all(string, "remove", "replace")
+str_sub(string, start, end)
+str_detect(string, "regex")
+# Note all the stringr functions accept regex input
+\`\`\`
+</div>
+</div>
+
+                     
+## car and nlWaldTest for Coefficient Combinations
+
+One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.
+
+           
+### Basic Combinations
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+
+regress y x z
+lincom x + z
+nlcom _b[x]/_b[z]
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# This example incorporates the fixest function feols()
+m = feols(y ~ x + z, data = dat)
+linearHypothesis(m, 'x + z')
+nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+\`\`\`
+</div>
+</div>
+                     
+                     
+## modelsummary for Regression Tables
+
+The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, it's highly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.
+
+           
+### Regression Table
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+
+reghdfe Y X Z 
+eststore est1 
+esttab est1
+
+reghdfe Y X Z A
+eststore est2
+esttab est1 est2
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# This example incorporates the fixest function feols()
+est1 = feols(Y ~ X + Z, dat) 
+etable(est1)
+
+
+est2 = feols(Y ~ X + Z + A, dat) 
+modelsummary(list(est1,est2))
+\`\`\`
+</div>
+</div>
+                     
+                     
+## marginaleffects for Marginal Effects
+
+The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!
+
+           
+### Basic Logit Marginal Effects
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+* A logit:
+logit Y X Z
+margins, dydx(*)
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# This example incorporates the fixest function feglm()
+m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
+summary(marginaleffects(m))
+\`\`\`
+</div>
+</div>
+                     
+                     
+## sandwich for Additional Standard Error Adjustments
+
+The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <span class="font-semibold">sandwich</span> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?
+
+           
+### Linear Model Adjustments
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
+m = feols(Y ~ X + Z, vcov = vcovHC)
+\`\`\`
+</div>
+</div>
+                     
+                     
+## lme4 for Random Effects
+
+<span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <span class="font-semibold">lme4</span> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.
+
+           
+### Random Effects Models
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+xtset group time
+xtreg Y X, re
+mixed lifeexp || countryn: gdppercap
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+# No need for an xtset equivalent
+m = lmer(Y~(1|group) + X, data = dat)
+nm = lmer(Y~(1+x|group) + X, data = dat)
+\`\`\`
+</div>
+</div>
+                     
+                     
+## collapse for Even Faster Grouped Calculations
+
+Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything besides, like, learning C yourself (and sometimes even then). But there is one package that can boast even faster times than <span class="font-semibold">data.table</span>, at least at some tasks, and that's <span class="font-semibold">collapse</span>, which is just about as fast as it gets at computing by-group calculations like means or standard deviations.
+
+           
+### Means of Everything
+
+<div class='code--container'>
+<div>
+
+\`\`\`stata
+collapse (mean) varlist, by(group)
+\`\`\`
+</div>
+<div>
+
+\`\`\`r
+fmean(dat, dat$group)
+\`\`\`
+</div>
+</div>
 `]},{title:"",headers:[],path:"/404.html",pathLocale:"/",extraFields:[""]}],hi=ye(qf),Uf=()=>hi;fr.webpackHot&&(__VUE_HMR_RUNTIME__.updateSearchIndex=e=>{hi.value=e});const Wf=/[^\x00-\x7F]/,Kf=e=>e.split(/\s+/g).map(t=>t.trim()).filter(t=>!!t),pi=e=>e.replace(/[-/\\^$*+?.()|[\]{}]/g,"\\$&"),mi=(e,t)=>{const n=t.join(" "),r=Kf(e);if(Wf.test(e))return r.some(o=>n.toLowerCase().indexOf(o)>-1);const s=e.endsWith(" ");return new RegExp(r.map((o,i)=>r.length===i+1&&!s?`(?=.*\\b${pi(o)})`:`(?=.*\\b${pi(o)}\\b)`).join("")+".+","gi").test(n)},Vf=({searchIndex:e,routeLocale:t,query:n,maxSuggestions:r})=>{const s=pe(()=>e.value.filter(a=>a.pathLocale===t.value));return pe(()=>{const a=n.value.trim().toLowerCase();if(!a)return[];const o=[],i=(l,c)=>{mi(a,[c.title])&&o.push({link:`${l.path}#${c.slug}`,title:l.title,header:c.title});for(const u of c.children){if(o.length>=r.value)return;i(l,u)}};for(const l of s.value){if(o.length>=r.value)break;if(mi(a,[l.title,...l.extraFields])){o.push({link:l.path,title:l.title});continue}for(const c of l.headers){if(o.length>=r.value)break;i(l,c)}}return o})},Yf=e=>{const t=ye(0);return{focusIndex:t,focusNext:()=>{t.value<e.value.length-1?t.value+=1:t.value=0},focusPrev:()=>{t.value>0?t.value-=1:t.value=e.value.length-1}}},Gf=Ne({name:"SearchBox",props:{locales:{type:Object,required:!1,default:()=>({})},hotKeys:{type:Array,required:!1,default:()=>[]},maxSuggestions:{type:Number,required:!1,default:5}},setup(e){const{locales:t,hotKeys:n,maxSuggestions:r}=pl(e),s=or(),a=yu(),o=Uf(),i=ye(null),l=ye(!1),c=ye(""),u=pe(()=>{var C;return(C=t.value[a.value])!==null&&C!==void 0?C:{}}),m=Vf({searchIndex:o,routeLocale:a,query:c,maxSuggestions:r}),{focusIndex:f,focusNext:w,focusPrev:h}=Yf(m);jf({input:i,hotKeys:n});const b=pe(()=>l.value&&!!m.value.length),g=()=>{!b.value||h()},v=()=>{!b.value||w()},x=C=>{if(!b.value)return;const A=m.value[C];!A||s.push(A.link).then(()=>{c.value="",f.value=0})};return()=>le("form",{class:"search-box",role:"search"},[le("input",{ref:i,type:"search",placeholder:u.value.placeholder,autocomplete:"off",spellcheck:!1,value:c.value,onFocus:()=>l.value=!0,onBlur:()=>l.value=!1,onInput:C=>c.value=C.target.value,onKeydown:C=>{switch(C.key){case"ArrowUp":{g();break}case"ArrowDown":{v();break}case"Enter":{C.preventDefault(),x(f.value);break}}}}),b.value&&le("ul",{class:"suggestions",onMouseleave:()=>f.value=-1},m.value.map(({link:C,title:A,header:H},z)=>le("li",{class:["suggestion",{focus:f.value===z}],onMouseenter:()=>f.value=z,onMousedown:()=>x(z)},le("a",{href:C,onClick:k=>k.preventDefault()},[le("span",{class:"page-title"},A),H&&le("span",{class:"page-header"},`> ${H}`)]))))])}});const Xf={},Jf=["s","/"],Zf=5;var Qf=Gt(({app:e})=>{e.component("SearchBox",t=>le(Gf,Ke({locales:Xf,hotKeys:Jf,maxSuggestions:Zf},t)))});const eh=[Pu,ju,Vu,Of,$f,Qf];function gi(e,t,n){var r,s,a;t===void 0&&(t=50),n===void 0&&(n={});var o=(r=n.isImmediate)!=null&&r,i=(s=n.callback)!=null&&s,l=n.maxWait,c=Date.now(),u=[];function m(){if(l!==void 0){var w=Date.now()-c;if(w+t>=l)return l-w}return t}var f=function(){var w=[].slice.call(arguments),h=this;return new Promise(function(b,g){var v=o&&a===void 0;if(a!==void 0&&clearTimeout(a),a=setTimeout(function(){if(a=void 0,c=Date.now(),!o){var C=e.apply(h,w);i&&i(C),u.forEach(function(A){return(0,A.resolve)(C)}),u=[]}},m()),v){var x=e.apply(h,w);return i&&i(x),b(x)}u.push({resolve:b,reject:g})})};return f.cancel=function(w){a!==void 0&&clearTimeout(a),u.forEach(function(h){return(0,h.reject)(w)}),u=[]},f}const vi=()=>window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop||0,th=()=>window.scrollTo({top:0,behavior:"smooth"});const nh=Ne({name:"BackToTop",setup(){const e=ye(0),t=pe(()=>e.value>300),n=gi(()=>{e.value=vi()},100);qe(()=>{e.value=vi(),window.addEventListener("scroll",()=>n())});const r=le("div",{class:"back-to-top",onClick:th});return()=>le(is,{name:"back-to-top"},{default:()=>t.value?r:null})}}),rh=[nh],sh=({headerLinkSelector:e,headerAnchorSelector:t,delay:n,offset:r=5})=>{const s=or(),a=Yt(),o=gi(()=>{var l,c,u,m;const f=Array.from(document.querySelectorAll(e)),h=Array.from(document.querySelectorAll(t)).filter(C=>f.some(A=>A.hash===C.hash)),b=Math.max(window.pageYOffset,document.documentElement.scrollTop,document.body.scrollTop),g=window.innerHeight+b,v=Math.max(document.documentElement.scrollHeight,document.body.scrollHeight),x=Math.abs(v-g)<r;for(let C=0;C<h.length;C++){const A=h[C],H=h[C+1],z=C===0&&b===0,k=b>=((c=(l=A.parentElement)===null||l===void 0?void 0:l.offsetTop)!==null&&c!==void 0?c:0)-r,E=!H||b<((m=(u=H.parentElement)===null||u===void 0?void 0:u.offsetTop)!==null&&m!==void 0?m:0)-r;if(!(z||k&&E))continue;const q=decodeURIComponent(s.currentRoute.value.hash),Y=decodeURIComponent(A.hash);if(q===Y)return;if(x){for(let _=C+1;_<h.length;_++)if(q===decodeURIComponent(h[_].hash))return}ah(s,{hash:Y,force:!0});return}},n),i=()=>o();qe(()=>{o(),window.addEventListener("scroll",i)}),cn(()=>{window.removeEventListener("scroll",i)}),Xe(()=>a.value.path,()=>i())},ah=async(e,...t)=>{const{scrollBehavior:n}=e.options;e.options.scrollBehavior=void 0,await e.replace(...t).finally(()=>e.options.scrollBehavior=n)},oh="a.sidebar-item",ih=".header-anchor",lh=200,ch=5;var dh=ir(()=>{sh({headerLinkSelector:oh,headerAnchorSelector:ih,delay:lh,offset:ch})}),uh=typeof globalThis!="undefined"?globalThis:typeof window!="undefined"?window:typeof global!="undefined"?global:typeof self!="undefined"?self:{},ur={exports:{}};/* NProgress, (c) 2013, 2014 Rico Sta. Cruz - http://ricostacruz.com/nprogress
- * @license MIT */(function(e,t){(function(n,r){e.exports=r()})(uh,function(){var n={};n.version="0.2.0";var r=n.settings={minimum:.08,easing:"ease",positionUsing:"",speed:200,trickle:!0,trickleRate:.02,trickleSpeed:800,showSpinner:!0,barSelector:'[role="bar"]',spinnerSelector:'[role="spinner"]',parent:"body",template:'<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'};n.configure=function(h){var b,g;for(b in h)g=h[b],g!==void 0&&h.hasOwnProperty(b)&&(r[b]=g);return this},n.status=null,n.set=function(h){var b=n.isStarted();h=s(h,r.minimum,1),n.status=h===1?null:h;var g=n.render(!b),v=g.querySelector(r.barSelector),x=r.speed,C=r.easing;return g.offsetWidth,i(function(A){r.positionUsing===""&&(r.positionUsing=n.getPositioningCSS()),l(v,o(h,x,C)),h===1?(l(g,{transition:"none",opacity:1}),g.offsetWidth,setTimeout(function(){l(g,{transition:"all "+x+"ms linear",opacity:0}),setTimeout(function(){n.remove(),A()},x)},x)):setTimeout(A,x)}),this},n.isStarted=function(){return typeof n.status=="number"},n.start=function(){n.status||n.set(0);var h=function(){setTimeout(function(){!n.status||(n.trickle(),h())},r.trickleSpeed)};return r.trickle&&h(),this},n.done=function(h){return!h&&!n.status?this:n.inc(.3+.5*Math.random()).set(1)},n.inc=function(h){var b=n.status;return b?(typeof h!="number"&&(h=(1-b)*s(Math.random()*b,.1,.95)),b=s(b+h,0,.994),n.set(b)):n.start()},n.trickle=function(){return n.inc(Math.random()*r.trickleRate)},function(){var h=0,b=0;n.promise=function(g){return!g||g.state()==="resolved"?this:(b===0&&n.start(),h++,b++,g.always(function(){b--,b===0?(h=0,n.done()):n.set((h-b)/h)}),this)}}(),n.render=function(h){if(n.isRendered())return document.getElementById("nprogress");u(document.documentElement,"nprogress-busy");var b=document.createElement("div");b.id="nprogress",b.innerHTML=r.template;var g=b.querySelector(r.barSelector),v=h?"-100":a(n.status||0),x=document.querySelector(r.parent),C;return l(g,{transition:"all 0 linear",transform:"translate3d("+v+"%,0,0)"}),r.showSpinner||(C=b.querySelector(r.spinnerSelector),C&&w(C)),x!=document.body&&u(x,"nprogress-custom-parent"),x.appendChild(b),b},n.remove=function(){m(document.documentElement,"nprogress-busy"),m(document.querySelector(r.parent),"nprogress-custom-parent");var h=document.getElementById("nprogress");h&&w(h)},n.isRendered=function(){return!!document.getElementById("nprogress")},n.getPositioningCSS=function(){var h=document.body.style,b="WebkitTransform"in h?"Webkit":"MozTransform"in h?"Moz":"msTransform"in h?"ms":"OTransform"in h?"O":"";return b+"Perspective"in h?"translate3d":b+"Transform"in h?"translate":"margin"};function s(h,b,g){return h<b?b:h>g?g:h}function a(h){return(-1+h)*100}function o(h,b,g){var v;return r.positionUsing==="translate3d"?v={transform:"translate3d("+a(h)+"%,0,0)"}:r.positionUsing==="translate"?v={transform:"translate("+a(h)+"%,0)"}:v={"margin-left":a(h)+"%"},v.transition="all "+b+"ms "+g,v}var i=function(){var h=[];function b(){var g=h.shift();g&&g(b)}return function(g){h.push(g),h.length==1&&b()}}(),l=function(){var h=["Webkit","O","Moz","ms"],b={};function g(A){return A.replace(/^-ms-/,"ms-").replace(/-([\da-z])/gi,function(H,z){return z.toUpperCase()})}function v(A){var H=document.body.style;if(A in H)return A;for(var z=h.length,k=A.charAt(0).toUpperCase()+A.slice(1),E;z--;)if(E=h[z]+k,E in H)return E;return A}function x(A){return A=g(A),b[A]||(b[A]=v(A))}function C(A,H,z){H=x(H),A.style[H]=z}return function(A,H){var z=arguments,k,E;if(z.length==2)for(k in H)E=H[k],E!==void 0&&H.hasOwnProperty(k)&&C(A,k,E);else C(A,z[1],z[2])}}();function c(h,b){var g=typeof h=="string"?h:f(h);return g.indexOf(" "+b+" ")>=0}function u(h,b){var g=f(h),v=g+b;c(g,b)||(h.className=v.substring(1))}function m(h,b){var g=f(h),v;!c(h,b)||(v=g.replace(" "+b+" "," "),h.className=v.substring(1,v.length-1))}function f(h){return(" "+(h.className||"")+" ").replace(/\s+/gi," ")}function w(h){h&&h.parentNode&&h.parentNode.removeChild(h)}return n})})(ur);const fh=()=>{qe(()=>{const e=or(),t=new Set;t.add(e.currentRoute.value.path),ur.exports.configure({showSpinner:!1}),e.beforeEach(n=>{t.has(n.path)||ur.exports.start()}),e.afterEach(n=>{t.add(n.path),ur.exports.done()})})};var hh=ir(()=>{fh()}),ph=ir(()=>{_f(),kf()});const Rn={staticIcon:!1,align:"bottom",selector:'div[class*="language-"]',delay:400,color:"var(--c-brand)",backgroundTransition:!0,backgroundTransitionColor:"var(--code-bg-color)",successTextColor:"var(--c-brand-light)",successText:"Copied!"};var mh=ir(()=>{const e=Yt(),t=()=>{setTimeout(()=>{document.querySelectorAll(Rn.selector).forEach(n=>{if(n.classList.contains(`code-copy-added-${Rn.align}`)||n.querySelector("pre, code[class*='pre-']")===null)return;const r=n.querySelector("pre, code[class*='pre-']"),s=Gc(fi,{parent:n,code:r.innerText,options:Rn}),a=document.createElement("div");n.appendChild(a),s.mount(a),n.classList.add(`code-copy-added-${Rn.align}`)})},Rn.delay+100)};return qe(()=>{t(),window.addEventListener("vuepress-plugin-clipboard-update-event",t)}),cn(()=>{window.removeEventListener("vuepress-plugin-clipboard-update-event",t)}),ya(()=>{t()}),Xe(()=>e.value.path,t),t});const gh=[dh,hh,ph,mh],vh=[["v-8daa1a0e","/",{title:"intro"},["/index.html","/index.md"]],["v-77f0ef68","/data.table/",{title:"data.table"},["/data.table/index.html","/data.table/README.md"]],["v-1c385113","/extras/",{title:"extras"},["/extras/index.html","/extras/README.md"]],["v-37b893e5","/fixest/",{title:"fixest"},["/fixest/index.html","/fixest/README.md"]],["v-3706649a","/404.html",{title:""},["/404"]]],yh=vh.reduce((e,[t,n,r,s])=>(e.push({name:t,path:n,component:Jo,meta:r},...s.map(a=>({path:a,redirect:n}))),e),[{name:"404",path:"/:catchAll(.*)",component:Jo}]),bh=(e,t)=>{const n=pe(()=>bu(Tt.value.locales,t.currentRoute.value.path)),r=pe(()=>xu(Tt.value,n.value)),s=pe(()=>ou(ut.value)),a=pe(()=>mu(ut.value,r.value)),o=pe(()=>hu(a.value,s.value,r.value)),i=pe(()=>vu(ut.value));e.provide(bs,n),e.provide(Xo,r),e.provide(Wo,s),e.provide(pu,a),e.provide(Yo,o),e.provide(Go,i),Object.defineProperties(e.config.globalProperties,{$frontmatter:{get:()=>s.value},$headTitle:{get:()=>a.value},$lang:{get:()=>i.value},$page:{get:()=>ut.value},$routeLocale:{get:()=>n.value},$site:{get:()=>Tt.value},$siteLocale:{get:()=>r.value},$withBase:{get:()=>Ru}})},wh=e=>{e.component("ClientOnly",eu),e.component("Content",ws)},_h=Xc,xh=md,Eh=async()=>{const e=_h({name:"VuepressApp",setup(){Su();for(const n of gh)n();return()=>[le($o),...rh.map(n=>le(n))]}}),t=Zd({history:xh(du(Tt.value.base)),routes:yh,scrollBehavior:(n,r,s)=>s||(n.hash?{el:n.hash}:{top:0})});t.beforeResolve(async(n,r)=>{var s;(n.path!==r.path||r===tt)&&([ut.value]=await Promise.all([su(n.name),(s=qo[n.name])===null||s===void 0?void 0:s.__asyncLoader()]))}),bh(e,t),wh(e);for(const n of eh)await n({app:e,router:t,siteData:Tt});return e.use(t),{app:e,router:t}};Eh().then(({app:e,router:t})=>{t.isReady().then(()=>{e.mount("#app")})});export{_u as A,Ih as B,Oh as C,le as D,Ru as E,Re as F,eu as G,ft as H,ye as I,Xe as J,Ch as K,Ah as L,uu as M,du as N,or as O,he as P,Ef as Q,qe as R,Qt as S,is as T,Yt as U,Mh as V,Ko as W,$r as X,Cf as Y,Mf as _,Nt as a,ge as b,Gn as c,Eh as createVueApp,Yr as d,kh as e,Ne as f,ks as g,Ze as h,au as i,pe as j,G as k,Rh as l,Th as m,vs as n,_t as o,pl as p,Vr as q,ec as r,oc as s,pr as t,yu as u,Ba as v,da as w,cu as x,Ph as y,Lh as z};
+ * @license MIT */(function(e,t){(function(n,r){e.exports=r()})(uh,function(){var n={};n.version="0.2.0";var r=n.settings={minimum:.08,easing:"ease",positionUsing:"",speed:200,trickle:!0,trickleRate:.02,trickleSpeed:800,showSpinner:!0,barSelector:'[role="bar"]',spinnerSelector:'[role="spinner"]',parent:"body",template:'<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'};n.configure=function(h){var b,g;for(b in h)g=h[b],g!==void 0&&h.hasOwnProperty(b)&&(r[b]=g);return this},n.status=null,n.set=function(h){var b=n.isStarted();h=s(h,r.minimum,1),n.status=h===1?null:h;var g=n.render(!b),v=g.querySelector(r.barSelector),x=r.speed,C=r.easing;return g.offsetWidth,i(function(A){r.positionUsing===""&&(r.positionUsing=n.getPositioningCSS()),l(v,o(h,x,C)),h===1?(l(g,{transition:"none",opacity:1}),g.offsetWidth,setTimeout(function(){l(g,{transition:"all "+x+"ms linear",opacity:0}),setTimeout(function(){n.remove(),A()},x)},x)):setTimeout(A,x)}),this},n.isStarted=function(){return typeof n.status=="number"},n.start=function(){n.status||n.set(0);var h=function(){setTimeout(function(){!n.status||(n.trickle(),h())},r.trickleSpeed)};return r.trickle&&h(),this},n.done=function(h){return!h&&!n.status?this:n.inc(.3+.5*Math.random()).set(1)},n.inc=function(h){var b=n.status;return b?(typeof h!="number"&&(h=(1-b)*s(Math.random()*b,.1,.95)),b=s(b+h,0,.994),n.set(b)):n.start()},n.trickle=function(){return n.inc(Math.random()*r.trickleRate)},function(){var h=0,b=0;n.promise=function(g){return!g||g.state()==="resolved"?this:(b===0&&n.start(),h++,b++,g.always(function(){b--,b===0?(h=0,n.done()):n.set((h-b)/h)}),this)}}(),n.render=function(h){if(n.isRendered())return document.getElementById("nprogress");u(document.documentElement,"nprogress-busy");var b=document.createElement("div");b.id="nprogress",b.innerHTML=r.template;var g=b.querySelector(r.barSelector),v=h?"-100":a(n.status||0),x=document.querySelector(r.parent),C;return l(g,{transition:"all 0 linear",transform:"translate3d("+v+"%,0,0)"}),r.showSpinner||(C=b.querySelector(r.spinnerSelector),C&&w(C)),x!=document.body&&u(x,"nprogress-custom-parent"),x.appendChild(b),b},n.remove=function(){m(document.documentElement,"nprogress-busy"),m(document.querySelector(r.parent),"nprogress-custom-parent");var h=document.getElementById("nprogress");h&&w(h)},n.isRendered=function(){return!!document.getElementById("nprogress")},n.getPositioningCSS=function(){var h=document.body.style,b="WebkitTransform"in h?"Webkit":"MozTransform"in h?"Moz":"msTransform"in h?"ms":"OTransform"in h?"O":"";return b+"Perspective"in h?"translate3d":b+"Transform"in h?"translate":"margin"};function s(h,b,g){return h<b?b:h>g?g:h}function a(h){return(-1+h)*100}function o(h,b,g){var v;return r.positionUsing==="translate3d"?v={transform:"translate3d("+a(h)+"%,0,0)"}:r.positionUsing==="translate"?v={transform:"translate("+a(h)+"%,0)"}:v={"margin-left":a(h)+"%"},v.transition="all "+b+"ms "+g,v}var i=function(){var h=[];function b(){var g=h.shift();g&&g(b)}return function(g){h.push(g),h.length==1&&b()}}(),l=function(){var h=["Webkit","O","Moz","ms"],b={};function g(A){return A.replace(/^-ms-/,"ms-").replace(/-([\da-z])/gi,function(H,z){return z.toUpperCase()})}function v(A){var H=document.body.style;if(A in H)return A;for(var z=h.length,k=A.charAt(0).toUpperCase()+A.slice(1),E;z--;)if(E=h[z]+k,E in H)return E;return A}function x(A){return A=g(A),b[A]||(b[A]=v(A))}function C(A,H,z){H=x(H),A.style[H]=z}return function(A,H){var z=arguments,k,E;if(z.length==2)for(k in H)E=H[k],E!==void 0&&H.hasOwnProperty(k)&&C(A,k,E);else C(A,z[1],z[2])}}();function c(h,b){var g=typeof h=="string"?h:f(h);return g.indexOf(" "+b+" ")>=0}function u(h,b){var g=f(h),v=g+b;c(g,b)||(h.className=v.substring(1))}function m(h,b){var g=f(h),v;!c(h,b)||(v=g.replace(" "+b+" "," "),h.className=v.substring(1,v.length-1))}function f(h){return(" "+(h.className||"")+" ").replace(/\s+/gi," ")}function w(h){h&&h.parentNode&&h.parentNode.removeChild(h)}return n})})(ur);const fh=()=>{qe(()=>{const e=or(),t=new Set;t.add(e.currentRoute.value.path),ur.exports.configure({showSpinner:!1}),e.beforeEach(n=>{t.has(n.path)||ur.exports.start()}),e.afterEach(n=>{t.add(n.path),ur.exports.done()})})};var hh=ir(()=>{fh()}),ph=ir(()=>{_f(),kf()});const Rn={staticIcon:!1,align:"bottom",selector:'div[class*="language-"]',delay:400,color:"var(--c-brand)",backgroundTransition:!0,backgroundTransitionColor:"var(--code-bg-color)",successTextColor:"var(--c-brand-light)",successText:"Copied!"};var mh=ir(()=>{const e=Yt(),t=()=>{setTimeout(()=>{document.querySelectorAll(Rn.selector).forEach(n=>{if(n.classList.contains(`code-copy-added-${Rn.align}`)||n.querySelector("pre, code[class*='pre-']")===null)return;const r=n.querySelector("pre, code[class*='pre-']"),s=Gc(fi,{parent:n,code:r.innerText,options:Rn}),a=document.createElement("div");n.appendChild(a),s.mount(a),n.classList.add(`code-copy-added-${Rn.align}`)})},Rn.delay+100)};return qe(()=>{t(),window.addEventListener("vuepress-plugin-clipboard-update-event",t)}),cn(()=>{window.removeEventListener("vuepress-plugin-clipboard-update-event",t)}),ya(()=>{t()}),Xe(()=>e.value.path,t),t});const gh=[dh,hh,ph,mh],vh=[["v-8daa1a0e","/",{title:"intro"},["/index.html","/index.md"]],["v-77f0ef68","/data.table/",{title:"data.table"},["/data.table/index.html","/data.table/README.md"]],["v-37b893e5","/fixest/",{title:"fixest"},["/fixest/index.html","/fixest/README.md"]],["v-1c385113","/extras/",{title:"extras"},["/extras/index.html","/extras/README.md"]],["v-3706649a","/404.html",{title:""},["/404"]]],yh=vh.reduce((e,[t,n,r,s])=>(e.push({name:t,path:n,component:Jo,meta:r},...s.map(a=>({path:a,redirect:n}))),e),[{name:"404",path:"/:catchAll(.*)",component:Jo}]),bh=(e,t)=>{const n=pe(()=>bu(Tt.value.locales,t.currentRoute.value.path)),r=pe(()=>xu(Tt.value,n.value)),s=pe(()=>ou(ut.value)),a=pe(()=>mu(ut.value,r.value)),o=pe(()=>hu(a.value,s.value,r.value)),i=pe(()=>vu(ut.value));e.provide(bs,n),e.provide(Xo,r),e.provide(Wo,s),e.provide(pu,a),e.provide(Yo,o),e.provide(Go,i),Object.defineProperties(e.config.globalProperties,{$frontmatter:{get:()=>s.value},$headTitle:{get:()=>a.value},$lang:{get:()=>i.value},$page:{get:()=>ut.value},$routeLocale:{get:()=>n.value},$site:{get:()=>Tt.value},$siteLocale:{get:()=>r.value},$withBase:{get:()=>Ru}})},wh=e=>{e.component("ClientOnly",eu),e.component("Content",ws)},_h=Xc,xh=md,Eh=async()=>{const e=_h({name:"VuepressApp",setup(){Su();for(const n of gh)n();return()=>[le($o),...rh.map(n=>le(n))]}}),t=Zd({history:xh(du(Tt.value.base)),routes:yh,scrollBehavior:(n,r,s)=>s||(n.hash?{el:n.hash}:{top:0})});t.beforeResolve(async(n,r)=>{var s;(n.path!==r.path||r===tt)&&([ut.value]=await Promise.all([su(n.name),(s=qo[n.name])===null||s===void 0?void 0:s.__asyncLoader()]))}),bh(e,t),wh(e);for(const n of eh)await n({app:e,router:t,siteData:Tt});return e.use(t),{app:e,router:t}};Eh().then(({app:e,router:t})=>{t.isReady().then(()=>{e.mount("#app")})});export{_u as A,Ih as B,Oh as C,le as D,Ru as E,Re as F,eu as G,ft as H,ye as I,Xe as J,Ch as K,Ah as L,uu as M,du as N,or as O,he as P,Ef as Q,qe as R,Qt as S,is as T,Yt as U,Mh as V,Ko as W,$r as X,Cf as Y,Mf as _,Nt as a,ge as b,Gn as c,Eh as createVueApp,Yr as d,kh as e,Ne as f,ks as g,Ze as h,au as i,pe as j,G as k,Rh as l,Th as m,vs as n,_t as o,pl as p,Vr as q,ec as r,oc as s,pr as t,yu as u,Ba as v,da as w,cu as x,Ph as y,Lh as z};

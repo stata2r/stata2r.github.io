@@ -561,7 +561,7 @@ dat[1, distance := 0]
 
 ## Modify multiple variables (same function)
 cols = c('origin','dest')
-dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')),  ### Note: before R 4.1 you need function(x) instead of the \(x) shorthand
+dat[, (cols) := lapply(.SD, \(x) paste(x,' Airport')),  ### Note: before R 4.1 you need function(x) instead of the \(x) shorthand
     .SDcols = cols]
 ```
 </div>
@@ -782,10 +782,6 @@ dat[, .(unique_dest = uniqueN(dest)), by = origin]
 <div class="code--container">
 <div>
 
-```stata
-
-
-```
 </div>
 <div>
 <i>Bonus: You can also do complicated (grouped) aggregations as part of a `dcast`
