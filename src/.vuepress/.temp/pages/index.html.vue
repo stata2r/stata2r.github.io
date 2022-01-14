@@ -2,10 +2,10 @@
 <p>The goal of this site is to provide a simple 'on-ramp' to R for Stata users.
 There are two main pages (✌️📄) on this site:</p>
 <ol>
-<li>Data wrangling (🗄🧹) with <a href="/data.table/" target="_blank" rel="noopener noreferrer"><strong>data.table</strong><ExternalLinkIcon/></a></li>
-<li>Regression analysis (💻📈) with <a href="/fixest/" target="_blank" rel="noopener noreferrer"><strong>fixest</strong><ExternalLinkIcon/></a></li>
+<li>Data wrangling (🗄🧹) with <RouterLink to="/data.table/"><strong>data.table</strong></RouterLink></li>
+<li>Regression analysis (💻📈) with <RouterLink to="/fixest/"><strong>fixest</strong></RouterLink></li>
 </ol>
-<p>There are <a href="/extras/" target="_blank" rel="noopener noreferrer"><strong>other great packages</strong><ExternalLinkIcon/></a>
+<p>There are <RouterLink to="/extras/"><strong>other great packages</strong></RouterLink>
 that work well and are easy to use, but <strong>data.table</strong> and <strong>fixest</strong> are
 blazingly fast (🏃🏻💨) and highly powerful (💪🏻😎).</p>
 <p>Plus, they are flexible (👌✨) and can help you avoid R's &quot;package overload&quot;.

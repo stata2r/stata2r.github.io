@@ -9,7 +9,7 @@ export const data = {
   "excerpt": "",
   "headers": [],
   "git": {
-    "updatedTime": 1641968611000,
+    "updatedTime": 1642198712000,
     "contributors": [
       {
         "name": "Kyle F. Butts",

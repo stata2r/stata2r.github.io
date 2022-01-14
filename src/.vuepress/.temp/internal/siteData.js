@@ -1,5 +1,5 @@
 export const siteData = {
-  "base": "/docstest.github.io/",
+  "base": "/",
   "lang": "en-US",
   "title": "Stata2R",
   "description": "",

@@ -1,5 +1,5 @@
 module.exports = {
-    base: "/docstest.github.io/",
+    base: "/",
     title: "Stata2R",
 	plugins: [
 		[
