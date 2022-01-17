@@ -234,7 +234,62 @@ feols(wage ~ educ + .[ctrls] | statefips)
 ```
 </div>
 </div>
-                     
+          
+### Nonlinear models
+
+<div class='code--container'>
+<div>
+
+```stata
+xtset statefips
+logit marr age black hisp
+* Attempting to replicate the feglm() model with fixed effects
+* at right using xtlogit or xtprobit leads to numerical overflow or matsize issues
+
+xtpoisson educ age black hisp i.year, fe
+```
+</div>
+<div>
+
+```r
+# feglm() runs all sorts of GLM models, with the same FE features as feols()!
+est1 = feglm(marr ~ age + black + hisp, data = dat, family = binomial(link = 'logit'))
+est2 = feglm(marr ~ age + black + hisp | statefips + year, data = dat, family = binomial(link = 'probit'))
+
+# fepois() is there for Poisson regression
+est3 = fepois(educ ~ age + black + hisp | statefips + year, data = dat)
+```
+</div>
+</div>	  
+
+### Difference-in-differences
+
+<p>In addition to the ability to estimate a difference-in-differences design using two-way fixed effects (if the design is appropriate for that - no staggered treatment, for instance), `fixest` offers several other DID-specific tools. The below examples use generic data sets, since the CPS data used in the rest of this page is not appropriate for DID.</p>
+
+<div class='code--container'>
+<div>
+
+```stata
+* No immediate Stata equivalent to did_means that we know of,
+* although you could replicate much of it by hand with an elaborate call to table
+
+* Sun and Abraham can be estimated using the 
+* eventstudyinteract package on ssc
+```
+</div>
+<div>
+
+```r
+# did_means provides tables of means, SEs, and treatment/control and pre/post differences for 2x2 DID
+did_means(outcome + control ~ treat | post)
+
+# sunab() produces interactions of the type that allow you to estimate the Sun & Abraham model
+# for staggered treatment timing, and automatically get average treatment effects for each relative period
+sunab_model = feols(y ~ control + sunab(year_treated, year))
+etable(sunab_model)
+```
+</div>
+</div>	  
                      
 ## Interactions
 
@@ -509,6 +564,31 @@ etable(est_mult)
 ```
 </div>
 </div>
+
+### Joint test of coefficients
+
+<div class='code--container'>
+<div>
+
+```stata
+* Rename so we can use the wildcard later
+rename (black hisp) (raceeth_black raceeth_hisp)
+regress wage educ age raceeth_black raceeth_hisp marr 
+testparm raceeth_black raceeth_hisp
+testparm raceeth_*
+```
+</div>
+<div>
+
+```r
+# Rename so we can use a regular expression later
+setnames(dat, c('black','hisp'),c('raceeth_black','raceeth_hisp'))
+est1 = feols(wage ~ educ + age + raceeth_black + raceeth_hisp + marr, dat) 
+wald(est1, c('raceeth_black','raceeth_hisp'))
+wald(est1, 'raceeth_')
+```
+</div>
+</div>
            
 ### Coefficient plot
 
@@ -531,7 +611,30 @@ coefplot(list(est1, est2))
 </div>
 </div>
                      
-                     
+### Interaction Plot
+
+<div class='code--container'>
+<div>
+
+```stata
+regress wage hisp##c.age
+
+* Show how effect differs by group
+margins hisp, dydx(age)
+marginsplot
+```
+</div>
+<div>
+
+```r
+est1 = feols(wage ~ i(hisp, age), dat) 
+
+# Show how effect differs by group
+iplot(est1)
+```
+</div>
+</div>        
+		
 ## Panel
 
 Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.
