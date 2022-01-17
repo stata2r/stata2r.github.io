@@ -9,8 +9,9 @@ designed from the ground up in C++ to make running regressions fast and
 incredibly easy. It provides in-built support for a variety of linear and 
 non-linear models, as well as regression tables and plotting methods. 
 
-Before continuing, make sure that you have installed **fixest**. You only 
+Before continuing, make sure that you have installed `fixest`. You only 
 have to do this once (or as often as you want to update the package).
+
 <div class="code--container grid-cols-1">
 <div>
 
@@ -25,7 +26,7 @@ install.packages(fixest)
 </div>
 </div>
 
-Once **fixest** is installed, don't forget to load it whenever you want to 
+Once `fixest` is installed, don't forget to load it whenever you want to 
 use it. Unlike Stata, you have to re-load a package every time you start a new R 
 session.
 
@@ -76,7 +77,7 @@ dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.githu
                      
 ## Models
 
-<p>Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify <i>which</i> dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that <span class="font-semibold">fixest</span> allows you to set various <span class="text-[#4c807b] underline"><a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a></span>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.</p>
+Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify *which* dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that **fixest** allows you to set various <a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.
 
            
 ### Simple model
@@ -181,20 +182,20 @@ feols(wage ~ educ | countyfips^year,
 
 ```stata
 ivreg 2sls wage (educ = age) 
-ivreg 2sls wage mar (educ = age) 
+ivreg 2sls wage marr(educ = age) 
 
 * With fixed effects 
-ivreghdfe 2sls wage mar (educ = age), absorb(countyfips)
+ivreghdfe 2sls wage marr(educ = age), absorb(countyfips)
 ```
 </div>
 <div>
 
 ```r
 feols(wage ~ 1 | educ ~ age, dat)  
-feols(wage ~ mar | educ ~ age, dat) 
+feols(wage ~ marr | educ ~ age, dat) 
 
 # With fixed effects (IV 1st stage always comes last) 
-feols(wage ~ mar | countyfips | educ ~ age, dat)
+feols(wage ~ marr | countyfips | educ ~ age, dat)
 ```
 </div>
 </div>
@@ -227,7 +228,7 @@ feols(wage ~ educ + ..('ac'), dat)
 # `?setFixest_estimation`. Example (reminder) where 
 # you set your dataset globally, so you don't have to 
 # retype `data = ...` anymore. 
-setFixed_estimation(data = dat) 
+setFixest_estimation(data = dat) 
 feols(wage ~ educ) 
 feols(wage ~ educ + .[ctrls] | statefips) 
 # Etc.
@@ -264,7 +265,7 @@ est3 = fepois(educ ~ age + black + hisp | statefips + year, data = dat)
 
 ### Difference-in-differences
 
-<p>In addition to the ability to estimate a difference-in-differences design using two-way fixed effects (if the design is appropriate for that - no staggered treatment, for instance), `fixest` offers several other DID-specific tools. The below examples use generic data sets, since the CPS data used in the rest of this page is not appropriate for DID.</p>
+In addition to the ability to estimate a difference-in-differences design using two-way fixed effects (if the design is appropriate for that - no staggered treatment, for instance), `fixest` offers several other DID-specific tools. The below examples use generic data sets, since the CPS data used in the rest of this page is not appropriate for DID.
 
 <div class='code--container'>
 <div>
@@ -426,7 +427,7 @@ reg wage educ, vce(hc3)
 
 ```r
 feols(wage ~ educ, dat, vcov = 'hc1') 
-feols(wage ~ educ, dat, vcov = sandwich:vcovHC) 
+feols(wage ~ educ, dat, vcov = sandwich::vcovHC) 
 
 # Note: You can also adjust the SEs of an existing model 
 m = feols(wage ~ educ, dat) 
@@ -449,7 +450,7 @@ ivreghdfe wage educ, bw(auto) vce(robust)
 
 ```r
 feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
-feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
+feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)
 ```
 </div>
 </div>
@@ -491,7 +492,7 @@ feols(wage ~ educ | countyfips^year,
 m = feols(wage ~ educ | countyfips + year, dat) 
 m # Clustered by countyfips (default) 
 summary(m, vcov = 'twoway') 
-summmary(m, vcov = ~countyfips^year) 
+summary(m, vcov = ~countyfips^year) 
 # etc.
 ```
 </div>
@@ -571,21 +572,15 @@ etable(est_mult)
 <div>
 
 ```stata
-* Rename so we can use the wildcard later
-rename (black hisp) (raceeth_black raceeth_hisp)
-regress wage educ age raceeth_black raceeth_hisp marr 
-testparm raceeth_black raceeth_hisp
-testparm raceeth_*
+regress wage educ age black hisp marr 
+testparm black hisp
 ```
 </div>
 <div>
 
 ```r
-# Rename so we can use a regular expression later
-setnames(dat, c('black','hisp'),c('raceeth_black','raceeth_hisp'))
-est1 = feols(wage ~ educ + age + raceeth_black + raceeth_hisp + marr, dat) 
-wald(est1, c('raceeth_black','raceeth_hisp'))
-wald(est1, 'raceeth_')
+est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
+wald(est1, c('black','hisp'))
 ```
 </div>
 </div>

@@ -42,7 +42,7 @@ Healy's wonderful [_Data Visualization_](https://socviz.co/).
 
 ```stata
 twoway scatter yvar xvar
- twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
+twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
         (scatter yvar xvar if group == 2, mc(red))
 ```
 </div>
@@ -94,7 +94,7 @@ collapse (mean) arr_delay, by(carrier)
 
 ```r
 # Subset by rows and then columns
- dat %>%   # `%>%` is the tidyverse "pipe" operator
+dat %>%   # `%>%` is the tidyverse "pipe" operator
    filter(var1=="value") %>%
    select(var1, var2, var3)
 # Create a new variable by group
@@ -185,7 +185,7 @@ str_detect(string, "regex")
 
 ## collapse: Extra convenience functions and super fast aggregations
 
-p>Sure, we've gone on and on about how fast `data.table` is compared to just about everything else. But there is another R package that can boast even faster computation times for certain grouped calculations and transformations, and that's <a href = "https://sebkrantz.github.io/collapse/index.html" >collapse</a>. The `collapse` package doesn't try to do everything that `data.table` does. But the two <span ><a href="https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html">play very well together</a></span> and the former offers some convenience functions like `descr` and `collap`, which essentially mimic the equivalent functions in Stata and might be particularly appealing to readers of this guide. (P.S. If you'd like to load `data.table` and `collapse` at the same time, plus some other high-performance packages, check out the <a href = "https://sebkrantz.github.io/fastverse/index.html" >fastverse</a>.)
+p>Sure, we've gone on and on about how fast `data.table` is compared to just about everything else. But there is another R package that can boast even faster computation times for certain grouped calculations and transformations, and that's <a href = "https://sebkrantz.github.io/collapse/index.html" >collapse</a>. The `collapse` package doesn't try to do everything that `data.table` does. But the two <a href="https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html">play very well together</a> and the former offers some convenience functions like `descr` and `collap`, which essentially mimic the equivalent functions in Stata and might be particularly appealing to readers of this guide. (P.S. If you'd like to load `data.table` and `collapse` at the same time, plus some other high-performance packages, check out the <a href = "https://sebkrantz.github.io/fastverse/index.html" >fastverse</a>.)
 
 
 

@@ -47,6 +47,37 @@ you're actually changing, without wasting memory and time on the parts that
 aren't being changed. Any time in the below cheat sheet you see a function with 
 the word `set` in it, or the `:=` operator, that's an in-place operation.
 
+Before continuing, make sure that you have installed `data.table`. You only 
+have to do this once (or as often as you want to update the package).
+
+<div class="code--container grid-cols-1">
+<div>
+
+```r
+# Install from CRAN (recommended) 
+install.packages(data.table)
+
+# Install the development version from GitHub (advanced) 
+# Requires Rtools and the remotes package 
+# remotes::install_github('Rdatatable/data.table')
+```
+</div>
+</div>
+
+Once `data.table` is installed, don't forget to load it whenever you want to 
+use it. Unlike Stata, you have to re-load a package every time you start a new R 
+session.
+
+<div class="code--container grid-cols-1">
+<div>
+
+```r
+# Load data.table into our current R session
+library(data.table)
+```
+</div>
+</div>
+
                      
                      
 ## Data I/O
@@ -90,7 +121,7 @@ fwrite(dat, 'flightdata.csv')
 # These commands require the `arrow` package 
 pfiles = dir(pattern = ".parquet") 
 rbindlist(lapply(pfiles, arrow::read_parquet)) 
-rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10)
+rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10))
 ```
 </div>
 </div>
@@ -414,7 +445,7 @@ dat[, let(dist_sq=distance^2, dist_cu=distance^3)] # dev version only
 # We can also chain back-to-back dat[...][...] 
 # (this holds for any data.table operation) 
 dat[, dist_sq := distance^2][
-    , dist_cu := distance*dist_sq)]
+    , dist_cu := distance*dist_sq]
 ```
 </div>
 </div>
@@ -606,7 +637,7 @@ dat[, any_delay := fcoalesce(.SD), .SDcols = patterns('*_delay')]
 
 # Custom row calculations: 
 dat[, new_var := mapply(custom_func, var1, var2)] 
-dat[, new_var := custom_func(var1, var2)), by=.I] # dev version only
+dat[, new_var := custom_func(var1, var2), by=.I] # dev version only
 
 
 ```
@@ -764,7 +795,7 @@ tabulate origin
 dat[, .N] # Or: nrow(dat) 
 dat[month==10, .N] # Or: nrow(dat[month==10]
 # Count rows by group:
-dat[, .N, by = origin])
+dat[, .N, by = origin]
 ```
 </div>
 </div>
