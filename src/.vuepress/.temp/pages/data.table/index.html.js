@@ -213,38 +213,44 @@ export const data = {
       "children": [
         {
           "level": 3,
-          "title": "Import and prep secondary dataset",
-          "slug": "import-and-prep-secondary-dataset",
+          "title": "Import and prep secondary dataset on airport characterists",
+          "slug": "import-and-prep-secondary-dataset-on-airport-characterists",
           "children": []
         },
         {
           "level": 3,
-          "title": "Inner merge",
-          "slug": "inner-merge",
+          "title": "Inner merge (i.e. keep row matches only)",
+          "slug": "inner-merge-i-e-keep-row-matches-only",
           "children": []
         },
         {
           "level": 3,
-          "title": "Full merge",
-          "slug": "full-merge",
+          "title": "Full merge (i.e. keep all rows)",
+          "slug": "full-merge-i-e-keep-all-rows",
           "children": []
         },
         {
           "level": 3,
-          "title": "Left merge",
-          "slug": "left-merge",
+          "title": "Left merge (i.e. keep all rows from \"main\" dataset)",
+          "slug": "left-merge-i-e-keep-all-rows-from-main-dataset",
           "children": []
         },
         {
           "level": 3,
-          "title": "Right merge",
-          "slug": "right-merge",
+          "title": "Right merge (i.e. keep all rows from \"secondary\" dataset)",
+          "slug": "right-merge-i-e-keep-all-rows-from-secondary-dataset",
           "children": []
         },
         {
           "level": 3,
-          "title": "Anti merge",
-          "slug": "anti-merge",
+          "title": "Anti merge (i.e. keep non-matched rows only)",
+          "slug": "anti-merge-i-e-keep-non-matched-rows-only",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Advanced merges (tips and tricks)",
+          "slug": "advanced-merges-tips-and-tricks",
           "children": []
         },
         {
@@ -252,25 +258,12 @@ export const data = {
           "title": "Appending data",
           "slug": "appending-data",
           "children": []
-        },
-        {
-          "level": 3,
-          "title": "Advanced data.table merges (tips and tricks)",
-          "slug": "advanced-data-table-merges-tips-and-tricks",
-          "children": []
         }
       ]
     }
   ],
   "git": {
-    "updatedTime": 1642198712000,
-    "contributors": [
-      {
-        "name": "Kyle F. Butts",
-        "email": "buttskyle96@gmail.com",
-        "commits": 1
-      }
-    ]
+    "updatedTime": 1642398703000
   },
   "filePathRelative": "data.table/README.md"
 }

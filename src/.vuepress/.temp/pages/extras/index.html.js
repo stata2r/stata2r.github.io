@@ -54,47 +54,27 @@ export const data = {
     },
     {
       "level": 2,
-      "title": "car and nlWaldTest for Coefficient Combinations",
-      "slug": "car-and-nlwaldtest-for-coefficient-combinations",
+      "title": "collapse: Extra convenience functions and super fast aggregations",
+      "slug": "collapse-extra-convenience-functions-and-super-fast-aggregations",
       "children": [
         {
           "level": 3,
-          "title": "Basic Combinations",
-          "slug": "basic-combinations",
+          "title": "Quick Summaries",
+          "slug": "quick-summaries",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Multiple grouped aggregations",
+          "slug": "multiple-grouped-aggregations",
           "children": []
         }
       ]
     },
     {
       "level": 2,
-      "title": "modelsummary for Regression Tables",
-      "slug": "modelsummary-for-regression-tables",
-      "children": [
-        {
-          "level": 3,
-          "title": "Regression Table",
-          "slug": "regression-table",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "title": "marginaleffects for Marginal Effects",
-      "slug": "marginaleffects-for-marginal-effects",
-      "children": [
-        {
-          "level": 3,
-          "title": "Basic Logit Marginal Effects",
-          "slug": "basic-logit-marginal-effects",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "title": "sandwich for Additional Standard Error Adjustments",
-      "slug": "sandwich-for-additional-standard-error-adjustments",
+      "title": "sandwich: More Standard Error Adjustments",
+      "slug": "sandwich-more-standard-error-adjustments",
       "children": [
         {
           "level": 3,
@@ -106,40 +86,78 @@ export const data = {
     },
     {
       "level": 2,
-      "title": "lme4 for Random Effects",
-      "slug": "lme4-for-random-effects",
+      "title": "modelsummary: Summary tables, regression tables, and more",
+      "slug": "modelsummary-summary-tables-regression-tables-and-more",
       "children": [
         {
           "level": 3,
-          "title": "Random Effects Models",
-          "slug": "random-effects-models",
+          "title": "Summary Table",
+          "slug": "summary-table",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Regression Table",
+          "slug": "regression-table",
           "children": []
         }
       ]
     },
     {
       "level": 2,
-      "title": "collapse for Even Faster Grouped Calculations",
-      "slug": "collapse-for-even-faster-grouped-calculations",
+      "title": "lme4: Random effects and mixed models",
+      "slug": "lme4-random-effects-and-mixed-models",
       "children": [
         {
           "level": 3,
-          "title": "Means of Everything",
-          "slug": "means-of-everything",
+          "title": "Random Effects and Mixed Models",
+          "slug": "random-effects-and-mixed-models",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "marginaleffects: Marginal effects, constrasts, etc.",
+      "slug": "marginaleffects-marginal-effects-constrasts-etc",
+      "children": [
+        {
+          "level": 3,
+          "title": "Basic Logit Marginal Effects",
+          "slug": "basic-logit-marginal-effects",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "multcomp and nlWaldTest: Joint coefficient tests",
+      "slug": "multcomp-and-nlwaldtest-joint-coefficient-tests",
+      "children": [
+        {
+          "level": 3,
+          "title": "Test other null hypotheses and coefficient combinations",
+          "slug": "test-other-null-hypotheses-and-coefficient-combinations",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "sf: Geospatial operations",
+      "slug": "sf-geospatial-operations",
+      "children": [
+        {
+          "level": 3,
+          "title": "Simple Map",
+          "slug": "simple-map",
           "children": []
         }
       ]
     }
   ],
   "git": {
-    "updatedTime": 1642198712000,
-    "contributors": [
-      {
-        "name": "Kyle F. Butts",
-        "email": "buttskyle96@gmail.com",
-        "commits": 1
-      }
-    ]
+    "updatedTime": 1642398703000
   },
   "filePathRelative": "extras/README.md"
 }

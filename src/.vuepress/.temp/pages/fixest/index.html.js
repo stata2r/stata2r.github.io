@@ -10,62 +10,93 @@ export const data = {
   "headers": [
     {
       "level": 2,
-      "title": "Formula Creation",
-      "slug": "formula-creation",
+      "title": "Introduction to Fixest",
+      "slug": "introduction-to-fixest",
+      "children": []
+    },
+    {
+      "level": 2,
+      "title": "Models",
+      "slug": "models",
       "children": [
         {
           "level": 3,
-          "title": "Fixed Effects",
-          "slug": "fixed-effects",
+          "title": "Simple model",
+          "slug": "simple-model",
           "children": []
         },
         {
           "level": 3,
-          "title": "Categorical Variables",
+          "title": "Categorical variables",
           "slug": "categorical-variables",
           "children": []
         },
         {
           "level": 3,
-          "title": "Interact Categoricals",
-          "slug": "interact-categoricals",
+          "title": "Fixed effects",
+          "slug": "fixed-effects",
           "children": []
         },
         {
           "level": 3,
-          "title": "Interact Categorical and Continuous",
-          "slug": "interact-categorical-and-continuous",
+          "title": "Instrumental variables",
+          "slug": "instrumental-variables",
           "children": []
         },
         {
           "level": 3,
-          "title": "Macros",
-          "slug": "macros",
+          "title": "Macros, wildcards and shortcuts",
+          "slug": "macros-wildcards-and-shortcuts",
           "children": []
         },
         {
           "level": 3,
-          "title": "Wildcard",
-          "slug": "wildcard",
+          "title": "Nonlinear models",
+          "slug": "nonlinear-models",
           "children": []
         },
         {
           "level": 3,
-          "title": "Variables x1 ... x4",
-          "slug": "variables-x1-x4",
-          "children": []
-        },
-        {
-          "level": 3,
-          "title": "Regex",
-          "slug": "regex",
+          "title": "Difference-in-differences",
+          "slug": "difference-in-differences",
           "children": []
         }
       ]
     },
     {
       "level": 2,
-      "title": "Standard Errors",
+      "title": "Interactions",
+      "slug": "interactions",
+      "children": [
+        {
+          "level": 3,
+          "title": "Interact continuous variables",
+          "slug": "interact-continuous-variables",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Interact categorical variables",
+          "slug": "interact-categorical-variables",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Interact categorical with continuous variables",
+          "slug": "interact-categorical-with-continuous-variables",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Interact fixed effects",
+          "slug": "interact-fixed-effects",
+          "children": []
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "title": "Standard errors",
       "slug": "standard-errors",
       "children": [
         {
@@ -82,19 +113,13 @@ export const data = {
         },
         {
           "level": 3,
-          "title": "Cluster",
-          "slug": "cluster",
+          "title": "Clustered",
+          "slug": "clustered",
           "children": []
         },
         {
           "level": 3,
-          "title": "Two-way",
-          "slug": "two-way",
-          "children": []
-        },
-        {
-          "level": 3,
-          "title": "Conley Standard Errors",
+          "title": "Conley standard errors",
           "slug": "conley-standard-errors",
           "children": []
         }
@@ -102,77 +127,63 @@ export const data = {
     },
     {
       "level": 2,
-      "title": "Postestimation",
-      "slug": "postestimation",
+      "title": "Presentation",
+      "slug": "presentation",
       "children": [
         {
           "level": 3,
-          "title": "Regression Table",
+          "title": "Regression table",
           "slug": "regression-table",
           "children": []
         },
         {
           "level": 3,
-          "title": "Coefficient Plot",
+          "title": "Joint test of coefficients",
+          "slug": "joint-test-of-coefficients",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Coefficient plot",
           "slug": "coefficient-plot",
+          "children": []
+        },
+        {
+          "level": 3,
+          "title": "Interaction Plot",
+          "slug": "interaction-plot",
           "children": []
         }
       ]
     },
     {
       "level": 2,
-      "title": "Panel Data",
-      "slug": "panel-data",
+      "title": "Panel",
+      "slug": "panel",
       "children": [
         {
           "level": 3,
-          "title": "Lag Variables",
+          "title": "Lag variables",
           "slug": "lag-variables",
           "children": []
         },
         {
           "level": 3,
-          "title": "Lead Variables",
+          "title": "Lead variables",
           "slug": "lead-variables",
           "children": []
         },
         {
           "level": 3,
-          "title": "First Difference",
+          "title": "First difference",
           "slug": "first-difference",
-          "children": []
-        }
-      ]
-    },
-    {
-      "level": 2,
-      "title": "Instrumental Variables",
-      "slug": "instrumental-variables",
-      "children": [
-        {
-          "level": 3,
-          "title": "Instrumental Variables",
-          "slug": "instrumental-variables-1",
-          "children": []
-        },
-        {
-          "level": 3,
-          "title": "with Fixed Effects",
-          "slug": "with-fixed-effects",
           "children": []
         }
       ]
     }
   ],
   "git": {
-    "updatedTime": 1642198712000,
-    "contributors": [
-      {
-        "name": "Kyle F. Butts",
-        "email": "buttskyle96@gmail.com",
-        "commits": 1
-      }
-    ]
+    "updatedTime": 1642411361000
   },
   "filePathRelative": "fixest/README.md"
 }

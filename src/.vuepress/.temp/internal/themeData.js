@@ -3,6 +3,7 @@ export const themeData = {
   "docsRepo": "https://github.com/stata2r/stata2r.github.io",
   "docsBranch": "main",
   "docsDir": "docs",
+  "contributors": false,
   "editLinkPattern": ":repo/edit/:branch/:path",
   "editLinks": true,
   "search": true,
@@ -35,7 +36,6 @@ export const themeData = {
   "editLinkText": "Edit this page",
   "lastUpdated": true,
   "lastUpdatedText": "Last Updated",
-  "contributors": true,
   "contributorsText": "Contributors",
   "notFound": [
     "There's nothing here.",

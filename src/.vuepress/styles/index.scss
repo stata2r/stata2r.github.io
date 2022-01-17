@@ -1,5 +1,6 @@
 :root {
 	--code-bg-color: #191724;
+    --code-ln-wrapper-width: 2rem;
     
     // brand colors
 	--c-brand: #eb6f92;
@@ -71,7 +72,7 @@ div[class*="language-"].line-numbers-mode .line-numbers {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
 }
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1080px) {
 .code--container {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 	column-gap: 2rem;

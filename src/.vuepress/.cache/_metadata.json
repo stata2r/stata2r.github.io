@@ -1,30 +1,30 @@
 {
-  "hash": "4700f71e",
-  "browserHash": "3918e1e7",
+  "hash": "b1dd9a25",
+  "browserHash": "74edfcc7",
   "optimized": {
     "vue": {
-      "file": "/Users/kylebutts/Desktop/stata2r_vuepress/src/.vuepress/.cache/vue.js",
-      "src": "/Users/kylebutts/Desktop/stata2r_vuepress/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js",
+      "file": "/Users/kylebutts/Desktop/stata2r.github.io/src/.vuepress/.cache/vue.js",
+      "src": "/Users/kylebutts/Desktop/stata2r.github.io/node_modules/@vue/runtime-dom/dist/runtime-dom.esm-bundler.js",
       "needsInterop": false
     },
     "vue-router": {
-      "file": "/Users/kylebutts/Desktop/stata2r_vuepress/src/.vuepress/.cache/vue-router.js",
-      "src": "/Users/kylebutts/Desktop/stata2r_vuepress/node_modules/vue-router/dist/vue-router.esm-bundler.js",
+      "file": "/Users/kylebutts/Desktop/stata2r.github.io/src/.vuepress/.cache/vue-router.js",
+      "src": "/Users/kylebutts/Desktop/stata2r.github.io/node_modules/vue-router/dist/vue-router.esm-bundler.js",
       "needsInterop": false
     },
     "@vueuse/core": {
-      "file": "/Users/kylebutts/Desktop/stata2r_vuepress/src/.vuepress/.cache/@vueuse_core.js",
-      "src": "/Users/kylebutts/Desktop/stata2r_vuepress/node_modules/@vueuse/core/index.mjs",
+      "file": "/Users/kylebutts/Desktop/stata2r.github.io/src/.vuepress/.cache/@vueuse_core.js",
+      "src": "/Users/kylebutts/Desktop/stata2r.github.io/node_modules/@vueuse/core/index.mjs",
       "needsInterop": false
     },
     "nprogress": {
-      "file": "/Users/kylebutts/Desktop/stata2r_vuepress/src/.vuepress/.cache/nprogress.js",
-      "src": "/Users/kylebutts/Desktop/stata2r_vuepress/node_modules/nprogress/nprogress.js",
+      "file": "/Users/kylebutts/Desktop/stata2r.github.io/src/.vuepress/.cache/nprogress.js",
+      "src": "/Users/kylebutts/Desktop/stata2r.github.io/node_modules/nprogress/nprogress.js",
       "needsInterop": true
     },
     "@vuepress/shared": {
-      "file": "/Users/kylebutts/Desktop/stata2r_vuepress/src/.vuepress/.cache/@vuepress_shared.js",
-      "src": "/Users/kylebutts/Desktop/stata2r_vuepress/node_modules/@vuepress/shared/lib/esm/index.js",
+      "file": "/Users/kylebutts/Desktop/stata2r.github.io/src/.vuepress/.cache/@vuepress_shared.js",
+      "src": "/Users/kylebutts/Desktop/stata2r.github.io/node_modules/@vuepress/shared/lib/esm/index.js",
       "needsInterop": false
     }
   }
