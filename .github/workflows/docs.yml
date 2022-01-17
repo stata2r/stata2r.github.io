@@ -1,21 +1,32 @@
-name: CI
-on: [push]
+name: Build and Push Docs
+on: ["push", "pull_request"]
+
 jobs:
-  build:
-    name: Build Docs
+  build_job:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        cache: 'yarn'
-    - run: yarn install
-    - run: yarn docs:build
-    - uses: EndBug/add-and-commit@v7
-      with:
-        add: 'docs'
-        author_name: GH Actions
-        default_author: github_actions
-        message: 'docs:build from Github Actions'
-        pull: 'NO-PULL or --rebase --autostash ...'
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - name: Setup Yarn
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+
+      - name: Install Yarn
+        run: yarn install
+      
+      - name: Build Docs 
+        run: yarn docs:build
+
+      - name: bundle install
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: 'docs'
+          author_name: GH Actions
+          default_author: github_actions
+          message: 'docs:build from Github Actions'
