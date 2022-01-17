@@ -6,7 +6,12 @@ module.exports = {
             "@vuepress/plugin-shiki", { 
                 theme: "../../../src/rose-pine", 
                 langs: [
-                    "r", 
+                    {
+                        id: 'r',
+                        scopeName: 'source.r',
+                        path: '../../src/r.tmLanguage.json',
+                        aliases: []
+                    },
                     {
                         id: 'stata',
                         scopeName: 'source.stata',
@@ -36,6 +41,7 @@ module.exports = {
         docsRepo: 'https://github.com/stata2r/stata2r.github.io',
         docsBranch: 'main',
         docsDir: 'docs',
+        contributors: false,
         editLinkPattern: ':repo/edit/:branch/:path',
 		editLinks: true,
 		search: true,

@@ -8,47 +8,20 @@ title: fixest
 designed from the ground up in C++ to make running regressions fast and 
 incredibly easy. It provides in-built support for a variety of linear and 
 non-linear models, as well as regression tables and plotting methods. 
-While the package certainly doesn't cover every
-model that exists, there is a non-negligible subset of Stata users for whom
-every model they've ever needed to run is covered by **fixest**.
-
-This includes regular ol' linear regression in the `feols()` function, which
-builds off of the Base R standard regression function `lm()`, but also includes
-things like instrumental variables via 2SLS, and of course support for as many
-fixed effects as you'd like. **fixest** isn't limited to linear regression
-either, covering IV and fixed-effects support for a wide range of GLM models
-like logit, probit, Poisson, negative binomial, and so on in `feglm()` and
-`fepois()`.
-
-**fixest** covers all of this while being very fast. If you felt a speed boost
-going from Stata's `xtreg` to `reghdfe`, get ready for another significant 
-improvement when moving to **fixest**.
-
-You also get a _lot_ of convenience features. **fixest** makes it easy to 
-produce publication-ready regression tables, as well as coefficient and
-interaction-margin plots. You can select long lists of controls without having
-to type them all in, adjust standard errors for existings model on-the-fly,
-retrieve estimated fixed effects from your high-dimensional models, conduct Wald
-tests, adjust reference categories for factor variables, etc. etc.  You even get
-some stuff that's rather tricky in Stata, like multi-model estimations, basic
-and staggered difference-in-difference support, or Conley standard errors.
-
-Using fixest for regression starts with writing a formula. While there are
-plenty of bells and whistles to add, at its core regression formulas take the
-form `y ~ x1 + x2 | fe1 + fe2` where `y` is the outcome, `x1` and `x2` are
-predictors, and `fe1` and `fe2` are fixed effects.
 
 Before continuing, make sure that you have installed **fixest**. You only 
 have to do this once (or as often as you want to update the package).
-<div class="code--container">
+<div class="code--container grid-cols-1">
 <div>
 
 ```r
-# Install from CRAN (recommended)
-install.packages('fixest')
+# Install from CRAN (recommended) 
+install.packages(fixest)
+
+# Install the development version from GitHub (advanced) 
+# Requires Rtools and the remotes package 
+# remotes::install_github('lrberge/fixest')
 ```
-</div>
-<div>
 </div>
 </div>
 
@@ -56,7 +29,7 @@ Once **fixest** is installed, don't forget to load it whenever you want to
 use it. Unlike Stata, you have to re-load a package every time you start a new R 
 session.
 
-<div class="code--container">
+<div class="code--container grid-cols-1">
 <div>
 
 ```r
@@ -64,14 +37,21 @@ session.
 library(fixest)
 ```
 </div>
-<div>
-</div>
 </div>
 
+## Introduction to Fixest
 
-In the examples that follow, we will use a modified dataset from the CPS (plus
-some added variables for demonstration purposes). To load the data run the 
-following:
+The <a href="https://lrberge.github.io/fixest/index.html">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by `fixest.`
+
+This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. `fixest` isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
+
+`fixest` covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to `fixest.`
+
+You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in `fixest` with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
+
+Using `fixest` for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form `y ~ x1 + x2 | fe1 + fe2` where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.
+
+To begin, we will use a modified dataset from the CPS with some added variables for demonstration purposes. To load the data run the following:
 
 <div class="code--container">
 <div>
@@ -93,163 +73,288 @@ dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.githu
 
                      
                      
-## Formula Creation
+                     
+## Models
+
+<p>Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify <i>which</i> dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that <span class="font-semibold">fixest</span> allows you to set various <span class="text-[#4c807b] underline"><a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a></span>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.</p>
 
            
-### Fixed Effects
+### Simple model
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ i.fe
-reghdfe wage educ, absorb(fe)
+reg wage educ 
+reg wage educ age
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ + factor(countyfips), data = dat)
-feols(wage ~ educ | countyfips, dat)
+feols(wage ~ educ, data = dat) 
+feols(wage ~ educ + age, data = dat)
+
+# Aside 1: `data = ...` is always the first argument 
+# after the model formula. So many R users would just 
+# write: 
+feols(wage ~ educ, dat) 
+
+# Aside 2: You can also set your dataset globally so 
+# that you don't have to reference it each time. 
+setFixest_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + age) 
+# etc.
 ```
 </div>
 </div>
            
-### Categorical Variables
+### Categorical variables
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ i.treat
+reg wage educ i.treat 
+
 * Specifying a baseline:
-reghdfe wage educ ib1.treat
+reg wage educ ib1.treat
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ + factor(treat), dat)
+feols(wage ~ educ + i(treat), dat) 
+
 # Specifying a baseline:
 feols(wage ~ educ + i(treat, ref = 1), dat)
 ```
 </div>
 </div>
            
-### Interact Categoricals
+### Fixed effects
 
 <div class='code--container'>
 <div>
 
 ```stata
+reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
 
 
-reghdfe wage educ i.treat#i.hisp
+
+
+
+reghdfe wage educ, absorb(countyfips)  
+
+* Add more fixed effects... 
+reghdfe wage educ, absorb(countyfips year) \\\ 
+                   vce(cluster countyfips year) 
+reghdfe wage educ, absorb(countyfips#year) \\\ 
+                   vce(cluster countyfips#year)
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ + treat*hisp, data = dat) # base-R approach
-# Approach specific to fixest that makes iplot() work later if desired:
-feols(wage ~ educ + i(treat, i.hisp), dat)
+feols(wage ~ educ | countyfips, dat) 
+
+# Aside: fixest automatically clusters SEs by the first 
+# fixed effect (if there are any). We'll get to SEs 
+# later, but if you just want iid errors for a fixed 
+# effect model: 
+feols(wage ~ educ | countyfips, dat, vcov = 'iid') 
+
+# Add more fixed effects... 
+feols(wage ~ educ | countyfips + year, 
+      dat, vcov = ~countyfips + year) 
+feols(wage ~ educ | countyfips^year, 
+      dat) # defaults to vcov = ~countyfips^year
 ```
 </div>
 </div>
            
-### Interact Categorical and Continuous
+### Instrumental variables
 
 <div class='code--container'>
 <div>
 
 ```stata
+ivreg 2sls wage (educ = age) 
+ivreg 2sls wage mar (educ = age) 
 
-reghdfe wage educ c.age#i.treat
-
+* With fixed effects 
+ivreghdfe 2sls wage mar (educ = age), absorb(countyfips)
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educt + treat*age, data = dat) # base-R approach
-# Approach specific to fixest that makes iplot() work later if desired:
-feols(wage ~ educ + i(treat, age), dat)
+feols(wage ~ 1 | educ ~ age, dat)  
+feols(wage ~ mar | educ ~ age, dat) 
+
+# With fixed effects (IV 1st stage always comes last) 
+feols(wage ~ mar | countyfips | educ ~ age, dat)
 ```
 </div>
 </div>
            
-### Macros
+### Macros, wildcards and shortcuts
 
 <div class='code--container'>
 <div>
 
 ```stata
-local vars age black hisp marr 
-reghdfe wage educ `vars'
+local ctrls age black hisp marr 
+reg wage educ `ctrls' 
+
+reg wage educ x* 
+reg wage educ *sp  
+reg wage educ *ac*
 ```
 </div>
 <div>
 
 ```r
-vars = c("age", "black", "hisp", "marr") 
-feols(wage ~ educ + .[vars], dat)
-```
-</div>
-</div>
-           
-### Wildcard
+ctrls = c("age", "black", "hisp", "marr") 
+feols(wage ~ educ + .[ctrls], dat) 
 
-<div class='code--container'>
-<div>
+feols(wage ~ educ + ..('^x'), dat) # ^ = starts with 
+feols(wage ~ educ + ..('sp$'), dat) # $ = ends with 
+feols(wage ~ educ + ..('ac'), dat) 
 
-```stata
-reghdfe wage educ x*
-```
-</div>
-<div>
-
-```r
-feols(wage ~ educ + ..('x'), dat)
-```
-</div>
-</div>
-           
-### Variables x1 ... x4
-
-<div class='code--container'>
-<div>
-
-```stata
-reghdfe wage educ x1-x4
-```
-</div>
-<div>
-
-```r
-feols(wage ~ educ + x.[1:4], dat)
-```
-</div>
-</div>
-           
-### Regex
-
-<div class='code--container'>
-<div>
-
-```stata
- 
-```
-</div>
-<div>
-
-```r
-feols(wage ~ educ + ..('regex_exp'), dat)
+# Many more macro options. See `?setFixest_fml` and
+# `?setFixest_estimation`. Example (reminder) where 
+# you set your dataset globally, so you don't have to 
+# retype `data = ...` anymore. 
+setFixed_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + .[ctrls] | statefips) 
+# Etc.
 ```
 </div>
 </div>
                      
                      
-## Standard Errors
+## Interactions
+
+           
+### Interact continuous variables
+
+<div class='code--container'>
+<div>
+
+```stata
+reg wage c.educ#c.age 
+reg wage c.educ##c.age 
+
+* Polynomials 
+reg wage c.age#c.age 
+reg wage c.age##c.age 
+```
+</div>
+<div>
+
+```r
+feols(wage ~ educ:age, dat) 
+feols(wage ~ educ*age, dat) 
+
+# Polynomials 
+feols(wage ~ I(age^2), dat) 
+feols(wage ~ poly(age, 2, raw = TRUE))
+```
+</div>
+</div>
+           
+### Interact categorical variables
+
+<div class='code--container'>
+<div>
+
+```stata
+reg wage i.treat#i.hisp 
+
+
+
+
+reg wage i.treat i.treat#i.hisp
+reg wage i.treat##i.hisp
+```
+</div>
+<div>
+
+```r
+feols(wage ~ i(treat, i.hisp), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat)/factor(hisp), dat) 
+feols(wage ~ factor(treat)*factor(hisp), dat)
+```
+</div>
+</div>
+           
+### Interact categorical with continuous variables
+
+<div class='code--container'>
+<div>
+
+```stata
+reg wage i.treat#c.age 
+
+
+
+
+reg wage i.treat#c.age 
+reg wage i.treat i.treat#c.age 
+reg wage i.treat##c.age
+```
+</div>
+<div>
+
+```r
+feols(wage ~ i(treat, age), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat):age, dat) 
+feols(wage ~ factor(treat)/age, dat) 
+feols(wage ~ factor(treat)*age, dat)
+```
+</div>
+</div>
+           
+### Interact fixed effects
+
+<div class='code--container'>
+<div>
+
+```stata
+* Combine fixed effects 
+reghdfe wage educ, absorb(statefips#year) 
+
+* Varying slopes (e.g. time trend for each state) 
+? 
+```
+</div>
+<div>
+
+```r
+# Combine fixed effects 
+feols(wage ~ educ | statefips^year, dat) 
+
+# Varying slopes (e.g. time trend for each state) 
+feols(wage ~ educ | statefips[year], dat)
+```
+</div>
+</div>
+                     
+                     
+## Standard errors
+
+While you can specify standard errors inside the original `fixest` model call (just like Stata), a unique feature of R is that you can adjust errors for an exisiting model *on the fly*. This has <a href = "https://grantmcdermott.com/better-way-adjust-SEs">several benefits</a>, including being much more efficient since you don't have to re-estimate your whole model. We'll try to highlight examples of both approaches below.
 
            
 ### HC
@@ -258,13 +363,19 @@ feols(wage ~ educ + ..('regex_exp'), dat)
 <div>
 
 ```stata
-reghdfe wage educ, vce(hc1)
+reg wage educ, vce(robust) 
+reg wage educ, vce(hc3)
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ, dat, vcov = 'hc1')
+feols(wage ~ educ, dat, vcov = 'hc1') 
+feols(wage ~ educ, dat, vcov = sandwich:vcovHC) 
+
+# Note: You can also adjust the SEs of an existing model 
+m = feols(wage ~ educ, dat) 
+summary(m, vcov = 'hc1')
 ```
 </div>
 </div>
@@ -276,7 +387,7 @@ feols(wage ~ educ, dat, vcov = 'hc1')
 
 ```stata
 xtset id year
-ivreghdfe wage educ, bw(auto) robust
+ivreghdfe wage educ, bw(auto) vce(robust)
 ```
 </div>
 <div>
@@ -288,47 +399,56 @@ feols(wage ~ educ, dat, vcov = 'NW') # if panel id is already set (see below)
 </div>
 </div>
            
-### Cluster
+### Clustered
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ, cluster(countyfips)
+reghdfe wage educ, absorb(countyfips) \\\ 
+                   vce(cluster countyfips) 
+
+* Twoway clustering etc. 
+reghdfe wage educ, absorb(countyfips year) \\\ 
+                   vce(cluster countyfips year) 
+
+
+reghdfe wage educ, absorb(countyfips#year) \\\ 
+                   vce(cluster countyfips#year)
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ, dat, vcov = ~countyfips)
+feols(wage ~ educ | countyfips, dat) # Auto clusters by FE 
+# feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too 
+
+# Twoway clustering etc. 
+feols(wage ~ educ | countyfips + year, 
+      dat, vcov = ~countyfips + year) 
+# feols(wage ~ educ | countyfips + year, 
+#      dat, vcov = 'twoway') ## same as above 
+feols(wage ~ educ | countyfips^year, 
+      dat, vcov = ~countyfips^year) 
+
+# Reminder that you can adjust the SEs of existing 
+# fixest models on-the-fly. 
+m = feols(wage ~ educ | countyfips + year, dat) 
+m # Clustered by countyfips (default) 
+summary(m, vcov = 'twoway') 
+summmary(m, vcov = ~countyfips^year) 
+# etc.
 ```
 </div>
 </div>
            
-### Two-way
+### Conley standard errors
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ, cluster(countyfips year)
-```
-</div>
-<div>
-
-```r
-feols(wage ~ educ, dat, vcov = ~countyfips + year)
-```
-</div>
-</div>
-           
-### Conley Standard Errors
-
-<div class='code--container'>
-<div>
-
-```stata
-* Figuring this out: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
+* See: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
 ```
 </div>
 <div>
@@ -340,64 +460,84 @@ feols(wage ~ educ, dat, vcov = conley("25 mi"))
 </div>
                      
                      
-## Postestimation
+## Presentation
 
            
-### Regression Table
+### Regression table
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ age black hisp marr 
-eststore est1 
+reg wage educ age 
+eststo est1 
 esttab est1
 
-reghdfe wage educ age black hisp
-eststore est2
-esttab est1 est2
+reg wage educ age black hisp
+eststo est2
+esttab est1 est2 
+
+* There aren't great Stata equivalents for these next 
+* examples. You could mimic with a loop, but that will 
+* require more code and be slower (since your whole 
+* model has to be reestimated each time).
 ```
 </div>
 <div>
 
 ```r
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
+est1 = feols(wage ~ educ + age, dat) 
 etable(est1)
 
 
 est2 = feols(wage ~ educ + age + black + hisp, dat) 
-etable(est1,est2)
+etable(est1, est2) 
+
+
+# SEs for existing models can be adjusted on-the-fly 
+etable(est1, vcov = 'hc1') 
+
+# Report multiple SEs for the same model 
+etable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) 
+
+# Multi-model example 
+# (Two dep. vars, stepwise coefs, varying slopes, etc.) 
+est_mult = feols(c(wage, age) ~ educ + csw(hisp, black) | 
+                     statefips[year], 
+                 dat, vcov = ~statefips^year) 
+etable(est_mult)
 ```
 </div>
 </div>
            
-### Coefficient Plot
+### Coefficient plot
 
 <div class='code--container'>
 <div>
 
 ```stata
-reghdfe wage educ age black hisp marr  
-eststore est1 
-coefplot ...
+* Assume we have est1 and est2 from above 
+coefplot est1 
+coefplot est1 est2
 ```
 </div>
 <div>
 
 ```r
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
-coefplot(est1)
+# Assume we have est1 and est2 from above 
+coefplot(est1) 
+coefplot(list(est1, est2))
 ```
 </div>
 </div>
                      
                      
-## Panel Data
+## Panel
 
 Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.
 
            
-### Lag Variables
+### Lag variables
 
 <div class='code--container'>
 <div>
@@ -415,7 +555,7 @@ feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)
 </div>
 </div>
            
-### Lead Variables
+### Lead variables
 
 <div class='code--container'>
 <div>
@@ -433,7 +573,7 @@ feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)
 </div>
 </div>
            
-### First Difference
+### First difference
 
 <div class='code--container'>
 <div>
@@ -447,44 +587,6 @@ reg wage educ D.x
 
 ```r
 feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)
-```
-</div>
-</div>
-                     
-                     
-## Instrumental Variables
-
-           
-### Instrumental Variables
-
-<div class='code--container'>
-<div>
-
-```stata
-ivreghdfe 2sls wage (educ = age)
-```
-</div>
-<div>
-
-```r
-feols(wage ~ 1 | educ ~ age, dat)
-```
-</div>
-</div>
-           
-### with Fixed Effects
-
-<div class='code--container'>
-<div>
-
-```stata
-ivreghdfe 2sls wage (educ = age), absorb(countyfips)
-```
-</div>
-<div>
-
-```r
-feols(wage ~ 1 | countyfips | educ ~ age, dat)
 ```
 </div>
 </div>

@@ -181,77 +181,193 @@ str_detect(string, "regex")
 </div>
 </div>
 
-                     
-## car and nlWaldTest for Coefficient Combinations
+  
 
-One deficiency in R that can be surprising for Stata switchers is the lack of immediate access to complex postestimation coefficient tests like <span class="font-semibold">testparm</span>, <span class="font-semibold">lincom</span>, and <span class="font-semibold">nlcom</span> in Stata. <span class="font-semibold">fixest</span> already covers the <span class="font-semibold">testparm</span> equivalent with its <span class="font-semibold">wald()</span> function. But what about combinations of coefficients? <span class="font-semibold">multcomp</span> is a nice package that does both with <span class="font-semibold">glht()</span>, but isn't yet compatible with <span class="font-semibold">fixest</span>. So instead we have the <span class="font-semibold">car</span> package with <span class="font-semibold">linearHypothesis()</span> for tests of linear combinations of coefficients (although not confidence intervals), and <span class="font-semibold">nlWaldTest</span> for nonlinear combinations and confidence intervals.
+## collapse: Extra convenience functions and super fast aggregations
 
-           
-### Basic Combinations
+p>Sure, we've gone on and on about how fast `data.table` is compared to just about everything else. But there is another R package that can boast even faster computation times for certain grouped calculations and transformations, and that's <a href = "https://sebkrantz.github.io/collapse/index.html" >collapse</a>. The `collapse` package doesn't try to do everything that `data.table` does. But the two <span ><a href="https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html">play very well together</a></span> and the former offers some convenience functions like `descr` and `collap`, which essentially mimic the equivalent functions in Stata and might be particularly appealing to readers of this guide. (P.S. If you'd like to load `data.table` and `collapse` at the same time, plus some other high-performance packages, check out the <a href = "https://sebkrantz.github.io/fastverse/index.html" >fastverse</a>.)
+
+
+
+### Quick Summaries
 
 <div class='code--container'>
 <div>
 
 ```stata
-
-regress y x z
-lincom x + z
-nlcom _b[x]/_b[z]
+summarize
+describe
 ```
 </div>
 <div>
 
 ```r
-# This example incorporates the fixest function feols()
-m = feols(y ~ x + z, data = dat)
-linearHypothesis(m, 'x + z')
-nlWaldtest(m, 'b[2]/b[3]') # or nlConfint() instead for the confidence interval
+qsu(dat)
+descr(dat)
 ```
 </div>
 </div>
-                     
-                     
-## modelsummary for Regression Tables
 
-The <span class="font-semibold">fixest</span> package already has the <span class="font-semibold">etable()</span> function for generating regression tables. However, it only exports to text or LaTeX, and isn't intended to be highly customizable. That's where <span class="font-semibold">modelsummary</span> comes in! It works with all sorts of models, including those not from <span class="font-semibold">fixest</span>, it's highly customizable, and outputs in all sorts of formats. It also has a <span class="font-semibold">datasummary</span> function which works in similar ways to Stata's <span class="font-semibold">table</span>. How about for summary statistics tables? There's a wealth of options (which is nice; Stata makes exporting summary statistics tables a pain). Check out <a href = "https://lost-stats.github.io/Presentation/Tables/Summary_Statistics_Tables.html" class="font-semibold">this page</a> for an overview of some of them.
+### Multiple grouped aggregations
+
+<div class='code--container'>
+<div>
+
+```stata
+collapse (mean) var1, by(group1)
+collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
+```
+</div>
+<div>
+
+```r
+collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean
+collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
+```
+</div>
+</div>
+
+                     
+## sandwich: More Standard Error Adjustments
+
+The `fixest` package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the `sandwich` package, which comes with a long list of functions like `vcovBS()` for bootstrapped standard errors, or `vcovHAC()` for HAC. These can slot right into `fixest` estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... but you <a href = "http://datacolada.org/99">knew that</a>, right?
 
            
+### Linear Model Adjustments
+
+<div class='code--container'>
+<div>
+
+```stata
+* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)
+```
+</div>
+<div>
+
+```r
+# sandwich's vcovHC uses HC3 by default
+feols(Y ~ X + Z, dat,vcov = sandwich::vcovHC) 
+
+# Aside: Remember that you can also adjust the SEs 
+# for existing models on the fly 
+m = feols(Y ~ X + Z, dat) 
+summary(m, vcov = sandwich::vcovHC)
+```
+</div>
+</div>
+
+
+## modelsummary: Summary tables, regression tables, and more
+
+The `fixest` package already has the `etable()` function for generating regression tables. However, it is only really intended to work with models from the same package. So we also recommend checking out the fantastic <a href = "https://vincentarelbundock.github.io/modelsummary/">modelsummary</a> package. It works with all sorts of model objects, including those not from `fixest`, is incredibly customizable, and outputs to a bunch of different formats (PDF, HTML, DOCX, etc). Similarly, `modelsummary` has a wealth of options for producing publication-ready summary tables. Oh, and it produces coefficient plots too. Check out the <a href = "https://vincentarelbundock.github.io/modelsummary/">package website</a> for more.
+
+
+### Summary Table
+
+<div class='code--container'>
+<div>
+
+```stata
+* Summary stats table 
+estpost summarize 
+esttab, cells("count mean sd min max") nomtitle nonumber 
+
+* Balance table 
+by treat_var: eststo: estpost summarize 
+esttab, cells("mean sd") label nodepvar
+```
+</div>
+<div>
+
+```r
+# Summary stats table 
+datasummary_skim(dat) 
+
+
+# Balance table 
+datasummary_balance(~treat_var, dat)
+```
+</div>
+</div>
+
+
 ### Regression Table
 
 <div class='code--container'>
 <div>
 
 ```stata
+reg Y X Z 
+eststo est1 
+esttab est1b
 
-reghdfe Y X Z 
-eststore est1 
-esttab est1
+reg Y X Z, vce(hc3) 
+eststo est1b 
+esttab est1b 
 
-reghdfe Y X Z A
-eststore est2
-esttab est1 est2
+esttab est1 est1b
+
+reg Y X Z A, vce(hc3)
+eststo est2
+esttab est1 est1b est2
 ```
 </div>
 <div>
 
 ```r
-# This example incorporates the fixest function feols()
-est1 = feols(Y ~ X + Z, dat) 
-etable(est1)
+est1 = lm(Y ~ X + Z, dat) 
+msummary(est1) # msummary() = alias for modelsummary()
 
+# Like fixest::etable(), SEs for existing models can
+# be adjusted on-the-fly 
+msummary(est1, vcov='HC3')
 
-est2 = feols(Y ~ X + Z + A, dat) 
-modelsummary(list(est1,est2))
+# Multiple SEs for the same model
+msummary(est1, vcov=list('iid', 'HC3')) 
+
+est3 = lm(Y ~ X + Z + A, dat) 
+msummary(list(est1, est1, est3),
+         vcov = list('iid', 'HC3', 'HC3'))
 ```
 </div>
 </div>
-                     
-                     
-## marginaleffects for Marginal Effects
 
-The Stata <span class="font-semibold">margins</span> command is an impressive piece of work! How can you replicate it in R? Well, there's the <span class="font-semibold">marginaleffects</span> package for that. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations. Done!
+
+## lme4: Random effects and mixed models
+
+`fixest` can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll quick highlight random-effects and mixed models. The <a href = "https://cran.r-project.org/web/packages/lme4/index.html">lme4</a> package and its `lmer()` function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions. (**Aside:** If you prefer Bayesian models for this kind of thing, check out the <a href = "https://paul-buerkner.github.io/brms/">brms</a> package.)
 
            
+### Random Effects and Mixed Models
+
+<div class='code--container'>
+<div>
+
+```stata
+xtset group time
+xtreg Y X, re
+mixed lifeexp || countryn: gdppercap
+```
+</div>
+<div>
+
+```r
+# No need for an xtset equivalent
+m = lmer(Y~(1|group) + X, data = dat)
+nm = lmer(Y~(1+x|group) + X, data = dat)
+```
+</div>
+</div>
+
+
+
+## marginaleffects: Marginal effects, constrasts, etc.
+
+ 
+The Stata `margins` command is great. To replicate it in R, we recommend the <a href = "https://vincentarelbundock.github.io/marginaleffects/">marginaleffects</a> package. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations, etc. It's also very fast.
+
+
 ### Basic Logit Marginal Effects
 
 <div class='code--container'>
@@ -272,78 +388,95 @@ summary(marginaleffects(m))
 ```
 </div>
 </div>
-                     
-                     
-## sandwich for Additional Standard Error Adjustments
 
-The <span class="font-semibold">fixest</span> package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the <span class="font-semibold">sandwich</span> package, which comes with a long list of functions like <span class="font-semibold">vcovBS()</span> for bootstrapped standard errors, or <span class="font-semibold">vcovHAC()</span> for HAc. These can slot right into <span class="font-semibold">fixest</span> estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... you knew that right?
 
-           
-### Linear Model Adjustments
 
-<div class='code--container'>
-<div>
+## multcomp and nlWaldTest: Joint coefficient tests
 
-```stata
-* ", robust" uses hc1 which isn't great for small samples
-regress Y X Z, vce(hc3)
-```
-</div>
-<div>
+Stata provides a number of inbuilt commands for (potentially complex) postestimation coefficient tests like `testparm`, `lincom`, and `nlcom`. We've already seen that `fixest` covers the `testparm` equivalent with its `wald()` function. But what about combinations of coefficients? The <a href = "http://multcomp.r-forge.r-project.org/">multcomp</a> package handles a variety of linear tests and combinations, while <a href = "https://cran.r-project.org/web/packages/nlWaldTest/index.html">nlWaldTest</a> has you covered for nonlinear combinations.
 
-```r
-# vcov = 'hetero' uses hc1 which isn't great for small samples, but sandwich's vcovHC uses HC3 by default
-m = feols(Y ~ X + Z, vcov = vcovHC)
-```
-</div>
-</div>
-                     
-                     
-## lme4 for Random Effects
 
-<span class="font-semibold">fixest</span> can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll cover one class of models: random-effects models with <span class="font-semibold">lme4</span> (there's also  <span class="font-semibold">Rstan</span> if that floats your boat, in which case the translation from  <span class="font-semibold">statastan</span> is pretty straightforward).  <span class="font-semibold">lme4</span> and its <span class="font-semibold">lmer()</span> function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions.
-
-           
-### Random Effects Models
+### Test other null hypotheses and coefficient combinations
 
 <div class='code--container'>
 <div>
 
 ```stata
-xtset group time
-xtreg Y X, re
-mixed lifeexp || countryn: gdppercap
+regress y x z 
+
+
+
+
+* One-sided test 
+test _b[x]=0 
+local sign_wgt = sign(_b[x]) 
+display "H0: coef &lt;= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) 
+
+* Test linear combination of coefficients 
+lincom x + z 
+
+
+* Test nonlinear combination of coefficients 
+nlcom _b[x]/_b[z]
 ```
 </div>
 <div>
 
 ```r
-# No need for an xtset equivalent
-m = lmer(Y~(1|group) + X, data = dat)
-nm = lmer(Y~(1+x|group) + X, data = dat)
+m = feols(y ~ x + z, dat)
+
+# Note: we recommend the dev version of multcomp 
+# install.packages("multcomp", repos="http://R-Forge.R-project.org") 
+
+# One-sided test 
+m2 = multcomp::ghlt(m, 'x&lt;=0')
+summary(m2) 
+
+
+# Test linear combination of coefficients 
+m3 = multcomp::glht(m, 'x + z = 0') 
+summary(m3) # or confint(m3) 
+
+# Test nonlinear combination of coefficients 
+nlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
 ```
 </div>
 </div>
-                     
-                     
-## collapse for Even Faster Grouped Calculations
 
-Sure, we've gone on and on about how fast <span class="font-semibold">data.table</span> is compared to just about everything besides, like, learning C yourself (and sometimes even then). But there is one package that can boast even faster times than <span class="font-semibold">data.table</span>, at least at some tasks, and that's <span class="font-semibold">collapse</span>, which is just about as fast as it gets at computing by-group calculations like means or standard deviations.
 
-           
-### Means of Everything
+## sf: Geospatial operations
+
+R has outstanding support for geospatial computation and mapping. There are a variety of packages to choose from here, depending on what you want (e.g. interactive maps, high-dimensional data cubes, etc.) But the workhorse geospatial tool for most R users is the incredibly versatile <a href = "https://r-spatial.github.io/sf/">sf</a> package. We'll only provide a simple mapping example below. The `sf` <a href = "https://r-spatial.github.io/sf/">website</a> has several in-depth tutorials, and we also recommend the <a href = "https://geocompr.robinlovelace.net/">Geocomputation with R</a> book by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow.
+
+### Simple Map
 
 <div class='code--container'>
 <div>
 
 ```stata
-collapse (mean) varlist, by(group)
+* Mapping in Stata requires the spmap and shp2dta 
+* commands, and also that you convert your (say) 
+* shapefile to .dta format first. We won't go through 
+* all that here, but see: 
+* https://www.stata.com/support/faqs/graphics/spmap-and-maps/
 ```
 </div>
 <div>
 
 ```r
-fmean(dat, dat$group)
+# This example uses the North Carolina shapefile that is
+# bundled with the sf package. 
+nc = st_read(system.file("shape/nc.shp", package = "sf")) 
+plot(nc[, 'BIR74'])
+# Or, if you have ggplot2 loaded: 
+ggplot(nc, aes(fill=BIR74)) + geom_sf()
 ```
 </div>
 </div>
+
+
+
+
+
+                     
+

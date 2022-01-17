@@ -76,12 +76,15 @@ div[class*="language-"].line-numbers-mode .line-numbers {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 	column-gap: 2rem;
 }
+.grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 }
 
 
 .page p, .page li {
     font-size: 1.1rem;
-    max-width: 80ch;
+    /* max-width: 80ch; */
 }
 .page h2 { 
     font-size: 1.5rem;
