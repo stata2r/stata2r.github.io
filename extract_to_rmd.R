@@ -82,7 +82,7 @@ convert_md_to_rmd <- function(folder) {
 
             # Manually eval=F some code
             eval <- ""
-            if(stringr::str_detect(code, "install\\.packages|did_means|'NW'|filename\\.dta|\\.parquet|group, time|id, time|custom_func")) {
+            if(stringr::str_detect(code, "install\\.packages|did_means|'NW'|filename\\.dta|\\.parquet|group, time|id, time|custom_func|raceeth")) {
                 eval <- ", eval = F"
             }
             

@@ -305,9 +305,12 @@ etable(est_mult)
 
 
 
-```{r joint-test-of-coefficients}
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
-wald(est1, c('black','hisp'))
+```{r joint-test-of-coefficients, eval = F}
+# Rename so we can use a regular expression later
+data.table::setnames(dat, c('black','hisp'),c('raceeth_black','raceeth_hisp'))
+est1 = feols(wage ~ educ + age + raceeth_black + raceeth_hisp + marr, dat) 
+wald(est1, c('raceeth_black','raceeth_hisp'))
+wald(est1, 'raceeth_')
 
 ```
 

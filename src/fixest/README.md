@@ -572,15 +572,21 @@ etable(est_mult)
 <div>
 
 ```stata
-regress wage educ age black hisp marr 
-testparm black hisp
+* Rename so we can use the wildcard later
+rename (black hisp) (raceeth_black raceeth_hisp)
+regress wage educ age raceeth_black raceeth_hisp marr 
+testparm raceeth_black raceeth_hisp
+testparm raceeth_*
 ```
 </div>
 <div>
 
 ```r
-est1 = feols(wage ~ educ + age + black + hisp + marr, dat) 
-wald(est1, c('black','hisp'))
+# Rename so we can use a regular expression later
+data.table::setnames(dat, c('black','hisp'),c('raceeth_black','raceeth_hisp'))
+est1 = feols(wage ~ educ + age + raceeth_black + raceeth_hisp + marr, dat) 
+wald(est1, c('raceeth_black','raceeth_hisp'))
+wald(est1, 'raceeth_')
 ```
 </div>
 </div>
