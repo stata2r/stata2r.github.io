@@ -2,7 +2,34 @@
 title: data.table
 ---
 
-## Introduction to data.table
+# Data wrangling with data.table
+
+[**data.table**](https://rdatatable.gitlab.io/data.table) (by Matt Dowle, Arun 
+Srinivasan _et. al._) is a package written in C to make data wrangling fast, easy 
+and incredibly powerful.
+
+Before continuing, make sure that you have installed **data.table**. You only 
+have to do this once (or as often as you want to update the package).
+
+```r
+# Install from CRAN (recommended)
+install.packages('data.table')
+
+# Install the development version from GitHub (advanced)
+# Requires Rtools and the remotes package
+# remotes::install_github('Rdatatable/data.table')
+```
+
+Once **data.table** is installed, don't forget to load it whenever you want to 
+use it. Unlike Stata, you have to re-load a package every time you start a new R 
+session.
+
+```r
+# Load data.table into our current R session
+library(data.table)
+```
+
+## Introduction
 
 The [**data.table**](https://rdatatable.gitlab.io/data.table) package centers 
 around _data.tables_, which are highly efficient data frames that can be 
@@ -47,42 +74,16 @@ you're actually changing, without wasting memory and time on the parts that
 aren't being changed. Any time in the below cheat sheet you see a function with 
 the word `set` in it, or the `:=` operator, that's an in-place operation.
 
-Before continuing, make sure that you have installed `data.table`. You only 
-have to do this once (or as often as you want to update the package).
-
-<div class="code--container grid-cols-1">
-<div>
-
-```r
-# Install from CRAN (recommended) 
-install.packages(data.table)
-
-# Install the development version from GitHub (advanced) 
-# Requires Rtools and the remotes package 
-# remotes::install_github('Rdatatable/data.table')
-```
-</div>
-</div>
-
-Once `data.table` is installed, don't forget to load it whenever you want to 
-use it. Unlike Stata, you have to re-load a package every time you start a new R 
-session.
-
-<div class="code--container grid-cols-1">
-<div>
-
-```r
-# Load data.table into our current R session
-library(data.table)
-```
-</div>
-</div>
-
-                     
                      
 ## Data I/O
 
-Like Stata's ".dta" format, R has its own native ".rds" binary file storage type. (See also the <a href = "http://www.fstpackage.org/">fst</a> package.) However, we generally recommend that users avoid native—especially proprietary—data types since they hamper interoperability and reproducibility. We'll hence concentrate on common open-source file types below. We'll make an exception for .dta given our target audience, but we still recommend avoiding it if possible.
+Like Stata's ".dta" format, R has its own native ".rds" binary file storage
+type. (See also the <a href = "http://www.fstpackage.org/">fst</a> package.)
+However, we generally recommend that users avoid native—especially
+proprietary—data types since they hamper interoperability and reproducibility.
+We'll hence concentrate on common open-source file types below. We'll make an
+exception for .dta given our target audience, but we still recommend avoiding it
+if possible.
 
            
 ### Read and write .csv
@@ -164,8 +165,6 @@ haven::write_dta(dat, 'filename.dta')
 sort air_time 
 sort air_time dest 
 gsort -air_time
-
-
 ```
 </div>
 <div>
