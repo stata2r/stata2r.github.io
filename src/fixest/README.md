@@ -290,7 +290,7 @@ feols(wage ~ educ + .[ctrls] | statefips)
 
 **fixest** supports a variety of
 [multi-model](https://lrberge.github.io/fixest/articles/multiple_estimations.html) 
-capabilities. Not are these efficient from a coding perspective (you can get 
+capabilities. Not only are these efficient from a coding perspective (you can get 
 away with much less typing), but they are also highly optimized. For example, 
 if you run a multi-model estimation with the same group of fixed-effects then 
 **fixest** will only compute those fixed-effects _once_ for all models. The next
