@@ -4,13 +4,13 @@ title: extras
 
 # Other Packages
 
-While we think you can get pretty darn far in R with just **data.table** and 
-**fixest**, of course those two don't cover everything.
+While we think you can get really far in R with just **data.table** and 
+**fixest**, of course these two packages don't cover everything.
 
 This page covers a small list of packages you may find especially useful when 
 getting started with R. We won't try to cover everything under the sun here. 
-Just a few places to get going. For the rest, well, that's what Google is for 
-(or, indeed, to learn about each of these in more detail).
+Just a few places to get going. For the rest, well, that's what StackOverflow
+or your favourite search engine is for.
 
 All of the below packages have far more applications than is shown here. We'll 
 just provide one or two examples of how each can be used. Finally, don't forget 
@@ -19,7 +19,9 @@ to install them with `install.packages('PKGNAME')` and load them with
 as often as you want to update it); the latter whenever you want to use a 
 package in a new R session.
 
-## ggplot2: Beautiful and customizable plots
+## ggplot2
+
+_Beautiful and customizable plots_
 
 [**ggplot2**](https://ggplot2.tidyverse.org/) is widely considered one of the 
 preeminent plotting libraries available in any language. It provides an 
@@ -35,7 +37,7 @@ in-depth overview you can always consult the excellent
 [package documentation](https://ggplot2.tidyverse.org/), or a book like Kieran 
 Healy's wonderful [_Data Visualization_](https://socviz.co/).
 
-### Basic scatterplot
+#### Basic scatterplot
 
 <div class="code--container">
 <div>
@@ -59,6 +61,8 @@ ggplot(dat, aes(x = xvar, y = yvar, color = group)) +
 
 ## tidyverse
 
+_A family of data science tools_
+
 The [**tidyverse**](https://www.tidyverse.org/) provides an extremely popular
 framework for data science tasks in R. This meta-package is actually a
 collection of smaller packages that are all designed to work together, based on
@@ -73,7 +77,7 @@ of functions for automating and looping your work, **lubridate** which makes
 working with date-based data easy, and **stringr** which offers functions with
 straightforward syntax for working with string variables.
 
-### Data wrangling with dplyr
+#### Data wrangling with dplyr
 
 _Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat %>% group_by...`_
 
@@ -109,7 +113,7 @@ dat %>%
 </div>
 </div>
 
-### Manipulating dates with lubridate
+#### Manipulating dates with lubridate
 
 <div class="code--container">
 <div>
@@ -128,7 +132,7 @@ shifted_date = date + months(1)
 </div>
 </div>
 
-### Iterating with purrr 
+#### Iterating with purrr 
 
 <div class="code--container">
 <div>
@@ -158,7 +162,7 @@ dat = filelist %>%
 </div>
 </div>
 
-### String operations with stringr 
+#### String operations with stringr 
 
 <div class="code--container">
 <div>
@@ -183,13 +187,28 @@ str_detect(string, "regex")
 
   
 
-## collapse: Extra convenience functions and super fast aggregations
+## collapse
 
-p>Sure, we've gone on and on about how fast `data.table` is compared to just about everything else. But there is another R package that can boast even faster computation times for certain grouped calculations and transformations, and that's <a href = "https://sebkrantz.github.io/collapse/index.html" >collapse</a>. The `collapse` package doesn't try to do everything that `data.table` does. But the two <a href="https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html">play very well together</a> and the former offers some convenience functions like `descr` and `collap`, which essentially mimic the equivalent functions in Stata and might be particularly appealing to readers of this guide. (P.S. If you'd like to load `data.table` and `collapse` at the same time, plus some other high-performance packages, check out the <a href = "https://sebkrantz.github.io/fastverse/index.html" >fastverse</a>.)
+_Extra convenience functions and super fast aggregations_
+
+Sure, we've gone on and on about how fast **data.table** is compared to just
+about everything else. But there is another R package that can boast even faster
+computation times for certain grouped calculations and transformations, and
+that's 
+[collapse](https://sebkrantz.github.io/collapse/index.html). 
+The **collapse** package doesn't try to do everything that **data.table** does. 
+But the two 
+[play very well together](https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html) 
+and the former offers some convenience functions like `descr` and `collap`,
+which essentially mimic the equivalent functions in Stata and might be
+particularly appealing to readers of this guide. (P.S. If you'd like to load
+**data.table** and **collapse** at the same time, plus some other 
+high-performance packages, check out the 
+[**fastverse**](https://sebkrantz.github.io/fastverse/index.html).)
 
 
 
-### Quick Summaries
+#### Quick Summaries
 
 <div class='code--container'>
 <div>
@@ -208,7 +227,7 @@ descr(dat)
 </div>
 </div>
 
-### Multiple grouped aggregations
+#### Multiple grouped aggregations
 
 <div class='code--container'>
 <div>
@@ -228,12 +247,22 @@ collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
 </div>
 
                      
-## sandwich: More Standard Error Adjustments
+## sandwich
 
-The `fixest` package comes with plenty of shortcuts for accessing standard-error adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West, Driscoll-Kraay, or clustered standard errors. But there is, of course, more than that! Many additional options are covered by the `sandwich` package, which comes with a long list of functions like `vcovBS()` for bootstrapped standard errors, or `vcovHAC()` for HAC. These can slot right into `fixest` estimates, too! You shouldn't be using those ", robust" errors for smaller samples anyway... but you <a href = "http://datacolada.org/99">knew that</a>, right?
+_More standard error adjustments_
 
-           
-### Linear Model Adjustments
+**fixest** package comes with plenty of shortcuts for accessing standard error
+adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West,
+Driscoll-Kraay, clustered standard errors, etc. But of course there are still
+more than that. A host of additional options are covered by the
+[**sandwich**](https://sandwich.r-forge.r-project.org/) package, which comes
+with a long list of functions like `vcovBS()` for bootstrapped standard errors,
+or `vcovHC()` for HC1-5. **sandwich** supports nearly every model class in R, so
+it shouldn't surprise that these can slot right into `fixest` estimates, too. 
+You shouldn't be using those `, robust` errors for smaller samples anyway... but 
+you [knew that](http://datacolada.org/99), right?
+
+#### Linear Model Adjustments
 
 <div class='code--container'>
 <div>
@@ -258,12 +287,23 @@ summary(m, vcov = sandwich::vcovHC)
 </div>
 
 
-## modelsummary: Summary tables, regression tables, and more
+## modelsummary
 
-The `fixest` package already has the `etable()` function for generating regression tables. However, it is only really intended to work with models from the same package. So we also recommend checking out the fantastic <a href = "https://vincentarelbundock.github.io/modelsummary/">modelsummary</a> package. It works with all sorts of model objects, including those not from `fixest`, is incredibly customizable, and outputs to a bunch of different formats (PDF, HTML, DOCX, etc). Similarly, `modelsummary` has a wealth of options for producing publication-ready summary tables. Oh, and it produces coefficient plots too. Check out the <a href = "https://vincentarelbundock.github.io/modelsummary/">package website</a> for more.
+_Summary tables, regression tables, and more_
+
+The **fixest** package already has the `etable()` function for generating
+regression tables. However, it is only really intended to work with models from
+the same package. So we also recommend checking out the fantastic
+[**modelsummary**](https://vincentarelbundock.github.io/modelsummary) package.
+It works with all sorts of model objects, including those not from **fixest**,
+is incredibly customizable, and outputs to a bunch of different formats (PDF,
+HTML, DOCX, etc.) Similarly, **modelsummary** has a wealth of options for
+producing publication-ready summary tables. Oh, and it produces coefficient
+plots too. Check out the [package
+website](https://vincentarelbundock.github.io/modelsummary/) for more.
 
 
-### Summary Table
+#### Summary tables
 
 <div class='code--container'>
 <div>
@@ -292,7 +332,7 @@ datasummary_balance(~treat_var, dat)
 </div>
 
 
-### Regression Table
+#### Regression tables
 
 <div class='code--container'>
 <div>
@@ -321,25 +361,34 @@ msummary(est1) # msummary() = alias for modelsummary()
 
 # Like fixest::etable(), SEs for existing models can
 # be adjusted on-the-fly 
-msummary(est1, vcov='HC3')
+msummary(est1, vcov='hc3')
 
 # Multiple SEs for the same model
-msummary(est1, vcov=list('iid', 'HC3')) 
+msummary(est1, vcov=list('iid', 'hc3')) 
 
 est3 = lm(Y ~ X + Z + A, dat) 
 msummary(list(est1, est1, est3),
-         vcov = list('iid', 'HC3', 'HC3'))
+         vcov = list('iid', 'hc3', 'hc3'))
 ```
 </div>
 </div>
 
 
-## lme4: Random effects and mixed models
+## lme4
 
-`fixest` can do a lot, but it can't do everything. This site isn't even going to attempt to go into how to translate every single model into R. But we'll quick highlight random-effects and mixed models. The <a href = "https://cran.r-project.org/web/packages/lme4/index.html">lme4</a> package and its `lmer()` function covers not just random-intercept models but also hierarchical models where slope coefficients follow random distributions. (**Aside:** If you prefer Bayesian models for this kind of thing, check out the <a href = "https://paul-buerkner.github.io/brms/">brms</a> package.)
+_Random effects and mixed models_
+
+**fixest** can do a lot, but it can't do everything. This site isn't even going
+to attempt to go into how to translate every single model into R. But we'll
+quick highlight random-effects and mixed models. The
+[**lme4**](https://cran.r-project.org/web/packages/lme4/index.html) and its
+`lmer()` function covers not just random-intercept models but also hierarchical
+models where slope coefficients follow random distributions. (**Aside:** If you
+prefer Bayesian models for this kind of thing, check out the [**brms**](package
+website).)
 
            
-### Random Effects and Mixed Models
+#### Random effects and mixed models
 
 <div class='code--container'>
 <div>
@@ -362,13 +411,19 @@ nm = lmer(Y~(1+x|group) + X, data = dat)
 
 
 
-## marginaleffects: Marginal effects, constrasts, etc.
+## marginaleffects
+
+_Marginal effects, constrasts, etc._
 
  
-The Stata `margins` command is great. To replicate it in R, we recommend the <a href = "https://vincentarelbundock.github.io/marginaleffects/">marginaleffects</a> package. Individual marginal effects or average marginal effects for nonlinear models, or models with interactions or transformations, etc. It's also very fast.
+The Stata `margins` command is great. To replicate it in R, we highly recommend
+the [**marginaleffects**](https://vincentarelbundock.github.io/marginaleffects/)
+package. Individual marginal effects or average marginal effects for nonlinear
+models, or models with interactions or transformations, etc. It's also very
+fast.
 
 
-### Basic Logit Marginal Effects
+#### Basic logit marginal effects
 
 <div class='code--container'>
 <div>
@@ -391,21 +446,27 @@ summary(marginaleffects(m))
 
 
 
-## multcomp and nlWaldTest: Joint coefficient tests
+## multcomp / nlWaldTest
 
-Stata provides a number of inbuilt commands for (potentially complex) postestimation coefficient tests like `testparm`, `lincom`, and `nlcom`. We've already seen that `fixest` covers the `testparm` equivalent with its `wald()` function. But what about combinations of coefficients? The <a href = "http://multcomp.r-forge.r-project.org/">multcomp</a> package handles a variety of linear tests and combinations, while <a href = "https://cran.r-project.org/web/packages/nlWaldTest/index.html">nlWaldTest</a> has you covered for nonlinear combinations.
+_Joint coefficient tests_
+
+Stata provides a number of inbuilt commands for (potentially complex)
+postestimation coefficient tests. We've already seen the `testparm` command
+equivalent with `fixest::wald()`. But what about combinations of coefficients _a
+la_ Stata's `lincom` and `nlcom` commands? The
+[**multcomp**](http://multcomp.r-forge.r-project.org/) package handles a variety
+of linear tests and combinations, while
+[**nlWaldTest**](https://cran.r-project.org/web/packages/nlWaldTest/index.html)
+has you covered for nonlinear combinations.
 
 
-### Test other null hypotheses and coefficient combinations
+#### Test other null hypotheses and coefficient combinations
 
 <div class='code--container'>
 <div>
 
 ```stata
 regress y x z 
-
-
-
 
 * One-sided test 
 test _b[x]=0 
@@ -425,9 +486,6 @@ nlcom _b[x]/_b[z]
 ```r
 m = feols(y ~ x + z, dat)
 
-# Note: we recommend the dev version of multcomp 
-# install.packages("multcomp", repos="http://R-Forge.R-project.org") 
-
 # One-sided test 
 m2 = multcomp::ghlt(m, 'x&lt;=0')
 summary(m2) 
@@ -444,11 +502,21 @@ nlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
 </div>
 
 
-## sf: Geospatial operations
+## sf
 
-R has outstanding support for geospatial computation and mapping. There are a variety of packages to choose from here, depending on what you want (e.g. interactive maps, high-dimensional data cubes, etc.) But the workhorse geospatial tool for most R users is the incredibly versatile <a href = "https://r-spatial.github.io/sf/">sf</a> package. We'll only provide a simple mapping example below. The `sf` <a href = "https://r-spatial.github.io/sf/">website</a> has several in-depth tutorials, and we also recommend the <a href = "https://geocompr.robinlovelace.net/">Geocomputation with R</a> book by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow.
+_Geospatial operations_
 
-### Simple Map
+R has outstanding support for geospatial computation and mapping. There are a
+variety of packages to choose from here, depending on what you want (e.g. vector
+vs raster data, interactive maps, high-dimensional data cubes, etc.) But the
+workhorse geospatial tool for most R users is the incredibly versatile
+[**sf**](https://r-spatial.github.io/sf/) package. We'll only provide a simple
+mapping example below. The **sf** [website](https://r-spatial.github.io/sf/) has
+several in-depth tutorials, and we also recommend the [_Geocomputation with
+R_](https://geocompr.robinlovelace.net/) book by Robin Lovelace, Jakub Nowosad,
+and Jannes Muenchow.
+
+#### Simple Map
 
 <div class='code--container'>
 <div>
