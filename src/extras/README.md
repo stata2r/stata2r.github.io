@@ -386,8 +386,8 @@ quick highlight random-effects and mixed models. The
 [**lme4**](https://cran.r-project.org/web/packages/lme4/index.html) and its
 `lmer()` function covers not just random-intercept models but also hierarchical
 models where slope coefficients follow random distributions. (**Aside:** If you
-prefer Bayesian models for this kind of thing, check out the [**brms**](package
-website).)
+prefer Bayesian models for this kind of thing, check out 
+[**brms**](https://paul-buerkner.github.io/brms/).)
 
            
 #### Random effects and mixed models
@@ -489,7 +489,7 @@ nlcom _b[x]/_b[z]
 m = feols(y ~ x + z, dat)
 
 # One-sided test 
-m2 = multcomp::ghlt(m, 'x&lt;=0')
+m2 = multcomp::ghlt(m, '>=0')
 summary(m2) 
 
 
