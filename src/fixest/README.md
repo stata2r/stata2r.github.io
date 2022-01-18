@@ -11,7 +11,7 @@ non-linear models, as well as regression tables and plotting methods.
 
 ## Installation
 
-Before continuing, make sure that you have installed `fixest`. You only 
+Before continuing, make sure that you have installed **fixest**. You only 
 have to do this once (or as often as you want to update the package).
 
 <div class="code--container grid-cols-1">
@@ -28,7 +28,7 @@ install.packages(fixest)
 </div>
 </div>
 
-Once `fixest` is installed, don't forget to load it whenever you want to 
+Once **fixest** is installed, don't forget to load it whenever you want to 
 use it. Unlike Stata, you have to re-load a package every time you start a new R 
 session.
 
@@ -42,19 +42,9 @@ library(fixest)
 </div>
 </div>
 
-## Introduction
-
-The <a href="https://lrberge.github.io/fixest/index.html">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by `fixest.`
-
-This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. `fixest` isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
-
-`fixest` covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to `fixest.`
-
-You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in `fixest` with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
-
-Using `fixest` for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form `y ~ x1 + x2 | fe1 + fe2` where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.
-
-To begin, we will use a modified dataset from the CPS with some added variables for demonstration purposes. To load the data run the following:
+All of the examples in this section will use a modified dataset from the CPS
+with some added variables for demonstration purposes. To load the data run the
+following:
 
 <div class="code--container">
 <div>
@@ -74,12 +64,30 @@ dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.githu
 </div>
 
 
-                     
-                     
+## Introduction
+
+The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by `fixest.`
+
+This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. **fixest** isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
+
+**fixest** covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to `fixest.`
+
+You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in **fixest** with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
+
+Using **fixest** for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form `y ~ x1 + x2 | fe1 + fe2` where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.
+
                      
 ## Models
 
-Unike Stata, which only ever has one active dataset in memory, remember that having multiple datasets in your global environment is the norm in R. We highlight this difference to head off a very common error for new Stata R users: you need to specify *which* dataset you're using in your model calls, e.g. `feols(..., data = dat)`. We'll see lots of examples below. At the same time, note that **fixest** allows you to set various <a href="https://lrberge.github.io/fixest/reference/index.html#section-default-values">global options</a>, including which dataset you want to use for all of your regressions. Again, we'll see examples below.
+Unlike Stata, which only ever has one _active_ dataset in memory, remember that
+having multiple datasets in your global environment is the norm in R. We
+highlight this difference to head off a very common error for new Stata R users:
+you need to specify *which* dataset you're using in your model calls, e.g.
+`feols(..., data = dat)`. We'll see lots of examples below. At the same time,
+note that **fixest** allows you to set various [global
+options](https://lrberge.github.io/fixest/reference/index.html#section-default-values),
+including which dataset you want to use for all of your regressions. Again,
+we'll see examples below.
 
            
 ### Simple model
@@ -202,6 +210,45 @@ feols(wage ~ marr | countyfips | educ ~ age, dat)
 </div>
 </div>
            
+### Nonlinear models
+
+While we don't really show it here, note that all of the functionality that
+this page demonstrates w.r.t. `feols()` carries over to **fixest's** non-linear 
+estimation functions too (`feglm()`, `fepois()`, etc.). This include IV, SE 
+adjustment, and so forth.
+
+<div class='code--container'>
+<div>
+
+```stata
+xtset statefips
+logit marr age black hisp
+
+* Note: Attempting to replicate the feglm() model with fixed
+* effects at right using xtlogit or xtprobit leads to 
+* numerical overflow or matsize issues
+
+
+xtpoisson educ age black hisp i.year, fe
+```
+</div>
+<div>
+
+```r
+feglm(marr ~ age + black + hisp, 
+      dat, family = binomial(link = 'logit'))
+
+# Add fixed effects (probit this time)
+feglm(marr ~ age + black + hisp | statefips + year, 
+      dat, family = binomial(link = 'probit'))
+
+# fepois() is there for Poisson regression
+fepois(educ ~ age + black + hisp | statefips + year, dat)
+```
+</div>
+</div>	  
+
+
 ### Macros, wildcards and shortcuts
 
 <div class='code--container'>
@@ -238,62 +285,57 @@ feols(wage ~ educ + .[ctrls] | statefips)
 </div>
 </div>
           
-### Nonlinear models
 
-<div class='code--container'>
-<div>
+### Multi-model estimations (advanced)
 
-```stata
-xtset statefips
-logit marr age black hisp
-* Attempting to replicate the feglm() model with fixed effects
-* at right using xtlogit or xtprobit leads to numerical overflow or matsize issues
+**fixest** supports a variety of
+[multi-model](https://lrberge.github.io/fixest/articles/multiple_estimations.html) 
+capabilities. Not are these efficient from a coding perspective (you can get 
+away with much less typing), but they are also highly optimized. For example, 
+if you run a multi-model estimation with the same group of fixed-effects then 
+**fixest** will only compute those fixed-effects _once_ for all models. The next
+group of examples are meant to highlight some specific examples of this
+functionality. They don't necessarily have direct Stata equivalents that we are 
+aware of. Moreover, while we don't show it here, please note that all of these
+options can be combined (e.g. split sample with stepwise regression). 
 
-xtpoisson educ age black hisp i.year, fe
-```
-</div>
-<div>
-
-```r
-# feglm() runs all sorts of GLM models, with the same FE features as feols()!
-est1 = feglm(marr ~ age + black + hisp, data = dat, family = binomial(link = 'logit'))
-est2 = feglm(marr ~ age + black + hisp | statefips + year, data = dat, family = binomial(link = 'probit'))
-
-# fepois() is there for Poisson regression
-est3 = fepois(educ ~ age + black + hisp | statefips + year, data = dat)
-```
-</div>
-</div>	  
-
-### Difference-in-differences
-
-In addition to the ability to estimate a difference-in-differences design using two-way fixed effects (if the design is appropriate for that - no staggered treatment, for instance), `fixest` offers several other DID-specific tools. The below examples use generic data sets, since the CPS data used in the rest of this page is not appropriate for DID.
-
-<div class='code--container'>
-<div>
-
-```stata
-* No immediate Stata equivalent to did_means that we know of,
-* although you could replicate much of it by hand with an elaborate call to table
-
-* Sun and Abraham can be estimated using the 
-* eventstudyinteract package on ssc
-```
-</div>
-<div>
+#### Split sample
 
 ```r
-# did_means provides tables of means, SEs, and treatment/control and pre/post differences for 2x2 DID
-did_means(outcome + control ~ treat | post)
+## Separate regressions for hispanic and non-hispanic
+feols(wage ~ educ | countyfips, dat, split = ~hisp)
 
-# sunab() produces interactions of the type that allow you to estimate the Sun & Abraham model
-# for staggered treatment timing, and automatically get average treatment effects for each relative period
-sunab_model = feols(y ~ control + sunab(year_treated, year))
-etable(sunab_model)
+# As above, but now includes the full sample as a 3rd reg
+feols(wage ~ educ | countyfips, dat, fsplit = ~hisp)
 ```
-</div>
-</div>	  
-                     
+
+#### Multiple dependent variables
+
+```r
+# Regress wage & educ separately on the same dep. vars & FEs
+feols(c(wage, educ) ~ age + marr | countyfips + year, dat) 
+```
+
+#### Stepwise regression
+
+```r
+# Swepwise. First reg doesn't include "marr", second reg
+# doesn't include "age"
+feols(wage ~ educ + sw(age, marr), dat) 
+
+# Cumulative stepwise. As above, except now the second reg
+# includes "age".
+feols(wage ~ educ + csw(age, marr), dat)
+
+# Stepwise operators work in the FE slot too
+feols(wage ~ educ | csw(year, statefips), dat)
+
+# Aside: You have also use "sw0()" and "csw0()", in which 
+# case you'll get an extra regression at the start that 
+# doesn't include the stepwise components. 
+```
+
+
 ## Interactions
 
            
@@ -383,6 +425,42 @@ feols(wage ~ factor(treat)*age, dat)
 ```
 </div>
 </div>
+
+### Difference-in-differences
+
+In addition to the ability to estimate a difference-in-differences design using
+two-way fixed effects (if the design is appropriate for that; no staggered
+treatment, for instance), **fixest** offers several other DID-specific tools.
+The below examples use generic data sets, since the CPS data used in the rest of
+this page is not appropriate for DID.
+
+<div class='code--container'>
+<div>
+
+```stata
+* No immediate Stata equivalent to did_means that we know of,
+* although you could replicate much of it by hand with an 
+* elaborate call to table
+
+* Sun and Abraham can be estimated using the 
+* eventstudyinteract package on ssc
+```
+</div>
+<div>
+
+```r
+# did_means() provides tables of means, SEs, and treatment/
+# control and pre/post differences for 2x2 DID
+did_means(outcome + control ~ treat | post)
+
+# sunab() produces interactions of the type that allow you to
+# estimate the Sun & Abraham model for staggered treatment 
+# timing, and automatically get average treatment effects for
+# each relative period
+feols(y ~ control + sunab(year_treated, year))
+```
+</div>
+</div>	  
            
 ### Interact fixed effects
 
@@ -394,7 +472,7 @@ feols(wage ~ factor(treat)*age, dat)
 reghdfe wage educ, absorb(statefips#year) 
 
 * Varying slopes (e.g. time trend for each state) 
-? 
+* ?
 ```
 </div>
 <div>
@@ -412,7 +490,12 @@ feols(wage ~ educ | statefips[year], dat)
                      
 ## Standard errors
 
-While you can specify standard errors inside the original `fixest` model call (just like Stata), a unique feature of R is that you can adjust errors for an exisiting model *on the fly*. This has <a href = "https://grantmcdermott.com/better-way-adjust-SEs">several benefits</a>, including being much more efficient since you don't have to re-estimate your whole model. We'll try to highlight examples of both approaches below.
+While you can specify standard errors inside the original **fixest** model call
+(just like Stata), a unique feature of R is that you can adjust errors for an
+existing model _on-the-fly_. This has [several
+benefits](https://grantmcdermott.com/better-way-adjust-SEs), including being
+much more efficient since you don't have to re-estimate your whole model. We'll
+try to highlight examples of both approaches below.
 
            
 ### HC
