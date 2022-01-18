@@ -4,8 +4,8 @@ module.exports = {
 	plugins: [
 		[
             "@vuepress/plugin-shiki", { 
-                // theme: "../../../src/rose-pine", 
                 theme: "css-variables",
+                // theme: "../../../src/rose-pine", 
                 langs: [
                     {
                         id: 'r',
@@ -41,7 +41,7 @@ module.exports = {
 		repo: "stata2r/stata2r.github.io",
         docsRepo: 'https://github.com/stata2r/stata2r.github.io',
         docsBranch: 'main',
-        docsDir: 'docs',
+        docsDir: 'src',
         contributors: false,
         editLinkPattern: ':repo/edit/:branch/:path',
 		editLinks: true,
