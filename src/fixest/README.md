@@ -9,6 +9,8 @@ designed from the ground up in C++ to make running regressions fast and
 incredibly easy. It provides in-built support for a variety of linear and 
 non-linear models, as well as regression tables and plotting methods. 
 
+## Installation
+
 Before continuing, make sure that you have installed `fixest`. You only 
 have to do this once (or as often as you want to update the package).
 
@@ -40,7 +42,7 @@ library(fixest)
 </div>
 </div>
 
-## Introduction to Fixest
+## Introduction
 
 The <a href="https://lrberge.github.io/fixest/index.html">fixest</a> package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by `fixest.`
 

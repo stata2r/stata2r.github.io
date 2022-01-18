@@ -4,9 +4,10 @@ title: data.table
 
 # Data wrangling with data.table
 
-[**data.table**](https://rdatatable.gitlab.io/data.table) (by Matt Dowle, Arun 
-Srinivasan _et. al._) is a package written in C to make data wrangling fast, easy 
-and incredibly powerful.
+[**data.table**](https://rdatatable.gitlab.io/data.table) (by Matt Dowle, Arun
+Srinivasan _et. al._) is a package written in C to make high-performance data 
+wrangling tasks a breeze. Despite being incredibly powerful, it is dependency 
+free and has a rock-solid API. **data.table** code reliably works decades apart.
 
 ## Installation
 
@@ -54,13 +55,13 @@ dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vign
 
 ## Introduction
 
-The [**data.table**](https://rdatatable.gitlab.io/data.table) package centers 
-around _data.tables_, which are highly efficient data frames that can be 
-manipulated using the package's concise syntax. For example, say we have a 
-data.table called `dat` (you can call it whatever you want). Then we can 
-manipulate it by putting arguments into its square brackets, i.e. `dat[]`. The 
-three main components of a **data.table** operation are `i`, `j`, and `by`, 
-which go in the order **`dat[i, j, by]`**. Note you don't have to specify the 
+The [**data.table**](https://rdatatable.gitlab.io/data.table) package centers
+around _data.tables_, which are highly efficient data frames that can be
+manipulated using the package's concise syntax. For example, say we have a
+data.table called `dat` (you can call it whatever you want). Then we can
+manipulate it by putting arguments into its square brackets, i.e. `dat[]`. The
+three main components of a **data.table** operation are `i`, `j`, and `by`,
+which go in the order **`dat[i, j, by]`**. Note you don't have to specify the
 latter two if you're not currently using them.
 
 - **`i`**, the first component, selects the rows of the data.table that you'll be working with, like how in Stata the `if` or `in` command options let you refer to certain rows.
