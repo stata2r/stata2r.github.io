@@ -1,14 +1,11 @@
-:root {
-	--code-bg-color: #191724;
-    --code-ln-wrapper-width: 2rem;
-    
+:root {    
     // brand colors
 	--c-brand: #eb6f92;
 	--c-brand-light: #ebbcba;
 
 	// background colors
 	--c-bg: #faf4ed;
-	--c-bg-light: #191724;
+	--c-bg-light: #f2e9de;
 	--c-bg-lighter: #eeeeee;
 	--c-bg-navbar: var(--c-bg);
 	--c-bg-sidebar: var(--c-bg);
@@ -18,7 +15,7 @@
 	--c-text: #575279;
 	--c-text-accent: var(--c-brand);
 	--c-text-light: #c4a7e7;
-    --c-text-lighter: #c4a7e7;
+    --c-text-lighter: #286983;
 	--c-text-quote: #999999;
 
 	// font vars
@@ -30,6 +27,21 @@
 	--sidebar-width: 14rem;
 	--sidebar-width-mobile: calc(var(--sidebar-width) * 0.82);
 	--content-width: 90%;
+
+    // Shiki Light mode
+    --code-bg-color: #fffaf3;
+    --code-ln-wrapper-width: 2rem;
+    --shiki-color-text: #575279;
+    --shiki-color-background: #f2e9de;
+    --shiki-token-constant: #d7827e;
+    --shiki-token-string: #F6C177;
+    --shiki-token-comment: #555169;
+    --shiki-token-keyword: #31748f;
+    --shiki-token-parameter: #d7827e;
+    --shiki-token-function: #31748F;
+    --shiki-token-string-expression: #ea9d34;
+    --shiki-token-punctuation: #d7827e;
+    --shiki-token-link: #EEEEEE;
 }
 html.dark {
 	// brand colors
@@ -46,6 +58,20 @@ html.dark {
 	--c-text-light: #96a7b7;
 	--c-text-lighter: #c4a7e7;
 	--c-text-lightest: #8094a8;
+
+    // Shiki Dark Mode
+    --code-bg-color: #1f1d2e;
+    --shiki-color-text: #EEEEEE;
+    --shiki-color-background: #1f1d2e;
+    --shiki-token-constant: #ebbcba;
+    --shiki-token-string: #F6C177;
+    --shiki-token-comment: #555169;
+    --shiki-token-keyword: #eb6f92;
+    --shiki-token-parameter: #9ccfd8;
+    --shiki-token-function: #eb6f92;
+    --shiki-token-string-expression: #f6c177;
+    --shiki-token-punctuation: #ebbcba;
+    --shiki-token-link: #EEEEEE;
 }
 
 pre.shiki { 
@@ -89,11 +115,12 @@ div[class*="language-"].line-numbers-mode .line-numbers {
 }
 .page h2 { 
     font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 .page h3 { 
     font-size: 1.3rem;
+    margin-bottom: 1.5rem;
 }
 .page div[class*="language-"]{
     font-size: 1rem;
 }
-
