@@ -4,7 +4,8 @@ module.exports = {
 	plugins: [
 		[
             "@vuepress/plugin-shiki", { 
-                theme: "../../../src/rose-pine", 
+                // theme: "../../../src/rose-pine", 
+                theme: "css-variables",
                 langs: [
                     {
                         id: 'r',
