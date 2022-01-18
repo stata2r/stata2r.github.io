@@ -26,7 +26,7 @@ _Beautiful and customizable plots_
 [**ggplot2**](https://ggplot2.tidyverse.org/) is widely considered one of the 
 preeminent plotting libraries available in any language. It provides an 
 intuitive syntax that applies in the same way across many, many different kinds 
-of vizualisations, and with a deep level of customization. Plus, endless 
+of visualizations, and with a deep level of customization. Plus, endless 
 additional plugins to do what you want, including easy interactivity, animation, 
 maps, etc. We thought about giving **ggplot2** its own dedicated page like 
 **data.table** and **fixest**. But instead we'll point you to the 
@@ -34,16 +34,17 @@ maps, etc. We thought about giving **ggplot2** its own dedicated page like
 section of the _Library of Statistical Techniques_, which already shows how to 
 do many different graphing tasks in both Stata and **ggplot2**. For a more 
 in-depth overview you can always consult the excellent 
-[package documentation](https://ggplot2.tidyverse.org/), or a book like Kieran 
-Healy's wonderful [_Data Visualization_](https://socviz.co/).
+[package documentation](https://ggplot2.tidyverse.org/), or Kieran Healy's 
+wonderful [_Data Visualization_](https://socviz.co/) book.
 
-#### Basic scatterplot
+#### Basic scatterplot(s)
 
 <div class="code--container">
 <div>
 
 ```stata
 twoway scatter yvar xvar
+
 twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
         (scatter yvar xvar if group == 2, mc(red))
 ```
@@ -52,6 +53,7 @@ twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
 
 ```r
 ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+
 ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
   geom_point()
 ```
@@ -276,7 +278,7 @@ regress Y X Z, vce(hc3)
 
 ```r
 # sandwich's vcovHC uses HC3 by default
-feols(Y ~ X + Z, dat,vcov = sandwich::vcovHC) 
+feols(Y ~ X + Z, dat, vcov = sandwich::vcovHC) 
 
 # Aside: Remember that you can also adjust the SEs 
 # for existing models on the fly 

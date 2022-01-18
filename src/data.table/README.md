@@ -997,15 +997,6 @@ dat[, .(unique_dest = uniqueN(dest)), by = origin]
 </div>
 </div>
 
-**Aside:** You can also do complicated (grouped) aggregations as part of a 
-`data.table::dcast()` (i.e. reshape wide) call. E.g. Get the min, mean and max 
-departure and arrival delays, by origin airport.
-
-```r
-dcast(dat, origin~., fun=list(min,mean,max),
-      value.var=c('dep_delay','arr_delay'))
-```
-
 ### Count rows
 
 <div class='code--container'>
@@ -1030,14 +1021,46 @@ dat[, .N, by = origin]
 ```
 </div>
 </div>
-           
-### Grouped calculations and complex objects inside a data.table
 
-**Note:** data.tables support list columns, so you can have complex objects like
+### Advanced collapse (tips and tricks)
+
+These next few examples are meant to highlight some specific **data.table**
+collapse tricks. They don't really have good Stata equivalents (that we're aware
+of).
+
+
+#### Use keys for even faster grouped operations
+
+The **data.table** website 
+[describes](https://rdatatable.gitlab.io/data.table/articles/datatable-keys-fast-subset.html)
+keys as "supercharged rownames". Essentially, _setting a key_ means ordering 
+your data in a way that makes it very efficient to do subsetting or aggregating 
+operations. **data.table** is already highly performant, but setting keys can 
+give a valuable speed boost for big data tasks.
+
+```r
+## Set keys. You normally want whatever you're grouping by
+setkey(dat, month, origin)
+
+## Same collapse syntax as before, just faster
+dat[, mean(dep_delay), by = .(month, origin)]
+
+## Tip: Turn on automatic printing of keys. The dev version
+## of data.table (v1.14.3) does this by default.
+options(datatable.print.class = TRUE, datatable.print.keys = TRUE)
+dat
+
+## Turn keys back off
+setkey(dat, NULL)
+```
+
+#### Grouped calculations and complex objects inside a data.table
+
+**data.table** supports list columns, so you can have complex objects like
 regression models inside a data.table. Among many other things, this means you
 can nest simulations inside a data.table as easily as you would perform any
-other (grouped) operation. This functionality doesn't really have a Stata
-equivalent, but here's an illustration using a grouped regression:
+other (grouped) operation. Here we illustrate with a simple grouped regression,
+i.e. a separate regression for each month of our dataset.
 
 ```r 
 # Let's run a separate regression of arrival delay on 
@@ -1057,8 +1080,20 @@ mods = dat[,
 modelsummary::msummary(mods$mod) 
 modelsummary::modelplot(mods$mod, coef_omit = 'Inter')
 ```
-
                      
+#### Grouped aggregations when reshaping
+
+You can do complicated (grouped) aggregations as part of a `data.table::dcast()`
+(i.e. reshape wide) call. Here's an example where we summarise both the
+departure and arrival delays---getting the minimum, mean, and maximum
+values---by origin airport.
+
+```r
+dcast(dat, origin~., fun = list(min, mean, max),
+      value.var = c('dep_delay', 'arr_delay'))
+```
+
+
 ## Reshape
 
 ### Reshape prep (this dataset only)
