@@ -66,11 +66,11 @@ dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.githu
 
 ## Introduction
 
-The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by `fixest.`
+The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by **fixest**.
 
 This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. **fixest** isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
 
-**fixest** covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to `fixest.`
+**fixest** covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to **fixest**.
 
 You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in **fixest** with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
 
@@ -192,10 +192,10 @@ feols(wage ~ educ | countyfips^year,
 
 ```stata
 ivreg 2sls wage (educ = age) 
-ivreg 2sls wage marr(educ = age) 
+ivreg 2sls wage marr (educ = age) 
 
 * With fixed effects 
-ivreghdfe 2sls wage marr(educ = age), absorb(countyfips)
+ivreghdfe 2sls wage marr (educ = age), absorb(countyfips)
 ```
 </div>
 <div>
@@ -319,7 +319,7 @@ feols(c(wage, educ) ~ age + marr | countyfips + year, dat)
 #### Stepwise regression
 
 ```r
-# Swepwise. First reg doesn't include "marr", second reg
+# Stepwise. First reg doesn't include "marr", second reg
 # doesn't include "age"
 feols(wage ~ educ + sw(age, marr), dat) 
 
