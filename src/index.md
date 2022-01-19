@@ -4,7 +4,8 @@ title: intro
 
 # Translating Stata to R
 
-Welcome. This website is for Stata users who are interested in learning R. We
+Welcome. This website is for Stata users who are interested in learning R. 
+But it could also be useful for those going the other way around. We
 provide side-by-side code snippets for common tasks in both Stata and R, so that
 users have a dictionary for navigating across the two languages.
 
