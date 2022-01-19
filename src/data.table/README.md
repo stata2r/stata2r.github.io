@@ -554,9 +554,6 @@ foreach x of varlist dep_delay arr_delay air_time {
     drop mean* 
 }
 
-
-
-
 ```
 </div>
 <div>
@@ -575,23 +572,41 @@ dat[,
 </div>
 </div>
 
-Refer to other rows (uses generic data set)
+Relative modification (i.e. refer to other rows)
 
 <div class='code--container'>
 <div>
 
 ```stata
-sort group time
-by group: gen growth = X/X[_n-1]
-by group: gen growth_since_first = X/X[1]
+* This will be easier to demonstrate with a collapsed 
+* dataset: Grab the total monthly flights out of each 
+* origin airport. (Don't forget preserve/restore!)
+contract origin month, freq(N)
+sort origin month
+
+* Simple period-by-period growth
+by origin: gen growth = N/N[_n-1]
+
+* Relative growth
+by origin: gen growth_since_jan = N/N[1]
+* ?
 ```
 </div>
 <div>
 
 ```r
-setorder(dat, group, time)
-dat[, growth := X/shift(X, 1), by = group]
-dat[, growth_since_first := X/first(X), by = group]
+# This will be easier to demonstrate with a collapsed 
+# dataset: Grab the total monthly flights out of each 
+# origin airport.
+dat2 = dat[, .N, by = .(origin, month)]
+setorder(dat2, origin, month)
+
+# Simple month-on-month growth. Extra [] just prints.
+dat2[, growth := N/shift(N, 1), by = origin][]
+
+# Relative growth. Extra [] just prints result.
+dat2[, growth_since_jan := N/first(N), by = origin][]
+dat2[, growth_since_may := N/N[month==5], by = origin][]
 ```
 </div>
 </div>
