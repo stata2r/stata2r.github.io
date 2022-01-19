@@ -18,7 +18,7 @@ There are [**other great packages**](/extras/) that work well and are easy to
 use, but **data.table** and **fixest** are blazingly fast (🏃🏻💨) and highly
 powerful (💪🏻😎). Plus, they are flexible (👌✨) and can help you avoid R's
 "package overload". Depending on what you do in Stata, you might even be able to
-cut back, going from three packages—**reghdfe**, **estout** and **gtools**—to
+cut back, going from three packages—**reghdfe**, **estout**, and **gtools**—to
 just two.
 
 See the icons in the top right corner for various site options. You can search

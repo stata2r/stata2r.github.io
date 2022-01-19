@@ -50,8 +50,8 @@ following:
 <div>
 
 ```stata
-
-import delimited using "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear
+import delimited using \\\
+    "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear
 ```
 </div>
 <div>
@@ -70,19 +70,19 @@ The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a
 
 This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. **fixest** isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
 
-**fixest** covers all of this while being very fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to **fixest**.
+**fixest** covers all of this while being _very_ fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to **fixest**.
 
 You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in **fixest** with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
 
-Using **fixest** for regression starts with writing a formula. While there are plenty of bells and whistles to ad d, at its core regression formulas take the form `y ~ x1 + x2 | fe1 + fe2` where y is the outcome, x1 and x2 are predictors, and fe1 and fe2 are your sets of fixed effects.
+Using **fixest** for regression starts with writing a formula. While there are plenty of bells and whistles to add, at its core regression formulas take the form **`y ~ x1 + x2 | fe1 + fe2`**, where `y` is the outcome, `x1` and `x2` are predictors, and `fe1` and `fe2` are your sets of fixed effects.
 
                      
 ## Models
 
-Unlike Stata, which only ever has one _active_ dataset in memory, remember that
+Unlike Stata, which only ever has one active dataset in memory, remember that
 having multiple datasets in your global environment is the norm in R. We
 highlight this difference to head off a very common error for new Stata R users:
-you need to specify *which* dataset you're using in your model calls, e.g.
+_you need to specify which dataset you're using in your model calls_, e.g.
 `feols(..., data = dat)`. We'll see lots of examples below. At the same time,
 note that **fixest** allows you to set various [global
 options](https://lrberge.github.io/fixest/reference/index.html#section-default-values),
@@ -298,6 +298,8 @@ group of examples are meant to highlight some specific examples of this
 functionality. They don't necessarily have direct Stata equivalents that we are 
 aware of. Moreover, while we don't show it here, please note that all of these
 options can be combined (e.g. split sample with stepwise regression). 
+Multi-model objects can also be sent directly to [presentation](#presentation) 
+functions like `etable()` and `coefplot()`.
 
 #### Split sample
 
@@ -515,8 +517,8 @@ feols(wage ~ educ, dat, vcov = 'hc1')
 feols(wage ~ educ, dat, vcov = sandwich::vcovHC) 
 
 # Note: You can also adjust the SEs of an existing model 
-m = feols(wage ~ educ, dat) 
-summary(m, vcov = 'hc1')
+m = feols(wage ~ educ, dat) # iid
+summary(m, vcov = 'hc1')    # switch to HC1
 ```
 </div>
 </div>
@@ -535,7 +537,7 @@ ivreghdfe wage educ, bw(auto) vce(robust)
 
 ```r
 feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
-feols(y ~ x, dat, vcov = 'NW') # if panel id is already set (see below)
+# feols(y ~ x, dat, vcov = 'NW') # if panel id already set (see below)
 ```
 </div>
 </div>
@@ -554,6 +556,7 @@ reghdfe wage educ, absorb(countyfips year) \\\
                    vce(cluster countyfips year) 
 
 
+
 reghdfe wage educ, absorb(countyfips#year) \\\ 
                    vce(cluster countyfips#year)
 ```
@@ -568,17 +571,10 @@ feols(wage ~ educ | countyfips, dat) # Auto clusters by FE
 feols(wage ~ educ | countyfips + year, 
       dat, vcov = ~countyfips + year) 
 # feols(wage ~ educ | countyfips + year, 
-#      dat, vcov = 'twoway') ## same as above 
+#      dat, vcov = 'twoway') ## same as above
+
 feols(wage ~ educ | countyfips^year, 
       dat, vcov = ~countyfips^year) 
-
-# Reminder that you can adjust the SEs of existing 
-# fixest models on-the-fly. 
-m = feols(wage ~ educ | countyfips + year, dat) 
-m # Clustered by countyfips (default) 
-summary(m, vcov = 'twoway') 
-summary(m, vcov = ~countyfips^year) 
-# etc.
 ```
 </div>
 </div>
@@ -599,8 +595,25 @@ feols(wage ~ educ, dat, vcov = conley("25 mi"))
 ```
 </div>
 </div>
-                     
-                     
+
+### On-the-fly SE adjustment
+
+We're belabouring the point now, but one last reminder that you can adjust the
+standard errors for existing models "on the fly" by passing the `vcov = ...`
+argument. There's no performance penalty, since the adjustment is done 
+instantaneously and it therefore has the virtue of separating the mechanical
+_computation_ stage of model estimation from the _inference_ stage. As we'll see 
+below, on-the-fly SE adjustment works for a variety of other **fixest** 
+functions, e.g. `etable()`. But here is a quick example using `summary()`:
+
+```r
+m = feols(wage ~ educ | countyfips + year, dat) 
+m                                    # Clustered by countyfips (default)
+summary(m, vcov = 'iid')             # Switch to iid errors
+summary(m, vcov = 'twoway')          # Cluster by countyfips and year 
+summary(m, vcov = ~countyfips^year)  # Cluster by countyfips*year interaction
+```
+              
 ## Presentation
 
            
@@ -641,12 +654,12 @@ etable(est1, vcov = 'hc1')
 # Report multiple SEs for the same model 
 etable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) 
 
-# Multi-model example 
-# (Two dep. vars, stepwise coefs, varying slopes, etc.) 
-est_mult = feols(c(wage, age) ~ educ + csw(hisp, black) | 
+# Multi-model example: Two dep. vars, stepwise coefs, 
+# varying slopes, split sample, etc. (18 models in total!)
+est_mult = feols(c(wage, age) ~ educ + csw0(hisp, black) | 
                      statefips[year], 
-                 dat, vcov = ~statefips^year) 
-etable(est_mult)
+                 dat, fsplit = ~marr) 
+etable(est_mult, vcov = ~statefips^year)
 ```
 </div>
 </div>
@@ -659,7 +672,7 @@ etable(est_mult)
 ```stata
 * Rename so we can use the wildcard later
 rename (black hisp) (raceeth_black raceeth_hisp)
-regress wage educ age raceeth_black raceeth_hisp marr 
+regress wage educ age raceeth_* marr 
 testparm raceeth_black raceeth_hisp
 testparm raceeth_*
 ```
@@ -668,8 +681,8 @@ testparm raceeth_*
 
 ```r
 # Rename so we can use a regular expression later
-data.table::setnames(dat, c('black','hisp'),c('raceeth_black','raceeth_hisp'))
-est1 = feols(wage ~ educ + age + raceeth_black + raceeth_hisp + marr, dat) 
+data.table::setnames(dat, c('black','hisp'), c('raceeth_black','raceeth_hisp'))
+est1 = feols(wage ~ educ + age + ..('raceeth_') + marr, dat)
 wald(est1, c('raceeth_black','raceeth_hisp'))
 wald(est1, 'raceeth_')
 ```

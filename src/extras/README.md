@@ -173,7 +173,6 @@ dat = filelist %>%
 subinstr(string, "remove", "replace", .)
 substr(string, start, length)
 regex(string, "regex")
-
 ```
 </div>
 <div>
@@ -336,6 +335,10 @@ datasummary_balance(~treat_var, dat)
 
 #### Regression tables
 
+**Aside:** Here we'll use the base R `lm()` (linear model) function, rather than
+`feols()`, to emphasize that **modelsummary** works with many different model 
+classes.
+
 <div class='code--container'>
 <div>
 
@@ -473,7 +476,7 @@ regress y x z
 * One-sided test 
 test _b[x]=0 
 local sign_wgt = sign(_b[x]) 
-display "H0: coef &lt;= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) 
+display "H0: coef <= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) 
 
 * Test linear combination of coefficients 
 lincom x + z 
@@ -489,7 +492,7 @@ nlcom _b[x]/_b[z]
 m = feols(y ~ x + z, dat)
 
 # One-sided test 
-m2 = multcomp::ghlt(m, '>=0')
+m2 = multcomp::ghlt(m, '<=0')
 summary(m2) 
 
 

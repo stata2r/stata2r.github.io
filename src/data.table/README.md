@@ -79,9 +79,9 @@ Like Stata, **data.table** also provides some special shortcut symbols for
 common operations. For example, `_N` in Stata is equivalent to `.N` in 
 **data.table**, while `.(x1, x2)` is short for `list(x1, x2)`. We'll see more 
 examples in cheatsheat that follows. But we do want to quickly highlight one 
-special symbol in particular: `.SD` refers to the (S)ubset of (D)ata you're 
+special symbol in particular: **`.SD`** refers to the (**S**)ubset of (**D**)ata you're 
 working with. This can be used to do complex within-group calculations when you 
-have by specified, but more generally it's a way to perform operations on lots 
+have `by` specified. But more generally it's a way to perform operations on lots 
 of columns with one line of code. By default, `.SD` refers to all columns in the
 dataset (excepting those in `by`). But you can specify the columns you want with 
 the `.SDcols` argument. Again, we'll see a bunch of examples below.
@@ -102,7 +102,7 @@ the word `set` in it, or the `:=` operator, that's an in-place operation.
 ## Data I/O
 
 Like Stata's `.dta` file format, R has its own native `.rds` storage format.
-(See also the <a href = "http://www.fstpackage.org/">fst</a> package.) However,
+(See also the [**fst**](http://www.fstpackage.org/) package.) However,
 we generally recommend that users avoid native—especially proprietary—data types
 since they hamper interoperability and reproducibility. We'll hence concentrate
 on common open-source file types below. We'll make an exception for `.dta` given
@@ -428,6 +428,7 @@ original dataset in the examples that follow._
 
 ```stata
 keep if !missing(dest)
+
 * Requires: ssc inst missings
 missings dropvars, force 
 missings air_time dest, force 
@@ -442,9 +443,10 @@ later, e.g. `dat1 = dat[...]`._
 ```r
 dat[!is.na(dest)]
 
+
 na.omit(dat) 
 na.omit(dat, cols = c('air_time', 'dest')) 
-dat[!is.na(air_time) & !is.na(dest)] # Same as above
+# dat[!is.na(air_time) & !is.na(dest)] # same
 ```
 </div>
 </div>
@@ -1064,19 +1066,22 @@ i.e. a separate regression for each month of our dataset.
 
 ```r 
 # Let's run a separate regression of arrival delay on 
-# departure delay for each month, inside our dataset 
+# departure delay for each month _inside_ our data.table
 
-# Just the coefficients
+# Just get the coefficients
 dat[,
     .(beta = coef(lm(arr_delay ~ dep_delay, .SD))['dep_delay']),
     by = month]
 
-# Keep the whole model for each month
+# As above, but now keep the whole model for each month
+# in a dedicated "mod" column
 mods = dat[,
            .(mod = list(lm(arr_delay ~ dep_delay, .SD))),
            by = month] 
+
 # Now you can do things like put all 10 models in a 
-# regression table or coefficient plot 
+# regression table or coefficient plot. Here we use the
+# modelsummary package to do that.
 modelsummary::msummary(mods$mod) 
 modelsummary::modelplot(mods$mod, coef_omit = 'Inter')
 ```
@@ -1085,8 +1090,8 @@ modelsummary::modelplot(mods$mod, coef_omit = 'Inter')
 
 You can do complicated (grouped) aggregations as part of a `data.table::dcast()`
 (i.e. reshape wide) call. Here's an example where we summarise both the
-departure and arrival delays---getting the minimum, mean, and maximum
-values---by origin airport.
+departure and arrival delays—getting the minimum, mean, and maximum
+values—by origin airport.
 
 ```r
 dcast(dat, origin~., fun = list(min, mean, max),
@@ -1352,15 +1357,24 @@ mdat = merge(dat, dat2) ## note: don't need 'by'
 
 #### Non-equi joins
 
-Non-equi joins are a bit hard to understand if you've never seen them before. But they are incredibly powerful and solve a suprisingly common problem: Merging datasets over a range (e.g. start to end dates), rather than exact matches. Simple example where we want to subset the 1st qtr flights for American Airlines and 2nd qtr flights for United Airlines: 
+Non-equi joins are a bit hard to understand if you've never seen them before.
+But they are incredibly powerful and solve a surprisingly common problem:
+Merging datasets over a range (e.g. start to end dates), rather than exact
+matches. Here's a simple example where we want to subset the 1st quarter flights
+for American Airlines and the 2nd quarter flights for United Airlines:
 
 <div class='code--container grid-cols-1'>
 <div>
 
 ```r
+# The things we want to match on. Note the different start and
+# end months for AA and UA.
 dat3 = data.table(carrier     = c('AA', 'UA'),
                   start_month = c(1, 4),
                   end_month   = c(3, 6)) 
+
+# Rolling join that catches everything between the distinct
+# start and end dates for each carrier.
 dat[dat3, on = .(carrier,
                  month >= start_month,
                  month <= end_month)] 
@@ -1370,16 +1384,23 @@ dat[dat3, on = .(carrier,
 
 #### Rolling Joins
 
-Rolling joins are similar and allow you to match a set of dates forwards or backwards. For example, our `dat`  datset ends in October. Let's say we want to carry the  last known entries for American and United Airlines  forward to (random) future dates. 
+Rolling joins are similar and allow you to match a set of dates forwards or
+backwards. For example, our `dat`  dataset ends in October. Let's say we want to
+carry the last known entries for American and United Airlines  forward to
+(random) future dates.
 
 <div class='code--container grid-cols-1'>
 <div>
 
 ```r
-dat4 = data.table(carrier  = c('AA', 'UA'),
-                  new_date = as.IDate(c('2014-11-01',
-                                        '2014-11-15'))) 
+# Make sure we have a date variable
 dat[, date := as.IDate(paste(year, month, day, sep='-'))] 
+
+# New DT with the (random) target dates
+dat4 = data.table(carrier  = c('AA', 'UA'),
+                  new_date = as.IDate(c('2014-11-01', '2014-11-15'))) 
+
+# Join on these target dates, so they take the last known value 
 dat[dat4, on = .(carrier, date=new_date), roll='nearest']
 ```
 </div>
