@@ -454,6 +454,9 @@ na.omit(dat, cols = c('air_time', 'dest'))
                      
 ## Modify
 
+**Aside:** You can force print a data.table's in-place modifications to screen by 
+adding a trailing `[]`, e.g. `dat[, dist_sq := distance^2][]`.
+    
 ### Create new variables
 
 <div class='code--container'>
@@ -584,7 +587,7 @@ Relative modification (i.e. refer to other rows)
 contract origin month, freq(N)
 sort origin month
 
-* Simple period-by-period growth
+* Simple month-on-month growth
 by origin: gen growth = N/N[_n-1]
 
 * Relative growth
@@ -601,10 +604,10 @@ by origin: gen growth_since_jan = N/N[1]
 dat2 = dat[, .N, by = .(origin, month)]
 setorder(dat2, origin, month)
 
-# Simple month-on-month growth. Extra [] just prints.
+# Simple month-on-month growth
 dat2[, growth := N/shift(N, 1), by = origin][]
 
-# Relative growth. Extra [] just prints result.
+# Relative growth
 dat2[, growth_since_jan := N/first(N), by = origin][]
 dat2[, growth_since_may := N/N[month==5], by = origin][]
 ```
