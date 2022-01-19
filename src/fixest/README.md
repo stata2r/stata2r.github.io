@@ -212,9 +212,9 @@ feols(wage ~ marr | countyfips | educ ~ age, dat)
            
 ### Nonlinear models
 
-While we don't really show it here, note that all of the functionality that
+While we don't really show it here, note that (almost) all of the functionality that
 this page demonstrates w.r.t. `feols()` carries over to **fixest's** non-linear 
-estimation functions too (`feglm()`, `fepois()`, etc.). This include IV, SE 
+estimation functions too (`feglm()`, `fepois()`, etc.). This includes SE 
 adjustment, and so forth.
 
 <div class='code--container'>
@@ -229,18 +229,19 @@ logit marr age black hisp
 * numerical overflow or matsize issues
 
 
-xtpoisson educ age black hisp i.year, fe
+ppmlhdfe educ age black hisp, absorb(statefips year) \\\
+	                      vce(cluster statefips)
 ```
 </div>
 <div>
 
 ```r
 feglm(marr ~ age + black + hisp, 
-      dat, family = binomial(link = 'logit'))
+      dat, family = 'logit')
 
 # Add fixed effects (probit this time)
 feglm(marr ~ age + black + hisp | statefips + year, 
-      dat, family = binomial(link = 'probit'))
+      dat, family = 'probit')
 
 # fepois() is there for Poisson regression
 fepois(educ ~ age + black + hisp | statefips + year, dat)
@@ -474,7 +475,8 @@ feols(y ~ control + sunab(year_treated, year))
 reghdfe wage educ, absorb(statefips#year) 
 
 * Varying slopes (e.g. time trend for each state) 
-* ?
+reghdfe wage educ, absorb(statefips#c.year) \\\
+	           vce(cluster statefips#c.year)
 ```
 </div>
 <div>
@@ -736,7 +738,7 @@ iplot(est1)
 		
 ## Panel
 
-Note you don't need to specify panel.vars if you make your data a panel dataset before running the regression using the `panel` function. For example, you can use `panel(dat, ~ id + var)`.
+**Note:** You don't need to specify your panel variables globally and this functionality is mostly for convenience features associated with time-series operations like leads and lags. You can also use `panel(dat, ~ id + var)` to do so on-the-fly in your regression call. But Laurent, the **fixest** author, recommends setting the panel ID globally when applicable, so that's what we do below.
 
            
 ### Lag variables
@@ -746,13 +748,15 @@ Note you don't need to specify panel.vars if you make your data a panel dataset 
 
 ```stata
 xtset id year 
- reg wage educ l1.wage
+reg wage educ l1.wage
 ```
 </div>
 <div>
 
 ```r
-feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year)
+setFixest_estimation(panel.id = ~id+year)
+feols(wage ~ educ + l(wage, 1), dat)
+# feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year) # if not set
 ```
 </div>
 </div>
@@ -770,7 +774,8 @@ reg wage educ f1.wage
 <div>
 
 ```r
-feols(wage ~ educ + l(wage, -1), dat, panel.id = ~id+year)
+# setFixest_estimation(panel.id = ~id+year) # already set
+feols(wage ~ educ + f(wage, 1), dat)
 ```
 </div>
 </div>
@@ -788,7 +793,8 @@ reg wage educ D.x
 <div>
 
 ```r
-feols(wage ~ educ + d(wage), dat, panel.id = ~id+year)
+# setFixest_estimation(panel.id = ~id+year) # already set
+feols(wage ~ educ + d(wage), dat)
 ```
 </div>
 </div>
