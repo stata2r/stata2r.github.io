@@ -44,24 +44,25 @@ suggestions.
 **Why did you make Stata2R?**
 
 - The short answer is that we have been asked for this kind of resource many
-(many) times, and didn't feel any of the existing options quite fit the bill.
-The longer answer is we've all been through the frustrations (and joys) of 
+times, and didn't feel any of the existing options quite fit the bill.
+The longer answer is that we've been through the frustrations (and joys) of 
 learning a new language and want to lower the barrier-to-entry for R, 
 specifically. There's an unfortunate belief among some Stata users that R is 
-somehow simultaneously complex and lacking. (And perhaps the same could be said
-in reverse.) As in, it's supposedly hard to do simple things and unable to do 
-hard things. This view is quite obviously mistaken. But sometimes it takes 
-seeing simple side-by-side examples to get someone on their way. There are some
-important differences between the languages, but you should be able to do pretty
-much whatever you want without too much hassle.
+somehow simultaneously complex and lacking. As in, it's supposedly hard to do
+simple things and unable to do hard things. This belief is quite mistaken in our 
+view. But sometimes it takes seeing simple side-by-side examples to get someone 
+on their way. 
 
 **Do you think Stata users should just switch to R?**
 
-- No. The future is multilingual and we support people using what they want. At
-the same time, R does have some obvious advantages in terms of price (free) and
-performance, which make it attractive for a variety of use cases. We hope that
-this website provides researchers, teachers, students, and professional with 
-some additional options should they choose to use them.
+- No. The future is multilingual and we support people using what they want. R 
+does have advantages in terms of price (free) and performance (speed). 
+Depending on what you want to do, a certain library may also only be available 
+in R. This obviously makes it attractive for certain use cases. But Stata has
+many great features too and it's perfectly fine to combine the two languages, or 
+not, in whatever way works for you. We hope that 
+the Stata2R website provides researchers, teachers, students, and professional 
+with some additional options should they choose to use them.
 
 ## License
 
