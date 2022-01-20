@@ -605,11 +605,11 @@ dat2 = dat[, .N, by = .(origin, month)]
 setorder(dat2, origin, month)
 
 # Simple month-on-month growth
-dat2[, growth := N/shift(N, 1), by = origin][]
+dat2[, growth := N/shift(N, 1), by = origin]
 
 # Relative growth
-dat2[, growth_since_jan := N/first(N), by = origin][]
-dat2[, growth_since_may := N/N[month==5], by = origin][]
+dat2[, growth_since_jan := N/first(N), by = origin]
+dat2[, growth_since_may := N/N[month==5], by = origin]
 ```
 </div>
 </div>
