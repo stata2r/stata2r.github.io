@@ -111,6 +111,8 @@ our target audience, but we still recommend avoiding it if possible.
            
 ### Read and write .csv
 
+Single file.
+
 <div class='code--container'>
 <div>
 
@@ -127,14 +129,75 @@ fwrite(dat, 'flightdata.csv')
 ```
 </div>
 </div>
-           
-### Read and write .dta
+
+Subset columns during import (uses generic dataset).
 
 <div class='code--container'>
 <div>
 
 ```stata
-* .dta is Stata's native (proprietary) filetype 
+* ?
+```
+</div>
+<div>
+
+```r
+fread("data/myfile.csv", select = c("col1","col2"))
+# fread("data/myfile.csv", select = 1:2) # same
+
+fread("data/myfile.csv", drop = c("col2","col3"))
+# fread("data/myfile.csv", drop = 2:3) # same
+```
+</div>
+</div>
+
+Import many files and append them together (uses generic data directory).
+
+<div class="code--container">
+<div>
+
+```stata
+local filelist: dir "data/" files "*.csv"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local filelist {
+	qui: import delimited "data/`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
+}
+```
+</div>
+<div>
+
+```r
+filelist = dir("data/", pattern = ".csv$")
+dat = rbindlist(lapply(filelist, fread))
+```
+</div>
+</div>
+
+
+### Read and write .dta
+
+<div class='code--container'>
+<div>
+
+_Note: `.dta` is Stata's native (proprietary) filetype._
+
+</div>
+<div>
+
+_Note: These commands require the [**haven**](https://haven.tidyverse.org/) package._
+
+</div>
+</div>
+
+Single file.
+
+<div class='code--container'>
+<div>
+
+```stata
 use "filename.dta", clear 
 
 
@@ -144,11 +207,35 @@ save "filename.dta", replace
 <div>
 
 ```r
-# These commands require the `haven` package 
 dat = haven::read_dta('filename.dta') 
 setDT(dat) # Or: dat = as.data.table(dat) 
  
 haven::write_dta(dat, 'filename.dta')
+```
+</div>
+</div>
+
+Import many files and append them together (uses generic data directory).
+
+<div class='code--container'>
+<div>
+
+```stata
+local filelist: dir "data/" files "*.dta"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local filelist {
+	qui: import delimited "data/`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
+}
+```
+</div>
+<div>
+
+```r
+filelist = dir("data/", pattern = ".dta$")
+dat = rbindlist(lapply(filelist, haven::read_dta))
 ```
 </div>
 </div>
@@ -158,16 +245,26 @@ haven::write_dta(dat, 'filename.dta')
 <div class='code--container'>
 <div>
 
+_Note: Stata currently has limited support for parquet files (and Linux/Unix only)._
+
+</div>
+<div>
+
+_Note: These commands require the [**arrow**](https://arrow.apache.org/docs/r/) package._
+
+</div>
+</div>
+
+<div class='code--container'>
+<div>
+
 ```stata
-* Stata currently has limited support for parquet files 
-* (and Linux/Unix only). 
 * See: https://github.com/mcaceresb/stata-parquet
 ```
 </div>
 <div>
 
 ```r
-# These commands require the `arrow` package 
 pfiles = dir(pattern = ".parquet") 
 rbindlist(lapply(pfiles, arrow::read_parquet)) 
 rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10))

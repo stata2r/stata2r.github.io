@@ -84,7 +84,7 @@ follow, note that `%>%` is a [pipe operator](https://magrittr.tidyverse.org/).
 
 _Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat %>% group_by...`_
 
-Subset by rows and then columns:
+Subset by rows and then columns.
 
 <div class="code--container">
 <div>
@@ -104,7 +104,7 @@ dat %>%
 </div>
 </div>
 
-Create a new variable by group:
+Create a new variable by group.
 
 <div class="code--container">
 <div>
@@ -123,7 +123,7 @@ dat %>%
 </div>
 </div>
 
-Collapse by group:
+Collapse by group.
 
 <div class="code--container">
 <div>
@@ -163,7 +163,7 @@ shifted_date = date + months(1)
 
 #### Iterating with purrr 
 
-Read in many files and append them together:
+Read in many files and append them together.
 
 <div class="code--container">
 <div>
@@ -191,7 +191,7 @@ dat = map_df(filelist, data.table::fread)
 </div>
 </div>
 
-Iterate over variables
+Iterate over variables.
 
 <div class="code--container">
 <div>
