@@ -163,30 +163,49 @@ shifted_date = date + months(1)
 
 #### Iterating with purrr 
 
+Read in many files and append them together:
+
 <div class="code--container">
 <div>
 
 ```stata
-* Read in many files and append them together
-local filelist: dir "Data/" files "*.dta"
-local firsttime = 1
-foreach f in filelist {
-    use `f', clear
-    if `firsttime' == 0 {
-        append using compiled_data.dta
-    }
-    save compiled_data.dta, replace
+local filelist: dir "data/" files "*.csv"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local filelist {
+	qui: import delimited "`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
 }
 ```
 </div>
 <div>
 
 ```r
-# Read in many files and append them together
-# (this combines purrr with the data.table function fread)
-filelist = list.files('Data/', pattern = '.csv')
-dat = filelist %>%
-    map_df(fread)
+filelist = dir("data/", pattern = ".csv$")
+dat = map_df(filelist, data.table::fread)
+
+# Note: map_*df* means map (iterate) then coerce the
+# result to a data frame
+```
+</div>
+</div>
+
+Iterate over variables
+
+<div class="code--container">
+<div>
+
+```stata
+ds, has(type long)
+collapse (mean) `r(varlist)'
+```
+</div>
+<div>
+
+```r
+# Note: map is a stand-in replacement for lapply
+dat[, map(.SD, mean), .SDcols=is.numeric]
 ```
 </div>
 </div>
