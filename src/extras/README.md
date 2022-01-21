@@ -77,37 +77,64 @@ don't feel bound either way: it's totally fine to combine them. Some other
 **tidyverse** packages worth knowing about include **purrr**, which contains a suite
 of functions for automating and looping your work, **lubridate** which makes
 working with date-based data easy, and **stringr** which offers functions with
-straightforward syntax for working with string variables.
+straightforward syntax for working with string variables. In the examples that
+follow, note that `%>%` is a [pipe operator](https://magrittr.tidyverse.org/).
 
 #### Data wrangling with dplyr
 
 _Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat %>% group_by...`_
 
+Subset by rows and then columns:
+
 <div class="code--container">
 <div>
 
 ```stata
-* Subset by rows and then columns
 keep if var1=="value"
 keep var1 var2 var3
-* Create a new variable by group
-bysort group1: egen mean_var1 = mean(var1)
-* Collapse by group
-collapse (mean) arr_delay, by(carrier)
 ```
 </div>
 <div>
 
 ```r
-# Subset by rows and then columns
-dat %>%   # `%>%` is the tidyverse "pipe" operator
+dat %>%
    filter(var1=="value") %>%
    select(var1, var2, var3)
-# Create a new variable by group
+```
+</div>
+</div>
+
+Create a new variable by group:
+
+<div class="code--container">
+<div>
+
+```stata
+bysort group1: egen mean_var1 = mean(var1)
+```
+</div>
+<div>
+
+```r
 dat %>%
   group_by(group1) %>%
   mutate(mean_var1 = mean(var1))
-# Collapse by group
+```
+</div>
+</div>
+
+Collapse by group:
+
+<div class="code--container">
+<div>
+
+```stata
+collapse (mean) mean_var1 = var1, by(group1)
+```
+</div>
+<div>
+
+```r
 dat %>%
   group_by(group1) %>%
   summarise(mean_var1 = mean(var1))
