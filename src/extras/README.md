@@ -173,7 +173,7 @@ local filelist: dir "data/" files "*.csv"
 tempfile mytmpfile
 save `mytmpfile', replace empty
 foreach x of local filelist {
-	qui: import delimited "`x'", case(preserve) clear
+	qui: import delimited "data/`x'", case(preserve) clear
 	append using `mytmpfile'
 	save `mytmpfile', replace
 }
