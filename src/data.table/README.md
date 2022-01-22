@@ -170,7 +170,7 @@ foreach x of local filelist {
 <div>
 
 ```r
-filelist = dir("data/", pattern = ".csv$")
+filelist = dir("data/", pattern=".csv$", full.names=TRUE)
 dat = rbindlist(lapply(filelist, fread))
 ```
 </div>
@@ -221,20 +221,14 @@ Import many files and append them together (uses generic data directory).
 <div>
 
 ```stata
-local filelist: dir "data/" files "*.dta"
-tempfile mytmpfile
-save `mytmpfile', replace empty
-foreach x of local filelist {
-	qui: import delimited "data/`x'", case(preserve) clear
-	append using `mytmpfile'
-	save `mytmpfile', replace
-}
+cd "`c(pwd)'/data"
+append using `: dir "." files "*.dta"' 
 ```
 </div>
 <div>
 
 ```r
-filelist = dir("data/", pattern = ".dta$")
+filelist = dir("data/", pattern=".dta$", full.names=TRUE)
 dat = rbindlist(lapply(filelist, haven::read_dta))
 ```
 </div>
