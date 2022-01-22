@@ -182,7 +182,7 @@ foreach x of local filelist {
 <div>
 
 ```r
-filelist = dir("data/", pattern = ".csv$")
+filelist = dir("data/", pattern=".csv$", full.names=TRUE)
 dat = map_df(filelist, data.table::fread)
 
 # Note: map_*df* means map (iterate) then coerce the
