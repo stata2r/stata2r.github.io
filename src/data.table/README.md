@@ -106,7 +106,8 @@ Like Stata's `.dta` file format, R has its own native `.rds` storage format.
 we generally recommend that users avoid native—especially proprietary—data types
 since they hamper interoperability and reproducibility. We'll hence concentrate
 on common open-source file types below. We'll make an exception for `.dta` given
-our target audience, but we still recommend avoiding it if possible.
+our target audience, but we still recommend avoiding it if possible. Note that
+all of the below examples will assume generic datasets.
 
            
 ### Read and write .csv
@@ -117,50 +118,35 @@ Single file.
 <div>
 
 ```stata
-import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear 
-export delimited using "flightdata.csv", replace
-```
-</div>
-<div>
-
-```r
-dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
-fwrite(dat, 'flightdata.csv')
-```
-</div>
-</div>
-
-Subset columns during import (uses generic dataset).
-
-<div class='code--container'>
-<div>
-
-```stata
+import delimited using "filename.csv", clear 
 * ?
+* ?
+
+export delimited using "filename.csv", replace
 ```
 </div>
 <div>
 
 ```r
-fread("data/myfile.csv", select = c("col1","col2"))
-# fread("data/myfile.csv", select = 1:2) # same
+dat = fread('filename.csv')
+# dat = fread("filename.csv", select=c("col1","col2"))
+# dat = fread("filename.csv", drop=c("col3","col4"))
 
-fread("data/myfile.csv", drop = c("col2","col3"))
-# fread("data/myfile.csv", drop = 2:3) # same
+fwrite(dat, 'filename.csv')
 ```
 </div>
 </div>
 
-Import many files and append them together (uses generic data directory).
+Read many files and append them together.
 
 <div class="code--container">
 <div>
 
 ```stata
-local filelist: dir "data/" files "*.csv"
+local cfiles: dir "data/" files "*.csv"
 tempfile mytmpfile
 save `mytmpfile', replace empty
-foreach x of local filelist {
+foreach x of local cfiles {
 	qui: import delimited "data/`x'", case(preserve) clear
 	append using `mytmpfile'
 	save `mytmpfile', replace
@@ -170,8 +156,8 @@ foreach x of local filelist {
 <div>
 
 ```r
-filelist = dir("data/", pattern=".csv$", full.names=TRUE)
-dat = rbindlist(lapply(filelist, fread))
+cfiles = dir("data/", pattern=".csv$", full.names=TRUE)
+dat = rbindlist(lapply(cfiles, fread))
 ```
 </div>
 </div>
@@ -198,7 +184,8 @@ Single file.
 <div>
 
 ```stata
-use "filename.dta", clear 
+use "filename.dta", clear
+* use "filename.dta", keep(var1-var4) clear
 
 
 save "filename.dta", replace
@@ -207,15 +194,16 @@ save "filename.dta", replace
 <div>
 
 ```r
-dat = haven::read_dta('filename.dta') 
-setDT(dat) # Or: dat = as.data.table(dat) 
+dat = haven::read_dta('filename.dta')
+# dat = haven::read_dta('filename.dta', col_select=var1:var4)
+setDT(dat) # i.e. Set as a data.table
  
 haven::write_dta(dat, 'filename.dta')
 ```
 </div>
 </div>
 
-Import many files and append them together (uses generic data directory).
+Read many files and append them together.
 
 <div class='code--container'>
 <div>
@@ -228,8 +216,8 @@ append using `: dir "." files "*.dta"'
 <div>
 
 ```r
-filelist = dir("data/", pattern=".dta$", full.names=TRUE)
-dat = rbindlist(lapply(filelist, haven::read_dta))
+dfiles = dir("data/", pattern=".dta$", full.names=TRUE)
+dat = rbindlist(lapply(dfiles, haven::read_dta))
 ```
 </div>
 </div>
@@ -260,8 +248,10 @@ _Note: These commands require the [**arrow**](https://arrow.apache.org/docs/r/) 
 
 ```r
 pfiles = dir(pattern = ".parquet") 
-rbindlist(lapply(pfiles, arrow::read_parquet)) 
-rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10))
+dat = rbindlist(lapply(pfiles, arrow::read_parquet))
+# dat = rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10))
+
+write_parquet(dat, sink = "filename.parquet")
 ```
 </div>
 </div>
@@ -378,7 +368,7 @@ dat[between(day,5,10)] # Or: dat[day %in% 5:10]
 dat[origin=='LGA']
 dat[origin %like% 'LGA'] 
 dat[month %in% c(3,4,11,12)] 
-dat[origin %chin% c("JFK","LGA")] # %chin% is a faster %in% for (ch)aracter strings 
+dat[origin %chin% c("JFK","LGA")] # %chin% is a fast %in% for (ch)aracters 
 dat[month!=1]
 ```
 </div>
