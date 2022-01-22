@@ -19,6 +19,93 @@ to install them with `install.packages('PKGNAME')` and load them with
 as often as you want to update it); the latter whenever you want to use a 
 package in a new R session.
 
+## base
+
+_Where it all begins_
+
+Like many programming languages, one of R's great strengths is its package
+ecosystem. But _none_ of that would be possible without the scaffolding provided
+by [**base**](https://www.r-project.org/about.html) R. The "base" part here
+represents a set of core libraries and routines that get installed and loaded
+automatically whenever you start an R session. And you really get a lot out of
+the gate, because base R is incredibly versatile and function rich. Many of the
+operations that we have shown you on the preceding pages could equally have been
+implemented using off-the-shelf base R equivalents. We won't attempt to persuade
+you of that here, but there are lots of good tutorials available if you're
+interested ([here](https://github.com/matloff/fasteR#table-of-contents) for
+example). Below we'll just highlight a few simple examples to give you an idea.
+
+#### Plotting (simple histogram)
+
+<div class="code--container">
+<div>
+
+```stata
+set obs 100
+gen x = rnormal()
+histogram x
+```
+</div>
+<div>
+
+```r
+x = rnorm(100)
+hist(x)
+```
+</div>
+</div>
+
+#### Linear regression
+
+<div class="code--container">
+<div>
+
+```stata
+reg y x1 x2
+```
+</div>
+<div>
+
+```r
+lm(y ~ x1 + x2, dat)
+```
+</div>
+</div>
+
+#### Iteration (loops)
+
+<div class="code--container">
+<div>
+
+```stata
+foreach i of numlist 1/10 {
+   display `i' + 100
+}
+```
+</div>
+<div>
+
+```r
+for (i in 1:10) {
+    print(i + 100) 
+}
+
+# Aside 1: A single line works too here.
+for (i in 1:10) print(i + 100)
+
+# Aside 2: R provides "functional programming" eqivalents
+# to for-loops via the *apply family of functions. These
+# have various advantages, which we won't get into here.
+# Still the most important member is arguably "lapply", which 
+# we've already seen a couple of times and returns a list
+# result (which is great for programming). Here's the
+# equivalent lapply code to the previous for-loop.
+lapply(1:10, function(i) print(i + 100))
+```
+</div>
+</div>
+
+
 ## ggplot2
 
 _Beautiful and customizable plots_
