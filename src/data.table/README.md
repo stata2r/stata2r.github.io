@@ -835,24 +835,75 @@ dat[, new_var := custom_func(var1, var2), by=.I] # dev version only
            
 ### Fill in Time Series/Panel Data
 
+Lags and leads (generic dataset)
+
 <div class='code--container'>
 <div>
 
 ```stata
+* Create generic dataset for this section
+clear
+set obs  12
+egen id = seq(), from(1) to(3) block(4)
+bysort id: gen yr = _n
+gen y = runiform()
+
+* Lead(s)
+bysort id (yr): gen xlead = x[_n+1]
+
+* Lag(s)
+bysort id (yr): gen xlag = x[_n-1]
+
+```
+</div>
+<div>
+
+```r
+# Create generic dataset for this section
+dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
+# setorder(dat, id, yr) # already ordered
+
+
+
+
+# Lead(s)
+dat[, xlag := shift(x, 1), by = id]
+
+# Lag(s)
+dat[, xlead := shift(x, -1), by = id]
+# dat[ , xlead := shift(x, 1, type="lead"), by = id] # same
+```
+</div>
+</div>
+
+Replace missing values forward or back (generic dataset)
+
+<div class='code--container'>
+<div>
+
+```stata
+* Modify our dataset from above...
+drop xlag xlead
+replace x = . if inlist(yr, 1, 3)
+
 * Carry forward the last-known observation
-sort id time
+* sort id yr * already sorted
 by id: replace x = x[_n-1] if missing(x)
 
 * Carry back the next-known observation
-gsort id -time
+gsort id -yr
 by id: replace x = x[_n-1] if missing(x)
 ```
 </div>
 <div>
 
 ```r
+# Modify our dataset from above...
+dat[, c("xlag", "xlead") := NULL][
+    yr %in% c(1,3), y := NA]
+
 # Carry forward the last-known observation
-setorder(dat, id, time)
+# setorder(dat, id, yr) # already ordered
 dat[, x := nafill(x, type = 'locf'), by = id]
 
 # Carry back the next-known observation
