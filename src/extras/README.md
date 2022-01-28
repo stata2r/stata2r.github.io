@@ -303,17 +303,18 @@ dat[, map(.SD, mean), .SDcols=is.numeric]
 <div>
 
 ```stata
-subinstr(string, "remove", "replace", .)
-substr(string, start, length)
-regex(string, "regex")
+subinstr("Hello world", "world", "universe", .)
+substr("Hello world", 1, 3)
+regexm("Hello world", "ello")
+
 ```
 </div>
 <div>
 
 ```r
-str_replace_all(string, "remove", "replace")
-str_sub(string, start, end)
-str_detect(string, "regex")
+str_replace_all("Hello world", "world", "universe")
+str_sub("Hello world", 1, 3)
+str_detect("Hello world", "ello")
 # Note all the stringr functions accept regex input
 ```
 </div>

@@ -118,21 +118,21 @@ Single file.
 <div>
 
 ```stata
-import delimited using "filename.csv", clear 
-* ?
+import delimited using "file.csv", clear 
+* import delimited using "file.csv", clear colrange(1:2)
 * ?
 
-export delimited using "filename.csv", replace
+export delimited using "file.csv", replace
 ```
 </div>
 <div>
 
 ```r
-dat = fread('filename.csv')
-# dat = fread("filename.csv", select=c("col1","col2"))
-# dat = fread("filename.csv", drop=c("col3","col4"))
+dat = fread("file.csv")
+# dat = fread("file.csv", select=c("col1","col2")) # or select=1:2
+# dat = fread("file.csv", drop=c("col3","col4")) # or drop=3:4
 
-fwrite(dat, 'filename.csv')
+fwrite(dat, "file.csv")
 ```
 </div>
 </div>
@@ -143,10 +143,10 @@ Read many files and append them together.
 <div>
 
 ```stata
-local cfiles: dir "data/" files "*.csv"
+local files: dir "data/" files "*.csv"
 tempfile mytmpfile
 save `mytmpfile', replace empty
-foreach x of local cfiles {
+foreach x of local files {
 	qui: import delimited "data/`x'", case(preserve) clear
 	append using `mytmpfile'
 	save `mytmpfile', replace
@@ -156,8 +156,8 @@ foreach x of local cfiles {
 <div>
 
 ```r
-cfiles = dir("data/", pattern=".csv$", full.names=TRUE)
-dat = rbindlist(lapply(cfiles, fread))
+files = dir("data/", pattern=".csv$", full.names=TRUE)
+dat = rbindlist(lapply(files, fread))
 ```
 </div>
 </div>
@@ -184,21 +184,21 @@ Single file.
 <div>
 
 ```stata
-use "filename.dta", clear
-* use "filename.dta", keep(var1-var4) clear
+use "file.dta", clear
+* use "file.dta", keep(var1-var4) clear
 
 
-save "filename.dta", replace
+save "file.dta", replace
 ```
 </div>
 <div>
 
 ```r
-dat = haven::read_dta('filename.dta')
-# dat = haven::read_dta('filename.dta', col_select=var1:var4)
+dat = haven::read_dta("file.dta")
+# dat = haven::read_dta("file.dta", col_select=var1:var4)
 setDT(dat) # i.e. Set as a data.table
  
-haven::write_dta(dat, 'filename.dta')
+haven::write_dta(dat, "file.dta")
 ```
 </div>
 </div>
@@ -216,8 +216,8 @@ append using `: dir "." files "*.dta"'
 <div>
 
 ```r
-dfiles = dir("data/", pattern=".dta$", full.names=TRUE)
-dat = rbindlist(lapply(dfiles, haven::read_dta))
+files = dir("data/", pattern=".dta$", full.names=TRUE)
+dat = rbindlist(lapply(files, haven::read_dta))
 ```
 </div>
 </div>
@@ -247,11 +247,11 @@ _Note: These commands require the [**arrow**](https://arrow.apache.org/docs/r/) 
 <div>
 
 ```r
-pfiles = dir(pattern = ".parquet") 
-dat = rbindlist(lapply(pfiles, arrow::read_parquet))
-# dat = rbindlist(lapply(pfiles, arrow::read_parquet, col_select=1:10))
+files = dir(pattern = ".parquet") 
+dat = rbindlist(lapply(files, arrow::read_parquet))
+# dat = rbindlist(lapply(files, arrow::read_parquet, col_select=1:10))
 
-write_parquet(dat, sink = "filename.parquet")
+write_parquet(dat, sink = "file.parquet")
 ```
 </div>
 </div>
@@ -350,7 +350,7 @@ keep in 1/200
 keep if day > 5 & day < 10
 keep if inrange(day,5,10)
 keep if origin == "LGA"
-keep if regex(origin,"LGA") 
+keep if regexm(origin,"LGA") 
 keep if inlist(month,3,4,11,12) 
 keep if inlist(origin,"JFK","LGA") 
 drop if month == 1
@@ -672,8 +672,11 @@ sort origin month
 by origin: gen growth = N/N[_n-1]
 
 * Ex. 2: Relative growth
-by origin: gen growth_since_jan = N/N[1]
-* ?
+by origin: gen growth_since_first = N/N[1]
+
+* Ex. 3: Relative growth (order agnostic)
+bysort origin (month): egen growth_since_may = max(N*(month == 5))
+replace growth_since_may = N / growth_since_may
 ```
 </div>
 <div>
@@ -689,8 +692,11 @@ setorder(dat2, origin, month)
 dat2[, growth := N/shift(N, 1), by = origin]
 
 # Ex. 2: Relative growth
-dat2[, growth_since_jan := N/first(N), by = origin]
+dat2[, growth_since_first := N/N[1], by = origin]
+
+# Ex. 3: Relative growth (order agnostic)
 dat2[, growth_since_may := N/N[month==5], by = origin]
+
 ```
 </div>
 </div>
@@ -1343,9 +1349,12 @@ will be one on airport characteristics.
 ```stata
 import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear
 * Stata requires that merge ID variables have the same 
-* name across datasets. 
-rename faa dest 
-save dat2.dta, replace
+* name across datasets.
+rename faa dest
+
+* Save as tempfile and then reimport original dataset
+tempfile dat2
+save `dat2'
 import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
 ```
 </div>
@@ -1368,7 +1377,7 @@ _Only keep the matched rows across both datasets._
 <div>
 
 ```stata
-merge m:1 dest using dat2.dta, keep(3) nogen
+merge m:1 dest using `dat2', keep(3) nogen
 ```
 </div>
 <div>
@@ -1387,7 +1396,7 @@ _Keep all rows of both datasets, regardless of whether matched._
 <div>
 
 ```stata
-merge m:1 dest using dat2.dta, nogen
+merge m:1 dest using `dat2', nogen
 ```
 </div>
 <div>
@@ -1406,7 +1415,7 @@ _Keep all rows from the "main" dataset._
 <div>
 
 ```stata
-merge m:1 dest using dat2.dta, keep(1 3) nogen
+merge m:1 dest using `dat2', keep(1 3) nogen
 ```
 </div>
 <div>
@@ -1425,7 +1434,7 @@ _Keep all rows from the "secondary" dataset._
 <div>
 
 ```stata
-merge m:1 dest using dat2.dta, keep(2 3) nogen
+merge m:1 dest using `dat2', keep(2 3) nogen
 ```
 </div>
 <div>
@@ -1444,7 +1453,7 @@ _Keep non-matched rows only._
 <div>
 
 ```stata
-merge m:1 dest using dat2.dta, keep(1 2) nogen
+merge m:1 dest using `dat2', keep(1 2) nogen
 ```
 </div>
 <div>
