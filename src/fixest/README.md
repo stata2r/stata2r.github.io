@@ -629,14 +629,13 @@ reg wage educ age
 eststo est1 
 esttab est1
 
+* Add second regression
 reg wage educ age black hisp
 eststo est2
-esttab est1 est2 
+esttab est1 est2
 
-* There aren't great Stata equivalents for these next 
-* examples. You could mimic with a loop, but that will 
-* require more code and be slower (since your whole 
-* model has to be reestimated each time).
+* Export to TeX
+esttab using "regtable.tex", replace 
 ```
 </div>
 <div>
@@ -646,12 +645,28 @@ est1 = feols(wage ~ educ + age, dat)
 etable(est1)
 
 
+# Add second regression
 est2 = feols(wage ~ educ + age + black + hisp, dat) 
-etable(est1, est2) 
+etable(est1, est2)
 
 
+# Export to Tex
+etable(est1, est2, file = "regtable.tex")
+```
+</div>
+</div>
+
+**Note:** The `etable()` function is extremely flexible and includes support for
+many things that we won't show you here. See the relevant vignettes for more
+([1](https://lrberge.github.io/fixest/articles/exporting_tables.html),
+[2](https://lrberge.github.io/fixest/articles/etable_new_features.html)). Below we highlight a few unique features that don't have direct Stata
+equivalents. (You could potentially mimic with a loop, but that will require 
+more code and be slower, since your whole model has to be re-estimated each 
+time.)
+
+```r
 # SEs for existing models can be adjusted on-the-fly 
-etable(est1, vcov = 'hc1') 
+etable(est1, est2, vcov = 'hc1') 
 
 # Report multiple SEs for the same model 
 etable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) 
@@ -663,8 +678,6 @@ est_mult = feols(c(wage, age) ~ educ + csw0(hisp, black) |
                  dat, fsplit = ~marr) 
 etable(est_mult, vcov = ~statefips^year)
 ```
-</div>
-</div>
 
 ### Joint test of coefficients
 
