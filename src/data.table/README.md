@@ -107,7 +107,7 @@ we generally recommend that users avoid native—especially proprietary—data t
 since they hamper interoperability and reproducibility. We'll hence concentrate
 on common open-source file types below. We'll make an exception for `.dta` given
 our target audience, but we still recommend avoiding it if possible. Note that
-all of the below examples will assume generic datasets.
+all of the examples in this section will assume generic datasets.
 
            
 ### Read and write .csv
@@ -255,8 +255,70 @@ write_parquet(dat, sink = "file.parquet")
 ```
 </div>
 </div>
-           
-                     
+
+### Create a dataset _de novo_
+
+Random numbers. Note that the random seeds will be different across the two
+languages.
+
+<div class='code--container'>
+<div>
+
+```stata
+clear
+set seed 123
+set obs 10
+gen x = _n
+gen y = rnormal()
+gen z = runiform()
+```
+</div>
+<div>
+
+```r
+set.seed(123)
+d = data.table(x = 1:10, y = rnorm(10), z = runif(10))
+```
+</div>
+</div>
+
+Some convenience functions for specific data types.
+
+<div class='code--container'>
+<div>
+
+```stata
+* All combinations of two vectors (i.e. a cross-join)
+clear
+set obs 2
+gen id = _n
+gen yr = _n in 2001/2010
+fillin id yr
+drop if id == . | yr == .
+
+* Datetimes
+* ?
+
+```
+</div>
+<div>
+
+```r
+# All combinations of two vectors (i.e. a cross-join)
+d = CJ(id = 1:2, yr = 2001:2010)
+
+
+
+
+
+
+# Datetime
+dts = Sys.time() + 0:10 # time right now ++10 seconds
+d = IDateTime(dts)
+```
+</div>
+</div>
+              
 ## Order
 
            
