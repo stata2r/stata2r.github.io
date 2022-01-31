@@ -50,7 +50,7 @@ following:
 <div>
 
 ```stata
-import delimited using \\\
+import delimited using ///
     "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear
 ```
 </div>
@@ -159,9 +159,9 @@ reghdfe wage educ, absorb(countyfips) cluster(countyfips)
 reghdfe wage educ, absorb(countyfips)  
 
 * Add more fixed effects... 
-reghdfe wage educ, absorb(countyfips year) \\\ 
+reghdfe wage educ, absorb(countyfips year) ///
                    vce(cluster countyfips year) 
-reghdfe wage educ, absorb(countyfips#year) \\\ 
+reghdfe wage educ, absorb(countyfips#year) /// 
                    vce(cluster countyfips#year)
 ```
 </div>
@@ -229,7 +229,7 @@ logit marr age black hisp
 * numerical overflow or matsize issues
 
 
-ppmlhdfe educ age black hisp, absorb(statefips year) \\\
+ppmlhdfe educ age black hisp, absorb(statefips year) ///
 	                      vce(cluster statefips)
 ```
 </div>
@@ -475,7 +475,7 @@ feols(y ~ control + sunab(year_treated, year))
 reghdfe wage educ, absorb(statefips#year) 
 
 * Varying slopes (e.g. time trend for each state) 
-reghdfe wage educ, absorb(statefips#c.year) \\\
+reghdfe wage educ, absorb(statefips#c.year) ///
 	           vce(cluster statefips#c.year)
 ```
 </div>
@@ -550,16 +550,16 @@ feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
 <div>
 
 ```stata
-reghdfe wage educ, absorb(countyfips) \\\ 
+reghdfe wage educ, absorb(countyfips) /// 
                    vce(cluster countyfips) 
 
 * Twoway clustering etc. 
-reghdfe wage educ, absorb(countyfips year) \\\ 
+reghdfe wage educ, absorb(countyfips year) ///
                    vce(cluster countyfips year) 
 
 
 
-reghdfe wage educ, absorb(countyfips#year) \\\ 
+reghdfe wage educ, absorb(countyfips#year) ///
                    vce(cluster countyfips#year)
 ```
 </div>

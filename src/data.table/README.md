@@ -40,7 +40,7 @@ and R.
 <div>
 
 ```stata
-import delimited using \\\
+import delimited using ///
     "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
 ```
 </div>
@@ -290,9 +290,9 @@ Some convenience functions for specific data types.
 ```stata
 * All combinations of two vectors (i.e. a cross-join)
 clear
-set obs 2
-gen id = _n
-gen yr = _n in 2001/2010
+set obs 10
+gen id = _n in 1/2
+gen yr = 2000 + _n
 fillin id yr
 drop if id == . | yr == .
 
