@@ -673,16 +673,18 @@ Some shortcut symbols.
 <div>
 
 ```stata
-bysort carrier: g rows_per_carrier = _N 
-bysort carrier: g index_within_carrier = _n 
+gen index _n
+bysort carrier: gen index_within_carrier = _n 
+bysort carrier: gen rows_per_carrier = _N 
 egen origin_index = group(origin)
 ```
 </div>
 <div>
 
 ```r
-dat[, rows_per_carrier := .N, by = carrier] 
-dat[, index_within_carrier := .I, by = carrier] 
+dat[, index := .I]
+dat[, index_within_carrier := rowid(carrier)]
+dat[, rows_per_carrier := .N, by = carrier]
 dat[, origin_index := .GRP, by = origin]
 ```
 </div>
@@ -916,11 +918,11 @@ egen id = seq(), from(1) to(3) block(4)
 bysort id: gen yr = _n
 gen y = runiform()
 
-* Lead(s)
-bysort id (yr): gen xlead = x[_n+1]
-
 * Lag(s)
 bysort id (yr): gen xlag = x[_n-1]
+
+* Lead(s)
+bysort id (yr): gen xlead = x[_n+1]
 
 ```
 </div>
@@ -934,10 +936,10 @@ dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
 
 
 
-# Lead(s)
+# Lag(s)
 dat[, xlag := shift(x, 1), by = id]
 
-# Lag(s)
+# Lead(s)
 dat[, xlead := shift(x, -1), by = id]
 # dat[ , xlead := shift(x, 1, type="lead"), by = id] # same
 ```
