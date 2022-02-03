@@ -736,6 +736,12 @@ regress wage hisp##c.age
 * Show how effect differs by group
 margins hisp, dydx(age)
 marginsplot
+
+# Show predictive margins with an interaction
+regress wage hisp##c.age
+margins hisp, at(age = (16(1)55))
+* The recast here gives a line and error area instead of points and lines
+marginsplot, recast(line) recastci(rarea)
 ```
 </div>
 <div>
@@ -745,6 +751,12 @@ est1 = feols(wage ~ i(hisp, age), dat)
 
 # Show how effect differs by group
 iplot(est1)
+
+
+# Show predictive margins with an interaction
+# This requires plot_cap from the marginaleffects package
+library(marginaleffects)
+plot_cap(est1, condition = c('age','hisp'))
 ```
 </div>
 </div>        
