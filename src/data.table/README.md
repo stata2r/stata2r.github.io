@@ -930,7 +930,7 @@ bysort id (yr): gen xlead = x[_n+1]
 
 ```r
 # Create generic dataset for this section
-dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
+dat = CJ(id = 1:3, yr = 1:4)[, x := runif(12)]
 # setorder(dat, id, yr) # already ordered
 
 
@@ -970,7 +970,7 @@ by id: replace x = x[_n-1] if missing(x)
 ```r
 # Modify our dataset from above...
 dat[, c("xlag", "xlead") := NULL][
-    yr %in% c(1,3), y := NA]
+    yr %in% c(1,3), x := NA]
 
 # Carry forward the last-known observation
 # setorder(dat, id, yr) # already ordered
