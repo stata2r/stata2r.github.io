@@ -915,7 +915,7 @@ Lags and leads (generic dataset)
 clear
 set obs  12
 egen id = seq(), from(1) to(3) block(4)
-bysort id: gen yr = _n
+bysort id: gen yr = 2000 + _n
 gen y = runiform()
 
 * Lag(s)
@@ -930,7 +930,7 @@ bysort id (yr): gen xlead = x[_n+1]
 
 ```r
 # Create generic dataset for this section
-dat = CJ(id = 1:3, yr = 1:4)[, x := runif(12)]
+dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
 # setorder(dat, id, yr) # already ordered
 
 
@@ -954,7 +954,7 @@ Replace missing values forward or back (generic dataset)
 ```stata
 * Modify our dataset from above...
 drop xlag xlead
-replace x = . if inlist(yr, 1, 3)
+replace x = . if inlist(yr, 2001, 2003)
 
 * Carry forward the last-known observation
 * sort id yr * already sorted
@@ -970,7 +970,7 @@ by id: replace x = x[_n-1] if missing(x)
 ```r
 # Modify our dataset from above...
 dat[, c("xlag", "xlead") := NULL][
-    yr %in% c(1,3), x := NA]
+    yr %in% c(2001,2003), x := NA]
 
 # Carry forward the last-known observation
 # setorder(dat, id, yr) # already ordered
