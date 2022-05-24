@@ -155,7 +155,7 @@ foreach x of local files {
 <div>
 
 ```r
-files = dir("data/", pattern=".csv$", full.names=TRUE)
+files = dir("data/", pattern=".csv", full.names=TRUE)
 dat = rbindlist(lapply(files, fread))
 ```
 </div>
@@ -215,7 +215,7 @@ append using `: dir "." files "*.dta"'
 <div>
 
 ```r
-files = dir("data/", pattern=".dta$", full.names=TRUE)
+files = dir("data/", pattern=".dta", full.names=TRUE)
 dat = rbindlist(lapply(files, haven::read_dta))
 ```
 </div>
