@@ -15,12 +15,11 @@ Before continuing, make sure that you have installed **data.table**. You only
 have to do this once (or as often as you want to update the package).
 
 ```r
-# Install from CRAN (recommended)
-install.packages('data.table')
+# Install from CRAN
+install.packages("data.table")
 
-# Install the development version from GitHub (advanced)
-# Requires Rtools and the remotes package
-# remotes::install_github('Rdatatable/data.table')
+# Alternatively, you can install the latest development version
+# install.packages("data.table", repos = "https://fastverse.r-universe.dev")
 ```
 
 Once **data.table** is installed, don't forget to load it whenever you want to 
@@ -1268,7 +1267,7 @@ setkey(dat, month, origin)
 dat[, mean(dep_delay), by = .(month, origin)]
 
 ## Tip: Turn on automatic printing of keys. The dev version
-## of data.table (v1.14.3) does this by default.
+## of data.table (v1.14.4) does this by default.
 options(datatable.print.class = TRUE, datatable.print.keys = TRUE)
 dat
 

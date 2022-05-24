@@ -18,12 +18,11 @@ have to do this once (or as often as you want to update the package).
 <div>
 
 ```r
-# Install from CRAN (recommended) 
-install.packages(fixest)
+# Install from CRAN
+install.packages("fixest")
 
-# Install the development version from GitHub (advanced) 
-# Requires Rtools and the remotes package 
-# remotes::install_github('lrberge/fixest')
+# Alternatively, you can install the latest development version
+# install.packages("fixest", repos = "https://fastverse.r-universe.dev")
 ```
 </div>
 </div>
