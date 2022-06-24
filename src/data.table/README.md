@@ -700,21 +700,24 @@ foreach x of varlist dep_delay arr_delay air_time {
     gen `x'_dm = `x' - mean_`x' 
     drop mean* 
 }
-
 ```
 </div>
 <div>
 
 ```r
+for (x in c('dep_delay', 'arr_delay', 'air_time')) {
+    set(dat, j = paste0(x, "_dm"), value = dat[[x]] - mean(dat[[x]]))
+}
+
+
+## Aside: Above we used `set` to mimic Stata-style macros (i.e.
+## variables in a loop. That's perfectly valid data.table code,
+## but another option would be to use `.SD(cols)` as per below.
 dmcols = c('dep_delay', 'arr_delay', 'air_time') 
 dat[,
     paste0(dmcols,'_dm') := lapply(.SD, \(x) x-mean(x)),
     .SDcols = dmcols,
     by = origin] 
-
-# Note: `\(x)` is a shorthand for `function(x)`, introduced 
-# in R 4.1.1. You'll need to use the latter if you're still 
-# on an older version of R.
 ```
 </div>
 </div>
