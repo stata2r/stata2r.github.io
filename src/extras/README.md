@@ -24,7 +24,7 @@ package in a new R session.
 _Where it all begins_
 
 Like many programming languages, one of R's great strengths is its package
-ecosystem. But _none_ of that would be possible without the scaffolding provided
+ecosystem. But none of that would be possible without the scaffolding provided
 by [**base**](https://www.r-project.org/about.html) R. The "base" part here
 represents a set of core libraries and routines that get installed and loaded
 automatically whenever you start an R session. And you really get a lot out of
@@ -552,54 +552,82 @@ nm = lmer(Y~(1+x|group) + X, data = dat)
 
 ## marginaleffects
 
-_Marginal effects, constrasts, etc._
+_Marginal effects, contrasts, joint hypothesis tests, etc._
 
- 
 The Stata `margins` command is great. To replicate it in R, we highly recommend
 the [**marginaleffects**](https://vincentarelbundock.github.io/marginaleffects/)
 package. Individual marginal effects or average marginal effects for nonlinear
-models, or models with interactions or transformations, etc. It's also very
-fast.
+models, or models with interactions or transformations, etc. The documentation
+is outstanding and the underlying functions are also very fast.
 
+#### Marginal effects and plots
 
-#### Basic logit marginal effects
+Here's a simple example of a hypothetical logit model.
 
 <div class='code--container'>
 <div>
 
 ```stata
-* A logit:
-logit Y X Z
+logit y x z
 margins, dydx(*)
+
+* Predictive plot example
+levelsof x, miss local(x_lvls)
+qui margins, at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
 ```
 </div>
 <div>
 
 ```r
-# This example incorporates the fixest function feglm()
-m = feglm(Y ~ X + Z, family = binomial, data = mtcars)
+m = glm(y ~ x + z, family = binomial, data = some_data)
 summary(marginaleffects(m))
+
+# Predictive plot example
+plot_cap(m, "x")
 ```
 </div>
 </div>
 
+And here's another of a hypothetical continuous * categorical interaction model.
+
+<div class='code--container'>
+<div>
+
+```stata
+* x is a continuous and z is categorical
+reg y c.x##i.z
+
+qui margins z, dydx(x)
+marginsplot
+
+levelsof x, miss local(x_lvls)
+qui margins, dydx(z) at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
+```
+</div>
+<div>
+
+```r
+# X is a continuous and Z is categorical
+m = lm(y ~ x * factor(z), some_data)
+
+plot_cme(m, effect = "x", condition = "z")
 
 
-## multcomp / nlWaldTest
+plot_cme(m, effect = "z", condition = "x")
+```
+</div>
+</div>
 
-_Joint coefficient tests_
+#### Joint coefficient and (non)linear hypothesis tests
 
 Stata provides a number of inbuilt commands for (potentially complex)
 postestimation coefficient tests. We've already seen the `testparm` command
 equivalent with `fixest::wald()`. But what about combinations of coefficients _a
-la_ Stata's `lincom` and `nlcom` commands? The
-[**multcomp**](http://multcomp.r-forge.r-project.org/) package handles a variety
-of linear tests and combinations, while
-[**nlWaldTest**](https://cran.r-project.org/web/packages/nlWaldTest/index.html)
-has you covered for nonlinear combinations.
-
-
-#### Test other null hypotheses and coefficient combinations
+la_ Stata's `lincom` and `nlcom` commands? While several R packages do this,
+we'll again recommend the **marginaleffects** package. It's lightweight and fast, 
+and supports hypothesis testing of both linear and non-linear combinations.
 
 <div class='code--container'>
 <div>
@@ -607,17 +635,12 @@ has you covered for nonlinear combinations.
 ```stata
 regress y x z 
 
-* One-sided test 
-test _b[x]=0 
-local sign_wgt = sign(_b[x]) 
-display "H0: coef <= 0  p-value = " ttail(r(df_r),`sign_wgt'*sqrt(r(F))) 
-
 * Test linear combination of coefficients 
 lincom x + z 
 
 
 * Test nonlinear combination of coefficients 
-nlcom _b[x]/_b[z]
+nlcom _b[x]/_b[z] - 1
 ```
 </div>
 <div>
@@ -625,17 +648,13 @@ nlcom _b[x]/_b[z]
 ```r
 m = feols(y ~ x + z, dat)
 
-# One-sided test 
-m2 = multcomp::ghlt(m, '<=0')
-summary(m2) 
-
-
 # Test linear combination of coefficients 
-m3 = multcomp::glht(m, 'x + z = 0') 
-summary(m3) # or confint(m3) 
+deltamethod(m, "x + z = 0")
+# marginaleffects(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
 
 # Test nonlinear combination of coefficients 
-nlWaldtest::nlWaldtest(m, 'b[2]/b[3]') # or nlWaldtest::nlConfint()
+deltamethod(m, "x / z = 1")
+# marginaleffects(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
 ```
 </div>
 </div>
