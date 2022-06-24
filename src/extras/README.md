@@ -627,7 +627,9 @@ postestimation coefficient tests. We've already seen the `testparm` command
 equivalent with `fixest::wald()`. But what about combinations of coefficients _a
 la_ Stata's `lincom` and `nlcom` commands? While several R packages do this,
 we'll again recommend the **marginaleffects** package. It's lightweight and fast, 
-and supports hypothesis testing of both linear and non-linear combinations.
+and supports 
+[hypothesis testing](https://vincentarelbundock.github.io/marginaleffects/articles/hypothesis.html) 
+of both linear and non-linear combinations.
 
 <div class='code--container'>
 <div>
@@ -646,7 +648,7 @@ nlcom _b[x]/_b[z] - 1
 <div>
 
 ```r
-m = feols(y ~ x + z, dat)
+m = lm(y ~ x + z, dat)
 
 # Test linear combination of coefficients 
 deltamethod(m, "x + z = 0")
