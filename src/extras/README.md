@@ -646,16 +646,16 @@ prefer Bayesian models for this kind of thing, check out
 
 ```stata
 xtset group time
-xtreg Y X, re
-mixed lifeexp || countryn: gdppercap
+xtreg y x, re
+mixed y x || group: x, reml
 ```
 </div>
 <div>
 
 ```r
 # No need for an xtset equivalent
-m = lmer(Y~(1|group) + X, data = dat)
-nm = lmer(Y~(1+x|group) + X, data = dat)
+lmer(y ~ x + (1 | group), data = dat)
+lmer(y ~ x + (x | group), data = dat)
 ```
 </div>
 </div>
