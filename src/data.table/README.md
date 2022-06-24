@@ -710,8 +710,8 @@ for (x in c('dep_delay', 'arr_delay', 'air_time')) {
 }
 
 
-## Aside: Above we used `set` to mimic Stata-style macros (i.e.
-## variables in a loop. That's perfectly valid data.table code,
+## Aside: Above we used `set` to mimic Stata-style "macros" (i.e.
+## variables) in a loop. That's perfectly valid data.table code,
 ## but another option would be to use `.SD(cols)` as per below.
 dmcols = c('dep_delay', 'arr_delay', 'air_time') 
 dat[,
