@@ -660,6 +660,9 @@ lmer(y ~ x + (x | group), data = dat)
 </div>
 </div>
 
+P.S. Take a look at the CRAN 
+[Econometrics Task View](https://cran.r-project.org/web/views/Econometrics.html) 
+page for a thorough list of econometric methods and relevant packages.
 
 ## sf
 
