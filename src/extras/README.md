@@ -513,43 +513,6 @@ msummary(list(est1, est1, est3),
 </div>
 
 
-## lme4
-
-_Random effects and mixed models_
-
-**fixest** can do a lot, but it can't do everything. This site isn't even going
-to attempt to go into how to translate every single model into R. But we'll
-quick highlight random-effects and mixed models. The
-[**lme4**](https://cran.r-project.org/web/packages/lme4/index.html) and its
-`lmer()` function covers not just random-intercept models but also hierarchical
-models where slope coefficients follow random distributions. (**Aside:** If you
-prefer Bayesian models for this kind of thing, check out 
-[**brms**](https://paul-buerkner.github.io/brms/).)
-
-           
-#### Random effects and mixed models
-
-<div class='code--container'>
-<div>
-
-```stata
-xtset group time
-xtreg Y X, re
-mixed lifeexp || countryn: gdppercap
-```
-</div>
-<div>
-
-```r
-# No need for an xtset equivalent
-m = lmer(Y~(1|group) + X, data = dat)
-nm = lmer(Y~(1+x|group) + X, data = dat)
-```
-</div>
-</div>
-
-
-
 ## marginaleffects
 
 _Marginal effects, contrasts, joint hypothesis tests, etc._
@@ -657,6 +620,42 @@ deltamethod(m, "x + z = 0")
 # Test nonlinear combination of coefficients 
 deltamethod(m, "x / z = 1")
 # marginaleffects(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
+```
+</div>
+</div>
+
+
+## lme4
+
+_Random effects and mixed models_
+
+**fixest** can do a lot, but it can't do everything. This site isn't even going
+to attempt to go into how to translate every single model into R. But we'll
+quick highlight random-effects and mixed models. The
+[**lme4**](https://cran.r-project.org/web/packages/lme4/index.html) and its
+`lmer()` function covers not just random-intercept models but also hierarchical
+models where slope coefficients follow random distributions. (**Aside:** If you
+prefer Bayesian models for this kind of thing, check out 
+[**brms**](https://paul-buerkner.github.io/brms/).)
+
+           
+#### Random effects and mixed models
+
+<div class='code--container'>
+<div>
+
+```stata
+xtset group time
+xtreg Y X, re
+mixed lifeexp || countryn: gdppercap
+```
+</div>
+<div>
+
+```r
+# No need for an xtset equivalent
+m = lmer(Y~(1|group) + X, data = dat)
+nm = lmer(Y~(1+x|group) + X, data = dat)
 ```
 </div>
 </div>
