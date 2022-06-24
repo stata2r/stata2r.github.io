@@ -14,12 +14,11 @@ There are two main pages (✌️📄) on the site:
 1. Data wrangling (🗄🧹) with [**data.table**](/data.table/)
 2. Regression analysis (💻📈) with [**fixest**](/fixest/)
 
-There are [**other great packages**](/extras/) that work well and are easy to
-use, but **data.table** and **fixest** are blazingly fast (🏃🏻💨) and highly
-powerful (💪🏻😎). Plus, they are flexible (👌✨) and can help you avoid R's
-"package overload". Depending on what you do in Stata, you might even be able to
-cut back, going from three packages—**reghdfe**, **estout**, and **gtools**—to
-just two.
+There are [**other great R packages**](/extras/) that work well and are easy to
+use. But **data.table** and **fixest** are blazingly fast (🏃🏻💨), extremely
+powerful (💪🏻😎), and flexible (👌✨). Learning just these two libraries will
+help you to avoid "package bloat", enabling you to tackle an exhaustive list of
+data science and econometric tasks with maximum efficiency.
 
 See the icons in the top right corner for various site options. You can search
 for keywords or commands, change the theme to light or dark mode to suit your
