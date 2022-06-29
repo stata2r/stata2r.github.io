@@ -314,7 +314,7 @@ feols(wage ~ educ | countyfips, dat, fsplit = ~hisp)
 #### Multiple dependent variables
 
 ```r
-# Regress wage & educ separately on the same dep. vars & FEs
+# Regress wage & educ separately on the same indep. vars & FEs
 feols(c(wage, educ) ~ age + marr | countyfips + year, dat) 
 ```
 
@@ -332,7 +332,7 @@ feols(wage ~ educ + csw(age, marr), dat)
 # Stepwise operators work in the FE slot too
 feols(wage ~ educ | csw(year, statefips), dat)
 
-# Aside: You have also use "sw0()" and "csw0()", in which 
+# Aside: You can also use "sw0()" and "csw0()", in which 
 # case you'll get an extra regression at the start that 
 # doesn't include the stepwise components. 
 ```
