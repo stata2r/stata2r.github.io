@@ -6,8 +6,8 @@ title: fixest
 
 [**fixest**](https://lrberge.github.io/fixest) (by Laurent Bergé) is a package 
 designed from the ground up in C++ to make running regressions fast and 
-incredibly easy. It provides in-built support for a variety of linear and 
-non-linear models, as well as regression tables and plotting methods. 
+incredibly easy. It provides built-in support for a variety of linear and 
+nonlinear models, as well as regression tables and plotting methods. 
 
 ## Installation
 
@@ -65,13 +65,13 @@ dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.githu
 
 ## Introduction
 
-The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a highly flexible set of tools that allow you to estimate a fairly large set of standard regression models. While the package certainly doesn't cover *every* model that exists, there is a non-negligible subset of Stata users for whom every model they've ever needed to run is covered by **fixest**.
+The [**fixest**](https://lrberge.github.io/fixest/index.html) package contains a highly flexible set of functions that allow you to estimate a large set of regression models. While the package obviously doesn't cover *every* model out there, there is a non-negligible subset of Stata users for whom every model they've ever needed to estimate is covered by **fixest**.
 
-This includes regular ol' linear regression in the `feols()` function, which builds off of the Base R standard regression function `lm(),` but also includes things like instrumental variables via 2SLS, and of course support for as many fixed effects as you'd like. **fixest** isn't limited to linear regression either, covering IV and fixed-effects support for a wide range of GLM models like logit, probit, Poisson, negative binomial, and so on in `feglm()` and `fepois().`
+This includes regular linear regression via the `feols()` function, which extends the Base R `lm()` function by supporting (high-dimenional) fixed effects. But **fixest** isn't just limited to linear regression. The package supports efficient instrumental variables (IV) estimation, as well as a wide range of GLM models like logit, probit, Poisson, and negative binomial.
 
-**fixest** covers all of this while being _very_ fast. If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to **fixest**.
+You also get a lot of convenience features with **fixest**. Adjusting for heteroskedasticity-robust or clustered standard errors is easily done via the `vcov` option. The package provides built-in methods for exporting regression tables and coefficient plots. You can select long lists of control variables without having to type them all in, retrieve estimated fixed effects, conduct Wald tests, adjust the reference levels for categorical variables and interactions on the fly, efficiently estimate simulation studies, etc. etc. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
 
-You also get a fair amount of convenience. Adjusting your standard errors to be heteroskedasticity-robust or clustered can be a pain in other R regression functions, but it is easy in **fixest** with the `vcov` option. Regression tables, coefficient and interaction-margin plots, selecting long lists of controls without having to type them all in, lagged variables, retrieving estimated fixed effects, Wald tests, and the choice of reference for categorical variables are all made easy. You even get some stuff that's rather tricky in Stata, like automatically iterating over a bunch of model specifications, basic and staggered difference-in-difference support, or Conley standard errors.
+**fixest** offers all of this in addition to being [_very_ fast](https://lrberge.github.io/fixest/#benchmarking). If you felt a speed boost going from Stata's `xtreg` to `reghdfe,` get ready for another significant improvement when moving to **fixest**.
 
 Using **fixest** for regression starts with writing a formula. While there are plenty of bells and whistles to add, at its core regression formulas take the form **`y ~ x1 + x2 | fe1 + fe2`**, where `y` is the outcome, `x1` and `x2` are predictors, and `fe1` and `fe2` are your sets of fixed effects.
 
@@ -105,9 +105,8 @@ reg wage educ age
 feols(wage ~ educ, data = dat) 
 feols(wage ~ educ + age, data = dat)
 
-# Aside 1: `data = ...` is always the first argument 
-# after the model formula. So many R users would just 
-# write: 
+# Aside 1: `data = ...` is the first argument after 
+# the model formula. So many R users would just write: 
 feols(wage ~ educ, dat) 
 
 # Aside 2: You can also set your dataset globally so 
@@ -155,6 +154,7 @@ reghdfe wage educ, absorb(countyfips) cluster(countyfips)
 
 
 
+
 reghdfe wage educ, absorb(countyfips)  
 
 * Add more fixed effects... 
@@ -167,9 +167,10 @@ reghdfe wage educ, absorb(countyfips#year) ///
 <div>
 
 ```r
-feols(wage ~ educ | countyfips, dat) 
+feols(wage ~ educ | countyfips vcov = ~countyfips, dat)
+# feols(wage ~ educ | countyfips, dat) # same (see below)
 
-# Aside: fixest automatically clusters SEs by the first 
+# Note: fixest automatically clusters SEs by the first 
 # fixed effect (if there are any). We'll get to SEs 
 # later, but if you just want iid errors for a fixed 
 # effect model: 
@@ -227,7 +228,7 @@ logit marr age black hisp
 * effects at right using xtlogit or xtprobit leads to 
 * numerical overflow or matsize issues
 
-
+* https://github.com/sergiocorreia/ppmlhdfe
 ppmlhdfe educ age black hisp, absorb(statefips year) ///
 	                      vce(cluster statefips)
 ```
