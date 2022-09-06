@@ -167,7 +167,7 @@ reghdfe wage educ, absorb(countyfips#year) ///
 <div>
 
 ```r
-feols(wage ~ educ | countyfips dat, vcov = ~countyfips)
+feols(wage ~ educ | countyfips, dat, vcov = ~countyfips)
 # feols(wage ~ educ | countyfips, dat) # same (see below)
 
 # Note: fixest automatically clusters SEs by the first 
