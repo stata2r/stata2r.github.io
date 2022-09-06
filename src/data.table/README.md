@@ -388,9 +388,9 @@ setnames(dat, gsub('arr_', 'arrival_', names(dat)))
 ## Subset
 
 In newer versions of Stata, it's possible to keep multiple datasets in memory,
-or "frames" as Stata calls them. However, this still requires extra steps that
-would be unusual to users of other languages. It's also not the typical way that
-most peope use Stata. In contrast, keeping multiple datasets in memory is
+or "frames" as Stata calls them. But this still requires extra steps that
+would be unusual to users of other languages. 
+In contrast, keeping multiple datasets in memory is
 extremely common in R. Moreover, subsetting and collapsing operations don't
 overwrite your original dataset. The upshot is that you don't need to wrap 
 everything in `preserve/restore`. However, it also means that you'll need to 
@@ -989,9 +989,9 @@ dat[, x := nafill(x, type = 'nocb'), by = id]
 ## Collapse
 
 In newer versions of Stata, it's possible to keep multiple datasets in memory,
-or "frames" as Stata calls them. However, this still requires extra steps that
-would be unusual to users of other languages. It's also not the typical way that
-most peope use Stata. In contrast, keeping multiple datasets in memory is
+or "frames" as Stata calls them.  But this still requires extra steps that
+would be unusual to users of other languages.  
+In contrast, keeping multiple datasets in memory is
 extremely common in R. Moreover, subsetting and collapsing operations don't
 overwrite your original dataset. The upshot is that you don't need to wrap 
 everything in `preserve/restore`. However, it also means that you'll need to 
