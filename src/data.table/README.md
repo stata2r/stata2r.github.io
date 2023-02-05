@@ -918,7 +918,7 @@ clear
 set obs  12
 egen id = seq(), from(1) to(3) block(4)
 bysort id: gen yr = 2000 + _n
-gen y = runiform()
+gen x = runiform()
 
 * Lag(s)
 bysort id (yr): gen xlag = x[_n-1]
