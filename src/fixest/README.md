@@ -754,9 +754,9 @@ iplot(est1)
 
 
 # Show predictive margins with an interaction
-# This requires plot_cap from the marginaleffects package
+# This requires plot_predictions from the marginaleffects package
 library(marginaleffects)
-plot_cap(est1, condition = c('age','hisp'))
+plot_predictions(est1, condition = c('age','hisp'))
 ```
 </div>
 </div>        
