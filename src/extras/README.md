@@ -544,10 +544,10 @@ marginsplot, recast(line) recastci(rarea)
 
 ```r
 m = glm(y ~ x + z, family = binomial, data = some_data)
-summary(marginaleffects(m))
+avg_slopes(m)
 
 # Predictive plot example
-plot_cap(m, "x")
+plot_predictions(m, "x")
 ```
 </div>
 </div>
@@ -575,10 +575,10 @@ marginsplot, recast(line) recastci(rarea)
 # X is a continuous and Z is categorical
 m = lm(y ~ x * factor(z), some_data)
 
-plot_cme(m, effect = "x", condition = "z")
+plot_slopes(m, effect = "x", condition = "z")
 
 
-plot_cme(m, effect = "z", condition = "x")
+plot_slopes(m, effect = "z", condition = "x")
 ```
 </div>
 </div>
@@ -614,12 +614,12 @@ nlcom _b[x]/_b[z] - 1
 m = lm(y ~ x + z, dat)
 
 # Test linear combination of coefficients 
-deltamethod(m, "x + z = 0")
-# marginaleffects(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
+hypotheses(m, "x + z = 0")
+# slopes(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
 
 # Test nonlinear combination of coefficients 
-deltamethod(m, "x / z = 1")
-# marginaleffects(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
+hypotheses(m, "x / z = 1")
+# slopes(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
 ```
 </div>
 </div>
