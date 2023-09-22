@@ -1,0 +1,711 @@
+---
+title: Other Packages
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+While we think you can get really far in R with just **data.table** and 
+**fixest**, of course these two packages don't cover everything.
+
+This page covers a small list of packages you may find especially useful when 
+getting started with R. We won't try to cover everything under the sun here. 
+Just a few places to get going. For the rest, well, that's what StackOverflow
+or your favourite search engine is for.
+
+All of the below packages have far more applications than is shown here. We'll 
+just provide one or two examples of how each can be used. Finally, don't forget 
+to install them with `install.packages('PKGNAME')` and load them with 
+`library(PKGNAME)`. The former command you only have to run once per package (or 
+as often as you want to update it); the latter whenever you want to use a 
+package in a new R session.
+
+## base
+
+_Where it all begins_
+
+Like many programming languages, one of R's great strengths is its package
+ecosystem. But none of that would be possible without the scaffolding provided
+by [**base**](https://www.r-project.org/about.html) R. The "base" part here
+represents a set of core libraries and routines that get installed and loaded
+automatically whenever you start an R session. And you really get a lot out of
+the gate, because base R is incredibly versatile and function rich. Many of the
+operations that we have shown you on the preceding pages could equally have been
+implemented using off-the-shelf base R equivalents. We won't attempt to persuade
+you of that here, but there are lots of good tutorials available if you're
+interested ([here](https://github.com/matloff/fasteR#table-of-contents) for
+example). Below we'll just highlight a few simple examples to give you an idea.
+
+#### Plotting (simple histogram)
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+set obs 100
+gen x = rnormal()
+histogram x
+```
+</div>
+<div>
+
+```r
+x = rnorm(100)
+hist(x)
+```
+</div>
+</div>
+
+#### Linear regression
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+reg y x1 x2
+```
+</div>
+<div>
+
+```r
+lm(y ~ x1 + x2, dat)
+```
+</div>
+</div>
+
+#### Iteration (loops)
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+foreach i of numlist 1/10 {
+   display `i' + 100
+}
+```
+</div>
+<div>
+
+```r
+for (i in 1:10) {
+    print(i + 100) 
+}
+
+# Aside 1: A single line works too here.
+for (i in 1:10) print(i + 100)
+
+# Aside 2: R provides "functional programming" eqivalents
+# to for-loops via the *apply family of functions. These
+# have various advantages, which we won't get into here.
+# Still the most important member is arguably "lapply", which 
+# we've already seen a couple of times and returns a list
+# result (which is great for programming). Here's the
+# equivalent lapply code to the previous for-loop.
+lapply(1:10, function(i) print(i + 100))
+```
+</div>
+</div>
+
+
+## ggplot2
+
+_Beautiful and customizable plots_
+
+[**ggplot2**](https://ggplot2.tidyverse.org/) is widely considered one of the 
+preeminent plotting libraries available in any language. It provides an 
+intuitive syntax that applies in the same way across many, many different kinds 
+of visualizations, and with a deep level of customization. Plus, endless 
+additional plugins to do what you want, including easy interactivity, animation, 
+maps, etc. We thought about giving **ggplot2** its own dedicated page like 
+**data.table** and **fixest**. But instead we'll point you to the 
+[Figures](https://lost-stats.github.io/Presentation/Figures/Figures.html) 
+section of the _Library of Statistical Techniques_, which already shows how to 
+do many different graphing tasks in both Stata and **ggplot2**. For a more 
+in-depth overview you can always consult the excellent 
+[package documentation](https://ggplot2.tidyverse.org/), or Kieran Healy's 
+wonderful [_Data Visualization_](https://socviz.co/) book.
+
+#### Basic scatterplot(s)
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+twoway scatter yvar xvar
+
+twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
+        (scatter yvar xvar if group == 2, mc(red))
+```
+</div>
+<div>
+
+```r
+ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+
+ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
+  geom_point()
+```
+</div>
+</div>
+
+
+## tidyverse
+
+_A family of data science tools_
+
+The [**tidyverse**](https://www.tidyverse.org/) provides an extremely popular
+framework for data science tasks in R. This meta-package is actually a
+collection of smaller packages that are all designed to work together, based on
+a shared philosophy and syntax. We've already covered **ggplot2** above, but
+there are plenty more. These include **dplyr** and **tidyr**, which offer an
+alternative syntax and approach to data wrangling tasks. While we personally
+recommend **data.table**, these **tidyverse** packages have many ardent fans
+too. You may find that you prefer their modular design and verbal syntax. But
+don't feel bound either way: it's totally fine to combine them. Some other
+**tidyverse** packages worth knowing about include **purrr**, which contains a suite
+of functions for automating and looping your work, **lubridate** which makes
+working with date-based data easy, and **stringr** which offers functions with
+straightforward syntax for working with string variables. In the examples that
+follow, note that `%>%` is a [pipe operator](https://magrittr.tidyverse.org/).
+
+#### Data wrangling with dplyr
+
+_Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat %>% group_by...`_
+
+Subset by rows and then columns.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+keep if var1=="value"
+keep var1 var2 var3
+```
+</div>
+<div>
+
+```r
+dat %>%
+   filter(var1=="value") %>%
+   select(var1, var2, var3)
+```
+</div>
+</div>
+
+Create a new variable by group.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+bysort group1: egen mean_var1 = mean(var1)
+```
+</div>
+<div>
+
+```r
+dat %>%
+  group_by(group1) %>%
+  mutate(mean_var1 = mean(var1))
+```
+</div>
+</div>
+
+Collapse by group.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+collapse (mean) mean_var1 = var1, by(group1)
+```
+</div>
+<div>
+
+```r
+dat %>%
+  group_by(group1) %>%
+  summarise(mean_var1 = mean(var1))
+```
+</div>
+</div>
+
+#### Manipulating dates with lubridate
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+* Shift a date forward one month (not 30 days, one month)
+* ???
+```
+</div>
+<div>
+
+```r
+# Shift a date forward one month (not 30 days, one month)
+shifted_date = date + months(1)
+```
+</div>
+</div>
+
+#### Iterating with purrr 
+
+Read in many files and append them together.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+local filelist: dir "data/" files "*.csv"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local filelist {
+	qui: import delimited "data/`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
+}
+```
+</div>
+<div>
+
+```r
+filelist = dir("data/", pattern=".csv$", full.names=TRUE)
+dat = map_df(filelist, data.table::fread)
+
+# Note: map_*df* means map (iterate) then coerce the
+# result to a data frame
+```
+</div>
+</div>
+
+Iterate over variables.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+ds, has(type long)
+collapse (mean) `r(varlist)'
+```
+</div>
+<div>
+
+```r
+# Note: map is a stand-in replacement for lapply
+dat[, map(.SD, mean), .SDcols=is.numeric]
+```
+</div>
+</div>
+
+#### String operations with stringr 
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+subinstr("Hello world", "world", "universe", .)
+substr("Hello world", 1, 3)
+regexm("Hello world", "ello")
+
+```
+</div>
+<div>
+
+```r
+str_replace_all("Hello world", "world", "universe")
+str_sub("Hello world", 1, 3)
+str_detect("Hello world", "ello")
+# Note all the stringr functions accept regex input
+```
+</div>
+</div>
+
+  
+
+## collapse
+
+_Extra convenience functions and super fast aggregations_
+
+Sure, we've gone on and on about how fast **data.table** is compared to just
+about everything else. But there is another R package that can boast even faster
+computation times for certain grouped calculations and transformations, and
+that's 
+[collapse](https://sebkrantz.github.io/collapse/index.html). 
+The **collapse** package doesn't try to do everything that **data.table** does. 
+But the two 
+[play very well together](https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html) 
+and the former offers some convenience functions like `descr` and `collap`,
+which essentially mimic the equivalent functions in Stata and might be
+particularly appealing to readers of this guide. (P.S. If you'd like to load
+**data.table** and **collapse** at the same time, plus some other 
+high-performance packages, check out the 
+[**fastverse**](https://sebkrantz.github.io/fastverse/index.html).)
+
+
+
+#### Quick Summaries
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+summarize
+describe
+```
+</div>
+<div>
+
+```r
+qsu(dat)
+descr(dat)
+```
+</div>
+</div>
+
+#### Multiple grouped aggregations
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+collapse (mean) var1, by(group1)
+collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
+```
+</div>
+<div>
+
+```r
+collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean
+collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
+```
+</div>
+</div>
+
+                     
+## sandwich
+
+_More standard error adjustments_
+
+**fixest** package comes with plenty of shortcuts for accessing standard error
+adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West,
+Driscoll-Kraay, clustered standard errors, etc. But of course there are still
+more than that. A host of additional options are covered by the
+[**sandwich**](https://sandwich.r-forge.r-project.org/) package, which comes
+with a long list of functions like `vcovBS()` for bootstrapped standard errors,
+or `vcovHC()` for HC1-5. **sandwich** supports nearly every model class in R, so
+it shouldn't surprise that these can slot right into `fixest` estimates, too. 
+You shouldn't be using those `, robust` errors for smaller samples anyway... but 
+you [knew that](http://datacolada.org/99), right?
+
+#### Linear Model Adjustments
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)
+```
+</div>
+<div>
+
+```r
+# sandwich's vcovHC uses HC3 by default
+feols(Y ~ X + Z, dat, vcov = sandwich::vcovHC) 
+
+# Aside: Remember that you can also adjust the SEs 
+# for existing models on the fly 
+m = feols(Y ~ X + Z, dat) 
+summary(m, vcov = sandwich::vcovHC)
+```
+</div>
+</div>
+
+
+## modelsummary
+
+_Summary tables, regression tables, and more_
+
+The **fixest** package already has the `etable()` function for generating
+regression tables. However, it is only really intended to work with models from
+the same package. So we also recommend checking out the fantastic
+[**modelsummary**](https://vincentarelbundock.github.io/modelsummary) package.
+It works with all sorts of model objects, including those not from **fixest**,
+is incredibly customizable, and outputs to a bunch of different formats (PDF,
+HTML, DOCX, etc.) Similarly, **modelsummary** has a wealth of options for
+producing publication-ready summary tables. Oh, and it produces coefficient
+plots too. Check out the [package
+website](https://vincentarelbundock.github.io/modelsummary/) for more.
+
+
+#### Summary tables
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+* Summary stats table 
+estpost summarize 
+esttab, cells("count mean sd min max") nomtitle nonumber 
+
+* Balance table 
+by treat_var: eststo: estpost summarize 
+esttab, cells("mean sd") label nodepvar
+```
+</div>
+<div>
+
+```r
+# Summary stats table 
+datasummary_skim(dat) 
+
+
+# Balance table 
+datasummary_balance(~treat_var, dat)
+```
+</div>
+</div>
+
+
+#### Regression tables
+
+**Aside:** Here we'll use the base R `lm()` (linear model) function, rather than
+`feols()`, to emphasize that **modelsummary** works with many different model 
+classes.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+reg Y X Z 
+eststo est1 
+esttab est1b
+
+reg Y X Z, vce(hc3) 
+eststo est1b 
+esttab est1b 
+
+esttab est1 est1b
+
+reg Y X Z A, vce(hc3)
+eststo est2
+esttab est1 est1b est2
+```
+</div>
+<div>
+
+```r
+est1 = lm(Y ~ X + Z, dat) 
+msummary(est1) # msummary() = alias for modelsummary()
+
+# Like fixest::etable(), SEs for existing models can
+# be adjusted on-the-fly 
+msummary(est1, vcov='hc3')
+
+# Multiple SEs for the same model
+msummary(est1, vcov=list('iid', 'hc3')) 
+
+est3 = lm(Y ~ X + Z + A, dat) 
+msummary(list(est1, est1, est3),
+         vcov = list('iid', 'hc3', 'hc3'))
+```
+</div>
+</div>
+
+
+## marginaleffects
+
+_Marginal effects, contrasts, joint hypothesis tests, etc._
+
+The Stata `margins` command is great. To replicate it in R, we highly recommend
+the [**marginaleffects**](https://vincentarelbundock.github.io/marginaleffects/)
+package. Individual marginal effects or average marginal effects for nonlinear
+models, or models with interactions or transformations, etc. The documentation
+is outstanding and the underlying functions are also very fast.
+
+#### Marginal effects and plots
+
+Here's a simple example of a hypothetical logit model.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+logit y x z
+margins, dydx(*)
+
+* Predictive plot example
+levelsof x, miss local(x_lvls)
+qui margins, at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
+```
+</div>
+<div>
+
+```r
+m = glm(y ~ x + z, family = binomial, data = some_data)
+avg_slopes(m)
+
+# Predictive plot example
+plot_predictions(m, "x")
+```
+</div>
+</div>
+
+And here's another of a hypothetical continuous * categorical interaction model.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+* x is a continuous and z is categorical
+reg y c.x##i.z
+
+qui margins z, dydx(x)
+marginsplot
+
+levelsof x, miss local(x_lvls)
+qui margins, dydx(z) at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
+```
+</div>
+<div>
+
+```r
+# X is a continuous and Z is categorical
+m = lm(y ~ x * factor(z), some_data)
+
+plot_slopes(m, effect = "x", condition = "z")
+
+
+plot_slopes(m, effect = "z", condition = "x")
+```
+</div>
+</div>
+
+#### Joint coefficient and (non)linear hypothesis tests
+
+Stata provides a number of inbuilt commands for (potentially complex)
+postestimation coefficient tests. We've already seen the `testparm` command
+equivalent with `fixest::wald()`. But what about combinations of coefficients _a
+la_ Stata's `lincom` and `nlcom` commands? While several R packages do this,
+we'll again recommend the **marginaleffects** package. It's lightweight and fast, 
+and supports 
+[hypothesis testing](https://vincentarelbundock.github.io/marginaleffects/articles/hypothesis.html) 
+of both linear and non-linear combinations.
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+regress y x z 
+
+* Test linear combination of coefficients 
+lincom x + z 
+
+
+* Test nonlinear combination of coefficients 
+nlcom _b[x]/_b[z] - 1
+```
+</div>
+<div>
+
+```r
+m = lm(y ~ x + z, dat)
+
+# Test linear combination of coefficients 
+hypotheses(m, "x + z = 0")
+# slopes(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
+
+# Test nonlinear combination of coefficients 
+hypotheses(m, "x / z = 1")
+# slopes(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
+```
+</div>
+</div>
+
+
+## lme4
+
+_Random effects and mixed models_
+
+**fixest** can do a lot, but it can't do everything. This site isn't even going
+to attempt to go into how to translate every single model into R. But we'll
+quick highlight random-effects and mixed models. The
+[**lme4**](https://cran.r-project.org/web/packages/lme4/index.html) and its
+`lmer()` function covers not just random-intercept models but also hierarchical
+models where slope coefficients follow random distributions. (**Aside:** If you
+prefer Bayesian models for this kind of thing, check out 
+[**brms**](https://paul-buerkner.github.io/brms/).)
+
+           
+#### Random effects and mixed models
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+xtset group time
+xtreg y x, re
+mixed y x || group: x, reml
+```
+</div>
+<div>
+
+```r
+# No need for an xtset equivalent
+lmer(y ~ x + (1 | group), data = dat)
+lmer(y ~ x + (x | group), data = dat)
+```
+</div>
+</div>
+
+P.S. Take a look at the CRAN 
+[Econometrics Task View](https://cran.r-project.org/web/views/Econometrics.html) 
+page for a thorough list of econometric methods and relevant packages.
+
+## sf
+
+_Geospatial operations_
+
+R has outstanding support for geospatial computation and mapping. There are a
+variety of packages to choose from here, depending on what you want (e.g. vector
+vs raster data, interactive maps, high-dimensional data cubes, etc.) But the
+workhorse geospatial tool for most R users is the incredibly versatile
+[**sf**](https://r-spatial.github.io/sf/) package. We'll only provide a simple
+mapping example below. The **sf** [website](https://r-spatial.github.io/sf/) has
+several in-depth tutorials, and we also recommend the [_Geocomputation with
+R_](https://geocompr.robinlovelace.net/) book by Robin Lovelace, Jakub Nowosad,
+and Jannes Muenchow.
+
+#### Simple Map
+
+<div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
+<div>
+
+```stata
+* Mapping in Stata requires the spmap and shp2dta 
+* commands, and also that you convert your (say) 
+* shapefile to .dta format first. We won't go through 
+* all that here, but see: 
+* https://www.stata.com/support/faqs/graphics/spmap-and-maps/
+```
+</div>
+<div>
+
+```r
+# This example uses the North Carolina shapefile that is
+# bundled with the sf package. 
+nc = st_read(system.file("shape/nc.shp", package = "sf")) 
+plot(nc[, 'BIR74'])
+# Or, if you have ggplot2 loaded: 
+ggplot(nc, aes(fill=BIR74)) + geom_sf()
+```
+</div>
+</div>
+
+
+
+
+
+                     
+
