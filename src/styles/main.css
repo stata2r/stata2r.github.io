@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--sl-content-width: 70rem;
+	--sl-sidebar-width: 14rem;
+}
+@media (min-width: 72rem) {
+	.right-sidebar-container {
+    min-width: var(--sl-sidebar-width);
+	}
+}
