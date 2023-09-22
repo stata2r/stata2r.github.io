@@ -9,9 +9,9 @@ issue or suggest edits via a pull request, then you're in the right place. For
 suggested edits, the main source documents of interest can be found in the
 respective `src/` sub-directories:
 
-- `src/data.table` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/data.table))
-- `src/fixest` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/fixest))
-- `src/extras` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/extras))
+- `src/data.table` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/data.table))
+- `src/fixest` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/fixest))
+- `src/extras` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/extras))
 
 Just click on the "edit" pencil icon (top right) of the README files and a fork
 of the repo will automatically be created under your account. You can then make
