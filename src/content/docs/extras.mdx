@@ -327,51 +327,57 @@ _Fast data storage and database_
 One advantage of the learning the `tidyverse` syntax is that it plugs 
 in seemlessly with databases using the 
 [dbplyr](https://dbplyr.tidyverse.org/) 
-package. The **arrow** package provides a really fast and memory efficient data 
-storage format (`.parquet`). The **duckdb** package provides a really fast and 
-memory efficient database system. For example, imagine you have a 10M row 
-dataset with hundreds of variables. You want to take group-averages of a few 
-varaibles. Arrow/duckdb will do this *astonigshly* fast by not having to load 
-an entire CSV into memory.
+package. The **arrow** package provides a really fast and memory efficient 
+in-memory data storage format as well as a matching on-disk storage format (`.parquet`). The **duckdb** package provides a very similar in-memory format, 
+hence the two play remarkably well together. 
 
-For this example, we will create a small dataset using the following code:
-```r
-data(airquality)
-dir.create("airquality")
-arrow::write_dataset(
-  airquality, 
-  path = "airquality",
-  partitioning = c("Month") # <-- NB: partition your data by the main grouping vars for efficiency
-)
-```
-
-For example using a massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard macbook. 
+These two packages together (or seperately) make working with very large 
+datasets super fast. For an example using the massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard Macbook. 
 
 #### Import/export data with arrow
 
+For this example, we will create a small arrow dataset from the flights14 dataset using the following code:
 ```r
-airquality = arrow::open_dataset("airquality")
+dat = data.table::fread("https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv")
+
+dir.create("flights14")
+arrow::write_dataset(
+  dat, 
+  path = "flights14",
+  partitioning = c("origin") # <-- NB: partition your data by the main grouping vars for efficiency
+)
+```
+
+The `write_dataset` and `open_dataset` functions are useful for very large datasets and for efficiently "pre-grouping" the data (e.g. if you know you're going to `group_by(origin)` a lot, then saving the dataset this way is efficient). If you want a single file rather than a folder system, you can read/write to the `.parquet` file format. The parquet version will be much smaller in size (in this case, the `.csv` is 9.6MB versus the `.parquet` at 1.4MB) and load/save faster.
+
+```r
+arrow::write_parquet(dat, "flights14.parquet")
+```
+
+We can load 
+```r
+dat = arrow::open_dataset("flights14/")
+# or, 
+# dat = arrow::read_parquet("flights14.parquet")
 
 # View arrow database scheme
-airquality
+dat
 ```
 ```text
-FileSystemDataset with 5 Parquet files
-Ozone: int32
-Solar.R: int32
-Wind: double
-Temp: int32
-Day: int32
-Month: int32
+FileSystemDataset with 3 Parquet files
+year: int32
+month: int32
+day: int32
+dep_delay: int32
+arr_delay: int32
+carrier: string
+dest: string
+air_time: int32
+distance: int32
+hour: int32
+origin: string
 
 See $metadata for additional Schema metadata
-```
-
-There is also the `.parquet` file format that we would use in place of `.csv` files. The parquet version will be much smaller in size and load/save faster.
-
-```r
-arrow::write_parquet(airquality, "airquality/data.parquet")
-arrow::read_parquet(airquality, "airquality/data.parquet")
 ```
 
 #### Data wrangling with arrow
@@ -379,46 +385,52 @@ arrow::read_parquet(airquality, "airquality/data.parquet")
 With our dataset loaded, we can begin to do standard data modifying using `dplyr`. 
 
 ```r
-sum = airquality |> 
-  filter(Wind > 10) |>
-  group_by(Month) |>
+sum = dat |> 
+  filter(origin == "JFK") |>
+  group_by(month) |>
   summarize(
-    mean_ozone = mean(Ozone, na.rm = TRUE), 
-    mean_wind = mean(Wind, na.rm = TRUE),
-    n_days_wind_gt10 = n()
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
   )
-
-sum
 ```
 
 If you type sum into the console, the output will not look like a data.frame. Instead, you'll see that a `query` object has been created:
+
+```
+sum
+```
 ```text
 FileSystemDataset (query)
-Month: int32
-mean_ozone: double
-mean_wind: double
-n_days_wind_gt10: int64
+month: int32
+mean_dep_delay: double
+n_flights: int64
 
 See $.data for the source Arrow object
 ```
 
-Instead of loading the output, `arrow` has "prepared" a set of commands that will need to be triggered with the `collect()` function. This allows arrow to do really efficient operations on very large data. Note that once you `collect()`, the result returned is a standard R data.frame, so do so carefully.
+Instead of loading the output, `arrow` has "prepared" a set of commands that will need to be triggered with the `collect()` function. Note that once you `collect()`, the result returned is a standard R data.frame, so do so carefully.
 
 ```r
 sum |> 
   collect()
 ```
 ```text
-# A tibble: 5 × 4
-  Month mean_ozone mean_wind n_days_wind_gt10
-  <int>      <dbl>     <dbl>            <int>
-1     5       20.8      14.0               18
-2     6       32.2      13.3               14
-3     8       33        12                 12
-4     9       20.1      12.4               18
-5     7       33.4      12.6               10
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <int>
+ 1     1          27.0       7105
+ 2     2          19.2       6779
+ 3     3           7.17      8253
+ 4    10           6.97      8605
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     6           9.81      8422
+ 8     7          17.6       8730
+ 9     8           8.66      8986
+10     9           3.76      8228
 ```
 
+Under the hood, arrow uses the computation engine, [acero](https://arrow.apache.org/docs/cpp/streaming_execution.html). This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not yet as fully featured as duckdb's computation engine is. We will discuss more below.
 
 
 #### duckdb
@@ -426,50 +438,46 @@ sum |>
 Because of the way that arrow stores memory, it can be passed around between coding languages (e.g. to and from python) and the `duckdb` database without copying any data. This makes the operation incredibly efficient. We can convert from arrow to duckdb using the `to_duckdb()` function:
 
 ```r
-airquality_db = airquality |> to_duckdb()
+dat_duckdb = dat |> to_duckdb()
+dat_duckdb
 ```
 ```text
-# Source:   table<arrow_001> [?? x 6]
+# Source:   table<arrow_001> [?? x 11]
 # Database: DuckDB 0.8.1 [root@Darwin 22.3.0:R 4.3.0/:memory:]
-   Ozone Solar.R  Wind  Temp   Day Month
-   <int>   <int> <dbl> <int> <int> <int>
- 1    41     190   7.4    67     1     5
- 2    36     118   8      72     2     5
- 3    12     149  12.6    74     3     5
- 4    18     313  11.5    62     4     5
- 5    NA      NA  14.3    56     5     5
- 6    28      NA  14.9    66     6     5
- 7    23     299   8.6    65     7     5
- 8    19      99  13.8    59     8     5
- 9     8      19  20.1    61     9     5
-10    NA     194   8.6    69    10     5
+    year month   day dep_delay arr_delay carrier dest  air_time distance  hour origin
+   <int> <int> <int>     <int>     <int> <chr>   <chr>    <int>    <int> <int> <chr> 
+ 1  2014     1     1         4         0 AA      LAX        339     2454    18 EWR   
+ 2  2014     1     1        -5       -17 AA      MIA        161     1085    16 EWR   
+ 3  2014     1     1       191       185 AA      DFW        214     1372    16 EWR   
+ 4  2014     1     1        -1        -2 AA      DFW        214     1372    14 EWR   
+ 5  2014     1     1        -3       -10 AA      MIA        154     1085     6 EWR   
+ 6  2014     1     1         4       -17 AA      DFW        215     1372     9 EWR   
+ 7  2014     1     1        -3        27 AA      DFW        211     1372     7 EWR   
+ 8  2014     1     1        -5        -8 AA      MIA        157     1085    11 EWR   
+ 9  2014     1     1        -9       -16 AA      DFW        218     1372    19 EWR   
+10  2014     1     1         4       -12 AS      SEA        347     2402    18 EWR   
 # ℹ more rows
 # ℹ Use `print(n = ...)` to see more rows
 ```
 
-The standard dplyr functions work on duckdb datasets as well and requires the `collect()` function as well for execution. One nice thing `duckdb`/`arrow` do is the `explain()` function which explains what is happening under the hood for those curious. 
+With the data transfered to a duckdb database, we can continue as before with dplyr and `collect()` syntax. Under the hood, the duckdb computation engine will be used which is has a more complete feature set allowing more operations (e.g. rolling windows) to be used. One nice thing `duckdb`/`arrow` do is the `explain()` function which explains what is happening under the hood for those curious. 
 
 ```r
-query = airquality_db |> 
-  filter(Month == 7) |> 
-  summarise(
-    across(Ozone:Temp, mean),
-    .by = Day
+query = dat_duckdb |>
+  filter(origin == "JFK") |>
+  group_by(month) |>
+  summarize(
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
   )
-
 explain(query)
 ```
 ```text
 <SQL>
-SELECT
-  "Day",
-  AVG(Ozone) AS Ozone,
-  AVG("Solar.R") AS "Solar.R",
-  AVG(Wind) AS Wind,
-  AVG("Temp") AS "Temp"
-FROM arrow_002
-WHERE ("Month" = 7.0)
-GROUP BY "Day"
+SELECT "month", AVG(dep_delay) AS mean_dep_delay, COUNT(*) AS n_flights
+FROM arrow_001
+WHERE (origin = 'JFK')
+GROUP BY "month"
 
 <PLAN>
 physical_plan
@@ -478,33 +486,25 @@ physical_plan
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
 │             #0            │
 │          avg(#1)          │
-│          avg(#2)          │
-│          avg(#3)          │
-│          avg(#4)          │
+│        count_star()       │
 └─────────────┬─────────────┘                             
 ┌─────────────┴─────────────┐
 │         PROJECTION        │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
-│            Day            │
-│           Ozone           │
-│          Solar.R          │
-│            Wind           │
-│            Temp           │
+│           month           │
+│         dep_delay         │
 └─────────────┬─────────────┘                             
 ┌─────────────┴─────────────┐
 │        ARROW_SCAN         │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
-│            Day            │
-│           Ozone           │
-│          Solar.R          │
-│            Wind           │
-│            Temp           │
+│           month           │
+│         dep_delay         │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
-│ Filters: Month=7 AND Month│
-│         IS NOT NULL       │
+│  Filters: origin=JFK AND  │
+│     origin IS NOT NULL    │
 │   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
 │           EC: 0           │
-└───────────────────────────┘ 
+└───────────────────────────┘
 ```
 
 Then, the data can be `collect()`ed into a data.frame:
@@ -512,21 +512,19 @@ Then, the data can be `collect()`ed into a data.frame:
 collect(query)
 ```
 ```text
-# A tibble: 31 × 5
-     Day Ozone Solar.R  Wind  Temp
-   <int> <dbl>   <dbl> <dbl> <dbl>
- 1     1   135     269   4.1    84
- 2     2    49     248   9.2    85
- 3     3    32     236   9.2    81
- 4     4    NA     101  10.9    84
- 5     5    64     175   4.6    83
- 6     6    40     314  10.9    83
- 7     7    77     276   5.1    88
- 8     8    97     267   6.3    92
- 9     9    97     272   5.7    92
-10    10    85     175   7.4    89
-# ℹ 21 more rows
-# ℹ Use `print(n = ...)` to see more rows
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <dbl>
+ 1    10           6.97      8605
+ 2     8           8.66      8986
+ 3     9           3.76      8228
+ 4     3           7.17      8253
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     2          19.2       6779
+ 8     6           9.81      8422
+ 9     7          17.6       8730
+10     1          27.0       7105
 ```
 
 
