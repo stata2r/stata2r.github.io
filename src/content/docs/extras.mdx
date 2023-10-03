@@ -34,7 +34,7 @@ you of that here, but there are lots of good tutorials available if you're
 interested ([here](https://github.com/matloff/fasteR#table-of-contents) for
 example). Below we'll just highlight a few simple examples to give you an idea.
 
-#### Plotting (simple histogram)
+### Plotting (simple histogram)
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -54,7 +54,7 @@ hist(x)
 </div>
 </div>
 
-#### Linear regression
+### Linear regression
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -71,7 +71,7 @@ lm(y ~ x1 + x2, dat)
 </div>
 </div>
 
-#### Iteration (loops)
+### Iteration (loops)
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -123,7 +123,7 @@ in-depth overview you can always consult the excellent
 [package documentation](https://ggplot2.tidyverse.org/), or Kieran Healy's 
 wonderful [_Data Visualization_](https://socviz.co/) book.
 
-#### Basic scatterplot(s)
+### Basic scatterplot(s)
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -166,7 +166,7 @@ working with date-based data easy, and **stringr** which offers functions with
 straightforward syntax for working with string variables. In the examples that
 follow, note that `|>` is a [pipe operator](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
 
-#### Data wrangling with dplyr
+### Data wrangling with dplyr
 
 _Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat |> group_by...`_
 
@@ -228,7 +228,7 @@ dat |>
 </div>
 </div>
 
-#### Manipulating dates with lubridate
+### Manipulating dates with lubridate
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -247,7 +247,7 @@ shifted_date = date + months(1)
 </div>
 </div>
 
-#### Iterating with purrr 
+### Iterating with purrr 
 
 Read in many files and append them together.
 
@@ -296,7 +296,7 @@ dat[, map(.SD, mean), .SDcols=is.numeric]
 </div>
 </div>
 
-#### String operations with stringr 
+### String operations with stringr 
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -334,7 +334,7 @@ hence the two play remarkably well together.
 These two packages together (or separately) make working with very large 
 datasets super fast. For an example using the massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard Macbook. 
 
-#### Import/export data with arrow
+### Import/export data with arrow
 
 For this example, we will create a small arrow dataset from the flights14 dataset using the following code:
 ```r
@@ -380,7 +380,7 @@ origin: string
 See $metadata for additional Schema metadata
 ```
 
-#### Data wrangling with arrow
+### Data wrangling with arrow
 
 With our dataset loaded, we can begin to do standard data modifying using `dplyr`. 
 
@@ -433,7 +433,7 @@ sum |>
 Under the hood, arrow uses the computation engine, [acero](https://arrow.apache.org/docs/cpp/streaming_execution.html). This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not as fast or fully featured as DuckDB's computation engine. We will discuss more below.
 
 
-#### duckdb
+### duckdb
 
 Because of the way that arrow stores memory, it can be passed around between coding languages (e.g. to and from python) and the `duckdb` database without copying any data. This makes the operation incredibly efficient. We can convert from arrow to duckdb using the `to_duckdb()` function:
 
@@ -551,7 +551,7 @@ high-performance packages, check out the
 
 
 
-#### Quick Summaries
+### Quick Summaries
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -570,7 +570,7 @@ descr(dat)
 </div>
 </div>
 
-#### Multiple grouped aggregations
+### Multiple grouped aggregations
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -605,7 +605,7 @@ it shouldn't surprise that these can slot right into `fixest` estimates, too.
 You shouldn't be using those `, robust` errors for smaller samples anyway... but 
 you [knew that](http://datacolada.org/99), right?
 
-#### Linear Model Adjustments
+### Linear Model Adjustments
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -646,7 +646,7 @@ plots too. Check out the [package
 website](https://vincentarelbundock.github.io/modelsummary/) for more.
 
 
-#### Summary tables
+### Summary tables
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -675,7 +675,7 @@ datasummary_balance(~treat_var, dat)
 </div>
 
 
-#### Regression tables
+### Regression tables
 
 **Aside:** Here we'll use the base R `lm()` (linear model) function, rather than
 `feols()`, to emphasize that **modelsummary** works with many different model 
@@ -731,7 +731,7 @@ package. Individual marginal effects or average marginal effects for nonlinear
 models, or models with interactions or transformations, etc. The documentation
 is outstanding and the underlying functions are also very fast.
 
-#### Marginal effects and plots
+### Marginal effects and plots
 
 Here's a simple example of a hypothetical logit model.
 
@@ -791,7 +791,7 @@ plot_slopes(m, effect = "z", condition = "x")
 </div>
 </div>
 
-#### Joint coefficient and (non)linear hypothesis tests
+### Joint coefficient and (non)linear hypothesis tests
 
 Stata provides a number of inbuilt commands for (potentially complex)
 postestimation coefficient tests. We've already seen the `testparm` command
@@ -847,7 +847,7 @@ prefer Bayesian models for this kind of thing, check out
 [**brms**](https://paul-buerkner.github.io/brms/).)
 
            
-#### Random effects and mixed models
+### Random effects and mixed models
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
@@ -886,7 +886,7 @@ several in-depth tutorials, and we also recommend the [_Geocomputation with
 R_](https://geocompr.robinlovelace.net/) book by Robin Lovelace, Jakub Nowosad,
 and Jannes Muenchow.
 
-#### Simple Map
+### Simple Map
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
 <div>
