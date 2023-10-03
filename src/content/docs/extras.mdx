@@ -325,13 +325,13 @@ str_detect("Hello world", "ello")
 _Fast data storage and database_
 
 One advantage of the learning the `tidyverse` syntax is that it plugs 
-in seemlessly with databases using the 
+in seamlessly with databases using the 
 [dbplyr](https://dbplyr.tidyverse.org/) 
 package. The **arrow** package provides a really fast and memory efficient 
 in-memory data storage format as well as a matching on-disk storage format (`.parquet`). The **duckdb** package provides a very similar in-memory format, 
 hence the two play remarkably well together. 
 
-These two packages together (or seperately) make working with very large 
+These two packages together (or separately) make working with very large 
 datasets super fast. For an example using the massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard Macbook. 
 
 #### Import/export data with arrow
