@@ -164,11 +164,11 @@ don't feel bound either way: it's totally fine to combine them. Some other
 of functions for automating and looping your work, **lubridate** which makes
 working with date-based data easy, and **stringr** which offers functions with
 straightforward syntax for working with string variables. In the examples that
-follow, note that `%>%` is a [pipe operator](https://magrittr.tidyverse.org/).
+follow, note that `|>` is a [pipe operator](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
 
 #### Data wrangling with dplyr
 
-_Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat %>% group_by...`_
+_Note: **dplyr** doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat |> group_by...`_
 
 Subset by rows and then columns.
 
@@ -183,8 +183,8 @@ keep var1 var2 var3
 <div>
 
 ```r
-dat %>%
-   filter(var1=="value") %>%
+dat |>
+   filter(var1=="value") |>
    select(var1, var2, var3)
 ```
 </div>
@@ -202,8 +202,8 @@ bysort group1: egen mean_var1 = mean(var1)
 <div>
 
 ```r
-dat %>%
-  group_by(group1) %>%
+dat |>
+  group_by(group1) |>
   mutate(mean_var1 = mean(var1))
 ```
 </div>
@@ -221,8 +221,8 @@ collapse (mean) mean_var1 = var1, by(group1)
 <div>
 
 ```r
-dat %>%
-  group_by(group1) %>%
+dat |>
+  group_by(group1) |>
   summarise(mean_var1 = mean(var1))
 ```
 </div>
@@ -320,6 +320,215 @@ str_detect("Hello world", "ello")
 </div>
 
   
+## arrow and duckdb
+
+_Fast data storage and database_
+
+One advantage of the learning the `tidyverse` syntax is that it plugs 
+in seamlessly with databases using the 
+[dbplyr](https://dbplyr.tidyverse.org/) 
+package. The **arrow** package provides a really fast and memory efficient 
+in-memory data storage format as well as a matching on-disk storage format (`.parquet`). The **duckdb** package provides a very similar in-memory format, 
+hence the two play remarkably well together. 
+
+These two packages together (or separately) make working with very large 
+datasets super fast. For an example using the massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard Macbook. 
+
+#### Import/export data with arrow
+
+For this example, we will create a small arrow dataset from the flights14 dataset using the following code:
+```r
+dat = data.table::fread("https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv")
+
+dir.create("flights14")
+arrow::write_dataset(
+  dat, 
+  path = "flights14",
+  partitioning = c("month", "origin") # <-- NB: partition your data by the main grouping vars for efficiency
+)
+```
+
+The `write_dataset` and `open_dataset` functions are useful for very large datasets and for efficiently "pre-grouping" the data (e.g. if you know you're going to `group_by(origin)` a lot, then saving the dataset this way is efficient). If you want a single file rather than a folder system, you can read/write to the `.parquet` file format. The parquet version will be much smaller in size (in this case, the `.csv` is 9.6MB versus the `.parquet` at 1.4MB) and load/save faster.
+
+```r
+arrow::write_parquet(dat, "flights14.parquet")
+```
+
+We can load 
+```r
+dat = arrow::open_dataset("flights14/")
+# or, 
+# dat = arrow::read_parquet("flights14.parquet")
+
+# View arrow database scheme
+dat
+```
+```text
+FileSystemDataset with 3 Parquet files
+year: int32
+month: int32
+day: int32
+dep_delay: int32
+arr_delay: int32
+carrier: string
+dest: string
+air_time: int32
+distance: int32
+hour: int32
+origin: string
+
+See $metadata for additional Schema metadata
+```
+
+#### Data wrangling with arrow
+
+With our dataset loaded, we can begin to do standard data modifying using `dplyr`. 
+
+```r
+sum = dat |> 
+  filter(origin == "JFK") |>
+  group_by(month) |>
+  summarize(
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
+  )
+```
+
+If you type sum into the console, the output will not look like a data.frame. Instead, you'll see that a `query` object has been created:
+
+```
+sum
+```
+```text
+FileSystemDataset (query)
+month: int32
+mean_dep_delay: double
+n_flights: int64
+
+See $.data for the source Arrow object
+```
+
+Instead of loading the output, `arrow` has "prepared" a set of commands that will need to be triggered with the `collect()` function. Note that once you `collect()`, the result returned is a standard R data.frame, so do so carefully.
+
+```r
+sum |> 
+  collect()
+```
+```text
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <int>
+ 1     1          27.0       7105
+ 2     2          19.2       6779
+ 3     3           7.17      8253
+ 4    10           6.97      8605
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     6           9.81      8422
+ 8     7          17.6       8730
+ 9     8           8.66      8986
+10     9           3.76      8228
+```
+
+Under the hood, arrow uses the computation engine, [acero](https://arrow.apache.org/docs/cpp/streaming_execution.html). This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not as fast or fully featured as DuckDB's computation engine. We will discuss more below.
+
+
+#### duckdb
+
+Because of the way that arrow stores memory, it can be passed around between coding languages (e.g. to and from python) and the `duckdb` database without copying any data. This makes the operation incredibly efficient. We can convert from arrow to duckdb using the `to_duckdb()` function:
+
+```r
+dat_duckdb = dat |> to_duckdb()
+dat_duckdb
+```
+```text
+# Source:   table<arrow_001> [?? x 11]
+# Database: DuckDB 0.8.1 [root@Darwin 22.3.0:R 4.3.0/:memory:]
+    year month   day dep_delay arr_delay carrier dest  air_time distance  hour origin
+   <int> <int> <int>     <int>     <int> <chr>   <chr>    <int>    <int> <int> <chr> 
+ 1  2014     1     1         4         0 AA      LAX        339     2454    18 EWR   
+ 2  2014     1     1        -5       -17 AA      MIA        161     1085    16 EWR   
+ 3  2014     1     1       191       185 AA      DFW        214     1372    16 EWR   
+ 4  2014     1     1        -1        -2 AA      DFW        214     1372    14 EWR   
+ 5  2014     1     1        -3       -10 AA      MIA        154     1085     6 EWR   
+ 6  2014     1     1         4       -17 AA      DFW        215     1372     9 EWR   
+ 7  2014     1     1        -3        27 AA      DFW        211     1372     7 EWR   
+ 8  2014     1     1        -5        -8 AA      MIA        157     1085    11 EWR   
+ 9  2014     1     1        -9       -16 AA      DFW        218     1372    19 EWR   
+10  2014     1     1         4       -12 AS      SEA        347     2402    18 EWR   
+# ℹ more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+
+With the data transfered to a duckdb database, we can continue as before with dplyr and `collect()` syntax. Under the hood, the duckdb computation engine will be used which is has a more complete feature set allowing more operations (e.g. rolling windows) to be used. One nice thing `duckdb`/`arrow` do is the `explain()` function which explains what is happening under the hood for those curious. 
+
+```r
+query = dat_duckdb |>
+  filter(origin == "JFK") |>
+  group_by(month) |>
+  summarize(
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
+  )
+explain(query)
+```
+```text
+<SQL>
+SELECT "month", AVG(dep_delay) AS mean_dep_delay, COUNT(*) AS n_flights
+FROM arrow_001
+WHERE (origin = 'JFK')
+GROUP BY "month"
+
+<PLAN>
+physical_plan
+┌───────────────────────────┐
+│       HASH_GROUP_BY       │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│             #0            │
+│          avg(#1)          │
+│        count_star()       │
+└─────────────┬─────────────┘                             
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           month           │
+│         dep_delay         │
+└─────────────┬─────────────┘                             
+┌─────────────┴─────────────┐
+│        ARROW_SCAN         │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           month           │
+│         dep_delay         │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│  Filters: origin=JFK AND  │
+│     origin IS NOT NULL    │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           EC: 0           │
+└───────────────────────────┘
+```
+
+Then, the data can be `collect()`ed into a data.frame:
+```r
+collect(query)
+```
+```text
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <dbl>
+ 1    10           6.97      8605
+ 2     8           8.66      8986
+ 3     9           3.76      8228
+ 4     3           7.17      8253
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     2          19.2       6779
+ 8     6           9.81      8422
+ 9     7          17.6       8730
+10     1          27.0       7105
+```
+
+The duckdb engine is very powerful and can do things that arrow does not support (yet?), e.g. pivot/reshape (NB: these require the `tidyr` package to be loaded as well). The duckdb compute engine has a bunch of awesome features including spatial data manipulation. DuckDB has a fully function and very fast spatial spatial computation set. See [`duckdbfs`](https://cboettig.github.io/duckdbfs/#spatial-data) for an R integration.
+
 
 ## collapse
 
