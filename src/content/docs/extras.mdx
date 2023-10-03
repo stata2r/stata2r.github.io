@@ -344,7 +344,7 @@ dir.create("flights14")
 arrow::write_dataset(
   dat, 
   path = "flights14",
-  partitioning = c("origin") # <-- NB: partition your data by the main grouping vars for efficiency
+  partitioning = c("month", "origin") # <-- NB: partition your data by the main grouping vars for efficiency
 )
 ```
 
@@ -430,7 +430,7 @@ sum |>
 10     9           3.76      8228
 ```
 
-Under the hood, arrow uses the computation engine, [acero](https://arrow.apache.org/docs/cpp/streaming_execution.html). This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not yet as fully featured as duckdb's computation engine is. We will discuss more below.
+Under the hood, arrow uses the computation engine, [acero](https://arrow.apache.org/docs/cpp/streaming_execution.html). This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not as fast or fully featured as DuckDB's computation engine. We will discuss more below.
 
 
 #### duckdb
@@ -526,6 +526,8 @@ collect(query)
  9     7          17.6       8730
 10     1          27.0       7105
 ```
+
+The duckdb engine is very powerful and can do things that arrow does not support (yet?), e.g. pivot/reshape (NB: these require the `tidyr` package to be loaded as well). The duckdb compute engine has a bunch of awesome features including spatial data manipulation. DuckDB has a fully function and very fast spatial spatial computation set. See [`duckdbfs`](https://cboettig.github.io/duckdbfs/#spatial-data) for an R integration.
 
 
 ## collapse
