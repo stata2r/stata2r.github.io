@@ -627,7 +627,7 @@ equivalents (although you could implement a loop).
 
 dat[, c('dist_sq', 'dist_cu') := .(distance^2, distance^3)] 
 dat[, ':=' (dist_sq=distance^2, dist_cu=distance^3)]        # "functional" equivalent 
-dat[, let(dist_sq=distance^2, dist_cu=distance^3)]          # dev version only
+dat[, let(dist_sq=distance^2, dist_cu=distance^3)]          # introduced in v1.15.0
 
 # We can also chain back-to-back with "dat[...][...]" (this holds for any 
 # data.table operation) 
@@ -896,7 +896,7 @@ dat[, any_delay := fcoalesce(.SD), .SDcols=patterns('*_delay')]
 
 # Custom row calculations: 
 dat[, new_var := mapply(custom_func, var1, var2)] 
-dat[, new_var := custom_func(var1, var2), by=.I] # dev version only
+dat[, new_var := custom_func(var1, var2), by=.I]  # introduced in v1.15.0
 ```
 </div>
 </div>
@@ -1262,15 +1262,14 @@ give a valuable speed boost for big data tasks.
 ## Set keys. You normally want whatever you're grouping by
 setkey(dat, month, origin)
 
+## Assuming you have data.table >= v1.15.0, keys should be
+## highlighted at the top of the print object
+dat
+
 ## Same collapse syntax as before, just faster
 dat[, mean(dep_delay), by = .(month, origin)]
 
-## Tip: Turn on automatic printing of keys. The dev version
-## of data.table (v1.14.4) does this by default.
-options(datatable.print.class = TRUE, datatable.print.keys = TRUE)
-dat
-
-## Turn keys back off
+## Turn keys back off (optional)
 setkey(dat, NULL)
 ```
 
