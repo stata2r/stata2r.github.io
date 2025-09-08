@@ -636,13 +636,13 @@ _Summary tables, regression tables, and more_
 The **fixest** package already has the `etable()` function for generating
 regression tables. However, it is only really intended to work with models from
 the same package. So we also recommend checking out the fantastic
-[**modelsummary**](https://vincentarelbundock.github.io/modelsummary) package.
+[**modelsummary**](https://modelsummary.com/) package.
 It works with all sorts of model objects, including those not from **fixest**,
 is incredibly customizable, and outputs to a bunch of different formats (PDF,
 HTML, DOCX, etc.) Similarly, **modelsummary** has a wealth of options for
 producing publication-ready summary tables. Oh, and it produces coefficient
 plots too. Check out the [package
-website](https://vincentarelbundock.github.io/modelsummary/) for more.
+website](https://modelsummary.com/) for more.
 
 
 ### Summary tables
@@ -725,7 +725,7 @@ msummary(list(est1, est1, est3),
 _Marginal effects, contrasts, joint hypothesis tests, etc._
 
 The Stata `margins` command is great. To replicate it in R, we highly recommend
-the [**marginaleffects**](https://vincentarelbundock.github.io/marginaleffects/)
+the [**marginaleffects**](https://marginaleffects.com/)
 package. Individual marginal effects or average marginal effects for nonlinear
 models, or models with interactions or transformations, etc. The documentation
 is outstanding and the underlying functions are also very fast.
@@ -798,7 +798,7 @@ equivalent with `fixest::wald()`. But what about combinations of coefficients _a
 la_ Stata's `lincom` and `nlcom` commands? While several R packages do this,
 we'll again recommend the **marginaleffects** package. It's lightweight and fast, 
 and supports 
-[hypothesis testing](https://vincentarelbundock.github.io/marginaleffects/articles/hypothesis.html) 
+[hypothesis testing](https://marginaleffects.com/man/r/hypotheses.html) 
 of both linear and non-linear combinations.
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
