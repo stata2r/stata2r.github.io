@@ -595,15 +595,14 @@ collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
 _More standard error adjustments_
 
 **fixest** package comes with plenty of shortcuts for accessing standard error
-adjustments like HC1 heteroskedasticity-robust standard errors, Newey-West,
-Driscoll-Kraay, clustered standard errors, etc. But of course there are still
-more than that. A host of additional options are covered by the
-[**sandwich**](https://sandwich.r-forge.r-project.org/) package, which comes
-with a long list of functions like `vcovBS()` for bootstrapped standard errors,
-or `vcovHC()` for HC1-5. **sandwich** supports nearly every model class in R, so
-it shouldn't surprise that these can slot right into `fixest` estimates, too. 
-You shouldn't be using those `, robust` errors for smaller samples anyway... but 
-you [knew that](http://datacolada.org/99), right?
+adjustments like HC1-3 heteroskedasticity-robust, clustered, Newey-West,
+Driscoll-Kraay, etc. But of course there are still more than that. A host of
+additional options are covered by the
+[**sandwich**](https://sandwich.r-forge.r-project.org/) package, including
+HC4-5 and jackknife standard errors. Despite
+[some exceptions](https://github.com/lrberge/fixest/blob/0e37f1f7e5741787bdc27ef25b31927dd4e55a02/ONGOING_ISSUES.md#compatibility-with-the-sandwich-package)
+**sandwich** has good integration with **fixest** and so you should be able to
+plug and play the two packages together.
 
 ### Linear Model Adjustments
 

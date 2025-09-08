@@ -21,6 +21,9 @@ install.packages("fixest")
 # install.packages("fixest", repos = "https://fastverse.r-universe.dev")
 ```
 
+**Important:** In the code below, we assume that you are running **fixest**
+v0.13.0 or above (which is available on CRAN as of early September 2025).
+
 Once **fixest** is installed, don't forget to load it whenever you want to 
 use it. Unlike Stata, you have to re-load a package every time you start a new R 
 session.
@@ -133,16 +136,10 @@ feols(wage ~ educ + i(treat, ref = 1), dat)
 <div>
 
 ```stata
-reghdfe wage educ, absorb(countyfips) cluster(countyfips) 
+reghdfe wage educ, absorb(countyfips)
+reghdfe wage educ, absorb(countyfips) cluster(countyfips)
 
-
-
-
-
-
-reghdfe wage educ, absorb(countyfips)  
-
-* Add more fixed effects... 
+* Add more fixed effects (and clusted SEs)... 
 reghdfe wage educ, absorb(countyfips year) ///
                    vce(cluster countyfips year) 
 reghdfe wage educ, absorb(countyfips#year) /// 
@@ -152,20 +149,14 @@ reghdfe wage educ, absorb(countyfips#year) ///
 <div>
 
 ```r
+feols(wage ~ educ | countyfips, dat)
 feols(wage ~ educ | countyfips, dat, vcov = ~countyfips)
-# feols(wage ~ educ | countyfips, dat) # same (see below)
 
-# Note: fixest automatically clusters SEs by the first 
-# fixed effect (if there are any). We'll get to SEs 
-# later, but if you just want iid errors for a fixed 
-# effect model: 
-feols(wage ~ educ | countyfips, dat, vcov = 'iid') 
-
-# Add more fixed effects... 
-feols(wage ~ educ | countyfips + year, 
-      dat, vcov = ~countyfips + year) 
-feols(wage ~ educ | countyfips^year, 
-      dat) # defaults to vcov = ~countyfips^year
+# Add more fixed effects (and clusted SEs)... 
+feols(wage ~ educ | countyfips + year, dat,
+      vcov = ~countyfips + year) 
+feols(wage ~ educ | countyfips^year, dat,
+      vcov = ~countyfips^year)
 ```
 </div>
 </div>
@@ -234,7 +225,7 @@ logit marr age black hisp
 
 * https://github.com/sergiocorreia/ppmlhdfe
 ppmlhdfe educ age black hisp, absorb(statefips year) ///
-	                      vce(cluster statefips)
+	                        vce(robust)
 ```
 </div>
 <div>
@@ -248,7 +239,8 @@ feglm(marr ~ age + black + hisp | statefips + year,
       dat, family = 'probit')
 
 # fepois() is there for Poisson regression
-fepois(educ ~ age + black + hisp | statefips + year, dat)
+fepois(educ ~ age + black + hisp | statefips + year,
+       dat, vcov = 'hc1')
 ```
 </div>
 </div>	  
@@ -480,17 +472,18 @@ reghdfe wage educ, absorb(statefips#year)
 
 * Varying slopes (e.g. time trend for each state) 
 reghdfe wage educ, absorb(statefips#c.year) ///
-	           vce(cluster statefips#c.year)
+	             vce(cluster statefips#c.year)
 ```
 </div>
 <div>
 
 ```r
 # Combine fixed effects 
-feols(wage ~ educ | statefips^year, dat) 
+feols(wage ~ educ | statefips^year, dat)
 
 # Varying slopes (e.g. time trend for each state) 
-feols(wage ~ educ | statefips[year], dat)
+feols(wage ~ educ | statefips[year], dat,
+      vcov = ~statefips:year)
 ```
 </div>
 </div>
@@ -500,10 +493,10 @@ feols(wage ~ educ | statefips[year], dat)
 
 While you can specify standard errors inside the original **fixest** model call
 (just like Stata), a unique feature of R is that you can adjust errors for an
-existing model _on-the-fly_. This has [several
-benefits](https://grantmcdermott.com/better-way-adjust-SEs), including being
-much more efficient since you don't have to re-estimate your whole model. We'll
-try to highlight examples of both approaches below.
+existing model _on-the-fly_. This has
+[several benefits](https://grantmcdermott.com/posts/better-way-adjust-ses/),
+including being much more efficient since you don't have to re-estimate your
+whole model. We'll try to highlight examples of both approaches below.
 
            
 ### HC
@@ -512,7 +505,8 @@ try to highlight examples of both approaches below.
 <div>
 
 ```stata
-reg wage educ, vce(robust) 
+reg wage educ, vce(robust)
+reg wage educ, vce(hc2)
 reg wage educ, vce(hc3)
 ```
 </div>
@@ -520,7 +514,8 @@ reg wage educ, vce(hc3)
 
 ```r
 feols(wage ~ educ, dat, vcov = 'hc1') 
-feols(wage ~ educ, dat, vcov = sandwich::vcovHC) 
+feols(wage ~ educ, dat, vcov = 'hc2')
+feols(wage ~ educ, dat, vcov = 'hc3')
 
 # Note: You can also adjust the SEs of an existing model 
 m = feols(wage ~ educ, dat) # iid
@@ -528,7 +523,10 @@ summary(m, vcov = 'hc1')    # switch to HC1
 ```
 </div>
 </div>
-           
+
+Aside: You shouldn't be using `, robust` for smaller samples... but you
+[knew that](http://datacolada.org/99), right?
+
 ### HAC
 
 <div class='code--container grid grid-row grid-cols-1 gap-y-2 lg:gap-y-0 lg:grid-cols-2 lg:gap-x-2 [&>*]:!mt-0'>
@@ -570,17 +568,17 @@ reghdfe wage educ, absorb(countyfips#year) ///
 <div>
 
 ```r
-feols(wage ~ educ | countyfips, dat) # Auto clusters by FE 
-# feols(wage ~ educ | countyfips, dat, vcov = ~countyfips) # ofc can be explicit too 
+feols(wage ~ educ | countyfips, dat,
+      vcov = ~countyfips)
 
 # Twoway clustering etc. 
-feols(wage ~ educ | countyfips + year, 
-      dat, vcov = ~countyfips + year) 
-# feols(wage ~ educ | countyfips + year, 
-#      dat, vcov = 'twoway') ## same as above
+feols(wage ~ educ | countyfips + year, dat,
+      vcov = ~countyfips + year) 
+# feols(wage ~ educ | countyfips + year, dat,
+#      vcov = 'twoway') ## same as above
 
-feols(wage ~ educ | countyfips^year, 
-      dat, vcov = ~countyfips^year) 
+feols(wage ~ educ | countyfips^year, dat,
+      vcov = ~countyfips^year) 
 ```
 </div>
 </div>
@@ -614,8 +612,9 @@ functions, e.g. `etable()`. But here is a quick example using `summary()`:
 
 ```r
 m = feols(wage ~ educ | countyfips + year, dat) 
-m                                    # Clustered by countyfips (default)
-summary(m, vcov = 'iid')             # Switch to iid errors
+m                                    # IID (default)
+summary(m, vcov = 'hc3')             # Switch to HC3 errors
+summary(m, vcov = ~countyfips)       # Cluster by countyfips
 summary(m, vcov = 'twoway')          # Cluster by countyfips and year 
 summary(m, vcov = ~countyfips^year)  # Cluster by countyfips*year interaction
 ```
@@ -673,7 +672,7 @@ time.)
 etable(est1, est2, vcov = 'hc1') 
 
 # Report multiple SEs for the same model 
-etable(est1, vcov = list('iid', 'hc1', ~id, ~countyfips)) 
+etable(est1, vcov = list('iid', 'hc2', ~id, ~countyfips)) 
 
 # Multi-model example: Two dep. vars, stepwise coefs, 
 # varying slopes, split sample, etc. (18 models in total!)
