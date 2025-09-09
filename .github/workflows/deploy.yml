@@ -25,6 +25,10 @@ jobs:
         with:
             path: .
             package-manager: bun
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -34,4 +38,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
