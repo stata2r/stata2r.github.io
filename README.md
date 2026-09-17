@@ -6,28 +6,27 @@ This is the GitHub repo for the **Stata2R** website:
 You probably want to go directly to the website if you just want to browse the
 rendered pages with nice formatting. On the other hand, if you want to raise an
 issue or suggest edits via a pull request, then you're in the right place. For
-suggested edits, the main source documents of interest can be found in the
-respective `src/` sub-directories:
+suggested edits, the main source documents of interest are the respective
+Typst files in the repository root:
 
-- `src/content/docs/data.table` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/data.table))
-- `src/content/docs/fixest` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/fixest))
-- `src/content/docs/extras` ([link](https://github.com/stata2r/stata2r.github.io/tree/main/src/content/docs/extras))
+- `data_table.typ` ([link](https://github.com/stata2r/stata2r.github.io/blob/main/data_table.typ))
+- `fixest.typ` ([link](https://github.com/stata2r/stata2r.github.io/blob/main/fixest.typ))
+- `extras.typ` ([link](https://github.com/stata2r/stata2r.github.io/blob/main/extras.typ))
 
 Just click on the "edit" pencil icon (top right) of the README files and a fork
 of the repo will automatically be created under your account. You can then make
 your suggested edits and trigger a pull request for us to look at.
 
-On a technical note, the website is built with 
-[VuePress](https://vuepress.vuejs.org/) and automatically deployed via 
-[GitHub Actions](https://github.com/stata2r/stata2r.github.io/actions). But you 
-can also clone the repo and serve the website locally with 
-[yarn](https://classic.yarnpkg.com/en/).
+On a technical note, the website is built with
+[Calepin](https://vincentarelbundock.github.io/calepin/) and automatically
+deployed via [GitHub Actions](https://github.com/stata2r/stata2r.github.io/actions).
+You can also clone the repo and preview the site locally:
 
 ```sh
 git clone git@github.com:stata2r/stata2r.github.io.git
 cd stata2r
-yarn install # first time only
-yarn docs:dev
+calepin compile .
+calepin serve _site
 ```
 
 ## FAQ

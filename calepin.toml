@@ -1,0 +1,61 @@
+title = "stata2R"
+description = "Learning R coming from Stata"
+base-url = "https://stata2r.github.io"
+theme = "calepin"
+
+# The site is HTML-only, so there are no PDF twins and the Typst source is not
+# shipped next to the rendered pages.
+pdf = false
+typ = false
+
+# Static search (self-contained, no external Pagefind binary required).
+search = "pagefind"
+
+# GitHub Pages can ignore dot-directories, so keep the generated runtime and
+# theme assets in a visible directory.
+asset-dir = "_calepin"
+
+logo = "assets/favicon.svg"
+logo-alt = "stata2R"
+favicon = "assets/favicon.svg"
+
+[[menus.main]]
+target = "index.typ"
+label = "Intro"
+
+[[menus.main]]
+target = "data_table.typ"
+label = "data.table"
+
+[[menus.main]]
+target = "fixest.typ"
+label = "fixest"
+
+[[menus.main]]
+target = "extras.typ"
+label = "Extras"
+
+[[menus.social]]
+target = "https://github.com/stata2r/stata2r.github.io/"
+label = "{icon:github}"
+aria-label = "GitHub"
+
+[sidebar]
+fold = false
+
+[[sidebar.section]]
+
+  [[sidebar.section.item]]
+  target = "index.typ"
+
+  [[sidebar.section.item]]
+  target = "data_table.typ"
+
+  [[sidebar.section.item]]
+  target = "fixest.typ"
+
+  [[sidebar.section.item]]
+  target = "extras.typ"
+
+[static]
+include = ["assets/**"]

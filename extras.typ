@@ -1,0 +1,876 @@
+#import "/.calepin/calepin.typ" as calepin
+#show: calepin.document
+
+#set document(title: [Other Packages])
+
+#calepin.setup(fenced-chunks: false)
+#set raw(syntaxes: "/stata.sublime-syntax")
+
+#let sidebyside(..blocks) = calepin.elements.columns(
+  columns: 2,
+  wrap: false,
+  ..blocks,
+)
+
+#title()
+
+While we think you can get really far in R with just *data.table* and
+*fixest*, of course these two packages don't cover everything.
+
+This page covers a small list of packages you may find especially useful when
+getting started with R. We won't try to cover everything under the sun here.
+Just a few places to get going. For the rest, well, that's what StackOverflow
+or your favourite search engine is for.
+
+All of the below packages have far more applications than is shown here. We'll
+just provide one or two examples of how each can be used. Finally, don't forget
+to install them with `install.packages('PKGNAME')` and load them with
+`library(PKGNAME)`. The former command you only have to run once per package (or
+as often as you want to update it); the latter whenever you want to use a
+package in a new R session.
+
+= base
+
+_Where it all begins_
+
+Like many programming languages, one of R's great strengths is its package
+ecosystem. But none of that would be possible without the scaffolding provided
+by #link("https://www.r-project.org/about.html")[*base*] R. The "base" part here
+represents a set of core libraries and routines that get installed and loaded
+automatically whenever you start an R session. And you really get a lot out of
+the gate, because base R is incredibly versatile and function rich. Many of the
+operations that we have shown you on the preceding pages could equally have been
+implemented using off-the-shelf base R equivalents. We won't attempt to persuade
+you of that here, but there are lots of good tutorials available if you're
+interested (#link("https://github.com/matloff/fasteR#table-of-contents")[here] for
+example). Below we'll just highlight a few simple examples to give you an idea.
+
+== Plotting (simple histogram)
+
+#sidebyside(
+  [
+    ```stata
+    set obs 100
+    gen x = rnormal()
+    histogram x
+    ```
+  ],
+  [
+    ```r
+    x = rnorm(100)
+    hist(x)
+    ```
+  ],
+)
+
+== Linear regression
+
+#sidebyside(
+  [
+    ```stata
+    reg y x1 x2
+    ```
+  ],
+  [
+    ```r
+    lm(y ~ x1 + x2, dat)
+    ```
+  ],
+)
+
+== Iteration (loops)
+
+#sidebyside(
+  [
+    ```stata
+    foreach i of numlist 1/10 {
+       display `i' + 100
+    }
+    ```
+  ],
+  [
+    ```r
+    for (i in 1:10) {
+        print(i + 100) 
+    }
+    
+    # Aside 1: A single line works too here.
+    for (i in 1:10) print(i + 100)
+    
+    # Aside 2: R provides "functional programming" eqivalents
+    # to for-loops via the *apply family of functions. These
+    # have various advantages, which we won't get into here.
+    # Still the most important member is arguably "lapply", which 
+    # we've already seen a couple of times and returns a list
+    # result (which is great for programming). Here's the
+    # equivalent lapply code to the previous for-loop.
+    lapply(1:10, function(i) print(i + 100))
+    ```
+  ],
+)
+
+= ggplot2
+
+_Beautiful and customizable plots_
+
+#link("https://ggplot2.tidyverse.org/")[*ggplot2*] is widely considered one of the
+preeminent plotting libraries available in any language. It provides an
+intuitive syntax that applies in the same way across many, many different kinds
+of visualizations, and with a deep level of customization. Plus, endless
+additional plugins to do what you want, including easy interactivity, animation,
+maps, etc. We thought about giving *ggplot2* its own dedicated page like
+*data.table* and *fixest*. But instead we'll point you to the
+#link("https://lost-stats.github.io/Presentation/Figures/Figures.html")[Figures]
+section of the _Library of Statistical Techniques_, which already shows how to
+do many different graphing tasks in both Stata and *ggplot2*. For a more
+in-depth overview you can always consult the excellent
+#link("https://ggplot2.tidyverse.org/")[package documentation], or Kieran Healy's
+wonderful #link("https://socviz.co/")[_Data Visualization_] book.
+
+== Basic scatterplot(s)
+
+#sidebyside(
+  [
+    ```stata
+    twoway scatter yvar xvar
+    
+    twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
+            (scatter yvar xvar if group == 2, mc(red))
+    ```
+  ],
+  [
+    ```r
+    ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+    
+    ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
+      geom_point()
+    ```
+  ],
+)
+
+= tidyverse
+
+_A family of data science tools_
+
+The #link("https://www.tidyverse.org/")[*tidyverse*] provides an extremely popular
+framework for data science tasks in R. This meta-package is actually a
+collection of smaller packages that are all designed to work together, based on
+a shared philosophy and syntax. We've already covered *ggplot2* above, but
+there are plenty more. These include *dplyr* and *tidyr*, which offer an
+alternative syntax and approach to data wrangling tasks. While we personally
+recommend *data.table*, these *tidyverse* packages have many ardent fans
+too. You may find that you prefer their modular design and verbal syntax. But
+don't feel bound either way: it's totally fine to combine them. Some other
+*tidyverse* packages worth knowing about include *purrr*, which contains a suite
+of functions for automating and looping your work, *lubridate* which makes
+working with date-based data easy, and *stringr* which offers functions with
+straightforward syntax for working with string variables. In the examples that
+follow, note that `|>` is a #link("https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/")[pipe operator].
+
+== Data wrangling with dplyr
+
+_Note: *dplyr* doesn't modify data in place. So you'll need to (re)assign if you want to keep your changes. E.g. `dat = dat |> group_by...`_
+
+Subset by rows and then columns.
+
+#sidebyside(
+  [
+    ```stata
+    keep if var1=="value"
+    keep var1 var2 var3
+    ```
+  ],
+  [
+    ```r
+    dat |>
+       filter(var1=="value") |>
+       select(var1, var2, var3)
+    ```
+  ],
+)
+
+Create a new variable by group.
+
+#sidebyside(
+  [
+    ```stata
+    bysort group1: egen mean_var1 = mean(var1)
+    ```
+  ],
+  [
+    ```r
+    dat |>
+      group_by(group1) |>
+      mutate(mean_var1 = mean(var1))
+    ```
+  ],
+)
+
+Collapse by group.
+
+#sidebyside(
+  [
+    ```stata
+    collapse (mean) mean_var1 = var1, by(group1)
+    ```
+  ],
+  [
+    ```r
+    dat |>
+      group_by(group1) |>
+      summarise(mean_var1 = mean(var1))
+    ```
+  ],
+)
+
+== Manipulating dates with lubridate
+
+#sidebyside(
+  [
+    ```stata
+    * Shift a date forward one month (not 30 days, one month)
+    * ???
+    ```
+  ],
+  [
+    ```r
+    # Shift a date forward one month (not 30 days, one month)
+    shifted_date = date + months(1)
+    ```
+  ],
+)
+
+== Iterating with purrr
+
+Read in many files and append them together.
+
+#sidebyside(
+  [
+    ```stata
+    local filelist: dir "data/" files "*.csv"
+    tempfile mytmpfile
+    save `mytmpfile', replace empty
+    foreach x of local filelist {
+    	qui: import delimited "data/`x'", case(preserve) clear
+    	append using `mytmpfile'
+    	save `mytmpfile', replace
+    }
+    ```
+  ],
+  [
+    ```r
+    filelist = dir("data/", pattern=".csv$", full.names=TRUE)
+    dat = map_df(filelist, data.table::fread)
+    
+    # Note: map_*df* means map (iterate) then coerce the
+    # result to a data frame
+    ```
+  ],
+)
+
+Iterate over variables.
+
+#sidebyside(
+  [
+    ```stata
+    ds, has(type long)
+    collapse (mean) `r(varlist)'
+    ```
+  ],
+  [
+    ```r
+    # Note: map is a stand-in replacement for lapply
+    dat[, map(.SD, mean), .SDcols=is.numeric]
+    ```
+  ],
+)
+
+== String operations with stringr
+
+#sidebyside(
+  [
+    ```stata
+    subinstr("Hello world", "world", "universe", .)
+    substr("Hello world", 1, 3)
+    regexm("Hello world", "ello")
+    
+    ```
+  ],
+  [
+    ```r
+    str_replace_all("Hello world", "world", "universe")
+    str_sub("Hello world", 1, 3)
+    str_detect("Hello world", "ello")
+    # Note all the stringr functions accept regex input
+    ```
+  ],
+)
+
+= arrow and duckdb
+
+_Fast data storage and database_
+
+One advantage of the learning the `tidyverse` syntax is that it plugs
+in seamlessly with databases using the
+#link("https://dbplyr.tidyverse.org/")[dbplyr]
+package. The *arrow* package provides a really fast and memory efficient
+in-memory data storage format as well as a matching on-disk storage format (`.parquet`). The *duckdb* package provides a very similar in-memory format,
+hence the two play remarkably well together.
+
+These two packages together (or separately) make working with very large
+datasets super fast. For an example using the massive NYC Taxi dataset, see https://arrow.apache.org/docs/2.0/r/articles/dataset.html. The file is 37 gigabytes (bigger than most people's RAM) and arrow can do a `group_by()` and `summarize()` in a few seconds on a standard Macbook.
+
+== Import/export data with arrow
+
+For this example, we will create a small arrow dataset from the flights14 dataset using the following code:
+
+```r
+dat = data.table::fread("https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv")
+
+dir.create("flights14")
+arrow::write_dataset(
+  dat, 
+  path = "flights14",
+  partitioning = c("month", "origin") # <-- NB: partition your data by the main grouping vars for efficiency
+)
+```
+
+The `write_dataset` and `open_dataset` functions are useful for very large datasets and for efficiently "pre-grouping" the data (e.g. if you know you're going to `group_by(origin)` a lot, then saving the dataset this way is efficient). If you want a single file rather than a folder system, you can read/write to the `.parquet` file format. The parquet version will be much smaller in size (in this case, the `.csv` is 9.6MB versus the `.parquet` at 1.4MB) and load/save faster.
+
+```r
+arrow::write_parquet(dat, "flights14.parquet")
+```
+
+We can load
+
+```r
+dat = arrow::open_dataset("flights14/")
+# or, 
+# dat = arrow::read_parquet("flights14.parquet")
+
+# View arrow database scheme
+dat
+```
+
+```text
+FileSystemDataset with 3 Parquet files
+year: int32
+month: int32
+day: int32
+dep_delay: int32
+arr_delay: int32
+carrier: string
+dest: string
+air_time: int32
+distance: int32
+hour: int32
+origin: string
+
+See $metadata for additional Schema metadata
+```
+
+== Data wrangling with arrow
+
+With our dataset loaded, we can begin to do standard data modifying using `dplyr`.
+
+```r
+sum = dat |> 
+  filter(origin == "JFK") |>
+  group_by(month) |>
+  summarize(
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
+  )
+```
+
+If you type sum into the console, the output will not look like a data.frame. Instead, you'll see that a `query` object has been created:
+
+```
+sum
+```
+
+```text
+FileSystemDataset (query)
+month: int32
+mean_dep_delay: double
+n_flights: int64
+
+See $.data for the source Arrow object
+```
+
+Instead of loading the output, `arrow` has "prepared" a set of commands that will need to be triggered with the `collect()` function. Note that once you `collect()`, the result returned is a standard R data.frame, so do so carefully.
+
+```r
+sum |> 
+  collect()
+```
+
+```text
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <int>
+ 1     1          27.0       7105
+ 2     2          19.2       6779
+ 3     3           7.17      8253
+ 4    10           6.97      8605
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     6           9.81      8422
+ 8     7          17.6       8730
+ 9     8           8.66      8986
+10     9           3.76      8228
+```
+
+Under the hood, arrow uses the computation engine, #link("https://arrow.apache.org/docs/cpp/streaming_execution.html")[acero]. This computation engine is what allows arrow to do really efficient operations on large datasets. However, it is not as fast or fully featured as DuckDB's computation engine. We will discuss more below.
+
+== duckdb
+
+Because of the way that arrow stores memory, it can be passed around between coding languages (e.g. to and from python) and the `duckdb` database without copying any data. This makes the operation incredibly efficient. We can convert from arrow to duckdb using the `to_duckdb()` function:
+
+```r
+dat_duckdb = dat |> to_duckdb()
+dat_duckdb
+```
+
+```text
+# Source:   table<arrow_001> [?? x 11]
+# Database: DuckDB 0.8.1 [root@Darwin 22.3.0:R 4.3.0/:memory:]
+    year month   day dep_delay arr_delay carrier dest  air_time distance  hour origin
+   <int> <int> <int>     <int>     <int> <chr>   <chr>    <int>    <int> <int> <chr> 
+ 1  2014     1     1         4         0 AA      LAX        339     2454    18 EWR   
+ 2  2014     1     1        -5       -17 AA      MIA        161     1085    16 EWR   
+ 3  2014     1     1       191       185 AA      DFW        214     1372    16 EWR   
+ 4  2014     1     1        -1        -2 AA      DFW        214     1372    14 EWR   
+ 5  2014     1     1        -3       -10 AA      MIA        154     1085     6 EWR   
+ 6  2014     1     1         4       -17 AA      DFW        215     1372     9 EWR   
+ 7  2014     1     1        -3        27 AA      DFW        211     1372     7 EWR   
+ 8  2014     1     1        -5        -8 AA      MIA        157     1085    11 EWR   
+ 9  2014     1     1        -9       -16 AA      DFW        218     1372    19 EWR   
+10  2014     1     1         4       -12 AS      SEA        347     2402    18 EWR   
+# ℹ more rows
+# ℹ Use `print(n = ...)` to see more rows
+```
+
+With the data transfered to a duckdb database, we can continue as before with dplyr and `collect()` syntax. Under the hood, the duckdb computation engine will be used which is has a more complete feature set allowing more operations (e.g. rolling windows) to be used. One nice thing `duckdb`/`arrow` do is the `explain()` function which explains what is happening under the hood for those curious.
+
+```r
+query = dat_duckdb |>
+  filter(origin == "JFK") |>
+  group_by(month) |>
+  summarize(
+    mean_dep_delay = mean(dep_delay, na.rm = TRUE), 
+    n_flights = n()
+  )
+explain(query)
+```
+
+```text
+<SQL>
+SELECT "month", AVG(dep_delay) AS mean_dep_delay, COUNT(*) AS n_flights
+FROM arrow_001
+WHERE (origin = 'JFK')
+GROUP BY "month"
+
+<PLAN>
+physical_plan
+┌───────────────────────────┐
+│       HASH_GROUP_BY       │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│             #0            │
+│          avg(#1)          │
+│        count_star()       │
+└─────────────┬─────────────┘                             
+┌─────────────┴─────────────┐
+│         PROJECTION        │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           month           │
+│         dep_delay         │
+└─────────────┬─────────────┘                             
+┌─────────────┴─────────────┐
+│        ARROW_SCAN         │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           month           │
+│         dep_delay         │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│  Filters: origin=JFK AND  │
+│     origin IS NOT NULL    │
+│   ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─   │
+│           EC: 0           │
+└───────────────────────────┘
+```
+
+Then, the data can be `collect()`ed into a data.frame:
+
+```r
+collect(query)
+```
+
+```text
+# A tibble: 10 × 3
+   month mean_dep_delay n_flights
+   <int>          <dbl>     <dbl>
+ 1    10           6.97      8605
+ 2     8           8.66      8986
+ 3     9           3.76      8228
+ 4     3           7.17      8253
+ 5     4           7.00      8070
+ 6     5          10.9       8305
+ 7     2          19.2       6779
+ 8     6           9.81      8422
+ 9     7          17.6       8730
+10     1          27.0       7105
+```
+
+The duckdb engine is very powerful and can do things that arrow does not support (yet?), e.g. pivot/reshape (NB: these require the `tidyr` package to be loaded as well). The duckdb compute engine has a bunch of awesome features including spatial data manipulation. DuckDB has a fully function and very fast spatial spatial computation set. See #link("https://cboettig.github.io/duckdbfs/#spatial-data")[`duckdbfs`] for an R integration.
+
+= collapse
+
+_Extra convenience functions and super fast aggregations_
+
+Sure, we've gone on and on about how fast *data.table* is compared to just
+about everything else. But there is another R package that can boast even faster
+computation times for certain grouped calculations and transformations, and
+that's
+#link("https://sebkrantz.github.io/collapse/index.html")[collapse].
+The *collapse* package doesn't try to do everything that *data.table* does.
+But the two
+#link("https://sebkrantz.github.io/collapse/articles/collapse_and_data.table.html")[play very well together]
+and the former offers some convenience functions like `descr` and `collap`,
+which essentially mimic the equivalent functions in Stata and might be
+particularly appealing to readers of this guide. (P.S. If you'd like to load
+*data.table* and *collapse* at the same time, plus some other
+high-performance packages, check out the
+#link("https://fastverse.github.io/fastverse/")[*fastverse*].)
+
+== Quick Summaries
+
+#sidebyside(
+  [
+    ```stata
+    summarize
+    describe
+    ```
+  ],
+  [
+    ```r
+    qsu(dat)
+    descr(dat)
+    ```
+  ],
+)
+
+== Multiple grouped aggregations
+
+#sidebyside(
+  [
+    ```stata
+    collapse (mean) var1, by(group1)
+    collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
+    ```
+  ],
+  [
+    ```r
+    collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean
+    collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
+    ```
+  ],
+)
+
+= sandwich
+
+_More standard error adjustments_
+
+*fixest* package comes with plenty of shortcuts for accessing standard error
+adjustments like HC1-3 heteroskedasticity-robust, clustered, Newey-West,
+Driscoll-Kraay, etc. But of course there are still more than that. A host of
+additional options are covered by the
+#link("https://sandwich.r-forge.r-project.org/")[*sandwich*] package, including
+HC4-5 and jackknife standard errors. Despite
+#link("https://github.com/lrberge/fixest/blob/0e37f1f7e5741787bdc27ef25b31927dd4e55a02/ONGOING_ISSUES.md#compatibility-with-the-sandwich-package")[some exceptions]
+*sandwich* has good integration with *fixest* and so you should be able to
+plug and play the two packages together.
+
+== Linear Model Adjustments
+
+#sidebyside(
+  [
+    ```stata
+    * ", robust" uses hc1 which isn't great for small samples
+    regress Y X Z, vce(hc3)
+    ```
+  ],
+  [
+    ```r
+    # sandwich's vcovHC uses HC3 by default
+    feols(Y ~ X + Z, dat, vcov = sandwich::vcovHC) 
+    
+    # Aside: Remember that you can also adjust the SEs 
+    # for existing models on the fly 
+    m = feols(Y ~ X + Z, dat) 
+    summary(m, vcov = sandwich::vcovHC)
+    ```
+  ],
+)
+
+= modelsummary
+
+_Summary tables, regression tables, and more_
+
+The *fixest* package already has the `etable()` function for generating
+regression tables. However, it is only really intended to work with models from
+the same package. So we also recommend checking out the fantastic
+#link("https://modelsummary.com/")[*modelsummary*] package.
+It works with all sorts of model objects, including those not from *fixest*,
+is incredibly customizable, and outputs to a bunch of different formats (PDF,
+HTML, DOCX, etc.) Similarly, *modelsummary* has a wealth of options for
+producing publication-ready summary tables. Oh, and it produces coefficient
+plots too. Check out the [package
+website](https://modelsummary.com/) for more.
+
+== Summary tables
+
+#sidebyside(
+  [
+    ```stata
+    * Summary stats table 
+    estpost summarize 
+    esttab, cells("count mean sd min max") nomtitle nonumber 
+    
+    * Balance table 
+    by treat_var: eststo: estpost summarize 
+    esttab, cells("mean sd") label nodepvar
+    ```
+  ],
+  [
+    ```r
+    # Summary stats table 
+    datasummary_skim(dat) 
+    
+    
+    # Balance table 
+    datasummary_balance(~treat_var, dat)
+    ```
+  ],
+)
+
+== Regression tables
+
+*Aside:* Here we'll use the base R `lm()` (linear model) function, rather than
+`feols()`, to emphasize that *modelsummary* works with many different model
+classes.
+
+#sidebyside(
+  [
+    ```stata
+    reg Y X Z 
+    eststo est1 
+    esttab est1b
+    
+    reg Y X Z, vce(hc3) 
+    eststo est1b 
+    esttab est1b 
+    
+    esttab est1 est1b
+    
+    reg Y X Z A, vce(hc3)
+    eststo est2
+    esttab est1 est1b est2
+    ```
+  ],
+  [
+    ```r
+    est1 = lm(Y ~ X + Z, dat) 
+    msummary(est1) # msummary() = alias for modelsummary()
+    
+    # Like fixest::etable(), SEs for existing models can
+    # be adjusted on-the-fly 
+    msummary(est1, vcov='hc3')
+    
+    # Multiple SEs for the same model
+    msummary(est1, vcov=list('iid', 'hc3')) 
+    
+    est3 = lm(Y ~ X + Z + A, dat) 
+    msummary(list(est1, est1, est3),
+             vcov = list('iid', 'hc3', 'hc3'))
+    ```
+  ],
+)
+
+= marginaleffects
+
+_Marginal effects, contrasts, joint hypothesis tests, etc._
+
+The Stata `margins` command is great. To replicate it in R, we highly recommend
+the #link("https://marginaleffects.com/")[*marginaleffects*]
+package. Individual marginal effects or average marginal effects for nonlinear
+models, or models with interactions or transformations, etc. The documentation
+is outstanding and the underlying functions are also very fast.
+
+== Marginal effects and plots
+
+Here's a simple example of a hypothetical logit model.
+
+#sidebyside(
+  [
+    ```stata
+    logit y x z
+    margins, dydx(*)
+    
+    * Predictive plot example
+    levelsof x, miss local(x_lvls)
+    qui margins, at(x=(`x_lvls'))
+    marginsplot, recast(line) recastci(rarea)
+    ```
+  ],
+  [
+    ```r
+    m = glm(y ~ x + z, family = binomial, data = some_data)
+    avg_slopes(m)
+    
+    # Predictive plot example
+    plot_predictions(m, "x")
+    ```
+  ],
+)
+
+And here's another of a hypothetical continuous \* categorical interaction model.
+
+#sidebyside(
+  [
+    ```stata
+    * x is a continuous and z is categorical
+    reg y c.x##i.z
+    
+    qui margins z, dydx(x)
+    marginsplot
+    
+    levelsof x, miss local(x_lvls)
+    qui margins, dydx(z) at(x=(`x_lvls'))
+    marginsplot, recast(line) recastci(rarea)
+    ```
+  ],
+  [
+    ```r
+    # X is a continuous and Z is categorical
+    m = lm(y ~ x * factor(z), some_data)
+    
+    plot_slopes(m, effect = "x", condition = "z")
+    
+    
+    plot_slopes(m, effect = "z", condition = "x")
+    ```
+  ],
+)
+
+== Joint coefficient and (non)linear hypothesis tests
+
+Stata provides a number of inbuilt commands for (potentially complex)
+postestimation coefficient tests. We've already seen the `testparm` command
+equivalent with `fixest::wald()`. But what about combinations of coefficients _a
+la_ Stata's `lincom` and `nlcom` commands? While several R packages do this,
+we'll again recommend the *marginaleffects* package. It's lightweight and fast,
+and supports
+#link("https://marginaleffects.com/man/r/hypotheses.html")[hypothesis testing]
+of both linear and non-linear combinations.
+
+#sidebyside(
+  [
+    ```stata
+    regress y x z 
+    
+    * Test linear combination of coefficients 
+    lincom x + z 
+    
+    
+    * Test nonlinear combination of coefficients 
+    nlcom _b[x]/_b[z] - 1
+    ```
+  ],
+  [
+    ```r
+    m = lm(y ~ x + z, dat)
+    
+    # Test linear combination of coefficients 
+    hypotheses(m, "x + z = 0")
+    # slopes(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
+    
+    # Test nonlinear combination of coefficients 
+    hypotheses(m, "x / z = 1")
+    # slopes(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
+    ```
+  ],
+)
+
+= lme4
+
+_Random effects and mixed models_
+
+*fixest* can do a lot, but it can't do everything. This site isn't even going
+to attempt to go into how to translate every single model into R. But we'll
+quick highlight random-effects and mixed models. The
+#link("https://cran.r-project.org/web/packages/lme4/index.html")[*lme4*] and its
+`lmer()` function covers not just random-intercept models but also hierarchical
+models where slope coefficients follow random distributions. (*Aside:* If you
+prefer Bayesian models for this kind of thing, check out
+#link("https://paul-buerkner.github.io/brms/")[*brms*].)
+
+== Random effects and mixed models
+
+#sidebyside(
+  [
+    ```stata
+    xtset group time
+    xtreg y x, re
+    mixed y x || group: x, reml
+    ```
+  ],
+  [
+    ```r
+    # No need for an xtset equivalent
+    lmer(y ~ x + (1 | group), data = dat)
+    lmer(y ~ x + (x | group), data = dat)
+    ```
+  ],
+)
+
+P.S. Take a look at the CRAN
+#link("https://cran.r-project.org/web/views/Econometrics.html")[Econometrics Task View]
+page for a thorough list of econometric methods and relevant packages.
+
+= sf
+
+_Geospatial operations_
+
+R has outstanding support for geospatial computation and mapping. There are a
+variety of packages to choose from here, depending on what you want (e.g. vector
+vs raster data, interactive maps, high-dimensional data cubes, etc.) But the
+workhorse geospatial tool for most R users is the incredibly versatile
+#link("https://r-spatial.github.io/sf/")[*sf*] package. We'll only provide a simple
+mapping example below. The *sf* #link("https://r-spatial.github.io/sf/")[website] has
+several in-depth tutorials, and we also recommend the [_Geocomputation with
+R_](https://geocompr.robinlovelace.net/) book by Robin Lovelace, Jakub Nowosad,
+and Jannes Muenchow.
+
+== Simple Map
+
+#sidebyside(
+  [
+    ```stata
+    * Mapping in Stata requires the spmap and shp2dta 
+    * commands, and also that you convert your (say) 
+    * shapefile to .dta format first. We won't go through 
+    * all that here, but see: 
+    * https://www.stata.com/support/faqs/graphics/spmap-and-maps/
+    ```
+  ],
+  [
+    ```r
+    # This example uses the North Carolina shapefile that is
+    # bundled with the sf package. 
+    nc = st_read(system.file("shape/nc.shp", package = "sf")) 
+    plot(nc[, 'BIR74'])
+    # Or, if you have ggplot2 loaded: 
+    ggplot(nc, aes(fill=BIR74)) + geom_sf()
+    ```
+  ],
+)

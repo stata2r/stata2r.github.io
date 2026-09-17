@@ -1,0 +1,535 @@
+%YAML 1.2
+---
+# Sublime Text 4 syntax definition.
+# Source: https://github.com/sergiocorreia/sublime-stata
+# Copyright (c) 2018 Sergio Correia, MIT License.
+name: Stata
+scope: source.stata
+version: 2
+file_extensions:
+  - do
+  - ado
+  - doh
+first_line_match: '(?i)^\s*\*!\s+.*\bStata\b'
+
+variables:
+  identifier: '[A-Za-z_][A-Za-z0-9_]*'
+  program_word: '(?i:pr(?:o(?:g(?:r(?:a(?:m)?)?)?)?)?)'
+  define_word: '(?i:def(?:i(?:n(?:e)?)?)?)'
+  command_prefix: '(?i:cap(?:ture)?|qui(?:etly)?|noi(?:sily)?|no?break|no?varabbrev)'
+  storage_type: '(?i:byte|int|long|float|double|strL|str[1-9][0-9]*)'
+  control_word: '(?i:if|in|using|with|of|else|while|foreach|forvalues|continue|break)'
+  constant_word: '(?i:true|false|null|missing)'
+  semicolon_start: '(?:^|(?<=;))[ \t]*'
+
+contexts:
+  main:
+    - include: delimiter-switch-to-semicolon
+    - include: embedded-languages
+    - include: texdoc
+    - include: comments
+    - include: program-declarations
+    - include: macro-declarations
+    - include: by-command
+    - include: prefixed-command
+    - include: command-at-line-start
+    - include: inline-code
+
+  delimiter-switch-to-semicolon:
+    - match: '^\s*(#\s*(?i:delimit))\s*(;)\s*$'
+      captures:
+        1: keyword.control.directive.stata
+        2: punctuation.terminator.statement.stata
+      push: semicolon-main
+
+  semicolon-main:
+    - include: delimiter-switch-to-newline
+    - include: semicolon-embedded-languages
+    - include: texdoc
+    - include: comments
+    - include: semicolon-program-declarations
+    - include: semicolon-macro-declarations
+    - include: semicolon-by-command
+    - include: semicolon-prefixed-command
+    - include: semicolon-command-start
+    - include: inline-code
+
+  delimiter-switch-to-newline:
+    - match: '^\s*(#\s*(?i:delimit))\s+((?i:cr))\s*(;)?\s*$'
+      captures:
+        1: keyword.control.directive.stata
+        2: constant.language.delimiter.stata
+        3: punctuation.terminator.statement.stata
+      pop: true
+
+  embedded-languages:
+    - match: '^\s*(mata)(:)(?=\s*\S)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: mata-inline-newline-body
+    - match: '^\s*(python)(:)(?=\s*\S)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: python-inline-newline-body
+    - match: '^\s*(mata)(:)?\s*$'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: mata-block-newline-body
+    - match: '^\s*(python)(:)?\s*$'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: python-block-newline-body
+
+  semicolon-embedded-languages:
+    - match: '{{semicolon_start}}(mata)(:)(?=[ \t]*\S)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: mata-inline-semicolon-body
+    - match: '{{semicolon_start}}(python)(:)(?=[ \t]*\S)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.separator.colon.stata
+      push: python-inline-semicolon-body
+    - match: '{{semicolon_start}}(mata)\s*(;)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.terminator.statement.stata
+      push: mata-block-semicolon-body
+    - match: '{{semicolon_start}}(python)\s*(;)'
+      captures:
+        1: support.function.command.stata
+        2: punctuation.terminator.statement.stata
+      push: python-block-semicolon-body
+
+  mata-inline-newline-body:
+    - meta_scope: source.mata
+    - match: '$'
+      pop: true
+    - include: mata-code
+
+  python-inline-newline-body:
+    - meta_scope: source.python
+    - match: '$'
+      pop: true
+    - include: python-code
+
+  mata-block-newline-body:
+    - meta_scope: source.mata
+    - match: '(?=^\s*end\s*$)'
+      pop: true
+    - include: mata-code
+
+  python-block-newline-body:
+    - meta_scope: source.python
+    - match: '(?=^\s*end\s*$)'
+      pop: true
+    - include: python-code
+
+  mata-inline-semicolon-body:
+    - meta_scope: source.mata
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - include: mata-code
+
+  python-inline-semicolon-body:
+    - meta_scope: source.python
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - include: python-code
+
+  mata-block-semicolon-body:
+    - meta_scope: source.mata
+    - match: '(?={{semicolon_start}}(?i:end)\s*;)'
+      pop: true
+    - include: mata-code
+
+  python-block-semicolon-body:
+    - meta_scope: source.python
+    - match: '(?={{semicolon_start}}(?i:end)\s*;)'
+      pop: true
+    - include: python-code
+
+  mata-code:
+    - include: Packages/Stata/Mata.sublime-syntax
+
+  python-code:
+    - include: Packages/Python/Python.sublime-syntax#statements
+
+  texdoc:
+    - match: '/\*\*\*'
+      scope: punctuation.definition.comment.begin.stata
+      push: texdoc-body
+
+  texdoc-body:
+    - meta_scope: text.tex.latex
+    - match: '\*\*\*/'
+      scope: punctuation.definition.comment.end.stata
+      pop: true
+    - include: Packages/LaTeX/TeX.sublime-syntax
+
+  comments:
+    - match: '^(//)\s+(?![-=]{3,}\s*$)(\w.*)$'
+      scope: comment.line.stata.section
+      captures:
+        1: punctuation.definition.comment.begin.stata
+        2: entity.name.section
+    - match: '^\s*\*.*$'
+      scope: comment.line.asterisk.stata
+    - match: '///.*$'
+      scope: comment.line.continuation.stata
+      push: line-continuation
+    - match: '//.*$'
+      scope: comment.line.double-slash.stata
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.stata
+      push: block-comment
+
+  block-comment:
+    - meta_scope: comment.block.stata
+    - match: '/\*'
+      scope: punctuation.definition.comment.begin.stata
+      push: block-comment
+    - match: '\*/'
+      scope: punctuation.definition.comment.end.stata
+      pop: true
+
+  line-continuation:
+    - meta_include_prototype: false
+    - match: '^'
+      pop: true
+
+  program-declarations:
+    - match: '^\s*({{program_word}})\s+({{define_word}})\s+({{identifier}})'
+      captures:
+        1: support.function.command.stata
+        2: storage.modifier.declaration.stata
+        3: entity.name.function.stata
+      push: command-body
+    - match: '^\s*({{program_word}})\s+(?i:(drop|list))\s+({{identifier}})'
+      captures:
+        1: support.function.command.stata
+        2: keyword.other.program.stata
+        3: entity.name.function.stata
+      push: command-body
+
+  macro-declarations:
+    - match: '^\s*(?i:(loc(?:al)?))\s+({{identifier}}|0)\s*(:)\s*(?i:(list))\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+        3: punctuation.separator.colon.stata
+        4: support.function.command.extended-macro.stata
+      push: local-list-body
+    - match: '^\s*(?i:(loc(?:al)?))\s+({{identifier}}|0)\s*(:)'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+        3: punctuation.separator.colon.stata
+      push: extended-local-body
+    - match: '^\s*(?i:(loc(?:al)?))\s+({{identifier}}|0)\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+      push: local-body
+    - match: '^\s*(?i:(glo(?:bal)?))\s+({{identifier}})\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.global.stata
+      push: command-body
+    - match: '^\s*(?i:(tempvar|tempfile|tempname))\s+({{identifier}}(?:\s+{{identifier}})*)'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+      push: command-body
+
+  local-list-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata meta.local.extended.stata meta.local.list.stata
+    - match: '$'
+      pop: true
+    - include: inline-code
+
+  extended-local-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata meta.local.extended.stata
+    - match: '$'
+      pop: true
+    - include: inline-code
+
+  local-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata
+    - match: '$'
+      pop: true
+    - include: inline-code
+
+  by-command:
+    - match: '^\s*(?i:(by|bysort))\b(.*?)(:)\s*((?:{{command_prefix}}\s+)*)({{identifier}})'
+      captures:
+        1: keyword.control.prefix.stata
+        2: meta.grouping.by.stata
+        3: punctuation.separator.colon.stata
+        4: keyword.control.prefix.stata
+        5: support.function.command.stata
+      push: command-body
+
+  prefixed-command:
+    - match: '^\s*((?:{{command_prefix}}\s+)+)({{identifier}})'
+      captures:
+        1: keyword.control.prefix.stata
+        2: support.function.command.stata
+      push: command-body
+
+  command-at-line-start:
+    - match: '^\s*({{identifier}})'
+      captures:
+        1: support.function.command.stata
+      push: command-body
+    - match: '^\s*(#\s*(?i:delimit|if|else|endif|include))\b'
+      captures:
+        1: keyword.control.directive.stata
+      push: command-body
+
+  command-body:
+    - meta_scope: meta.command.stata inner-commands
+    - match: '$'
+      pop: true
+    - match: '([:;])\s*((?:{{command_prefix}}\s+)*)({{identifier}})'
+      captures:
+        1: punctuation.separator.stata
+        2: keyword.control.prefix.stata
+        3: support.function.command.stata
+    - include: inline-code
+
+  semicolon-program-declarations:
+    - match: '{{semicolon_start}}({{program_word}})\s+({{define_word}})\s+({{identifier}})'
+      captures:
+        1: support.function.command.stata
+        2: storage.modifier.declaration.stata
+        3: entity.name.function.stata
+      push: semicolon-command-body
+    - match: '{{semicolon_start}}({{program_word}})\s+(?i:(drop|list))\s+({{identifier}})'
+      captures:
+        1: support.function.command.stata
+        2: keyword.other.program.stata
+        3: entity.name.function.stata
+      push: semicolon-command-body
+
+  semicolon-macro-declarations:
+    - match: '{{semicolon_start}}(?i:(loc(?:al)?))\s+({{identifier}}|0)\s*(:)\s*(?i:(list))\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+        3: punctuation.separator.colon.stata
+        4: support.function.command.extended-macro.stata
+      push: semicolon-local-list-body
+    - match: '{{semicolon_start}}(?i:(loc(?:al)?))\s+({{identifier}}|0)\s*(:)'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+        3: punctuation.separator.colon.stata
+      push: semicolon-extended-local-body
+    - match: '{{semicolon_start}}(?i:(loc(?:al)?))\s+({{identifier}}|0)\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+      push: semicolon-local-body
+    - match: '{{semicolon_start}}(?i:(glo(?:bal)?))\s+({{identifier}})\b'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.global.stata
+      push: semicolon-command-body
+    - match: '{{semicolon_start}}(?i:(tempvar|tempfile|tempname))\s+({{identifier}}(?:\s+{{identifier}})*)'
+      captures:
+        1: support.function.command.stata
+        2: variable.other.local.stata
+      push: semicolon-command-body
+
+  semicolon-by-command:
+    - match: '{{semicolon_start}}(?i:(by|bysort))\b(.*?)(:)\s*((?:{{command_prefix}}\s+)*)({{identifier}})'
+      captures:
+        1: keyword.control.prefix.stata
+        2: meta.grouping.by.stata
+        3: punctuation.separator.colon.stata
+        4: keyword.control.prefix.stata
+        5: support.function.command.stata
+      push: semicolon-command-body
+
+  semicolon-prefixed-command:
+    - match: '{{semicolon_start}}((?:{{command_prefix}}\s+)+)({{identifier}})'
+      captures:
+        1: keyword.control.prefix.stata
+        2: support.function.command.stata
+      push: semicolon-command-body
+
+  semicolon-command-start:
+    - match: '{{semicolon_start}}({{identifier}})'
+      captures:
+        1: support.function.command.stata
+      push: semicolon-command-body
+    - match: '{{semicolon_start}}(#\s*(?i:if|else|endif|include))\b'
+      captures:
+        1: keyword.control.directive.stata
+      push: semicolon-command-body
+
+  semicolon-command-body:
+    - meta_scope: meta.command.stata inner-commands
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - match: '(:)\s*((?:{{command_prefix}}\s+)*)({{identifier}})'
+      captures:
+        1: punctuation.separator.colon.stata
+        2: keyword.control.prefix.stata
+        3: support.function.command.stata
+    - include: inline-code
+
+  semicolon-local-list-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata meta.local.extended.stata meta.local.list.stata
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - include: inline-code
+
+  semicolon-extended-local-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata meta.local.extended.stata
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - include: inline-code
+
+  semicolon-local-body:
+    - meta_scope: meta.command.stata inner-commands meta.local.stata
+    - match: ';'
+      scope: punctuation.terminator.statement.stata
+      pop: true
+    - include: inline-code
+
+  inline-code:
+    - include: comments
+    - include: compound-strings
+    - include: strings
+    - include: macros
+    - include: variable-operators
+    - include: numbers
+    - include: types
+    - include: keywords
+    - include: functions
+    - include: operators
+    - include: punctuation
+
+  variable-operators:
+    - match: '(?<![A-Za-z0-9_])((?i:i|c|o|n|b|bn|ibn|ib[0-9]+|ib\((?:first|last|freq)\)|b[0-9]+))(\.)(?={{identifier}}\b|[`$])'
+      captures:
+        1: storage.modifier.factor-variable.stata
+        2: punctuation.accessor.factor-variable.stata
+    - match: '(?<![A-Za-z0-9_])((?i:(?:L|F|D|S)(?:[0-9]+|\([0-9]+(?:/[0-9]+)?\))?))(\.)(?={{identifier}}\b|[`$])'
+      captures:
+        1: storage.modifier.time-series.stata
+        2: punctuation.accessor.time-series.stata
+    - match: '##?'
+      scope: keyword.operator.interaction.stata
+
+  compound-strings:
+    - match: '`"'
+      scope: punctuation.definition.string.begin.stata
+      push: compound-string-body
+
+  compound-string-body:
+    - meta_scope: string.quoted.double.compound.stata string.quoted.double.stata
+    - match: "\"'"
+      scope: punctuation.definition.string.end.stata
+      pop: true
+    - include: compound-strings
+    - include: macros
+    - match: '\\.'
+      scope: constant.character.escape.stata
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.stata
+      push: string-body
+
+  string-body:
+    - meta_scope: string.quoted.double.stata
+    - match: '"'
+      scope: punctuation.definition.string.end.stata
+      pop: true
+    - include: macros
+    - match: '\\.'
+      scope: constant.character.escape.stata
+
+  macros:
+    - match: '(`)(=)'
+      captures:
+        1: punctuation.definition.variable.begin.stata
+        2: keyword.operator.assignment.stata
+      push: macro-expression-body
+    - match: "(`)({{identifier}}|[0-9]+)(')"
+      scope: meta.local.stata
+      captures:
+        1: punctuation.definition.variable.begin.stata
+        2: variable.other.local.stata
+        3: punctuation.definition.variable.end.stata
+    - match: '(\$\{)({{identifier}})(\})'
+      captures:
+        1: punctuation.definition.variable.begin.stata
+        2: variable.other.global.stata
+        3: punctuation.definition.variable.end.stata
+    - match: '(\$)({{identifier}})'
+      captures:
+        1: punctuation.definition.variable.begin.stata
+        2: variable.other.global.stata
+
+  macro-expression-body:
+    - meta_scope: meta.local.stata meta.interpolation.stata
+    - match: "'"
+      scope: punctuation.definition.variable.end.stata
+      pop: true
+    - include: compound-strings
+    - include: strings
+    - include: macros
+    - include: numbers
+    - include: functions
+    - include: operators
+
+  numbers:
+    - match: '(?x)\b(?:0[xX][0-9A-Fa-f]+|(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)\b'
+      scope: constant.numeric.stata
+
+  functions:
+    - match: '\b({{identifier}})(?=\s*\()'
+      captures:
+        1: support.function.stata
+
+  types:
+    - match: '\b{{storage_type}}\b'
+      scope: storage.type.stata
+
+  keywords:
+    - match: '\b(?i:r|e|s|c)(?=\s*\()'
+      scope: support.function.result.stata
+    - match: '\b{{control_word}}\b'
+      scope: keyword.control.stata
+    - match: '\b{{constant_word}}\b'
+      scope: constant.language.stata
+
+  operators:
+    - match: '==|!=|<=|>=|~=|\+=|-=|\*=|/=|\+|-|\*|/|\^|<|>|=|&|\||!|~'
+      scope: keyword.operator.stata
+
+  punctuation:
+    - match: ','
+      scope: punctuation.separator.comma.stata
+    - match: ':'
+      scope: punctuation.separator.colon.stata
+    - match: '[()]'
+      scope: punctuation.section.parens.stata
+    - match: '[\[\]]'
+      scope: punctuation.section.brackets.stata
+    - match: '[{}]'
+      scope: punctuation.section.block.stata

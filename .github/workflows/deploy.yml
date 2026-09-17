@@ -1,37 +1,41 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [ main ]
-  # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
-# Allow this job to clone the repo and create a page deployment
+# Allow the gh-pages deploy step to push the rendered site.
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Check out repository
         uses: actions/checkout@v4
-      - name: Install, build, and upload your astro site
-        uses: withastro/action@v4
-        with:
-            path: .
-            package-manager: bun
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
+
+      - name: Install Typst
+        run: |
+          curl -fsSL "https://github.com/typst/typst/releases/download/v0.15.1/typst-x86_64-unknown-linux-musl.tar.xz" -o typst.tar.xz
+          tar -xf typst.tar.xz
+          sudo install -m755 typst-x86_64-unknown-linux-musl/typst /usr/local/bin/typst
+          typst --version
+
+      - name: Install Calepin
+        run: |
+          curl --proto '=https' --tlsv1.2 -LsSf https://github.com/vincentarelbundock/calepin/releases/latest/download/calepin-installer.sh | sh
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          calepin --version
+
+      - name: Build site
+        run: calepin compile . _site
+
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          enable_jekyll: false
+          force_orphan: true
