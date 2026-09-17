@@ -47,16 +47,16 @@ and R.
 
 #sidebyside(
   [
-    ```stata
-    import delimited using ///
-        "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
-    ```
+```stata
+import delimited using ///
+    "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
+```
   ],
   [
-    ```r
-    # library(data.table) ## Don't forget to load the library
-    dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
-    ```
+```r
+# library(data.table) ## Don't forget to load the library
+dat = fread('https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv')
+```
   ],
 )
 
@@ -121,22 +121,22 @@ Single file.
 
 #sidebyside(
   [
-    ```stata
-    import delimited using "file.csv", clear 
-    * import delimited using "file.csv", clear colrange(1:2)
-    * ?
-    
-    export delimited using "file.csv", replace
-    ```
+```stata
+import delimited using "file.csv", clear 
+* import delimited using "file.csv", clear colrange(1:2)
+* ?
+
+export delimited using "file.csv", replace
+```
   ],
   [
-    ```r
-    dat = fread("file.csv")
-    # dat = fread("file.csv", select=c("col1","col2")) # or select=1:2
-    # dat = fread("file.csv", drop=c("col3","col4")) # or drop=3:4
-    
-    fwrite(dat, "file.csv")
-    ```
+```r
+dat = fread("file.csv")
+# dat = fread("file.csv", select=c("col1","col2")) # or select=1:2
+# dat = fread("file.csv", drop=c("col3","col4")) # or drop=3:4
+
+fwrite(dat, "file.csv")
+```
   ],
 )
 
@@ -144,22 +144,22 @@ Read many files and append them together.
 
 #sidebyside(
   [
-    ```stata
-    local files: dir "data/" files "*.csv"
-    tempfile mytmpfile
-    save `mytmpfile', replace empty
-    foreach x of local files {
-    	qui: import delimited "data/`x'", case(preserve) clear
-    	append using `mytmpfile'
-    	save `mytmpfile', replace
-    }
-    ```
+```stata
+local files: dir "data/" files "*.csv"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local files {
+	qui: import delimited "data/`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
+}
+```
   ],
   [
-    ```r
-    files = dir("data/", pattern=".csv", full.names=TRUE)
-    dat = rbindlist(lapply(files, fread))
-    ```
+```r
+files = dir("data/", pattern=".csv", full.names=TRUE)
+dat = rbindlist(lapply(files, fread))
+```
   ],
 )
 
@@ -173,22 +173,22 @@ Single file.
 
 #sidebyside(
   [
-    ```stata
-    use "file.dta", clear
-    * use "file.dta", keep(var1-var4) clear
-    
-    
-    save "file.dta", replace
-    ```
+```stata
+use "file.dta", clear
+* use "file.dta", keep(var1-var4) clear
+
+
+save "file.dta", replace
+```
   ],
   [
-    ```r
-    dat = haven::read_dta("file.dta")
-    # dat = haven::read_dta("file.dta", col_select=var1:var4)
-    setDT(dat) # i.e. Set as a data.table
-     
-    haven::write_dta(dat, "file.dta")
-    ```
+```r
+dat = haven::read_dta("file.dta")
+# dat = haven::read_dta("file.dta", col_select=var1:var4)
+setDT(dat) # i.e. Set as a data.table
+ 
+haven::write_dta(dat, "file.dta")
+```
   ],
 )
 
@@ -196,16 +196,16 @@ Read many files and append them together.
 
 #sidebyside(
   [
-    ```stata
-    cd "`c(pwd)'/data"
-    append using `: dir "." files "*.dta"' 
-    ```
+```stata
+cd "`c(pwd)'/data"
+append using `: dir "." files "*.dta"' 
+```
   ],
   [
-    ```r
-    files = dir("data/", pattern=".dta", full.names=TRUE)
-    dat = rbindlist(lapply(files, haven::read_dta))
-    ```
+```r
+files = dir("data/", pattern=".dta", full.names=TRUE)
+dat = rbindlist(lapply(files, haven::read_dta))
+```
   ],
 )
 
@@ -217,18 +217,18 @@ _Note: These commands require the #link("https://arrow.apache.org/docs/r/")[*arr
 
 #sidebyside(
   [
-    ```stata
-    * See: https://github.com/mcaceresb/stata-parquet
-    ```
+```stata
+* See: https://github.com/mcaceresb/stata-parquet
+```
   ],
   [
-    ```r
-    files = dir(pattern = ".parquet") 
-    dat = rbindlist(lapply(files, arrow::read_parquet))
-    # dat = rbindlist(lapply(files, arrow::read_parquet, col_select=1:10))
-    
-    write_parquet(dat, sink = "file.parquet")
-    ```
+```r
+files = dir(pattern = ".parquet") 
+dat = rbindlist(lapply(files, arrow::read_parquet))
+# dat = rbindlist(lapply(files, arrow::read_parquet, col_select=1:10))
+
+write_parquet(dat, sink = "file.parquet")
+```
   ],
 )
 
@@ -239,20 +239,20 @@ languages.
 
 #sidebyside(
   [
-    ```stata
-    clear
-    set seed 123
-    set obs 10
-    gen x = _n
-    gen y = rnormal()
-    gen z = runiform()
-    ```
+```stata
+clear
+set seed 123
+set obs 10
+gen x = _n
+gen y = rnormal()
+gen z = runiform()
+```
   ],
   [
-    ```r
-    set.seed(123)
-    d = data.table(x = 1:10, y = rnorm(10), z = runif(10))
-    ```
+```r
+set.seed(123)
+d = data.table(x = 1:10, y = rnorm(10), z = runif(10))
+```
   ],
 )
 
@@ -260,34 +260,34 @@ Some convenience functions for specific data types.
 
 #sidebyside(
   [
-    ```stata
-    * All combinations of two vectors (i.e. a cross-join)
-    clear
-    set obs 10
-    gen id = _n in 1/2
-    gen yr = 2000 + _n
-    fillin id yr
-    drop if id == . | yr == .
-    
-    * Datetimes
-    * ?
-    
-    ```
+```stata
+* All combinations of two vectors (i.e. a cross-join)
+clear
+set obs 10
+gen id = _n in 1/2
+gen yr = 2000 + _n
+fillin id yr
+drop if id == . | yr == .
+
+* Datetimes
+* ?
+
+```
   ],
   [
-    ```r
-    # All combinations of two vectors (i.e. a cross-join)
-    d = CJ(id = 1:2, yr = 2001:2010)
-    
-    
-    
-    
-    
-    
-    # Datetime
-    dts = Sys.time() + 0:10 # time right now ++10 seconds
-    d = IDateTime(dts)
-    ```
+```r
+# All combinations of two vectors (i.e. a cross-join)
+d = CJ(id = 1:2, yr = 2001:2010)
+
+
+
+
+
+
+# Datetime
+dts = Sys.time() + 0:10 # time right now ++10 seconds
+d = IDateTime(dts)
+```
   ],
 )
 
@@ -297,18 +297,18 @@ Some convenience functions for specific data types.
 
 #sidebyside(
   [
-    ```stata
-    sort air_time 
-    sort air_time dest 
-    gsort -air_time
-    ```
+```stata
+sort air_time 
+sort air_time dest 
+gsort -air_time
+```
   ],
   [
-    ```r
-    setorder(dat, air_time) 
-    setorder(dat, air_time, dest) 
-    setorder(dat, -air_time)
-    ```
+```r
+setorder(dat, air_time) 
+setorder(dat, air_time, dest) 
+setorder(dat, -air_time)
+```
   ],
 )
 
@@ -316,14 +316,14 @@ Some convenience functions for specific data types.
 
 #sidebyside(
   [
-    ```stata
-    order month day
-    ```
+```stata
+order month day
+```
   ],
   [
-    ```r
-    setcolorder(dat, c('month','day'))
-    ```
+```r
+setcolorder(dat, c('month','day'))
+```
   ],
 )
 
@@ -331,22 +331,22 @@ Some convenience functions for specific data types.
 
 #sidebyside(
   [
-    ```stata
-    * rename (old) (new) 
-    
-    rename arr_delay arrival_delay 
-    rename (carrier origin) (carrier_code origin_code) 
-    rename arr_* arrival_*
-    ```
+```stata
+* rename (old) (new) 
+
+rename arr_delay arrival_delay 
+rename (carrier origin) (carrier_code origin_code) 
+rename arr_* arrival_*
+```
   ],
   [
-    ```r
-    # setnames(dat, old = ..., new = ...) 
-    
-    setnames(dat, 'arr_delay', 'arrival_delay') 
-    setnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) 
-    setnames(dat, gsub('arr_', 'arrival_', names(dat)))
-    ```
+```r
+# setnames(dat, old = ..., new = ...) 
+
+setnames(dat, 'arr_delay', 'arrival_delay') 
+setnames(dat, c('carrier','origin'), c('carrier_code','origin_code')) 
+setnames(dat, gsub('arr_', 'arrival_', names(dat)))
+```
   ],
 )
 
@@ -369,28 +369,28 @@ original dataset in the examples that follow._
 
 #sidebyside(
   [
-    ```stata
-    keep in 1/200 
-    keep if day > 5 & day < 10
-    keep if inrange(day,5,10)
-    keep if origin == "LGA"
-    keep if regexm(origin,"LGA") 
-    keep if inlist(month,3,4,11,12) 
-    keep if inlist(origin,"JFK","LGA") 
-    drop if month == 1
-    ```
+```stata
+keep in 1/200 
+keep if day > 5 & day < 10
+keep if inrange(day,5,10)
+keep if origin == "LGA"
+keep if regexm(origin,"LGA") 
+keep if inlist(month,3,4,11,12) 
+keep if inlist(origin,"JFK","LGA") 
+drop if month == 1
+```
   ],
   [
-    ```r
-    dat[1:200] 
-    dat[day > 5 & day < 10] 
-    dat[between(day,5,10)] # Or: dat[day %in% 5:10] 
-    dat[origin=='LGA']
-    dat[origin %like% 'LGA'] 
-    dat[month %in% c(3,4,11,12)] 
-    dat[origin %chin% c("JFK","LGA")] # %chin% is a fast %in% for (ch)aracters 
-    dat[month!=1]
-    ```
+```r
+dat[1:200] 
+dat[day > 5 & day < 10] 
+dat[between(day,5,10)] # Or: dat[day %in% 5:10] 
+dat[origin=='LGA']
+dat[origin %like% 'LGA'] 
+dat[month %in% c(3,4,11,12)] 
+dat[origin %chin% c("JFK","LGA")] # %chin% is a fast %in% for (ch)aracters 
+dat[month!=1]
+```
   ],
 )
 
@@ -404,18 +404,18 @@ original dataset in the examples that follow._
 
 #sidebyside(
   [
-    ```stata
-    keep month day carrier
-    
-    
-    ```
+```stata
+keep month day carrier
+
+
+```
   ],
   [
-    ```r
-    dat[, .(month, day, carrier)] 
-    dat[, list(month, day, carrier)]    # another option
-    dat[, c('month', 'day', 'carrier')] # and another
-    ```
+```r
+dat[, .(month, day, carrier)] 
+dat[, list(month, day, carrier)]    # another option
+dat[, c('month', 'day', 'carrier')] # and another
+```
   ],
 )
 
@@ -424,43 +424,43 @@ later, e.g. `dat1 = dat[...]`._
 
 #sidebyside(
   [
-    ```stata
-    keep year-arr_delay
-    keep *_delay 
-    ```
+```stata
+keep year-arr_delay
+keep *_delay 
+```
   ],
   [
-    ```r
-    dat[, year:arr_delay] 
-    dat[, .SD, .SDcols=patterns('*_delay')]
-    ```
+```r
+dat[, year:arr_delay] 
+dat[, .SD, .SDcols=patterns('*_delay')]
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    drop origin dest 
-    
-    
-    ds, has(type string) 
-    drop `r(varlist)' 
-    
-    ds, has(type int) 
-    keep `r(varlist)'
-    ```
+```stata
+drop origin dest 
+
+
+ds, has(type string) 
+drop `r(varlist)' 
+
+ds, has(type int) 
+keep `r(varlist)'
+```
   ],
   [
-    ```r
-    dat[, -c('origin', 'dest')]
-    dat[, c('origin', 'dest') := NULL] # same, but in-place 
-    
-    # Matches the two lines on the left:
-    dat[, .SD, .SDcols=!is.character] 
-    
-    # Matches the two lines on the left: 
-    dat[, .SD, .SDcols=is.integer]
-    ```
+```r
+dat[, -c('origin', 'dest')]
+dat[, c('origin', 'dest') := NULL] # same, but in-place 
+
+# Matches the two lines on the left:
+dat[, .SD, .SDcols=!is.character] 
+
+# Matches the two lines on the left: 
+dat[, .SD, .SDcols=is.integer]
+```
   ],
 )
 
@@ -471,16 +471,16 @@ original dataset in the examples that follow._
 
 #sidebyside(
   [
-    ```stata
-    keep if origin == "LGA"
-    keep month day carrier
-    ```
+```stata
+keep if origin == "LGA"
+keep month day carrier
+```
   ],
   [
-    ```r
-    # Matches the two lines on the left:
-    dat[origin=="LGA", .(month, day, carrier)]
-    ```
+```r
+# Matches the two lines on the left:
+dat[origin=="LGA", .(month, day, carrier)]
+```
   ],
 )
 
@@ -494,16 +494,16 @@ original dataset in the examples that follow._
 
 #sidebyside(
   [
-    ```stata
-    duplicates drop
-    duplicates drop month day carrier, force
-    ```
+```stata
+duplicates drop
+duplicates drop month day carrier, force
+```
   ],
   [
-    ```r
-    unique(dat) 
-    unique(dat, by = c('month', 'day', 'carrier'))
-    ```
+```r
+unique(dat) 
+unique(dat, by = c('month', 'day', 'carrier'))
+```
   ],
 )
 
@@ -517,24 +517,24 @@ original dataset in the examples that follow._
 
 #sidebyside(
   [
-    ```stata
-    keep if !missing(dest)
-    
-    * Requires: ssc inst missings
-    missings dropvars, force 
-    missings air_time dest, force 
-    
-    ```
+```stata
+keep if !missing(dest)
+
+* Requires: ssc inst missings
+missings dropvars, force 
+missings air_time dest, force 
+
+```
   ],
   [
-    ```r
-    dat[!is.na(dest)]
-    
-    
-    na.omit(dat) 
-    na.omit(dat, cols = c('air_time', 'dest')) 
-    # dat[!is.na(air_time) & !is.na(dest)] # same
-    ```
+```r
+dat[!is.na(dest)]
+
+
+na.omit(dat) 
+na.omit(dat, cols = c('air_time', 'dest')) 
+# dat[!is.na(air_time) & !is.na(dest)] # same
+```
   ],
 )
 
@@ -550,20 +550,20 @@ adding a trailing `[]`, e.g. `dat[, dist_sq := distance^2][]`.
 
 #sidebyside(
   [
-    ```stata
-    gen dist_sq = distance^2 
-    gen tot_delay = dep_delay + arr_delay 
-    gen first_letter = substr(origin, 1,1) 
-    gen flight_path = origin + '_' + dest 
-    ```
+```stata
+gen dist_sq = distance^2 
+gen tot_delay = dep_delay + arr_delay 
+gen first_letter = substr(origin, 1,1) 
+gen flight_path = origin + '_' + dest 
+```
   ],
   [
-    ```r
-    dat[, dist_sq := distance^2] 
-    dat[, tot_delay := dep_delay + arr_delay] 
-    dat[, first_letter := substr(origin,1,1)] 
-    dat[, flight_path := paste(origin, dest, sep='_')] 
-    ```
+```r
+dat[, dist_sq := distance^2] 
+dat[, tot_delay := dep_delay + arr_delay] 
+dat[, first_letter := substr(origin,1,1)] 
+dat[, flight_path := paste(origin, dest, sep='_')] 
+```
   ],
 )
 
@@ -595,16 +595,16 @@ these on the fly. E.g. `mean(var1, na.rm=TRUE)` or
 
 #sidebyside(
   [
-    ```stata
-    bysort origin: egen mean_dep_delay = mean(dep_delay) 
-    bysort origin dest: egen mean_dep_delay2 = mean(dep_delay) 
-    ```
+```stata
+bysort origin: egen mean_dep_delay = mean(dep_delay) 
+bysort origin dest: egen mean_dep_delay2 = mean(dep_delay) 
+```
   ],
   [
-    ```r
-    dat[, mean_dep_delay := mean(dep_delay), by=origin] 
-    dat[, mean_dep_delay2 := mean(dep_delay), by=.(origin,dest)] 
-    ```
+```r
+dat[, mean_dep_delay := mean(dep_delay), by=origin] 
+dat[, mean_dep_delay2 := mean(dep_delay), by=.(origin,dest)] 
+```
   ],
 )
 
@@ -612,20 +612,20 @@ Some shortcut symbols.
 
 #sidebyside(
   [
-    ```stata
-    gen index _n
-    bysort carrier: gen index_within_carrier = _n 
-    bysort carrier: gen rows_per_carrier = _N 
-    egen origin_index = group(origin)
-    ```
+```stata
+gen index _n
+bysort carrier: gen index_within_carrier = _n 
+bysort carrier: gen rows_per_carrier = _N 
+egen origin_index = group(origin)
+```
   ],
   [
-    ```r
-    dat[, index := .I]
-    dat[, index_within_carrier := rowid(carrier)]
-    dat[, rows_per_carrier := .N, by = carrier]
-    dat[, origin_index := .GRP, by = origin]
-    ```
+```r
+dat[, index := .I]
+dat[, index_within_carrier := rowid(carrier)]
+dat[, rows_per_carrier := .N, by = carrier]
+dat[, origin_index := .GRP, by = origin]
+```
   ],
 )
 
@@ -633,30 +633,30 @@ Multiple grouped variables (manual demean example).
 
 #sidebyside(
   [
-    ```stata
-    foreach x of varlist dep_delay arr_delay air_time {
-        egen mean_`x'=mean(`x'), by(origin) 
-        gen `x'_dm = `x' - mean_`x' 
-        drop mean* 
-    }
-    ```
+```stata
+foreach x of varlist dep_delay arr_delay air_time {
+    egen mean_`x'=mean(`x'), by(origin) 
+    gen `x'_dm = `x' - mean_`x' 
+    drop mean* 
+}
+```
   ],
   [
-    ```r
-    for (x in c('dep_delay', 'arr_delay', 'air_time')) {
-        set(dat, j = paste0(x, "_dm"), value = dat[[x]] - mean(dat[[x]]))
-    }
-    
-    
-    ## Aside: Above we used `set` to mimic Stata-style "macros" (i.e.
-    ## variables) in a loop. That's perfectly valid data.table code,
-    ## but another option would be to use `.SD(cols)` as per below.
-    dmcols = c('dep_delay', 'arr_delay', 'air_time') 
-    dat[,
-        paste0(dmcols,'_dm') := lapply(.SD, \(x) x-mean(x)),
-        .SDcols = dmcols,
-        by = origin] 
-    ```
+```r
+for (x in c('dep_delay', 'arr_delay', 'air_time')) {
+    set(dat, j = paste0(x, "_dm"), value = dat[[x]] - mean(dat[[x]]))
+}
+
+
+## Aside: Above we used `set` to mimic Stata-style "macros" (i.e.
+## variables) in a loop. That's perfectly valid data.table code,
+## but another option would be to use `.SD(cols)` as per below.
+dmcols = c('dep_delay', 'arr_delay', 'air_time') 
+dat[,
+    paste0(dmcols,'_dm') := lapply(.SD, \(x) x-mean(x)),
+    .SDcols = dmcols,
+    by = origin] 
+```
   ],
 )
 
@@ -664,42 +664,42 @@ Relative modification (i.e. refer to other rows)
 
 #sidebyside(
   [
-    ```stata
-    * This will be easier to demonstrate with a collapsed 
-    * dataset: Grab the total monthly flights out of each 
-    * origin airport. (Don't forget preserve/restore!)
-    contract origin month, freq(N)
-    sort origin month
-    
-    * Ex. 1: Simple month-on-month growth
-    by origin: gen growth = N/N[_n-1]
-    
-    * Ex. 2: Relative growth
-    by origin: gen growth_since_first = N/N[1]
-    
-    * Ex. 3: Relative growth (order agnostic)
-    bysort origin (month): egen growth_since_may = max(N*(month == 5))
-    replace growth_since_may = N / growth_since_may
-    ```
+```stata
+* This will be easier to demonstrate with a collapsed 
+* dataset: Grab the total monthly flights out of each 
+* origin airport. (Don't forget preserve/restore!)
+contract origin month, freq(N)
+sort origin month
+
+* Ex. 1: Simple month-on-month growth
+by origin: gen growth = N/N[_n-1]
+
+* Ex. 2: Relative growth
+by origin: gen growth_since_first = N/N[1]
+
+* Ex. 3: Relative growth (order agnostic)
+bysort origin (month): egen growth_since_may = max(N*(month == 5))
+replace growth_since_may = N / growth_since_may
+```
   ],
   [
-    ```r
-    # This will be easier to demonstrate with a collapsed 
-    # dataset: Grab the total monthly flights out of each 
-    # origin airport.
-    dat2 = dat[, .N, by = .(origin, month)]
-    setorder(dat2, origin, month)
-    
-    # Ex. 1: Simple month-on-month growth
-    dat2[, growth := N/shift(N, 1), by = origin]
-    
-    # Ex. 2: Relative growth
-    dat2[, growth_since_first := N/N[1], by = origin]
-    
-    # Ex. 3: Relative growth (order agnostic)
-    dat2[, growth_since_may := N/N[month==5], by = origin]
-    
-    ```
+```r
+# This will be easier to demonstrate with a collapsed 
+# dataset: Grab the total monthly flights out of each 
+# origin airport.
+dat2 = dat[, .N, by = .(origin, month)]
+setorder(dat2, origin, month)
+
+# Ex. 1: Simple month-on-month growth
+dat2[, growth := N/shift(N, 1), by = origin]
+
+# Ex. 2: Relative growth
+dat2[, growth_since_first := N/N[1], by = origin]
+
+# Ex. 3: Relative growth (order agnostic)
+dat2[, growth_since_may := N/N[month==5], by = origin]
+
+```
   ],
 )
 
@@ -707,34 +707,34 @@ Relative modification (i.e. refer to other rows)
 
 #sidebyside(
   [
-    ```stata
-    * Make a date variable
-    tostring year month day, replace
-    gen day_string = year + "/" + month + "/" + day
-    gen date = date(day_string, "YMD")
-    format date %td
-    
-    * Pull out year (quarter, month, etc. work too)
-    gen the_year = year(date)
-    
-    * Shift forward 7 days
-    replace date = date + 7
-    ```
+```stata
+* Make a date variable
+tostring year month day, replace
+gen day_string = year + "/" + month + "/" + day
+gen date = date(day_string, "YMD")
+format date %td
+
+* Pull out year (quarter, month, etc. work too)
+gen the_year = year(date)
+
+* Shift forward 7 days
+replace date = date + 7
+```
   ],
   [
-    ```r
-    # Make a date variable
-    dat[, date := as.IDate(paste(year, month, day, sep='-'))] 
-    
-    
-    
-    
-    # Pull out year (quarter, month, etc. work too)
-    dat[, the_year := year(date)]
-    
-    # Shift forward 7 days
-    dat[, date := date + 7]
-    ```
+```r
+# Make a date variable
+dat[, date := as.IDate(paste(year, month, day, sep='-'))] 
+
+
+
+
+# Pull out year (quarter, month, etc. work too)
+dat[, the_year := year(date)]
+
+# Shift forward 7 days
+dat[, date := date + 7]
+```
   ],
 )
 
@@ -746,32 +746,32 @@ section below for a more idiomatic approach.
 
 #sidebyside(
   [
-    ```stata
-    replace tot_delay = dep_delay + arr_delay 
-    
-    * Conditional modification 
-    replace distance = distance + 1 if month==9
-    replace distance = 0 in 1 
-    
-    * Modify multiple variables (same function) 
-    foreach x of varlist origin dest {
-        replace `x' = `x' + " Airport"
-    }
-    ```
+```stata
+replace tot_delay = dep_delay + arr_delay 
+
+* Conditional modification 
+replace distance = distance + 1 if month==9
+replace distance = 0 in 1 
+
+* Modify multiple variables (same function) 
+foreach x of varlist origin dest {
+    replace `x' = `x' + " Airport"
+}
+```
   ],
   [
-    ```r
-    dat[, tot_delay := dep_delay + arr_delay] 
-    
-    # Conditional modification 
-    dat[month==9, distance := distance + 1]
-    dat[1, distance := 0]
-    
-    # Modify multiple variables (same function) 
-    cols = c('origin','dest')
-    dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), 
-        .SDcols = cols] 
-    ```
+```r
+dat[, tot_delay := dep_delay + arr_delay] 
+
+# Conditional modification 
+dat[month==9, distance := distance + 1]
+dat[1, distance := 0]
+
+# Modify multiple variables (same function) 
+cols = c('origin','dest')
+dat[, (cols) := lapply(.SD, \(x) paste(x,'Airport')), 
+    .SDcols = cols] 
+```
   ],
 )
 
@@ -779,30 +779,30 @@ section below for a more idiomatic approach.
 
 #sidebyside(
   [
-    ```stata
-    gen long_flight = air_time>500 & !missing(air_time) 
-    
-    gen flight_length = "Long" if air_time>500 & !missing(air_time)
-    replace flight_length = "Short" if missing(flight_length) & !missing(air_time) 
-    
-    
-    gen flight_length2 = "Long" if !missing(air_time) 
-    replace flight_length2 = "Med" if air_time<=500  
-    replace flight_length2 = "Short" if air_time<=120
-    ```
+```stata
+gen long_flight = air_time>500 & !missing(air_time) 
+
+gen flight_length = "Long" if air_time>500 & !missing(air_time)
+replace flight_length = "Short" if missing(flight_length) & !missing(air_time) 
+
+
+gen flight_length2 = "Long" if !missing(air_time) 
+replace flight_length2 = "Med" if air_time<=500  
+replace flight_length2 = "Short" if air_time<=120
+```
   ],
   [
-    ```r
-    dat[, long_flight := air_time>500] 
-    
-    dat[, flight_length := fifelse(air_time>500, 'Long', 'Short')] 
-    # fifelse is like base-R ifelse, but (f)aster! 
-    
-    # for nested ifelse, easier to use fcase 
-    dat[, flight_length2 := fcase(air_time<=120, 'Short', 
-                                  air_time<=500, 'Med', 
-                                  default = 'Long')]
-    ```
+```r
+dat[, long_flight := air_time>500] 
+
+dat[, flight_length := fifelse(air_time>500, 'Long', 'Short')] 
+# fifelse is like base-R ifelse, but (f)aster! 
+
+# for nested ifelse, easier to use fcase 
+dat[, flight_length2 := fcase(air_time<=120, 'Short', 
+                              air_time<=500, 'Med', 
+                              default = 'Long')]
+```
   ],
 )
 
@@ -810,26 +810,26 @@ section below for a more idiomatic approach.
 
 #sidebyside(
   [
-    ```stata
-    * Pre-packaged row calculations: 
-    egen tot_delay = rowtotal(*_delay)
-    egen any_delay = rowfirst(*_delay)
-    
-    * Custom row calculations:
-    * ?
-    
-    ```
+```stata
+* Pre-packaged row calculations: 
+egen tot_delay = rowtotal(*_delay)
+egen any_delay = rowfirst(*_delay)
+
+* Custom row calculations:
+* ?
+
+```
   ],
   [
-    ```r
-    # Pre-packaged row calculations: 
-    dat[, tot_delay := rowSums(.SD), .SDcols=patterns('*_delay')]
-    dat[, any_delay := fcoalesce(.SD), .SDcols=patterns('*_delay')] 
-    
-    # Custom row calculations: 
-    dat[, new_var := mapply(custom_func, var1, var2)] 
-    dat[, new_var := custom_func(var1, var2), by=.I]  # introduced in v1.15.0
-    ```
+```r
+# Pre-packaged row calculations: 
+dat[, tot_delay := rowSums(.SD), .SDcols=patterns('*_delay')]
+dat[, any_delay := fcoalesce(.SD), .SDcols=patterns('*_delay')] 
+
+# Custom row calculations: 
+dat[, new_var := mapply(custom_func, var1, var2)] 
+dat[, new_var := custom_func(var1, var2), by=.I]  # introduced in v1.15.0
+```
   ],
 )
 
@@ -839,38 +839,38 @@ Lags and leads (generic dataset)
 
 #sidebyside(
   [
-    ```stata
-    * Create generic dataset for this section
-    clear
-    set obs  12
-    egen id = seq(), from(1) to(3) block(4)
-    bysort id: gen yr = 2000 + _n
-    gen x = runiform()
-    
-    * Lag(s)
-    bysort id (yr): gen xlag = x[_n-1]
-    
-    * Lead(s)
-    bysort id (yr): gen xlead = x[_n+1]
-    
-    ```
+```stata
+* Create generic dataset for this section
+clear
+set obs  12
+egen id = seq(), from(1) to(3) block(4)
+bysort id: gen yr = 2000 + _n
+gen x = runiform()
+
+* Lag(s)
+bysort id (yr): gen xlag = x[_n-1]
+
+* Lead(s)
+bysort id (yr): gen xlead = x[_n+1]
+
+```
   ],
   [
-    ```r
-    # Create generic dataset for this section
-    dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
-    # setorder(dat, id, yr) # already ordered
-    
-    
-    
-    
-    # Lag(s)
-    dat[, xlag := shift(x, 1), by = id]
-    
-    # Lead(s)
-    dat[, xlead := shift(x, -1), by = id]
-    # dat[ , xlead := shift(x, 1, type="lead"), by = id] # same
-    ```
+```r
+# Create generic dataset for this section
+dat = CJ(id = 1:3, yr = 2001:2004)[, x := runif(12)]
+# setorder(dat, id, yr) # already ordered
+
+
+
+
+# Lag(s)
+dat[, xlag := shift(x, 1), by = id]
+
+# Lead(s)
+dat[, xlead := shift(x, -1), by = id]
+# dat[ , xlead := shift(x, 1, type="lead"), by = id] # same
+```
   ],
 )
 
@@ -878,34 +878,34 @@ Replace missing values forward or back (generic dataset)
 
 #sidebyside(
   [
-    ```stata
-    * Modify our dataset from above...
-    drop xlag xlead
-    replace x = . if inlist(yr, 2001, 2003)
-    
-    * Carry forward the last-known observation
-    * sort id yr * already sorted
-    by id: replace x = x[_n-1] if missing(x)
-    
-    * Carry back the next-known observation
-    gsort id -yr
-    by id: replace x = x[_n-1] if missing(x)
-    ```
+```stata
+* Modify our dataset from above...
+drop xlag xlead
+replace x = . if inlist(yr, 2001, 2003)
+
+* Carry forward the last-known observation
+* sort id yr * already sorted
+by id: replace x = x[_n-1] if missing(x)
+
+* Carry back the next-known observation
+gsort id -yr
+by id: replace x = x[_n-1] if missing(x)
+```
   ],
   [
-    ```r
-    # Modify our dataset from above...
-    dat[, c("xlag", "xlead") := NULL][
-        yr %in% c(2001,2003), x := NA]
-    
-    # Carry forward the last-known observation
-    # setorder(dat, id, yr) # already ordered
-    dat[, x := nafill(x, type = 'locf'), by = id]
-    
-    # Carry back the next-known observation
-    dat[, x := nafill(x, type = 'nocb'), by = id]
-    
-    ```
+```r
+# Modify our dataset from above...
+dat[, c("xlag", "xlead") := NULL][
+    yr %in% c(2001,2003), x := NA]
+
+# Carry forward the last-known observation
+# setorder(dat, id, yr) # already ordered
+dat[, x := nafill(x, type = 'locf'), by = id]
+
+# Carry back the next-known observation
+dat[, x := nafill(x, type = 'nocb'), by = id]
+
+```
   ],
 )
 
@@ -941,58 +941,58 @@ dat[, mean(dep_delay)] # returns a scalar
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) mean_ddel = dep_delay 
-    ```
+```stata
+collapse (mean) mean_ddel = dep_delay 
+```
   ],
   [
-    ```r
-    dat[, .(mean_ddel = mean(dep_delay))] # returns a data.table
-    ```
-  ],
-)
-
-#sidebyside(
-  [
-    ```stata
-    collapse (mean) mean_ddel=dep_delay mean_adel=arr_delay 
-    ```
-  ],
-  [
-    ```r
-    # These lines all do the same thing. Just pick your favourite.
-    dat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]
-    dat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')]
-    dat[, lapply(.SD, mean), .SDcols=arr_delay:dep_delay]
-    ```
+```r
+dat[, .(mean_ddel = mean(dep_delay))] # returns a data.table
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) *delay 
-    ```
+```stata
+collapse (mean) mean_ddel=dep_delay mean_adel=arr_delay 
+```
   ],
   [
-    ```r
-    dat[, lapply(.SD, mean), .SDcols=patterns('delay')] 
-    ```
+```r
+# These lines all do the same thing. Just pick your favourite.
+dat[, .(mean_ddel=mean(dep_delay), mean_adel=mean(arr_delay))]
+dat[, lapply(.SD, mean), .SDcols=c('arr_delay','dep_delay')]
+dat[, lapply(.SD, mean), .SDcols=arr_delay:dep_delay]
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    ds, has(type long)
-    collapse (mean) `r(varlist)'
-    ```
+```stata
+collapse (mean) *delay 
+```
   ],
   [
-    ```r
-     # Matches the two lines on the left
-    dat[, lapply(.SD, mean), .SDcols=is.numeric]
-    ```
+```r
+dat[, lapply(.SD, mean), .SDcols=patterns('delay')] 
+```
+  ],
+)
+
+#sidebyside(
+  [
+```stata
+ds, has(type long)
+collapse (mean) `r(varlist)'
+```
+  ],
+  [
+```r
+# Matches the two lines on the left
+dat[, lapply(.SD, mean), .SDcols=is.numeric]
+```
   ],
 )
 
@@ -1006,99 +1006,99 @@ later, e.g. `dat1 = dat[...]`._
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) arr_delay, by(carrier) 
-    * collapse (mean) V1 = arr_delay, by(carrier)
-    ```
+```stata
+collapse (mean) arr_delay, by(carrier) 
+* collapse (mean) V1 = arr_delay, by(carrier)
+```
   ],
   [
-    ```r
-    dat[, .(arr_delay = mean(arr_delay)), by=carrier] 
-    # dat[, mean(arr_delay), by=carrier] 
-    ```
-  ],
-)
-
-#sidebyside(
-  [
-    ```stata
-    collapse (mean) arr_delay, by(carrier month) 
-    ```
-  ],
-  [
-    ```r
-    dat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] 
-    ```
+```r
+dat[, .(arr_delay = mean(arr_delay)), by=carrier] 
+# dat[, mean(arr_delay), by=carrier] 
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    collapse (min) min_d=distance (max) max_d=distance, by(origin) 
-    ```
+```stata
+collapse (mean) arr_delay, by(carrier month) 
+```
   ],
   [
-    ```r
-    dat[, .(min_d=min(distance), max_d=max(distance)), by=origin] 
-    ```
-  ],
-)
-
-#sidebyside(
-  [
-    ```stata
-    collapse (mean) *_delay, by(origin) 
-    ```
-  ],
-  [
-    ```r
-    dat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] 
-    ```
+```r
+dat[, .(arr_delay = mean(arr_delay)), by=.(carrier, month)] 
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    ds, has(type long)
-    collapse (mean) `r(varlist)', by(origin) 
-    ```
+```stata
+collapse (min) min_d=distance (max) max_d=distance, by(origin) 
+```
   ],
   [
-    ```r
-    # matches the two lines on the left
-    dat[, lapply(.SD, mean), .SDcols=is.numeric, by=origin] 
-    ```
+```r
+dat[, .(min_d=min(distance), max_d=max(distance)), by=origin] 
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) dep_delay arr_delay air_time distance, by(origin) 
-    ```
+```stata
+collapse (mean) *_delay, by(origin) 
+```
   ],
   [
-    ```r
-    dat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] 
-    #dat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same 
-    ```
+```r
+dat[, lapply(.SD, mean), .SDcols=patterns('_delay'), by=origin] 
+```
   ],
 )
 
 #sidebyside(
   [
-    ```stata
-    egen unique_dest = tag(dest origin) 
-    collapse (sum) unique_dest, by(origin)
-    ```
+```stata
+ds, has(type long)
+collapse (mean) `r(varlist)', by(origin) 
+```
   ],
   [
-    ```r
-    # Matches the final two lines on the left: 
-    dat[, .(unique_dest = uniqueN(dest)), by = origin]
-    ```
+```r
+# matches the two lines on the left
+dat[, lapply(.SD, mean), .SDcols=is.numeric, by=origin] 
+```
+  ],
+)
+
+#sidebyside(
+  [
+```stata
+collapse (mean) dep_delay arr_delay air_time distance, by(origin) 
+```
+  ],
+  [
+```r
+dat[, lapply(.SD, mean), .SDcols=c('dep_delay','arr_delay','air_time','distance'), by=origin] 
+#dat[, lapply(.SD, mean), .SDcols = c(4,5,9,10), by=origin] # same 
+```
+  ],
+)
+
+#sidebyside(
+  [
+```stata
+egen unique_dest = tag(dest origin) 
+collapse (sum) unique_dest, by(origin)
+```
+  ],
+  [
+```r
+# Matches the final two lines on the left: 
+dat[, .(unique_dest = uniqueN(dest)), by = origin]
+```
   ],
 )
 
@@ -1106,22 +1106,22 @@ later, e.g. `dat1 = dat[...]`._
 
 #sidebyside(
   [
-    ```stata
-    count
-    count if month==10
-    
-    * Count rows by group:
-    tabulate origin
-    ```
+```stata
+count
+count if month==10
+
+* Count rows by group:
+tabulate origin
+```
   ],
   [
-    ```r
-    dat[, .N] # Or: nrow(dat) 
-    dat[month==10, .N] # Or: nrow(dat[month==10]
-    
-    # Count rows by group:
-    dat[, .N, by = origin]
-    ```
+```r
+dat[, .N] # Or: nrow(dat) 
+dat[month==10, .N] # Or: nrow(dat[month==10]
+
+# Count rows by group:
+dat[, .N, by = origin]
+```
   ],
 )
 
@@ -1207,22 +1207,22 @@ this for your own dataset._
 
 #sidebyside(
   [
-    ```stata
-    * We'll generate row IDs to avoid the (reshape) ambiguity 
-    * of repeated entries per date 
-    gen id = _n 
-    
-    * For the Stata reshape, it's also going to prove 
-    * convenient to rename the delay vars. 
-    rename (dep_delay arr_delay) (delay_dep delay_arr)
-    ```
+```stata
+* We'll generate row IDs to avoid the (reshape) ambiguity 
+* of repeated entries per date 
+gen id = _n 
+
+* For the Stata reshape, it's also going to prove 
+* convenient to rename the delay vars. 
+rename (dep_delay arr_delay) (delay_dep delay_arr)
+```
   ],
   [
-    ```r
-    # We'll generate row IDs to avoid the (reshape) ambiguity 
-    # of repeated entries per date 
-    dat[, id := .I] 
-    ```
+```r
+# We'll generate row IDs to avoid the (reshape) ambiguity 
+# of repeated entries per date 
+dat[, id := .I] 
+```
   ],
 )
 
@@ -1230,18 +1230,18 @@ this for your own dataset._
 
 #sidebyside(
   [
-    ```stata
-    reshape long delay_, i(id) j(delay_type) s
-    ```
+```stata
+reshape long delay_, i(id) j(delay_type) s
+```
   ],
   [
-    ```r
-    ldat = melt(dat, measure=patterns('_delay'))
-    
-    # Aside: you can also choose different names for your
-    # new reshaped columns if you'd like, e.g. 
-    melt(dat, measure=patterns('_delay'), variable='d_type')
-    ```
+```r
+ldat = melt(dat, measure=patterns('_delay'))
+
+# Aside: you can also choose different names for your
+# new reshaped columns if you'd like, e.g. 
+melt(dat, measure=patterns('_delay'), variable='d_type')
+```
   ],
 )
 
@@ -1249,25 +1249,25 @@ this for your own dataset._
 
 #sidebyside(
   [
-    ```stata
-    * This starts with the reshaped-long data from above
-    reshape wide delay_, i(id) j(delay_type) s
-    ```
+```stata
+* This starts with the reshaped-long data from above
+reshape wide delay_, i(id) j(delay_type) s
+```
   ],
   [
-    ```r
-    # This starts with the reshaped-long data from above
-    wdat = dcast(ldat, ... ~ variable)
-    
-    # Aside 1: If you only want to keep the id & *_delay cols
-    dcast(ldat, id ~ variable)
-    
-    # Aside 2: It's also possible to perform complex and 
-    # powerful data aggregating tasks as part of the dcast 
-    # (i.e. reshape wide) call.
-    dcast(dat, origin~., fun=list(min,mean,max),
-          value.var=c('dep_delay','arr_delay'))
-    ```
+```r
+# This starts with the reshaped-long data from above
+wdat = dcast(ldat, ... ~ variable)
+
+# Aside 1: If you only want to keep the id & *_delay cols
+dcast(ldat, id ~ variable)
+
+# Aside 2: It's also possible to perform complex and 
+# powerful data aggregating tasks as part of the dcast 
+# (i.e. reshape wide) call.
+dcast(dat, origin~., fun=list(min,mean,max),
+      value.var=c('dep_delay','arr_delay'))
+```
   ],
 )
 
@@ -1280,25 +1280,25 @@ will be one on airport characteristics.
 
 #sidebyside(
   [
-    ```stata
-    import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear
-    * Stata requires that merge ID variables have the same 
-    * name across datasets.
-    rename faa dest
-    
-    * Save as tempfile and then reimport original dataset
-    tempfile dat2
-    save `dat2'
-    import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
-    ```
+```stata
+import delimited using "https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv", clear
+* Stata requires that merge ID variables have the same 
+* name across datasets.
+rename faa dest
+
+* Save as tempfile and then reimport original dataset
+tempfile dat2
+save `dat2'
+import delimited using "https://raw.githubusercontent.com/Rdatatable/data.table/master/vignettes/flights14.csv", clear
+```
   ],
   [
-    ```r
-    dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv") 
-    # R _doesn't_ require that merge ID variables share the 
-    # same name across datasets. But we'll add this anyway.
-    dat2[, dest := faa]
-    ```
+```r
+dat2 = fread("https://vincentarelbundock.github.io/Rdatasets/csv/nycflights13/airports.csv") 
+# R _doesn't_ require that merge ID variables share the 
+# same name across datasets. But we'll add this anyway.
+dat2[, dest := faa]
+```
   ],
 )
 
@@ -1308,14 +1308,14 @@ _Only keep the matched rows across both datasets._
 
 #sidebyside(
   [
-    ```stata
-    merge m:1 dest using `dat2', keep(3) nogen
-    ```
+```stata
+merge m:1 dest using `dat2', keep(3) nogen
+```
   ],
   [
-    ```r
-    mdat = merge(dat, dat2, by='dest') 
-    ```
+```r
+mdat = merge(dat, dat2, by='dest') 
+```
   ],
 )
 
@@ -1325,14 +1325,14 @@ _Keep all rows of both datasets, regardless of whether matched._
 
 #sidebyside(
   [
-    ```stata
-    merge m:1 dest using `dat2', nogen
-    ```
+```stata
+merge m:1 dest using `dat2', nogen
+```
   ],
   [
-    ```r
-    mdat = merge(dat, dat2, by='dest', all=TRUE)
-    ```
+```r
+mdat = merge(dat, dat2, by='dest', all=TRUE)
+```
   ],
 )
 
@@ -1342,14 +1342,14 @@ _Keep all rows from the "main" dataset._
 
 #sidebyside(
   [
-    ```stata
-    merge m:1 dest using `dat2', keep(1 3) nogen
-    ```
+```stata
+merge m:1 dest using `dat2', keep(1 3) nogen
+```
   ],
   [
-    ```r
-    mdat = merge(dat, dat2, by='dest', all.x=TRUE)
-    ```
+```r
+mdat = merge(dat, dat2, by='dest', all.x=TRUE)
+```
   ],
 )
 
@@ -1359,14 +1359,14 @@ _Keep all rows from the "secondary" dataset._
 
 #sidebyside(
   [
-    ```stata
-    merge m:1 dest using `dat2', keep(2 3) nogen
-    ```
+```stata
+merge m:1 dest using `dat2', keep(2 3) nogen
+```
   ],
   [
-    ```r
-    mdat = merge(dat, dat2, by='dest', all.y=TRUE)
-    ```
+```r
+mdat = merge(dat, dat2, by='dest', all.y=TRUE)
+```
   ],
 )
 
@@ -1376,14 +1376,14 @@ _Keep non-matched rows only._
 
 #sidebyside(
   [
-    ```stata
-    merge m:1 dest using `dat2', keep(1 2) nogen
-    ```
+```stata
+merge m:1 dest using `dat2', keep(1 2) nogen
+```
   ],
   [
-    ```r
-    mdat = dat[!dat2, on='dest']
-    ```
+```r
+mdat = dat[!dat2, on='dest']
+```
   ],
 )
 
@@ -1391,18 +1391,18 @@ _Keep non-matched rows only._
 
 #sidebyside(
   [
-    ```stata
-    * This just appends the flights data to itself
-    save data_to_append.dta, replace
-    append using data_to_append.dta
-    ```
+```stata
+* This just appends the flights data to itself
+save data_to_append.dta, replace
+append using data_to_append.dta
+```
   ],
   [
-    ```r
-    # This just appends the flights data to itself
-    rbindlist(list(dat, dat)) # Or rbind(dat, dat)
-    # The fill = TRUE option is handy if the one data set has columns the other doesn't
-    ```
+```r
+# This just appends the flights data to itself
+rbindlist(list(dat, dat)) # Or rbind(dat, dat)
+# The fill = TRUE option is handy if the one data set has columns the other doesn't
+```
   ],
 )
 

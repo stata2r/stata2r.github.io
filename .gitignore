@@ -1,8 +1,17 @@
 # Calepin build output
 _site/
-
-# Calepin generated runtime and results
 _calepin/
+.calepin/
+
+# Calepin generated entry files, staged beside each source document
+.calepin-entry.*
+
+# Calepin rendered output (left next to source during website builds)
+/*.html
+/pagefind/
+/llms.txt
+/robots.txt
+/sitemap.xml
 
 # macOS-specific files
 .DS_Store

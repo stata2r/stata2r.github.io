@@ -15,7 +15,7 @@ search = "pagefind"
 # theme assets in a visible directory.
 asset-dir = "_calepin"
 
-logo = "assets/favicon.svg"
+logo = "assets/logo.svg"
 logo-alt = "stata2R"
 favicon = "assets/favicon.svg"
 

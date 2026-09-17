@@ -49,17 +49,17 @@ example). Below we'll just highlight a few simple examples to give you an idea.
 
 #sidebyside(
   [
-    ```stata
-    set obs 100
-    gen x = rnormal()
-    histogram x
-    ```
+```stata
+set obs 100
+gen x = rnormal()
+histogram x
+```
   ],
   [
-    ```r
-    x = rnorm(100)
-    hist(x)
-    ```
+```r
+x = rnorm(100)
+hist(x)
+```
   ],
 )
 
@@ -67,14 +67,14 @@ example). Below we'll just highlight a few simple examples to give you an idea.
 
 #sidebyside(
   [
-    ```stata
-    reg y x1 x2
-    ```
+```stata
+reg y x1 x2
+```
   ],
   [
-    ```r
-    lm(y ~ x1 + x2, dat)
-    ```
+```r
+lm(y ~ x1 + x2, dat)
+```
   ],
 )
 
@@ -82,30 +82,30 @@ example). Below we'll just highlight a few simple examples to give you an idea.
 
 #sidebyside(
   [
-    ```stata
-    foreach i of numlist 1/10 {
-       display `i' + 100
-    }
-    ```
+```stata
+foreach i of numlist 1/10 {
+   display `i' + 100
+}
+```
   ],
   [
-    ```r
-    for (i in 1:10) {
-        print(i + 100) 
-    }
-    
-    # Aside 1: A single line works too here.
-    for (i in 1:10) print(i + 100)
-    
-    # Aside 2: R provides "functional programming" eqivalents
-    # to for-loops via the *apply family of functions. These
-    # have various advantages, which we won't get into here.
-    # Still the most important member is arguably "lapply", which 
-    # we've already seen a couple of times and returns a list
-    # result (which is great for programming). Here's the
-    # equivalent lapply code to the previous for-loop.
-    lapply(1:10, function(i) print(i + 100))
-    ```
+```r
+for (i in 1:10) {
+    print(i + 100) 
+}
+
+# Aside 1: A single line works too here.
+for (i in 1:10) print(i + 100)
+
+# Aside 2: R provides "functional programming" eqivalents
+# to for-loops via the *apply family of functions. These
+# have various advantages, which we won't get into here.
+# Still the most important member is arguably "lapply", which 
+# we've already seen a couple of times and returns a list
+# result (which is great for programming). Here's the
+# equivalent lapply code to the previous for-loop.
+lapply(1:10, function(i) print(i + 100))
+```
   ],
 )
 
@@ -131,20 +131,20 @@ wonderful #link("https://socviz.co/")[_Data Visualization_] book.
 
 #sidebyside(
   [
-    ```stata
-    twoway scatter yvar xvar
-    
-    twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
-            (scatter yvar xvar if group == 2, mc(red))
-    ```
+```stata
+twoway scatter yvar xvar
+
+twoway (scatter yvar xvar if group == 1, mc(blue)) \\\
+        (scatter yvar xvar if group == 2, mc(red))
+```
   ],
   [
-    ```r
-    ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
-    
-    ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
-      geom_point()
-    ```
+```r
+ggplot(dat, aes(x = xvar, y = yvar)) + geom_point()
+
+ggplot(dat, aes(x = xvar, y = yvar, color = group)) + 
+  geom_point()
+```
   ],
 )
 
@@ -175,17 +175,17 @@ Subset by rows and then columns.
 
 #sidebyside(
   [
-    ```stata
-    keep if var1=="value"
-    keep var1 var2 var3
-    ```
+```stata
+keep if var1=="value"
+keep var1 var2 var3
+```
   ],
   [
-    ```r
-    dat |>
-       filter(var1=="value") |>
-       select(var1, var2, var3)
-    ```
+```r
+dat |>
+   filter(var1=="value") |>
+   select(var1, var2, var3)
+```
   ],
 )
 
@@ -193,16 +193,16 @@ Create a new variable by group.
 
 #sidebyside(
   [
-    ```stata
-    bysort group1: egen mean_var1 = mean(var1)
-    ```
+```stata
+bysort group1: egen mean_var1 = mean(var1)
+```
   ],
   [
-    ```r
-    dat |>
-      group_by(group1) |>
-      mutate(mean_var1 = mean(var1))
-    ```
+```r
+dat |>
+  group_by(group1) |>
+  mutate(mean_var1 = mean(var1))
+```
   ],
 )
 
@@ -210,16 +210,16 @@ Collapse by group.
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) mean_var1 = var1, by(group1)
-    ```
+```stata
+collapse (mean) mean_var1 = var1, by(group1)
+```
   ],
   [
-    ```r
-    dat |>
-      group_by(group1) |>
-      summarise(mean_var1 = mean(var1))
-    ```
+```r
+dat |>
+  group_by(group1) |>
+  summarise(mean_var1 = mean(var1))
+```
   ],
 )
 
@@ -227,16 +227,16 @@ Collapse by group.
 
 #sidebyside(
   [
-    ```stata
-    * Shift a date forward one month (not 30 days, one month)
-    * ???
-    ```
+```stata
+* Shift a date forward one month (not 30 days, one month)
+* ???
+```
   ],
   [
-    ```r
-    # Shift a date forward one month (not 30 days, one month)
-    shifted_date = date + months(1)
-    ```
+```r
+# Shift a date forward one month (not 30 days, one month)
+shifted_date = date + months(1)
+```
   ],
 )
 
@@ -246,25 +246,25 @@ Read in many files and append them together.
 
 #sidebyside(
   [
-    ```stata
-    local filelist: dir "data/" files "*.csv"
-    tempfile mytmpfile
-    save `mytmpfile', replace empty
-    foreach x of local filelist {
-    	qui: import delimited "data/`x'", case(preserve) clear
-    	append using `mytmpfile'
-    	save `mytmpfile', replace
-    }
-    ```
+```stata
+local filelist: dir "data/" files "*.csv"
+tempfile mytmpfile
+save `mytmpfile', replace empty
+foreach x of local filelist {
+	qui: import delimited "data/`x'", case(preserve) clear
+	append using `mytmpfile'
+	save `mytmpfile', replace
+}
+```
   ],
   [
-    ```r
-    filelist = dir("data/", pattern=".csv$", full.names=TRUE)
-    dat = map_df(filelist, data.table::fread)
-    
-    # Note: map_*df* means map (iterate) then coerce the
-    # result to a data frame
-    ```
+```r
+filelist = dir("data/", pattern=".csv$", full.names=TRUE)
+dat = map_df(filelist, data.table::fread)
+
+# Note: map_*df* means map (iterate) then coerce the
+# result to a data frame
+```
   ],
 )
 
@@ -272,16 +272,16 @@ Iterate over variables.
 
 #sidebyside(
   [
-    ```stata
-    ds, has(type long)
-    collapse (mean) `r(varlist)'
-    ```
+```stata
+ds, has(type long)
+collapse (mean) `r(varlist)'
+```
   ],
   [
-    ```r
-    # Note: map is a stand-in replacement for lapply
-    dat[, map(.SD, mean), .SDcols=is.numeric]
-    ```
+```r
+# Note: map is a stand-in replacement for lapply
+dat[, map(.SD, mean), .SDcols=is.numeric]
+```
   ],
 )
 
@@ -289,20 +289,20 @@ Iterate over variables.
 
 #sidebyside(
   [
-    ```stata
-    subinstr("Hello world", "world", "universe", .)
-    substr("Hello world", 1, 3)
-    regexm("Hello world", "ello")
-    
-    ```
+```stata
+subinstr("Hello world", "world", "universe", .)
+substr("Hello world", 1, 3)
+regexm("Hello world", "ello")
+
+```
   ],
   [
-    ```r
-    str_replace_all("Hello world", "world", "universe")
-    str_sub("Hello world", 1, 3)
-    str_detect("Hello world", "ello")
-    # Note all the stringr functions accept regex input
-    ```
+```r
+str_replace_all("Hello world", "world", "universe")
+str_sub("Hello world", 1, 3)
+str_detect("Hello world", "ello")
+# Note all the stringr functions accept regex input
+```
   ],
 )
 
@@ -546,16 +546,16 @@ high-performance packages, check out the
 
 #sidebyside(
   [
-    ```stata
-    summarize
-    describe
-    ```
+```stata
+summarize
+describe
+```
   ],
   [
-    ```r
-    qsu(dat)
-    descr(dat)
-    ```
+```r
+qsu(dat)
+descr(dat)
+```
   ],
 )
 
@@ -563,16 +563,16 @@ high-performance packages, check out the
 
 #sidebyside(
   [
-    ```stata
-    collapse (mean) var1, by(group1)
-    collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
-    ```
+```stata
+collapse (mean) var1, by(group1)
+collapse (min) min_var1=var1 min_var2=var2 (max) max_var1=var1 max_var2=var2, by(group1 group2)
+```
   ],
   [
-    ```r
-    collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean
-    collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
-    ```
+```r
+collap(dat, var1 ~ group1, fmean) # 'fmean' => fast mean
+collap(dat, var1 + var2 ~ group1 + group2, FUN = list(fmin, fmax))
+```
   ],
 )
 
@@ -594,21 +594,21 @@ plug and play the two packages together.
 
 #sidebyside(
   [
-    ```stata
-    * ", robust" uses hc1 which isn't great for small samples
-    regress Y X Z, vce(hc3)
-    ```
+```stata
+* ", robust" uses hc1 which isn't great for small samples
+regress Y X Z, vce(hc3)
+```
   ],
   [
-    ```r
-    # sandwich's vcovHC uses HC3 by default
-    feols(Y ~ X + Z, dat, vcov = sandwich::vcovHC) 
-    
-    # Aside: Remember that you can also adjust the SEs 
-    # for existing models on the fly 
-    m = feols(Y ~ X + Z, dat) 
-    summary(m, vcov = sandwich::vcovHC)
-    ```
+```r
+# sandwich's vcovHC uses HC3 by default
+feols(Y ~ X + Z, dat, vcov = sandwich::vcovHC) 
+
+# Aside: Remember that you can also adjust the SEs 
+# for existing models on the fly 
+m = feols(Y ~ X + Z, dat) 
+summary(m, vcov = sandwich::vcovHC)
+```
   ],
 )
 
@@ -631,25 +631,25 @@ website](https://modelsummary.com/) for more.
 
 #sidebyside(
   [
-    ```stata
-    * Summary stats table 
-    estpost summarize 
-    esttab, cells("count mean sd min max") nomtitle nonumber 
-    
-    * Balance table 
-    by treat_var: eststo: estpost summarize 
-    esttab, cells("mean sd") label nodepvar
-    ```
+```stata
+* Summary stats table 
+estpost summarize 
+esttab, cells("count mean sd min max") nomtitle nonumber 
+
+* Balance table 
+by treat_var: eststo: estpost summarize 
+esttab, cells("mean sd") label nodepvar
+```
   ],
   [
-    ```r
-    # Summary stats table 
-    datasummary_skim(dat) 
-    
-    
-    # Balance table 
-    datasummary_balance(~treat_var, dat)
-    ```
+```r
+# Summary stats table 
+datasummary_skim(dat) 
+
+
+# Balance table 
+datasummary_balance(~treat_var, dat)
+```
   ],
 )
 
@@ -661,38 +661,38 @@ classes.
 
 #sidebyside(
   [
-    ```stata
-    reg Y X Z 
-    eststo est1 
-    esttab est1b
-    
-    reg Y X Z, vce(hc3) 
-    eststo est1b 
-    esttab est1b 
-    
-    esttab est1 est1b
-    
-    reg Y X Z A, vce(hc3)
-    eststo est2
-    esttab est1 est1b est2
-    ```
+```stata
+reg Y X Z 
+eststo est1 
+esttab est1b
+
+reg Y X Z, vce(hc3) 
+eststo est1b 
+esttab est1b 
+
+esttab est1 est1b
+
+reg Y X Z A, vce(hc3)
+eststo est2
+esttab est1 est1b est2
+```
   ],
   [
-    ```r
-    est1 = lm(Y ~ X + Z, dat) 
-    msummary(est1) # msummary() = alias for modelsummary()
-    
-    # Like fixest::etable(), SEs for existing models can
-    # be adjusted on-the-fly 
-    msummary(est1, vcov='hc3')
-    
-    # Multiple SEs for the same model
-    msummary(est1, vcov=list('iid', 'hc3')) 
-    
-    est3 = lm(Y ~ X + Z + A, dat) 
-    msummary(list(est1, est1, est3),
-             vcov = list('iid', 'hc3', 'hc3'))
-    ```
+```r
+est1 = lm(Y ~ X + Z, dat) 
+msummary(est1) # msummary() = alias for modelsummary()
+
+# Like fixest::etable(), SEs for existing models can
+# be adjusted on-the-fly 
+msummary(est1, vcov='hc3')
+
+# Multiple SEs for the same model
+msummary(est1, vcov=list('iid', 'hc3')) 
+
+est3 = lm(Y ~ X + Z + A, dat) 
+msummary(list(est1, est1, est3),
+         vcov = list('iid', 'hc3', 'hc3'))
+```
   ],
 )
 
@@ -712,24 +712,24 @@ Here's a simple example of a hypothetical logit model.
 
 #sidebyside(
   [
-    ```stata
-    logit y x z
-    margins, dydx(*)
-    
-    * Predictive plot example
-    levelsof x, miss local(x_lvls)
-    qui margins, at(x=(`x_lvls'))
-    marginsplot, recast(line) recastci(rarea)
-    ```
+```stata
+logit y x z
+margins, dydx(*)
+
+* Predictive plot example
+levelsof x, miss local(x_lvls)
+qui margins, at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
+```
   ],
   [
-    ```r
-    m = glm(y ~ x + z, family = binomial, data = some_data)
-    avg_slopes(m)
-    
-    # Predictive plot example
-    plot_predictions(m, "x")
-    ```
+```r
+m = glm(y ~ x + z, family = binomial, data = some_data)
+avg_slopes(m)
+
+# Predictive plot example
+plot_predictions(m, "x")
+```
   ],
 )
 
@@ -737,28 +737,28 @@ And here's another of a hypothetical continuous \* categorical interaction model
 
 #sidebyside(
   [
-    ```stata
-    * x is a continuous and z is categorical
-    reg y c.x##i.z
-    
-    qui margins z, dydx(x)
-    marginsplot
-    
-    levelsof x, miss local(x_lvls)
-    qui margins, dydx(z) at(x=(`x_lvls'))
-    marginsplot, recast(line) recastci(rarea)
-    ```
+```stata
+* x is a continuous and z is categorical
+reg y c.x##i.z
+
+qui margins z, dydx(x)
+marginsplot
+
+levelsof x, miss local(x_lvls)
+qui margins, dydx(z) at(x=(`x_lvls'))
+marginsplot, recast(line) recastci(rarea)
+```
   ],
   [
-    ```r
-    # X is a continuous and Z is categorical
-    m = lm(y ~ x * factor(z), some_data)
-    
-    plot_slopes(m, effect = "x", condition = "z")
-    
-    
-    plot_slopes(m, effect = "z", condition = "x")
-    ```
+```r
+# X is a continuous and Z is categorical
+m = lm(y ~ x * factor(z), some_data)
+
+plot_slopes(m, effect = "x", condition = "z")
+
+
+plot_slopes(m, effect = "z", condition = "x")
+```
   ],
 )
 
@@ -775,29 +775,29 @@ of both linear and non-linear combinations.
 
 #sidebyside(
   [
-    ```stata
-    regress y x z 
-    
-    * Test linear combination of coefficients 
-    lincom x + z 
-    
-    
-    * Test nonlinear combination of coefficients 
-    nlcom _b[x]/_b[z] - 1
-    ```
+```stata
+regress y x z 
+
+* Test linear combination of coefficients 
+lincom x + z 
+
+
+* Test nonlinear combination of coefficients 
+nlcom _b[x]/_b[z] - 1
+```
   ],
   [
-    ```r
-    m = lm(y ~ x + z, dat)
-    
-    # Test linear combination of coefficients 
-    hypotheses(m, "x + z = 0")
-    # slopes(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
-    
-    # Test nonlinear combination of coefficients 
-    hypotheses(m, "x / z = 1")
-    # slopes(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
-    ```
+```r
+m = lm(y ~ x + z, dat)
+
+# Test linear combination of coefficients 
+hypotheses(m, "x + z = 0")
+# slopes(m, hypothesis = "x + y = 0", newdata = "mean") # same thing
+
+# Test nonlinear combination of coefficients 
+hypotheses(m, "x / z = 1")
+# slopes(m, hypothesis = "x / y = 1", newdata = "mean") # same thing
+```
   ],
 )
 
@@ -818,18 +818,18 @@ prefer Bayesian models for this kind of thing, check out
 
 #sidebyside(
   [
-    ```stata
-    xtset group time
-    xtreg y x, re
-    mixed y x || group: x, reml
-    ```
+```stata
+xtset group time
+xtreg y x, re
+mixed y x || group: x, reml
+```
   ],
   [
-    ```r
-    # No need for an xtset equivalent
-    lmer(y ~ x + (1 | group), data = dat)
-    lmer(y ~ x + (x | group), data = dat)
-    ```
+```r
+# No need for an xtset equivalent
+lmer(y ~ x + (1 | group), data = dat)
+lmer(y ~ x + (x | group), data = dat)
+```
   ],
 )
 
@@ -855,22 +855,22 @@ and Jannes Muenchow.
 
 #sidebyside(
   [
-    ```stata
-    * Mapping in Stata requires the spmap and shp2dta 
-    * commands, and also that you convert your (say) 
-    * shapefile to .dta format first. We won't go through 
-    * all that here, but see: 
-    * https://www.stata.com/support/faqs/graphics/spmap-and-maps/
-    ```
+```stata
+* Mapping in Stata requires the spmap and shp2dta 
+* commands, and also that you convert your (say) 
+* shapefile to .dta format first. We won't go through 
+* all that here, but see: 
+* https://www.stata.com/support/faqs/graphics/spmap-and-maps/
+```
   ],
   [
-    ```r
-    # This example uses the North Carolina shapefile that is
-    # bundled with the sf package. 
-    nc = st_read(system.file("shape/nc.shp", package = "sf")) 
-    plot(nc[, 'BIR74'])
-    # Or, if you have ggplot2 loaded: 
-    ggplot(nc, aes(fill=BIR74)) + geom_sf()
-    ```
+```r
+# This example uses the North Carolina shapefile that is
+# bundled with the sf package. 
+nc = st_read(system.file("shape/nc.shp", package = "sf")) 
+plot(nc[, 'BIR74'])
+# Or, if you have ggplot2 loaded: 
+ggplot(nc, aes(fill=BIR74)) + geom_sf()
+```
   ],
 )

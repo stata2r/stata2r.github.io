@@ -50,16 +50,16 @@ following:
 
 #sidebyside(
   [
-    ```stata
-    import delimited using ///
-        "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear
-    ```
+```stata
+import delimited using ///
+    "https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv", clear
+```
   ],
   [
-    ```r
-    # Base R reads CSVs too, but we'll use data.table here
-    dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')
-    ```
+```r
+# Base R reads CSVs too, but we'll use data.table here
+dat = data.table::fread('https://raw.githubusercontent.com/stata2r/stata2r.github.io/main/data/cps_long.csv')
+```
   ],
 )
 
@@ -91,27 +91,27 @@ we'll see examples below.
 
 #sidebyside(
   [
-    ```stata
-    reg wage educ 
-    reg wage educ age
-    ```
+```stata
+reg wage educ 
+reg wage educ age
+```
   ],
   [
-    ```r
-    feols(wage ~ educ, data = dat) 
-    feols(wage ~ educ + age, data = dat)
-    
-    # Aside 1: `data = ...` is the first argument after 
-    # the model formula. So many R users would just write: 
-    feols(wage ~ educ, dat) 
-    
-    # Aside 2: You can also set your dataset globally so 
-    # that you don't have to reference it each time. 
-    setFixest_estimation(data = dat) 
-    feols(wage ~ educ) 
-    feols(wage ~ educ + age) 
-    # etc.
-    ```
+```r
+feols(wage ~ educ, data = dat) 
+feols(wage ~ educ + age, data = dat)
+
+# Aside 1: `data = ...` is the first argument after 
+# the model formula. So many R users would just write: 
+feols(wage ~ educ, dat) 
+
+# Aside 2: You can also set your dataset globally so 
+# that you don't have to reference it each time. 
+setFixest_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + age) 
+# etc.
+```
   ],
 )
 
@@ -119,20 +119,20 @@ we'll see examples below.
 
 #sidebyside(
   [
-    ```stata
-    reg wage educ i.treat 
-    
-    * Specifying a baseline:
-    reg wage educ ib1.treat
-    ```
+```stata
+reg wage educ i.treat 
+
+* Specifying a baseline:
+reg wage educ ib1.treat
+```
   ],
   [
-    ```r
-    feols(wage ~ educ + i(treat), dat) 
-    
-    # Specifying a baseline:
-    feols(wage ~ educ + i(treat, ref = 1), dat)
-    ```
+```r
+feols(wage ~ educ + i(treat), dat) 
+
+# Specifying a baseline:
+feols(wage ~ educ + i(treat, ref = 1), dat)
+```
   ],
 )
 
@@ -140,28 +140,28 @@ we'll see examples below.
 
 #sidebyside(
   [
-    ```stata
-    reghdfe wage educ, absorb(countyfips)
-    reghdfe wage educ, absorb(countyfips) cluster(countyfips)
-    
-    * Add more fixed effects (and clusted SEs)... 
-    reghdfe wage educ, absorb(countyfips year) ///
-                       vce(cluster countyfips year) 
-    reghdfe wage educ, absorb(countyfips#year) /// 
-                       vce(cluster countyfips#year)
-    ```
+```stata
+reghdfe wage educ, absorb(countyfips)
+reghdfe wage educ, absorb(countyfips) cluster(countyfips)
+
+* Add more fixed effects (and clusted SEs)... 
+reghdfe wage educ, absorb(countyfips year) ///
+                   vce(cluster countyfips year) 
+reghdfe wage educ, absorb(countyfips#year) /// 
+                   vce(cluster countyfips#year)
+```
   ],
   [
-    ```r
-    feols(wage ~ educ | countyfips, dat)
-    feols(wage ~ educ | countyfips, dat, vcov = ~countyfips)
-    
-    # Add more fixed effects (and clusted SEs)... 
-    feols(wage ~ educ | countyfips + year, dat,
-          vcov = ~countyfips + year) 
-    feols(wage ~ educ | countyfips^year, dat,
-          vcov = ~countyfips^year)
-    ```
+```r
+feols(wage ~ educ | countyfips, dat)
+feols(wage ~ educ | countyfips, dat, vcov = ~countyfips)
+
+# Add more fixed effects (and clusted SEs)... 
+feols(wage ~ educ | countyfips + year, dat,
+      vcov = ~countyfips + year) 
+feols(wage ~ educ | countyfips^year, dat,
+      vcov = ~countyfips^year)
+```
   ],
 )
 
@@ -169,16 +169,16 @@ we'll see examples below.
 
 #sidebyside(
   [
-    ```stata
-    gen w = runiform(0.1, 0.9)
-    reg wage educ i.treat [aw = w]
-    ```
+```stata
+gen w = runiform(0.1, 0.9)
+reg wage educ i.treat [aw = w]
+```
   ],
   [
-    ```r
-    dat$w = runif(nrow(dat), 0.1, 0.9)
-    feols(wage ~ educ + i(treat), dat, weights = ~w) 
-    ```
+```r
+dat$w = runif(nrow(dat), 0.1, 0.9)
+feols(wage ~ educ + i(treat), dat, weights = ~w) 
+```
   ],
 )
 
@@ -186,22 +186,22 @@ we'll see examples below.
 
 #sidebyside(
   [
-    ```stata
-    ivreg 2sls wage (educ = age) 
-    ivreg 2sls wage marr (educ = age) 
-    
-    * With fixed effects 
-    ivreghdfe 2sls wage marr (educ = age), absorb(countyfips)
-    ```
+```stata
+ivreg 2sls wage (educ = age) 
+ivreg 2sls wage marr (educ = age) 
+
+* With fixed effects 
+ivreghdfe 2sls wage marr (educ = age), absorb(countyfips)
+```
   ],
   [
-    ```r
-    feols(wage ~ 1 | educ ~ age, dat)  
-    feols(wage ~ marr | educ ~ age, dat) 
-    
-    # With fixed effects (IV 1st stage always comes last) 
-    feols(wage ~ marr | countyfips | educ ~ age, dat)
-    ```
+```r
+feols(wage ~ 1 | educ ~ age, dat)  
+feols(wage ~ marr | educ ~ age, dat) 
+
+# With fixed effects (IV 1st stage always comes last) 
+feols(wage ~ marr | countyfips | educ ~ age, dat)
+```
   ],
 )
 
@@ -214,32 +214,32 @@ adjustment, and so forth.
 
 #sidebyside(
   [
-    ```stata
-    xtset statefips
-    logit marr age black hisp
-    
-    * Note: Attempting to replicate the feglm() model with fixed
-    * effects at right using xtlogit or xtprobit leads to 
-    * numerical overflow or matsize issues
-    
-    * https://github.com/sergiocorreia/ppmlhdfe
-    ppmlhdfe educ age black hisp, absorb(statefips year) ///
-    	                        vce(robust)
-    ```
+```stata
+xtset statefips
+logit marr age black hisp
+
+* Note: Attempting to replicate the feglm() model with fixed
+* effects at right using xtlogit or xtprobit leads to 
+* numerical overflow or matsize issues
+
+* https://github.com/sergiocorreia/ppmlhdfe
+ppmlhdfe educ age black hisp, absorb(statefips year) ///
+	                        vce(robust)
+```
   ],
   [
-    ```r
-    feglm(marr ~ age + black + hisp, 
-          dat, family = 'logit')
-    
-    # Add fixed effects (probit this time)
-    feglm(marr ~ age + black + hisp | statefips + year, 
-          dat, family = 'probit')
-    
-    # fepois() is there for Poisson regression
-    fepois(educ ~ age + black + hisp | statefips + year,
-           dat, vcov = 'hc1')
-    ```
+```r
+feglm(marr ~ age + black + hisp, 
+      dat, family = 'logit')
+
+# Add fixed effects (probit this time)
+feglm(marr ~ age + black + hisp | statefips + year, 
+      dat, family = 'probit')
+
+# fepois() is there for Poisson regression
+fepois(educ ~ age + black + hisp | statefips + year,
+       dat, vcov = 'hc1')
+```
   ],
 )
 
@@ -247,33 +247,33 @@ adjustment, and so forth.
 
 #sidebyside(
   [
-    ```stata
-    local ctrls age black hisp marr 
-    reg wage educ `ctrls' 
-    
-    reg wage educ x* 
-    reg wage educ *sp  
-    reg wage educ *ac*
-    ```
+```stata
+local ctrls age black hisp marr 
+reg wage educ `ctrls' 
+
+reg wage educ x* 
+reg wage educ *sp  
+reg wage educ *ac*
+```
   ],
   [
-    ```r
-    ctrls = c("age", "black", "hisp", "marr") 
-    feols(wage ~ educ + .[ctrls], dat) 
-    
-    feols(wage ~ educ + ..('^x'), dat) # ^ = starts with 
-    feols(wage ~ educ + ..('sp$'), dat) # $ = ends with 
-    feols(wage ~ educ + ..('ac'), dat) 
-    
-    # Many more macro options. See `?setFixest_fml` and
-    # `?setFixest_estimation`. Example (reminder) where 
-    # you set your dataset globally, so you don't have to 
-    # retype `data = ...` anymore. 
-    setFixest_estimation(data = dat) 
-    feols(wage ~ educ) 
-    feols(wage ~ educ + .[ctrls] | statefips) 
-    # Etc.
-    ```
+```r
+ctrls = c("age", "black", "hisp", "marr") 
+feols(wage ~ educ + .[ctrls], dat) 
+
+feols(wage ~ educ + ..('^x'), dat) # ^ = starts with 
+feols(wage ~ educ + ..('sp$'), dat) # $ = ends with 
+feols(wage ~ educ + ..('ac'), dat) 
+
+# Many more macro options. See `?setFixest_fml` and
+# `?setFixest_estimation`. Example (reminder) where 
+# you set your dataset globally, so you don't have to 
+# retype `data = ...` anymore. 
+setFixest_estimation(data = dat) 
+feols(wage ~ educ) 
+feols(wage ~ educ + .[ctrls] | statefips) 
+# Etc.
+```
   ],
 )
 
@@ -334,24 +334,24 @@ feols(wage ~ educ | csw(year, statefips), dat)
 
 #sidebyside(
   [
-    ```stata
-    reg wage c.educ#c.age 
-    reg wage c.educ##c.age 
-    
-    * Polynomials 
-    reg wage c.age#c.age 
-    reg wage c.age##c.age 
-    ```
+```stata
+reg wage c.educ#c.age 
+reg wage c.educ##c.age 
+
+* Polynomials 
+reg wage c.age#c.age 
+reg wage c.age##c.age 
+```
   ],
   [
-    ```r
-    feols(wage ~ educ:age, dat) 
-    feols(wage ~ educ*age, dat) 
-    
-    # Polynomials 
-    feols(wage ~ I(age^2), dat) 
-    feols(wage ~ poly(age, 2, raw = TRUE))
-    ```
+```r
+feols(wage ~ educ:age, dat) 
+feols(wage ~ educ*age, dat) 
+
+# Polynomials 
+feols(wage ~ I(age^2), dat) 
+feols(wage ~ poly(age, 2, raw = TRUE))
+```
   ],
 )
 
@@ -359,26 +359,26 @@ feols(wage ~ educ | csw(year, statefips), dat)
 
 #sidebyside(
   [
-    ```stata
-    reg wage i.treat#i.hisp 
-    
-    
-    
-    
-    reg wage i.treat i.treat#i.hisp
-    reg wage i.treat##i.hisp
-    ```
+```stata
+reg wage i.treat#i.hisp 
+
+
+
+
+reg wage i.treat i.treat#i.hisp
+reg wage i.treat##i.hisp
+```
   ],
   [
-    ```r
-    feols(wage ~ i(treat, i.hisp), dat) 
-    
-    # Aside: i() is a fixest-specific shortcut that also 
-    # has synergies with some other fixest functions. But 
-    # base R interaction operators all still work, e.g. 
-    feols(wage ~ factor(treat)/factor(hisp), dat) 
-    feols(wage ~ factor(treat)*factor(hisp), dat)
-    ```
+```r
+feols(wage ~ i(treat, i.hisp), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat)/factor(hisp), dat) 
+feols(wage ~ factor(treat)*factor(hisp), dat)
+```
   ],
 )
 
@@ -386,28 +386,28 @@ feols(wage ~ educ | csw(year, statefips), dat)
 
 #sidebyside(
   [
-    ```stata
-    reg wage i.treat#c.age 
-    
-    
-    
-    
-    reg wage i.treat#c.age 
-    reg wage i.treat i.treat#c.age 
-    reg wage i.treat##c.age
-    ```
+```stata
+reg wage i.treat#c.age 
+
+
+
+
+reg wage i.treat#c.age 
+reg wage i.treat i.treat#c.age 
+reg wage i.treat##c.age
+```
   ],
   [
-    ```r
-    feols(wage ~ i(treat, age), dat) 
-    
-    # Aside: i() is a fixest-specific shortcut that also 
-    # has synergies with some other fixest functions. But 
-    # base R interaction operators all still work, e.g. 
-    feols(wage ~ factor(treat):age, dat) 
-    feols(wage ~ factor(treat)/age, dat) 
-    feols(wage ~ factor(treat)*age, dat)
-    ```
+```r
+feols(wage ~ i(treat, age), dat) 
+
+# Aside: i() is a fixest-specific shortcut that also 
+# has synergies with some other fixest functions. But 
+# base R interaction operators all still work, e.g. 
+feols(wage ~ factor(treat):age, dat) 
+feols(wage ~ factor(treat)/age, dat) 
+feols(wage ~ factor(treat)*age, dat)
+```
   ],
 )
 
@@ -421,27 +421,27 @@ this page is not appropriate for DID.
 
 #sidebyside(
   [
-    ```stata
-    * No immediate Stata equivalent to did_means that we know of,
-    * although you could replicate much of it by hand with an 
-    * elaborate call to table
-    
-    * Sun and Abraham can be estimated using the 
-    * eventstudyinteract package on ssc
-    ```
+```stata
+* No immediate Stata equivalent to did_means that we know of,
+* although you could replicate much of it by hand with an 
+* elaborate call to table
+
+* Sun and Abraham can be estimated using the 
+* eventstudyinteract package on ssc
+```
   ],
   [
-    ```r
-    # did_means() provides tables of means, SEs, and treatment/
-    # control and pre/post differences for 2x2 DID
-    did_means(outcome + control ~ treat | post)
-    
-    # sunab() produces interactions of the type that allow you to
-    # estimate the Sun & Abraham model for staggered treatment 
-    # timing, and automatically get average treatment effects for
-    # each relative period
-    feols(y ~ control + sunab(year_treated, year))
-    ```
+```r
+# did_means() provides tables of means, SEs, and treatment/
+# control and pre/post differences for 2x2 DID
+did_means(outcome + control ~ treat | post)
+
+# sunab() produces interactions of the type that allow you to
+# estimate the Sun & Abraham model for staggered treatment 
+# timing, and automatically get average treatment effects for
+# each relative period
+feols(y ~ control + sunab(year_treated, year))
+```
   ],
 )
 
@@ -449,24 +449,24 @@ this page is not appropriate for DID.
 
 #sidebyside(
   [
-    ```stata
-    * Combine fixed effects 
-    reghdfe wage educ, absorb(statefips#year) 
-    
-    * Varying slopes (e.g. time trend for each state) 
-    reghdfe wage educ, absorb(statefips#c.year) ///
-    	             vce(cluster statefips#c.year)
-    ```
+```stata
+* Combine fixed effects 
+reghdfe wage educ, absorb(statefips#year) 
+
+* Varying slopes (e.g. time trend for each state) 
+reghdfe wage educ, absorb(statefips#c.year) ///
+	             vce(cluster statefips#c.year)
+```
   ],
   [
-    ```r
-    # Combine fixed effects 
-    feols(wage ~ educ | statefips^year, dat)
-    
-    # Varying slopes (e.g. time trend for each state) 
-    feols(wage ~ educ | statefips[year], dat,
-          vcov = ~statefips:year)
-    ```
+```r
+# Combine fixed effects 
+feols(wage ~ educ | statefips^year, dat)
+
+# Varying slopes (e.g. time trend for each state) 
+feols(wage ~ educ | statefips[year], dat,
+      vcov = ~statefips:year)
+```
   ],
 )
 
@@ -483,22 +483,22 @@ whole model. We'll try to highlight examples of both approaches below.
 
 #sidebyside(
   [
-    ```stata
-    reg wage educ, vce(robust)
-    reg wage educ, vce(hc2)
-    reg wage educ, vce(hc3)
-    ```
+```stata
+reg wage educ, vce(robust)
+reg wage educ, vce(hc2)
+reg wage educ, vce(hc3)
+```
   ],
   [
-    ```r
-    feols(wage ~ educ, dat, vcov = 'hc1') 
-    feols(wage ~ educ, dat, vcov = 'hc2')
-    feols(wage ~ educ, dat, vcov = 'hc3')
-    
-    # Note: You can also adjust the SEs of an existing model 
-    m = feols(wage ~ educ, dat) # iid
-    summary(m, vcov = 'hc1')    # switch to HC1
-    ```
+```r
+feols(wage ~ educ, dat, vcov = 'hc1') 
+feols(wage ~ educ, dat, vcov = 'hc2')
+feols(wage ~ educ, dat, vcov = 'hc3')
+
+# Note: You can also adjust the SEs of an existing model 
+m = feols(wage ~ educ, dat) # iid
+summary(m, vcov = 'hc1')    # switch to HC1
+```
   ],
 )
 
@@ -509,16 +509,16 @@ Aside: You should be using `, vce(hc2)` for smaller samples... but you
 
 #sidebyside(
   [
-    ```stata
-    xtset id year
-    ivreghdfe wage educ, bw(auto) vce(robust)
-    ```
+```stata
+xtset id year
+ivreghdfe wage educ, bw(auto) vce(robust)
+```
   ],
   [
-    ```r
-    feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
-    # feols(y ~ x, dat, vcov = 'NW') # if panel id already set (see below)
-    ```
+```r
+feols(y ~ x, dat, vcov = 'NW', panel.id = ~unit + time)
+# feols(y ~ x, dat, vcov = 'NW') # if panel id already set (see below)
+```
   ],
 )
 
@@ -526,34 +526,34 @@ Aside: You should be using `, vce(hc2)` for smaller samples... but you
 
 #sidebyside(
   [
-    ```stata
-    reghdfe wage educ, absorb(countyfips) /// 
-                       vce(cluster countyfips) 
-    
-    * Twoway clustering etc. 
-    reghdfe wage educ, absorb(countyfips year) ///
-                       vce(cluster countyfips year) 
-    
-    
-    
-    reghdfe wage educ, absorb(countyfips#year) ///
-                       vce(cluster countyfips#year)
-    ```
+```stata
+reghdfe wage educ, absorb(countyfips) /// 
+                   vce(cluster countyfips) 
+
+* Twoway clustering etc. 
+reghdfe wage educ, absorb(countyfips year) ///
+                   vce(cluster countyfips year) 
+
+
+
+reghdfe wage educ, absorb(countyfips#year) ///
+                   vce(cluster countyfips#year)
+```
   ],
   [
-    ```r
-    feols(wage ~ educ | countyfips, dat,
-          vcov = ~countyfips)
-    
-    # Twoway clustering etc. 
-    feols(wage ~ educ | countyfips + year, dat,
-          vcov = ~countyfips + year) 
-    # feols(wage ~ educ | countyfips + year, dat,
-    #      vcov = 'twoway') ## same as above
-    
-    feols(wage ~ educ | countyfips^year, dat,
-          vcov = ~countyfips^year) 
-    ```
+```r
+feols(wage ~ educ | countyfips, dat,
+      vcov = ~countyfips)
+
+# Twoway clustering etc. 
+feols(wage ~ educ | countyfips + year, dat,
+      vcov = ~countyfips + year) 
+# feols(wage ~ educ | countyfips + year, dat,
+#      vcov = 'twoway') ## same as above
+
+feols(wage ~ educ | countyfips^year, dat,
+      vcov = ~countyfips^year) 
+```
   ],
 )
 
@@ -561,14 +561,14 @@ Aside: You should be using `, vce(hc2)` for smaller samples... but you
 
 #sidebyside(
   [
-    ```stata
-    * See: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
-    ```
+```stata
+* See: http://www.trfetzer.com/conley-spatial-hac-errors-with-fixed-effects/
+```
   ],
   [
-    ```r
-    feols(wage ~ educ, dat, vcov = conley("25 mi"))
-    ```
+```r
+feols(wage ~ educ, dat, vcov = conley("25 mi"))
+```
   ],
 )
 
@@ -597,34 +597,34 @@ summary(m, vcov = ~countyfips^year)  # Cluster by countyfips*year interaction
 
 #sidebyside(
   [
-    ```stata
-    reg wage educ age 
-    eststo est1 
-    esttab est1
-    
-    * Add second regression
-    reg wage educ age black hisp
-    eststo est2
-    esttab est1 est2
-    
-    * Export to TeX
-    esttab using "regtable.tex", replace 
-    ```
+```stata
+reg wage educ age 
+eststo est1 
+esttab est1
+
+* Add second regression
+reg wage educ age black hisp
+eststo est2
+esttab est1 est2
+
+* Export to TeX
+esttab using "regtable.tex", replace 
+```
   ],
   [
-    ```r
-    est1 = feols(wage ~ educ + age, dat) 
-    etable(est1)
-    
-    
-    # Add second regression
-    est2 = feols(wage ~ educ + age + black + hisp, dat) 
-    etable(est1, est2)
-    
-    
-    # Export to Tex
-    etable(est1, est2, file = "regtable.tex")
-    ```
+```r
+est1 = feols(wage ~ educ + age, dat) 
+etable(est1)
+
+
+# Add second regression
+est2 = feols(wage ~ educ + age + black + hisp, dat) 
+etable(est1, est2)
+
+
+# Export to Tex
+etable(est1, est2, file = "regtable.tex")
+```
   ],
 )
 
@@ -655,22 +655,22 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    * Rename so we can use the wildcard later
-    rename (black hisp) (raceeth_black raceeth_hisp)
-    regress wage educ age raceeth_* marr 
-    testparm raceeth_black raceeth_hisp
-    testparm raceeth_*
-    ```
+```stata
+* Rename so we can use the wildcard later
+rename (black hisp) (raceeth_black raceeth_hisp)
+regress wage educ age raceeth_* marr 
+testparm raceeth_black raceeth_hisp
+testparm raceeth_*
+```
   ],
   [
-    ```r
-    # Rename so we can use a regular expression later
-    data.table::setnames(dat, c('black','hisp'), c('raceeth_black','raceeth_hisp'))
-    est1 = feols(wage ~ educ + age + ..('raceeth_') + marr, dat)
-    wald(est1, c('raceeth_black','raceeth_hisp'))
-    wald(est1, 'raceeth_')
-    ```
+```r
+# Rename so we can use a regular expression later
+data.table::setnames(dat, c('black','hisp'), c('raceeth_black','raceeth_hisp'))
+est1 = feols(wage ~ educ + age + ..('raceeth_') + marr, dat)
+wald(est1, c('raceeth_black','raceeth_hisp'))
+wald(est1, 'raceeth_')
+```
   ],
 )
 
@@ -678,18 +678,18 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    * Assume we have est1 and est2 from above 
-    coefplot est1 
-    coefplot est1 est2
-    ```
+```stata
+* Assume we have est1 and est2 from above 
+coefplot est1 
+coefplot est1 est2
+```
   ],
   [
-    ```r
-    # Assume we have est1 and est2 from above 
-    coefplot(est1) 
-    coefplot(list(est1, est2))
-    ```
+```r
+# Assume we have est1 and est2 from above 
+coefplot(est1) 
+coefplot(list(est1, est2))
+```
   ],
 )
 
@@ -697,33 +697,33 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    regress wage hisp##c.age
-    
-    * Show how effect differs by group
-    margins hisp, dydx(age)
-    marginsplot
-    
-    # Show predictive margins with an interaction
-    regress wage hisp##c.age
-    margins hisp, at(age = (16(1)55))
-    * The recast here gives a line and error area instead of points and lines
-    marginsplot, recast(line) recastci(rarea)
-    ```
+```stata
+regress wage hisp##c.age
+
+* Show how effect differs by group
+margins hisp, dydx(age)
+marginsplot
+
+# Show predictive margins with an interaction
+regress wage hisp##c.age
+margins hisp, at(age = (16(1)55))
+* The recast here gives a line and error area instead of points and lines
+marginsplot, recast(line) recastci(rarea)
+```
   ],
   [
-    ```r
-    est1 = feols(wage ~ i(hisp, age), dat) 
-    
-    # Show how effect differs by group
-    iplot(est1)
-    
-    
-    # Show predictive margins with an interaction
-    # This requires plot_predictions from the marginaleffects package
-    library(marginaleffects)
-    plot_predictions(est1, condition = c('age','hisp'))
-    ```
+```r
+est1 = feols(wage ~ i(hisp, age), dat) 
+
+# Show how effect differs by group
+iplot(est1)
+
+
+# Show predictive margins with an interaction
+# This requires plot_predictions from the marginaleffects package
+library(marginaleffects)
+plot_predictions(est1, condition = c('age','hisp'))
+```
   ],
 )
 
@@ -735,17 +735,17 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    xtset id year 
-    reg wage educ l1.wage
-    ```
+```stata
+xtset id year 
+reg wage educ l1.wage
+```
   ],
   [
-    ```r
-    setFixest_estimation(panel.id = ~id+year)
-    feols(wage ~ educ + l(wage, 1), dat)
-    # feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year) # if not set
-    ```
+```r
+setFixest_estimation(panel.id = ~id+year)
+feols(wage ~ educ + l(wage, 1), dat)
+# feols(wage ~ educ + l(wage, 1), dat, panel.id = ~id+year) # if not set
+```
   ],
 )
 
@@ -753,16 +753,16 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    xtset id year 
-    reg wage educ f1.wage
-    ```
+```stata
+xtset id year 
+reg wage educ f1.wage
+```
   ],
   [
-    ```r
-    # setFixest_estimation(panel.id = ~id+year) # already set
-    feols(wage ~ educ + f(wage, 1), dat)
-    ```
+```r
+# setFixest_estimation(panel.id = ~id+year) # already set
+feols(wage ~ educ + f(wage, 1), dat)
+```
   ],
 )
 
@@ -770,15 +770,15 @@ etable(est_mult, vcov = ~statefips^year)
 
 #sidebyside(
   [
-    ```stata
-    xtset id year 
-    reg wage educ D.x
-    ```
+```stata
+xtset id year 
+reg wage educ D.x
+```
   ],
   [
-    ```r
-    # setFixest_estimation(panel.id = ~id+year) # already set
-    feols(wage ~ educ + d(wage), dat)
-    ```
+```r
+# setFixest_estimation(panel.id = ~id+year) # already set
+feols(wage ~ educ + d(wage), dat)
+```
   ],
 )
