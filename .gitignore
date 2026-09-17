@@ -15,3 +15,6 @@ _calepin/
 
 # macOS-specific files
 .DS_Store
+
+# Quarto build cache
+.quarto/
