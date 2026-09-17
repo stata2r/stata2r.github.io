@@ -1,15 +1,19 @@
 /* stata2r theme overrides */
 
 :root {
-  --calepin-sidebar-width: 50px;
+	--calepin-sidebar-width: 25px;
 }
 
 @media (min-width: 56rem) {
-  .calepin-website-sidebar {
-    display: none;
-  }
+	.calepin-website-sidebar {
+		display: none;
+	}
 
-  .calepin-website-shell.grid {
-    grid-template-columns: var(--calepin-sidebar-width) minmax(0, 1fr) 300px;
-  }
+	.calepin-website-shell.grid {
+		grid-template-columns: var(--calepin-sidebar-width) minmax(0, 1fr) 300px;
+	}
+}
+
+.calepin-content :where(p, li, dd) {
+	max-width: 70ch;
 }
