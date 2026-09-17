@@ -18,6 +18,11 @@ asset-dir = "_calepin"
 
 logo-alt = "stata2R"
 
+# Local themes don't inherit the built-in "calepin" theme's default-on TOC,
+# so turn the on-page table of contents back on explicitly.
+[toc]
+enabled = true
+
 [[menus.main]]
 target = "index.typ"
 label = "Intro"
