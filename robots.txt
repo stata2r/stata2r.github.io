@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://stata2r.github.io/sitemap.xml

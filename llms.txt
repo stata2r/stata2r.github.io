@@ -1,0 +1,10 @@
+# stata2R
+
+> Learning R coming from Stata
+
+## Pages
+
+- [Data wrangling with data.table](https://stata2r.github.io/data_table.html): wrangling tasks a breeze. Despite being incredibly powerful, it is dependency free and has a rock-solid API. data.table code reliably works decades apart.
+- [Other Packages](https://stata2r.github.io/extras.html): While we think you can get really far in R with just data.table and
+- [Regression analysis with fixest](https://stata2r.github.io/fixest.html): designed from the ground up in C++ to make running regressions fast and incredibly easy. It provides built-in support for a variety of linear and nonlinear models, as well as regression tables and plotting methods.
+- [Translating Stata to R](https://stata2r.github.io/): Welcome. This website is for Stata users who are interested in learning R. But it could also be useful for those going the other way around. We provide side-by-side code snippets for common tasks in both Stata and R, so that users have a dictionary for navigating across the two…
