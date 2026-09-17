@@ -8,7 +8,6 @@
 
 #let sidebyside(..blocks) = calepin.elements.columns(
   columns: 2,
-  wrap: false,
   ..blocks,
 )
 

@@ -8,7 +8,6 @@
 
 #let sidebyside(..blocks) = calepin.elements.columns(
   columns: 2,
-  wrap: false,
   ..blocks,
 )
 
@@ -165,14 +164,12 @@ dat = rbindlist(lapply(files, fread))
 
 == Read and write .dta
 
-_Note: `.dta` is Stata's native (proprietary) filetype._
-
-_Note: These commands require the #link("https://haven.tidyverse.org/")[*haven*] package._
-
 Single file.
 
 #sidebyside(
   [
+_Note: `.dta` is Stata's native (proprietary) filetype._
+
 ```stata
 use "file.dta", clear
 * use "file.dta", keep(var1-var4) clear
@@ -182,6 +179,8 @@ save "file.dta", replace
 ```
   ],
   [
+_Note: These commands require the #link("https://haven.tidyverse.org/")[*haven*] package._
+
 ```r
 dat = haven::read_dta("file.dta")
 # dat = haven::read_dta("file.dta", col_select=var1:var4)
@@ -211,17 +210,18 @@ dat = rbindlist(lapply(files, haven::read_dta))
 
 == Read and write .parquet
 
-_Note: Stata currently has limited support for parquet files (and Linux/Unix only)._
-
-_Note: These commands require the #link("https://arrow.apache.org/docs/r/")[*arrow*] package._
 
 #sidebyside(
   [
+_Note: Stata currently has limited support for parquet files (and Linux/Unix only)._
+
 ```stata
 * See: https://github.com/mcaceresb/stata-parquet
 ```
   ],
   [
+_Note: These commands require the #link("https://arrow.apache.org/docs/r/")[*arrow*] package._
+
 ```r
 files = dir(pattern = ".parquet") 
 dat = rbindlist(lapply(files, arrow::read_parquet))
@@ -364,11 +364,11 @@ everything in `preserve/restore`. However, it also means that you'll need to
 
 == Subset rows
 
+#sidebyside(
+  [
 _Reminder: You'll need to use `preserve/restore` if you want to retain the
 original dataset in the examples that follow._
 
-#sidebyside(
-  [
 ```stata
 keep in 1/200 
 keep if day > 5 & day < 10
@@ -381,6 +381,9 @@ drop if month == 1
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 dat[1:200] 
 dat[day > 5 & day < 10] 
@@ -394,16 +397,13 @@ dat[month!=1]
   ],
 )
 
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
-
 == Subset columns
-
-_Reminder: You'll need to use `preserve/restore` if you want to retain the
-original dataset in the examples that follow._
 
 #sidebyside(
   [
+_Reminder: You'll need to use `preserve/restore` if you want to retain the
+original dataset in the examples that follow._
+
 ```stata
 keep month day carrier
 
@@ -411,6 +411,9 @@ keep month day carrier
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 dat[, .(month, day, carrier)] 
 dat[, list(month, day, carrier)]    # another option
@@ -418,9 +421,6 @@ dat[, c('month', 'day', 'carrier')] # and another
 ```
   ],
 )
-
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
 
 #sidebyside(
   [
@@ -466,17 +466,20 @@ dat[, .SD, .SDcols=is.integer]
 
 == Subset rows and columns
 
+#sidebyside(
+  [
 _Reminder: You'll need to use `preserve/restore` if you want to retain the
 original dataset in the examples that follow._
 
-#sidebyside(
-  [
 ```stata
 keep if origin == "LGA"
 keep month day carrier
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 # Matches the two lines on the left:
 dat[origin=="LGA", .(month, day, carrier)]
@@ -484,22 +487,22 @@ dat[origin=="LGA", .(month, day, carrier)]
   ],
 )
 
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
-
 == Drop duplicates
-
-_Reminder: You'll need to use `preserve/restore` if you want to retain the
-original dataset in the examples that follow._
 
 #sidebyside(
   [
+_Reminder: You'll need to use `preserve/restore` if you want to retain the
+original dataset in the examples that follow._
+
 ```stata
 duplicates drop
 duplicates drop month day carrier, force
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 unique(dat) 
 unique(dat, by = c('month', 'day', 'carrier'))
@@ -507,16 +510,13 @@ unique(dat, by = c('month', 'day', 'carrier'))
   ],
 )
 
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
-
 == Drop missing
-
-_Reminder: You'll need to use `preserve/restore` if you want to retain the
-original dataset in the examples that follow._
 
 #sidebyside(
   [
+_Reminder: You'll need to use `preserve/restore` if you want to retain the
+original dataset in the examples that follow._
+
 ```stata
 keep if !missing(dest)
 
@@ -527,6 +527,9 @@ missings air_time dest, force
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 dat[!is.na(dest)]
 
@@ -537,9 +540,6 @@ na.omit(dat, cols = c('air_time', 'dest'))
 ```
   ],
 )
-
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
 
 = Modify
 
@@ -925,19 +925,24 @@ on the fly. E.g. `dat[, mean(var1, na.rm=TRUE)]`.
 
 == Collapse with no grouping
 
+#sidebyside(
+  [
 _Reminder: You'll need to use `preserve/restore` if you want to retain the
 original dataset in the examples that follow._
 
 ```stata
 collapse (mean) dep_delay 
 ```
-
+  ],
+  [
 _Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
 later, e.g. `dat1 = dat[...]`._
 
 ```r
 dat[, mean(dep_delay)] # returns a scalar
 ```
+  ],
+)
 
 #sidebyside(
   [
@@ -998,20 +1003,20 @@ dat[, lapply(.SD, mean), .SDcols=is.numeric]
 
 == Collapse by group
 
+#sidebyside(
+  [
 _Reminder: You'll need to use `preserve/restore` if you want to retain the
 original dataset in the examples that follow._
 
-_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
-later, e.g. `dat1 = dat[...]`._
-
-#sidebyside(
-  [
 ```stata
 collapse (mean) arr_delay, by(carrier) 
 * collapse (mean) V1 = arr_delay, by(carrier)
 ```
   ],
   [
+_Reminder: You'll need to (re)assign the subsetted dataset if you want to use it
+later, e.g. `dat1 = dat[...]`._
+
 ```r
 dat[, .(arr_delay = mean(arr_delay)), by=carrier] 
 # dat[, mean(arr_delay), by=carrier] 
