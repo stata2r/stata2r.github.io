@@ -1,7 +1,7 @@
 title = "stata2R"
 description = "Learning R coming from Stata"
 base-url = "https://stata2r.github.io"
-theme = "calepin"
+theme = "themes/stata2r"
 output-dir = "_site"
 
 # The site is HTML-only, so there are no PDF twins and the Typst source is not
